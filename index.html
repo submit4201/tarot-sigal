@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gridpunk Arcana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --color-accent: #6E7BFF;
+        --color-bg: #030407;
+        --color-panel: rgba(13, 15, 25, 0.7);
+        --neon-blue: #21C7F2;
+        --neon-purple: #6E7BFF;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--color-bg);
+        color: #E0E6F1;
+        overflow: hidden;
+      }
+
+      /* Holographic Scanline Effect */
+      body::after {
+        content: " ";
+        display: block;
+        position: absolute;
+        top: 0; left: 0; bottom: 0; right: 0;
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                    linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+        z-index: 9999;
+        background-size: 100% 2px, 3px 100%;
+        pointer-events: none;
+        opacity: 0.3;
+      }
+
+      /* Animated Ether Background */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: 
+          radial-gradient(circle at 50% 100%, rgba(110, 123, 255, 0.1) 0%, transparent 60%),
+          radial-gradient(circle at 10% 20%, rgba(33, 199, 242, 0.05) 0%, transparent 40%),
+          url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+        opacity: 0.6;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .glass-panel {
+        background: var(--color-panel);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+      }
+
+      .font-mono { font-family: 'JetBrains Mono', monospace; }
+      .font-dm-sans { font-family: 'DM Sans', sans-serif; }
+
+      /* Tactile Fanned Deck Styles */
+      .picking-card-wrapper {
+        position: absolute;
+        width: 120px;
+        height: 190px;
+        transform: translate(-50%, -50%) var(--fan-translate) rotate(var(--fan-rotation));
+        transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1.1), filter 0.3s ease;
+        filter: brightness(0.6) drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+        cursor: pointer;
+      }
+      
+      .picking-card-wrapper:hover {
+        z-index: 1000 !important;
+        transform: translate(-50%, -60%) var(--fan-translate) rotate(var(--fan-rotation)) scale(1.2);
+        filter: brightness(1.2) drop-shadow(0 15px 30px rgba(110, 123, 255, 0.6));
+      }
+
+      .picking-card-wrapper.selected {
+        animation: card-select-and-fly 1s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        pointer-events: none;
+        z-index: 1001 !important;
+      }
+
+      @keyframes card-select-and-fly {
+        0% {
+          transform: translate(-50%, -50%) var(--fan-translate) rotate(var(--fan-rotation)) scale(1);
+          filter: brightness(0.6) drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+          opacity: 1;
+        }
+        40% {
+          transform: translate(-50%, -60%) var(--fan-translate) rotate(var(--fan-rotation)) scale(1.2);
+          filter: brightness(1.2) drop-shadow(0 15px 30px rgba(110, 123, 255, 0.6));
+          opacity: 1;
+        }
+        100% {
+          transform: translate(-50%, -250%) scale(0.4) rotate(0deg);
+          filter: brightness(0);
+          opacity: 0;
+        }
+      }
+
+      @keyframes scan {
+        0% { transform: translateY(-100%); }
+        100% { transform: translateY(500%); }
+      }
+
+      .shimmer-reveal {
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+        background-size: 200% 100%;
+        animation: shimmer 2s infinite linear;
+      }
+
+      @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+      }
+
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: rgba(110, 123, 255, 0.2); border-radius: 10px; }
+      ::-webkit-scrollbar-thumb:hover { background: rgba(110, 123, 255, 0.4); }
+
+      .bg-grid {
+        background-image: radial-gradient(rgba(110, 123, 255, 0.15) 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+
+      .neon-glow {
+        text-shadow: 0 0 10px rgba(110, 123, 255, 0.8), 0 0 20px rgba(110, 123, 255, 0.4);
+      }
+
+      .border-neon {
+        box-shadow: 0 0 15px rgba(110, 123, 255, 0.2);
+      }
+
+      /* Noise Overlay */
+      .noise-bg {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: url('https://www.transparenttextures.com/patterns/60-lines.png');
+        opacity: 0.05;
+        pointer-events: none;
+        z-index: 10000;
+      }
+
+      .glitch-text {
+        position: relative;
+        display: inline-block;
+      }
+
+      .glitch-text::before,
+      .glitch-text::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: var(--color-bg);
+      }
+
+      .glitch-text::before {
+        left: 2px;
+        text-shadow: -2px 0 #ff00c1;
+        clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim 5s infinite linear alternate-reverse;
+      }
+
+      .glitch-text::after {
+        left: -2px;
+        text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
+        animation: glitch-anim2 1s infinite linear alternate-reverse;
+      }
+
+      @keyframes glitch-anim {
+        0% { clip: rect(31px, 9999px, 94px, 0); transform: skew(0.85deg); }
+        5% { clip: rect(70px, 9999px, 71px, 0); transform: skew(0.33deg); }
+        /* Add more steps for jitter */
+        100% { clip: rect(67px, 9999px, 81px, 0); transform: skew(0.1deg); }
+      }
+
+      @keyframes glitch-anim2 {
+        0% { clip: rect(65px, 9999px, 100px, 0); transform: skew(1deg); }
+        100% { clip: rect(10px, 9999px, 20px, 0); transform: skew(1deg); }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.19.0",
+    "p5": "https://aistudiocdn.com/p5@^1.6.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div class="noise-bg"></div>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
