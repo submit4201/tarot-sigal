@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRIDPUNK ARCANA | Decode the Grid</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="grid-bg"></div>
+
+    <nav>
+        <div class="container flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div style="width: 8px; height: 8px; background: #a855f7; border-radius: 50%;"></div>
+                <span class="font-mono" style="letter-spacing: -0.05em; font-weight: 700;">GRIDPUNK_ARCANA</span>
+            </div>
+            <div class="flex gap-4">
+                <a href="#features" class="btn btn-secondary"
+                    style="border: none; background: transparent;">Features</a>
+                <a href="#pricing" class="btn btn-secondary" style="border: none; background: transparent;">Pricing</a>
+                <a href="https://sigil.app.cultofthefork.tech" class="btn btn-primary">Enter App</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container text-center">
+            <div class="font-mono text-accent" style="letter-spacing: 0.2em; font-size: 0.8rem; margin-bottom: 24px;">
+                SYSTEM_ONLINE_V2.5</div>
+            <h1 style="font-size: clamp(3rem, 8vw, 6rem); margin-bottom: 24px;">
+                Decode the Grid.<br>
+                <span class="text-gradient">Unlock Your Destiny.</span>
+            </h1>
+            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 48px;">
+                A cyberpunk tarot experience powered by AI connectivity.
+                Perform high-fidelity readings, analyze your path, and sync with the digital ether.
+            </p>
+            <div class="flex justify-center gap-4">
+                <a href="https://sigil.app.cultofthefork.tech" class="btn btn-primary">Initialize Access</a>
+                <a href="#demo" class="btn btn-secondary">View Demo</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="text-center" style="font-size: 3rem; margin-bottom: 16px;">Core Modules</h2>
+            <p class="text-center" style="color: var(--text-muted);">Advanced tools for the modern mystic.</p>
+
+            <div class="feature-grid">
+                <div class="glass-panel feature-card">
+                    <div class="font-mono text-accent" style="margin-bottom: 16px;">01_DIVINATION</div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 12px;">AI-Enhanced Readings</h3>
+                    <p style="color: var(--text-muted);">
+                        Experience Tarot like never before. Our AI interprets card combinations, elemental dignities,
+                        and numerological patterns in real-time.
+                    </p>
+                </div>
+                <div class="glass-panel feature-card">
+                    <div class="font-mono text-accent" style="margin-bottom: 16px;">02_ARCHIVE</div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 12px;">Digital Grimoire</h3>
+                    <p style="color: var(--text-muted);">
+                        Every draw is logged. Track your journey with a searchable journal that automatically links to
+                        your readings and insights.
+                    </p>
+                </div>
+                <div class="glass-panel feature-card">
+                    <div class="font-mono text-accent" style="margin-bottom: 16px;">03_PROGRESS</div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 12px;">RPG Mechanics</h3>
+                    <p style="color: var(--text-muted);">
+                        Earn Stardust and XP as you practice. Level up your profile to unlock new features, decks, and
+                        customization options.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2 class="text-center" style="font-size: 3rem; margin-bottom: 16px;">Access Tiers</h2>
+            <p class="text-center" style="color: var(--text-muted);">Choose your connection bandwidth.</p>
+
+            <div class="pricing-grid">
+                <!-- Free Tier -->
+                <div class="glass-panel pricing-card">
+                    <div class="font-mono text-accent" style="font-size: 0.8rem;">INITIATE</div>
+                    <div class="pricing-price">$0</div>
+                    <p style="color: var(--text-muted); margin-bottom: 24px;">For casual observers.</p>
+                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-secondary" style="width: 100%;">Get
+                        Started</a>
+
+                    <ul class="feature-list">
+                        <li class="active"><span class="check-icon">✓</span> Daily Card Draw</li>
+                        <li class="active"><span class="check-icon">✓</span> Basic 3-Card Spreads</li>
+                        <li class="active"><span class="check-icon">✓</span> Limited Teaser Insights</li>
+                        <li>Standard Decks Only</li>
+                        <li>Ads Supported</li>
+                    </ul>
+                </div>
+
+                <!-- Seeker Tier -->
+                <div class="glass-panel pricing-card featured">
+                    <div
+                        style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); background: var(--primary); color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;">
+                        RECOMMENDED</div>
+                    <div class="font-mono text-accent" style="font-size: 0.8rem;">SEEKER</div>
+                    <div class="pricing-price">$8.99<span>/mo</span></div>
+                    <p style="color: var(--text-muted); margin-bottom: 24px;">For serious practitioners.</p>
+                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-primary"
+                        style="width: 100%;">Connect</a>
+
+                    <ul class="feature-list">
+                        <li class="active"><span class="check-icon">✓</span> Unlimited Readings</li>
+                        <li class="active"><span class="check-icon">✓</span> Full AI Analysis</li>
+                        <li class="active"><span class="check-icon">✓</span> Journal Pattern Match</li>
+                        <li class="active"><span class="check-icon">✓</span> Premium Decks</li>
+                        <li class="active"><span class="check-icon">✓</span> Ad-Free Experience</li>
+                    </ul>
+                </div>
+
+                <!-- Oracle Tier -->
+                <div class="glass-panel pricing-card">
+                    <div class="font-mono text-accent" style="font-size: 0.8rem;">ORACLE</div>
+                    <div class="pricing-price">$14.99<span>/mo</span></div>
+                    <p style="color: var(--text-muted); margin-bottom: 24px;">For the fully awakened.</p>
+                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-secondary"
+                        style="width: 100%;">Ascend</a>
+
+                    <ul class="feature-list">
+                        <li class="active"><span class="check-icon">✓</span> <strong>Everything in Seeker</strong></li>
+                        <li class="active"><span class="check-icon">✓</span> Live Oracle AI Support</li>
+                        <li class="active"><span class="check-icon">✓</span> Priority Generation</li>
+                        <li class="active"><span class="check-icon">✓</span> Exclusive "Void" Deck</li>
+                        <li class="active"><span class="check-icon">✓</span> Early Feature Access</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container flex justify-between items-center" style="flex-direction: column; gap: 24px;">
+            <div class="flex items-center gap-2">
+                <div style="width: 8px; height: 8px; background: #333; border-radius: 50%;"></div>
+                <span class="font-mono text-muted">GRIDPUNK_ARCANA</span>
+            </div>
+            <div class="copyright">
+                &copy; 2026 Cult of the Fork. All rights reserved.
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
