@@ -23,19 +23,19 @@ export interface Rune extends DivinationCard {
   reversible: boolean;
 }
 
-export interface AngelCard extends DivinationCard {}
+export interface AngelCard extends DivinationCard { }
 
-export interface OracleCard extends DivinationCard {}
+export interface OracleCard extends DivinationCard { }
 
 export type AnyCard = TarotCard | Rune | AngelCard | OracleCard;
 
 export interface Deck {
-    id: string;
-    name: string;
-    type: DeckType;
-    description: string;
-    price: number;
-    cards: AnyCard[];
+  id: string;
+  name: string;
+  type: DeckType;
+  description: string;
+  price: number;
+  cards: AnyCard[];
 }
 
 export interface DrawnCard {
@@ -44,15 +44,15 @@ export interface DrawnCard {
 }
 
 export interface DrawnDivinationCard {
-    card: AnyCard;
-    isReversed?: boolean;
-    // for runes
-    x?: number;
-    y?: number;
-    rotation?: number;
-    clusterId?: number;
-    proximity?: 'inner' | 'middle' | 'outer';
-    interpretation?: string; // AI interpretation for individual card in a specific position
+  card: AnyCard;
+  isReversed?: boolean;
+  // for runes
+  x?: number;
+  y?: number;
+  rotation?: number;
+  clusterId?: number;
+  proximity?: 'inner' | 'middle' | 'outer';
+  interpretation?: string; // AI interpretation for individual card in a specific position
 }
 
 export type SpreadType =
@@ -130,6 +130,17 @@ export interface SavedReading {
   title: string;
   aiSummary: string;
   userNotes: string;
+  // * Free tier enhancements
+  practicalActions?: string[];
+  shadowMessage?: string;
+  // * Premium tier enhancements
+  cardRelationships?: string;
+  elementalDignity?: string;
+  numerologyThreads?: string;
+  spokenNarrative?: string;
+  // * Pre-reading intent (Premium)
+  readingIntent?: string;
+  refinedQuestion?: string;
 }
 
 export interface JournalEntry {
@@ -164,7 +175,7 @@ export interface CosmicBlueprint {
   karmicDebts: number[];
 }
 
-export type AchievementID = 
+export type AchievementID =
   | 'first_draw'
   | 'first_reading'
   | 'scribe_1'

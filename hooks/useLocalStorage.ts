@@ -15,12 +15,17 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((pre
     }
   });
 
-  // FIX: Update value type to allow a function updater.
+  // ! FIX: Use functional updater to avoid stale closure race condition.
+  // * Previous implementation captured `storedValue` via closure, so rapid
+  //   sequential updates (e.g. XP + stardust + achievement in one tick) would
+  //   all read the same stale value, causing data loss.
   const setValue = (value: T | ((prevState: T) => T)) => {
     try {
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      setStoredValue(prev => {
+        const valueToStore = value instanceof Function ? value(prev) : value;
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        return valueToStore;
+      });
     } catch (error) {
       console.error(error);
     }

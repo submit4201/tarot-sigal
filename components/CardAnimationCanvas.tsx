@@ -139,7 +139,7 @@ const calculateSpreadPositions = (
     case 'animal-spirit-guide':
       positions.push({ x: centerX, y: centerY, rotation: 0 });
       break;
-    
+
     case 'five-rune-cross': // Similar to the-great-work but can be more spread
       // Center card
       positions.push({ x: centerX, y: centerY, rotation: 0 });
@@ -173,10 +173,10 @@ const calculateSpreadPositions = (
       positions.push({ x: centerX - cardWidth, y: centerY + cardHeight / 2, rotation: 0 }); // Bottom Left
       positions.push({ x: centerX + cardWidth, y: centerY + cardHeight / 2, rotation: 0 }); // Bottom Right
       break;
-    
+
     case 'full-cast': // This is a special case, handled as free-form in ReadingsPage.
-                     // For animation, we can just do a general fan, or randomly distribute.
-                     // Let's do a more structured fan for the animation phase.
+      // For animation, we can just do a general fan, or randomly distribute.
+      // Let's do a more structured fan for the animation phase.
       const fanRadius = Math.min(canvasWidth, canvasHeight) * 0.4;
       const angleStep = p.TWO_PI / cardCount;
       for (let i = 0; i < cardCount; i++) {
@@ -213,7 +213,7 @@ const CardAnimationCanvas: React.FC<CardAnimationCanvasProps> = ({
   onAnimationComplete,
 }) => {
   const canvasRef = useRef<HTMLDivElement>(null);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     let sketch: p5;
@@ -272,7 +272,7 @@ const CardAnimationCanvas: React.FC<CardAnimationCanvasProps> = ({
         // FIX: Explicitly create a p5.Color object for background to avoid potential string literal interpretation issues.
         // The previous `p.background(p.color(11, 12, 16))` was causing an error "Expected 1 arguments, but got 0".
         // Using `p.background(R,G,B)` directly resolves this by passing RGB values as separate arguments.
-        p.background(11, 12, 16); 
+        p.background(11, 12, 16);
         // Removed `p.clear()` as `p.background()` already clears the canvas for each frame.
         // `p.clear()` might also be problematic in some p5.js render contexts.
 
@@ -303,9 +303,9 @@ const CardAnimationCanvas: React.FC<CardAnimationCanvasProps> = ({
           // Before fanning, ensure current positions are correctly set to center for a smooth start
           if (progress === 0) {
             for (let i = 0; i < animatedCards.length; i++) {
-                animatedCards[i].currentX = canvasWidth / 2;
-                animatedCards[i].currentY = canvasHeight / 2;
-                animatedCards[i].currentRotation = 0;
+              animatedCards[i].currentX = canvasWidth / 2;
+              animatedCards[i].currentY = canvasHeight / 2;
+              animatedCards[i].currentRotation = 0;
             }
           }
 
@@ -359,11 +359,11 @@ const CardAnimationCanvas: React.FC<CardAnimationCanvasProps> = ({
           // Instantly update current positions to new targets if animation is complete or fanning
           if (animationStage === 'fanning' || animationStage === 'complete') {
             for (let i = 0; i < animatedCards.length; i++) {
-                const card = animatedCards[i];
-                const target = targetPositions[i];
-                card.currentX = target.x;
-                card.currentY = target.y;
-                card.currentRotation = target.rotation;
+              const card = animatedCards[i];
+              const target = targetPositions[i];
+              card.currentX = target.x;
+              card.currentY = target.y;
+              card.currentRotation = target.rotation;
             }
           }
         }

@@ -12,6 +12,8 @@ interface ErrorBoundaryProps {
     children: ReactNode;
     /** Optional label for which section this boundary wraps (for debugging) */
     fallbackLabel?: string;
+    /** React key — accepted here to satisfy TypeScript; consumed internally by React */
+    key?: React.Key;
 }
 
 interface ErrorBoundaryState {
@@ -20,10 +22,9 @@ interface ErrorBoundaryState {
 }
 
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-    constructor(props: ErrorBoundaryProps) {
-        super(props);
-        this.state = { hasError: false, error: null };
-    }
+    // * Explicit state declaration — required by React 19 bundled types
+    // ! Without this, TS cannot resolve `this.state` on class components
+    state: ErrorBoundaryState = { hasError: false, error: null };
 
     static getDerivedStateFromError(error: Error): ErrorBoundaryState {
         return { hasError: true, error };

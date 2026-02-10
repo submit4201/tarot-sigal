@@ -50,24 +50,24 @@ const AddProfileForm: React.FC<{ onSave: (profileData: Omit<UserProfile, 'id' | 
   }
 
   return (
-    <div className="bg-[#111218] p-6 rounded-xl border border-[#232533] animate-fade-in">
-      <h2 className="text-2xl font-semibold font-dm-sans text-text-primary mb-4">Create New Profile</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="glass-panel p-10 rounded-[2.5rem] border-white/5 animate-fade-in space-y-6">
+      <h2 className="text-2xl font-bold font-dm-sans text-white tracking-tight">Create New Profile</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label htmlFor="givenName" className="block text-sm font-medium text-text-muted mb-1">Given Name (at birth)</label>
-          <input type="text" id="givenName" value={formData.givenName} onChange={handleInputChange} className="w-full p-2 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]" />
+          <label htmlFor="givenName" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Given_Name (at birth)</label>
+          <input type="text" id="givenName" value={formData.givenName} onChange={handleInputChange} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner" />
         </div>
         <div>
-          <label htmlFor="birthDate" className="block text-sm font-medium text-text-muted mb-1">Date of Birth</label>
-          <input type="date" id="birthDate" value={formData.birthDate} onChange={handleInputChange} className="w-full p-2 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]" />
+          <label htmlFor="birthDate" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Date_of_Birth</label>
+          <input type="date" id="birthDate" value={formData.birthDate} onChange={handleInputChange} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner" />
         </div>
         <div className="md:col-span-2">
-          <p className="text-xs text-text-muted">You can add more details like current name and birth place from the main profile view after saving.</p>
+          <p className="text-xs text-white/30 italic">You can add more details like current name and birth place from the main profile view after saving.</p>
         </div>
       </div>
-      <div className="flex gap-4 mt-6">
-        <button onClick={handleSubmit} className="flex-1 px-4 py-2 text-sm rounded-lg font-bold bg-[#29C26A] text-white hover:bg-opacity-80 transition-colors">Save Profile</button>
-        <button onClick={onCancel} className="flex-1 px-4 py-2 text-sm rounded-lg font-bold bg-[#232533] text-text-primary hover:bg-opacity-80 transition-colors">Cancel</button>
+      <div className="flex gap-4 pt-4">
+        <button onClick={handleSubmit} className="flex-1 px-8 py-4 rounded-2xl font-bold font-mono text-sm uppercase tracking-widest bg-teal-600 text-white hover:bg-teal-500 transition-all shadow-glow">Save_Profile</button>
+        <button onClick={onCancel} className="flex-1 px-8 py-4 rounded-2xl font-bold font-mono text-sm uppercase tracking-widest bg-white/5 text-white/60 border border-white/10 hover:bg-white/10 transition-all">Cancel</button>
       </div>
     </div>
   )
@@ -151,138 +151,164 @@ const ProfilePage: React.FC = () => {
   };
 
   if (!activeProfile || !displayProfile || !cosmicBlueprint) {
-    return <div>Loading profile...</div>;
+    return <div className="p-8 text-center text-text-muted animate-pulse font-mono">Initializing_Profile_Data...</div>;
   }
 
   return (
-    <div className="w-full h-full p-4 md:p-8 overflow-y-auto">
-      <header className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-4xl font-bold font-dm-sans text-text-primary">Profile & Settings</h1>
-          <p className="text-text-muted">Customize your experience and manage your data.</p>
+    <div className="w-full h-full p-6 md:p-14 flex flex-col bg-grid animate-fade-in overflow-y-auto scroll-smooth">
+      <header className="mb-12 flex-shrink-0 flex flex-col md:flex-row justify-between items-end gap-6">
+        <div className="max-w-2xl">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
+            <span className="text-[10px] font-mono text-purple-400 uppercase tracking-[0.6em] font-bold">Operator_Config_v2.5</span>
+          </div>
+          <h1 className="text-6xl font-bold font-dm-sans text-white tracking-tighter neon-glow">Profile & Settings</h1>
+          <p className="text-lg text-white/40 mt-2">Customize your experience and manage your data.</p>
         </div>
         {/* ! Saving indicator — appears during debounce window */}
         {isSaving && (
-          <span className="text-[10px] font-mono text-teal-400 uppercase tracking-widest animate-pulse">
+          <span className="text-[10px] font-mono text-teal-400 uppercase tracking-widest animate-pulse flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse"></div>
             Syncing...
           </span>
         )}
       </header>
 
-      {/* Profile Management Section */}
-      <div className="mb-8 bg-[#111218] p-6 rounded-xl border border-[#232533]">
-        <h2 className="text-2xl font-semibold font-dm-sans text-text-primary mb-4">Manage Profiles</h2>
-        {mode === 'viewing' ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-            <div className="md:col-span-1">
-              <label htmlFor="profile-switcher" className="block text-sm font-medium text-text-muted mb-1">Active Profile</label>
-              <select id="profile-switcher" value={activeProfile.id} onChange={(e) => switchProfile(e.target.value)} className="w-full p-2 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]">
-                {profiles.map(p => (
-                  <option key={p.id} value={p.id}>{p.currentName || p.givenName}</option>
-                ))}
-              </select>
-            </div>
-            <div className="flex gap-2 md:col-span-2">
-              <button onClick={() => setMode('adding')} className="flex-1 px-4 py-2 text-sm rounded-lg font-bold bg-[#5A67D8] text-white hover:bg-opacity-80 transition-colors">Add New Profile</button>
-              <button onClick={handleDeleteProfile} disabled={profiles.length <= 1} className="flex-1 px-4 py-2 text-sm rounded-lg font-bold bg-[#EF4444]/80 text-white hover:bg-[#EF4444] transition-colors disabled:bg-gray-600 disabled:cursor-not-allowed">Delete Active Profile</button>
-            </div>
+      <div className="space-y-10">
+        {/* Profile Management Section */}
+        <section className="glass-panel p-10 rounded-[2.5rem] border-white/5 bg-white/[0.01] shadow-2xl">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></div>
+            <span className="text-[10px] font-mono text-teal-400 uppercase tracking-[0.4em] font-bold">Profile_Management</span>
           </div>
-        ) : (
-          <AddProfileForm onSave={handleAddNewProfile} onCancel={() => setMode('viewing')} />
-        )}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
-        {/* Left Column: Forms */}
-        <div className="lg:col-span-3 space-y-8">
-          <div className="bg-[#111218] p-6 rounded-xl border border-[#232533]">
-            <h2 className="text-2xl font-semibold font-dm-sans text-text-primary mb-4 flex items-center gap-3">
-              <UserIcon className="w-6 h-6" />
-              Personal Details for {displayProfile.currentName || displayProfile.givenName}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="givenName" className="block text-sm font-medium text-text-muted mb-1">Given Name (at birth)</label>
-                <input type="text" id="givenName" value={displayProfile.givenName} onChange={(e) => handleProfileChange('givenName', e.target.value)} className="w-full p-2 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]" />
-              </div>
-              <div>
-                <label htmlFor="currentName" className="block text-sm font-medium text-text-muted mb-1">Current Name</label>
-                <input type="text" id="currentName" value={displayProfile.currentName} onChange={(e) => handleProfileChange('currentName', e.target.value)} className="w-full p-2 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]" placeholder="For 'Current Vibe' number" />
-              </div>
-              <div className="md:col-span-2">
-                <label htmlFor="mothersMaidenName" className="block text-sm font-medium text-text-muted mb-1">Mother's Maiden Name</label>
-                <input type="text" id="mothersMaidenName" value={displayProfile.mothersMaidenName} onChange={(e) => handleProfileChange('mothersMaidenName', e.target.value)} className="w-full p-2 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]" />
-              </div>
-              <div>
-                <label htmlFor="birthDate" className="block text-sm font-medium text-text-muted mb-1">Date of Birth</label>
-                <input type="date" id="birthDate" value={displayProfile.birthDate} onChange={(e) => handleProfileChange('birthDate', e.target.value)} className="w-full p-2 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]" />
-              </div>
-              <div>
-                <label htmlFor="birthTime" className="block text-sm font-medium text-text-muted mb-1">Time of Birth</label>
-                <input type="time" id="birthTime" value={displayProfile.birthTime} onChange={(e) => handleProfileChange('birthTime', e.target.value)} className="w-full p-2 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]" />
-              </div>
-              <div className="md:col-span-2">
-                <label htmlFor="birthPlace" className="block text-sm font-medium text-text-muted mb-1">Place of Birth (City, Country)</label>
-                <input type="text" id="birthPlace" value={displayProfile.birthPlace} onChange={(e) => handleProfileChange('birthPlace', e.target.value)} className="w-full p-2 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]" />
-              </div>
-            </div>
-          </div>
-          <div className="bg-[#111218] p-6 rounded-xl border border-[#232533]">
-            <h2 className="text-2xl font-semibold font-dm-sans text-text-primary mb-4 flex items-center gap-3">
-              <SlidersIcon className="w-6 h-6" />
-              Reading Preferences
-            </h2>
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="readingStyle" className="block text-sm font-medium text-text-muted mb-1">AI Reading Style</label>
-                <select id="readingStyle" value={displayProfile.readingStyle} onChange={(e) => handleProfileChange('readingStyle', e.target.value)} className="w-full p-2 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]">
-                  <option value="mystical">Mystical & Poetic</option>
-                  <option value="practical">Practical & Action-Oriented</option>
-                  <option value="psychological">Psychological & Reflective</option>
+          {mode === 'viewing' ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+              <div className="md:col-span-1">
+                <label htmlFor="profile-switcher" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Active_Operator</label>
+                <select id="profile-switcher" value={activeProfile.id} onChange={(e) => switchProfile(e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500">
+                  {profiles.map(p => (
+                    <option key={p.id} value={p.id}>{p.currentName || p.givenName}</option>
+                  ))}
                 </select>
               </div>
-              <div>
-                <label htmlFor="readingFocus" className="block text-sm font-medium text-text-muted mb-1">Current Life Focus</label>
-                <select id="readingFocus" value={displayProfile.readingFocus} onChange={(e) => handleProfileChange('readingFocus', e.target.value)} className="w-full p-2 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]">
-                  <option value="general">General Guidance</option>
-                  <option value="love">Love & Relationships</option>
-                  <option value="career">Career & Ambition</option>
-                  <option value="growth">Personal Growth</option>
-                </select>
+              <div className="flex gap-3 md:col-span-2">
+                <button onClick={() => setMode('adding')} className="flex-1 px-6 py-4 rounded-2xl font-bold font-mono text-[10px] uppercase tracking-widest bg-purple-600/20 border border-purple-500/30 text-purple-400 hover:bg-purple-600 hover:text-white transition-all">Add_Profile</button>
+                <button onClick={handleDeleteProfile} disabled={profiles.length <= 1} className="flex-1 px-6 py-4 rounded-2xl font-bold font-mono text-[10px] uppercase tracking-widest bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white transition-all disabled:opacity-20 disabled:cursor-not-allowed">Delete_Profile</button>
               </div>
             </div>
-          </div>
-        </div>
+          ) : (
+            <AddProfileForm onSave={handleAddNewProfile} onCancel={() => setMode('viewing')} />
+          )}
+        </section>
 
-        {/* Right Column: Blueprint & Status */}
-        <div className="lg:col-span-2 space-y-8">
-          <div className="bg-[#111218] p-6 rounded-xl border border-[#232533]">
-            <h2 className="text-2xl font-semibold font-dm-sans text-text-primary mb-4">Cosmic Blueprint</h2>
-            <CosmicBlueprintDisplay blueprint={cosmicBlueprint} />
-          </div>
-          <div className="bg-[#111218] p-6 rounded-xl border border-[#232533]">
-            <h2 className="text-2xl font-semibold font-dm-sans text-text-primary mb-4">My Decks</h2>
-            <div className="space-y-3">
-              {myDecks.map(deck => (
-                <div key={deck.id} className="flex items-center gap-3 p-3 bg-[#0B0C10] rounded-lg">
-                  <LayersIcon className="w-8 h-8 text-text-muted" />
-                  <div>
-                    <h4 className="font-semibold text-text-primary">{deck.name}</h4>
-                    <p className="text-xs text-text-muted capitalize">{deck.type} Deck</p>
-                  </div>
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
+          {/* Left Column: Forms */}
+          <div className="lg:col-span-3 space-y-10">
+            <section className="glass-panel p-10 rounded-[2.5rem] border-white/5 bg-white/[0.01] shadow-2xl">
+              <div className="flex items-center gap-3 mb-8">
+                <UserIcon className="w-5 h-5 text-purple-400" />
+                <span className="text-[10px] font-mono text-purple-400 uppercase tracking-[0.4em] font-bold">Personal_Details</span>
+              </div>
+              <h3 className="text-2xl font-bold font-dm-sans text-white tracking-tight mb-8">
+                {displayProfile.currentName || displayProfile.givenName}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="givenName" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Given_Name</label>
+                  <input type="text" id="givenName" value={displayProfile.givenName} onChange={(e) => handleProfileChange('givenName', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner" />
                 </div>
-              ))}
-              <button onClick={() => setPage('Shop')} className="w-full mt-2 p-3 text-center bg-transparent border-2 border-dashed border-[#232533] rounded-lg text-text-muted hover:border-[#29C26A] hover:text-[#29C26A] transition-colors">
-                + Acquire More Decks
-              </button>
-            </div>
+                <div>
+                  <label htmlFor="currentName" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Current_Name</label>
+                  <input type="text" id="currentName" value={displayProfile.currentName} onChange={(e) => handleProfileChange('currentName', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner" placeholder="For 'Current Vibe' number" />
+                </div>
+                <div className="md:col-span-2">
+                  <label htmlFor="mothersMaidenName" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Mothers_Maiden_Name</label>
+                  <input type="text" id="mothersMaidenName" value={displayProfile.mothersMaidenName} onChange={(e) => handleProfileChange('mothersMaidenName', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner" />
+                </div>
+                <div>
+                  <label htmlFor="birthDate" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Date_of_Birth</label>
+                  <input type="date" id="birthDate" value={displayProfile.birthDate} onChange={(e) => handleProfileChange('birthDate', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner" />
+                </div>
+                <div>
+                  <label htmlFor="birthTime" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Time_of_Birth</label>
+                  <input type="time" id="birthTime" value={displayProfile.birthTime} onChange={(e) => handleProfileChange('birthTime', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner" />
+                </div>
+                <div className="md:col-span-2">
+                  <label htmlFor="birthPlace" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Place_of_Origin</label>
+                  <input type="text" id="birthPlace" value={displayProfile.birthPlace} onChange={(e) => handleProfileChange('birthPlace', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner" />
+                </div>
+              </div>
+            </section>
+
+            <section className="glass-panel p-10 rounded-[2.5rem] border-white/5 bg-white/[0.01] shadow-2xl">
+              <div className="flex items-center gap-3 mb-8">
+                <SlidersIcon className="w-5 h-5 text-teal-400" />
+                <span className="text-[10px] font-mono text-teal-400 uppercase tracking-[0.4em] font-bold">Reading_Preferences</span>
+              </div>
+              <div className="space-y-6">
+                <div>
+                  <label htmlFor="readingStyle" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">AI_Reading_Style</label>
+                  <select id="readingStyle" value={displayProfile.readingStyle} onChange={(e) => handleProfileChange('readingStyle', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500">
+                    <option value="mystical">Mystical & Poetic</option>
+                    <option value="practical">Practical & Action-Oriented</option>
+                    <option value="psychological">Psychological & Reflective</option>
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="readingFocus" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Current_Life_Focus</label>
+                  <select id="readingFocus" value={displayProfile.readingFocus} onChange={(e) => handleProfileChange('readingFocus', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500">
+                    <option value="general">General Guidance</option>
+                    <option value="love">Love & Relationships</option>
+                    <option value="career">Career & Ambition</option>
+                    <option value="growth">Personal Growth</option>
+                  </select>
+                </div>
+              </div>
+            </section>
           </div>
-          <div className="bg-[#111218] p-6 rounded-xl border border-[#FF7A1A]">
-            <h2 className="text-2xl font-semibold font-dm-sans text-[#FF7A1A] mb-2">Gridpunk Premium</h2>
-            <p className="text-text-muted mb-4">{isPremium ? "You have unlocked all features. Thank you for your support!" : "Unlock advanced features, unlimited readings, and deeper AI insights."}</p>
-            <button onClick={() => setIsPremium(!isPremium)} className="w-full px-6 py-3 rounded-lg font-bold bg-[#D95B00] text-white hover:bg-opacity-80 transition-colors">
-              {isPremium ? "Disable Premium Features" : "Activate Premium (Dev)"}
-            </button>
+
+          {/* Right Column: Blueprint & Status */}
+          <div className="lg:col-span-2 space-y-10">
+            <section className="glass-panel p-10 rounded-[2.5rem] border-white/5 bg-white/[0.01] shadow-2xl">
+              <div className="flex items-center gap-3 mb-6">
+                <SparklesIcon className="w-5 h-5 text-purple-400" />
+                <span className="text-[10px] font-mono text-purple-400 uppercase tracking-[0.4em] font-bold">Cosmic_Blueprint</span>
+              </div>
+              <CosmicBlueprintDisplay blueprint={cosmicBlueprint} />
+            </section>
+
+            <section className="glass-panel p-10 rounded-[2.5rem] border-white/5 bg-white/[0.01] shadow-2xl">
+              <div className="flex items-center gap-3 mb-6">
+                <LayersIcon className="w-5 h-5 text-teal-400" />
+                <span className="text-[10px] font-mono text-teal-400 uppercase tracking-[0.4em] font-bold">Owned_Decks</span>
+              </div>
+              <div className="space-y-4">
+                {myDecks.map(deck => (
+                  <div key={deck.id} className="flex items-center gap-4 p-5 bg-black/30 rounded-2xl border border-white/5 hover:border-purple-500/20 transition-all group">
+                    <LayersIcon className="w-8 h-8 text-white/20 group-hover:text-purple-400 transition-colors" />
+                    <div>
+                      <h4 className="font-bold text-white text-sm">{deck.name}</h4>
+                      <p className="text-[10px] text-white/30 capitalize font-mono">{deck.type}_Deck</p>
+                    </div>
+                  </div>
+                ))}
+                <button onClick={() => setPage('Shop')} className="w-full mt-3 p-5 text-center bg-transparent border-2 border-dashed border-white/10 rounded-2xl text-white/30 hover:border-teal-500/40 hover:text-teal-400 transition-all font-mono text-sm uppercase tracking-widest">
+                  + Acquire_More
+                </button>
+              </div>
+            </section>
+
+            <section className="glass-panel p-10 rounded-[2.5rem] border-amber-500/20 bg-amber-500/[0.02] shadow-2xl relative overflow-hidden group">
+              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-amber-500/30 to-transparent"></div>
+              <div className="flex items-center gap-3 mb-4">
+                <SparklesIcon className="w-5 h-5 text-amber-500" />
+                <span className="text-[10px] font-mono text-amber-500 uppercase tracking-[0.4em] font-bold">Gridpunk_Premium</span>
+              </div>
+              <p className="text-sm text-white/40 mb-6 leading-relaxed">{isPremium ? "You have unlocked all features. Thank you for your support!" : "Unlock advanced features, unlimited readings, and deeper AI insights."}</p>
+              <button onClick={() => setIsPremium(!isPremium)} className="w-full px-8 py-4 rounded-2xl font-bold font-mono text-[10px] uppercase tracking-widest bg-amber-600/20 border border-amber-500/30 text-amber-400 hover:bg-amber-600 hover:text-white transition-all shadow-glow">
+                {isPremium ? "Disable_Premium" : "Activate_Premium (Dev)"}
+              </button>
+            </section>
           </div>
         </div>
       </div>

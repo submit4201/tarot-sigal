@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef } from 'react';
+import React, { useEffect, useCallback, useRef, useState } from 'react';
 import { Page } from './types';
 import DailyPage from './pages/DailyPage';
 import ReadingsPage from './pages/ReadingsPage';
@@ -84,8 +84,8 @@ const Sidebar: React.FC<{ activePage: Page; setPage: (page: Page) => void; activ
             key={item.name}
             onClick={() => setPage(item.page)}
             className={`flex items-center gap-4 px-4 py-3 rounded-xl text-left transition-all w-full group relative overflow-hidden ${activePage === item.page
-                ? 'bg-purple-600/10 text-white border border-purple-500/30'
-                : 'text-text-muted hover:bg-white/5 hover:text-white border border-transparent'
+              ? 'bg-purple-600/10 text-white border border-purple-500/30'
+              : 'text-text-muted hover:bg-white/5 hover:text-white border border-transparent'
               }`}
           >
             {activePage === item.page && (
@@ -193,7 +193,19 @@ const AppContent: React.FC = () => {
     return <OnboardingPage />;
   }
 
-  const ActivePageComponent = pageComponents[activePage];
+  // * Track pages that have been visited to lazily mount them
+  // ! Each page stays mounted after first visit to preserve local state
+  const [visitedPages, setVisitedPages] = useState<Set<Page>>(new Set([activePage]));
+
+  // * Mark page as visited when navigated to
+  useEffect(() => {
+    setVisitedPages(prev => {
+      if (prev.has(activePage)) return prev;
+      const next = new Set(prev);
+      next.add(activePage);
+      return next;
+    });
+  }, [activePage]);
 
   return (
     <div className="w-screen h-screen flex bg-[#030407] text-[#E0E6F1] overflow-hidden">
@@ -204,10 +216,22 @@ const AppContent: React.FC = () => {
       />
       <main className="flex-1 overflow-hidden pb-20 md:pb-0 relative">
         <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none"></div>
-        {/* ! Each page is wrapped in its own ErrorBoundary so one crash doesn't kill the app */}
-        <ErrorBoundary fallbackLabel={activePage} key={activePage}>
-          <ActivePageComponent setPage={setPage} />
-        </ErrorBoundary>
+        {/* ! Render-all/hide pattern: each visited page stays mounted,
+             inactive pages are hidden via CSS to preserve local state
+             (scroll, search queries, form inputs, card selections) */}
+        {VALID_PAGES.filter(page => page !== 'Onboarding' && visitedPages.has(page)).map(page => {
+          const PageComponent = pageComponents[page];
+          return (
+            <div
+              key={page}
+              style={{ display: page === activePage ? 'contents' : 'none' }}
+            >
+              <ErrorBoundary fallbackLabel={page}>
+                <PageComponent setPage={setPage} />
+              </ErrorBoundary>
+            </div>
+          );
+        })}
       </main>
       <BottomNav activePage={activePage} setPage={setPage} />
     </div>
