@@ -11,6 +11,7 @@ import ShopPage from './pages/ShopPage';
 import ErrorBoundary from './components/ErrorBoundary';
 import { HomeIcon, CardsIcon, JournalIcon, BarChartIcon, UserIcon, CompassIcon, ShoppingCartIcon, SparklesIcon, ZapIcon } from './components/icons';
 import { AppProvider, useApp } from './context/AppContext';
+import { AuthProvider } from './context/AuthContext';
 import { checkAndUnlockAchievements } from './services/achievementService';
 
 import NumerologyPage from './pages/NumerologyPage';
@@ -142,7 +143,7 @@ const pageComponents: { [key in Page]: React.ComponentType<any> } = {
 };
 
 const AppContent: React.FC = () => {
-  const { profiles, activeProfile, activePage, setPage, dailyDrawHistory, savedReadings, journalEntries, unlockAchievement } = useApp();
+  const { activeProfile, activePage, setPage, dailyDrawHistory, savedReadings, journalEntries, unlockAchievement, isLoadingData } = useApp();
 
   // ! Hash-based routing: sync activePage with URL hash
   useEffect(() => {
@@ -196,7 +197,15 @@ const AppContent: React.FC = () => {
     };
   }, [activeProfile, dailyDrawHistory, savedReadings, journalEntries, unlockAchievement]);
 
-  if (profiles.length === 0 || !activeProfile) {
+  if (isLoadingData) {
+    return (
+      <div className="w-screen h-screen flex items-center justify-center bg-[#030407] text-purple-500">
+        <div className="animate-pulse font-mono text-sm tracking-[0.3em]">INITIALIZING_UPLINK...</div>
+      </div>
+    );
+  }
+
+  if (!activeProfile) {
     return <OnboardingPage />;
   }
 
@@ -263,9 +272,11 @@ const AppContent: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <AppProvider>
-      <AppContent />
-    </AppProvider>
+    <AuthProvider>
+      <AppProvider>
+        <AppContent />
+      </AppProvider>
+    </AuthProvider>
   );
 };
 
