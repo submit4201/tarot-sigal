@@ -340,17 +340,198 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     ]
   },
   // Placeholders for rest to match SpreadType union
-  'relationship': { name: 'Relationship', description: '', cardCount: 3, isPremium: true, positions: ['Self', 'Other', 'Union'], positionMeanings: ['You', 'Them', 'The Relationship'], deck: ['tarot'] },
-  'decision-making': { name: 'Binary Fork', description: '', cardCount: 2, isPremium: true, positions: ['Option A', 'Option B'], positionMeanings: ['Path One', 'Path Two'], deck: ['tarot'] },
-  'the-great-work': { name: 'Great Work', description: '', cardCount: 5, isPremium: true, positions: ['Core', 'Work', 'Result', 'Lesson', 'Future'], positionMeanings: ['Soul', 'Task', 'Outcome', 'Learning', 'Next'], deck: ['tarot'] },
-  'single-rune': { name: 'Single Rune', description: '', cardCount: 1, isPremium: false, positions: ['Signal'], positionMeanings: ['Core message.'], deck: ['runes'] },
-  'three-rune-norn': { name: 'The Three Norns', description: '', cardCount: 3, isPremium: false, positions: ['Urd', 'Verdandi', 'Skuld'], positionMeanings: ['Past', 'Present', 'Future'], deck: ['runes'] },
-  'five-rune-cross': { name: 'Five Rune Cross', description: '', cardCount: 5, isPremium: true, positions: [], positionMeanings: [], deck: ['runes'] },
-  'nine-rune-grid': { name: 'Nine Rune Grid', description: '', cardCount: 9, isPremium: true, positions: [], positionMeanings: [], deck: ['runes'] },
-  'full-cast': { name: 'Full Casting', description: '', cardCount: 24, isPremium: true, positions: [], positionMeanings: [], deck: ['runes'] },
-  'animal-spirit-guide': { name: 'Spirit Guide', description: '', cardCount: 1, isPremium: false, positions: ['Guide'], positionMeanings: ['The archetype.'], deck: ['oracle'] },
-  'sacred-geometry': { name: 'Geometry', description: '', cardCount: 3, isPremium: false, positions: [], positionMeanings: [], deck: ['oracle'] },
-  'year-ahead': { name: 'Year Ahead', description: '', cardCount: 12, isPremium: true, positions: [], positionMeanings: [], deck: ['tarot'] },
-  'binary-star': { name: 'Binary Star', description: '', cardCount: 2, isPremium: false, positions: [], positionMeanings: [], deck: ['tarot'] },
-  'chakra-alignment': { name: 'Chakra Scan', description: '', cardCount: 7, isPremium: true, positions: [], positionMeanings: [], deck: ['tarot'] },
+  'year-ahead': {
+    name: 'Year Ahead Chronology',
+    description: 'A comprehensive forecast for the coming cycle.',
+    cardCount: 12,
+    isPremium: true,
+    positions: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    positionMeanings: ['Month 1 theme.', 'Month 2 theme.', 'Month 3 theme.', 'Month 4 theme.', 'Month 5 theme.', 'Month 6 theme.', 'Month 7 theme.', 'Month 8 theme.', 'Month 9 theme.', 'Month 10 theme.', 'Month 11 theme.', 'Month 12 theme.'],
+    deck: ['tarot'],
+    layout: [
+      { x: 50, y: 15, rotation: 0 }, // 1 (Top)
+      { x: 67, y: 19, rotation: 30 },
+      { x: 80, y: 32, rotation: 60 },
+      { x: 85, y: 50, rotation: 90 }, // 4 (Right)
+      { x: 80, y: 68, rotation: 120 },
+      { x: 67, y: 81, rotation: 150 },
+      { x: 50, y: 85, rotation: 180 }, // 7 (Bottom)
+      { x: 33, y: 81, rotation: 210 },
+      { x: 20, y: 68, rotation: 240 },
+      { x: 15, y: 50, rotation: 270 }, // 10 (Left)
+      { x: 20, y: 32, rotation: 300 },
+      { x: 33, y: 19, rotation: 330 }
+    ]
+  },
+  'chakra-alignment': {
+    name: 'Chakra Scan',
+    description: 'Diagnostic of your energetic centers.',
+    cardCount: 7,
+    isPremium: true,
+    positions: ['Root', 'Sacral', 'Solar Plexus', 'Heart', 'Throat', 'Third Eye', 'Crown'],
+    positionMeanings: ['Survival and grounding.', 'Creativity and sexuality.', 'Willpower and ego.', 'Love and compassion.', 'Communication and truth.', 'Intuition and insight.', 'Divine connection.'],
+    deck: ['tarot'],
+    layout: [
+      { x: 50, y: 85, rotation: 0 }, // Root
+      { x: 50, y: 73, rotation: 0 }, // Sacral
+      { x: 50, y: 61, rotation: 0 }, // Solar P
+      { x: 50, y: 50, rotation: 0 }, // Heart
+      { x: 50, y: 39, rotation: 0 }, // Throat
+      { x: 50, y: 27, rotation: 0 }, // Third Eye
+      { x: 50, y: 15, rotation: 0 }  // Crown
+    ]
+  },
+  'single-rune': {
+    name: 'Single Rune',
+    description: 'A direct signal from the weave.',
+    cardCount: 1,
+    isPremium: false,
+    positions: ['The Rune'],
+    positionMeanings: ['The core message needed now.'],
+    deck: ['runes'],
+    layout: [
+      { x: 50, y: 50, rotation: 0 }
+    ]
+  },
+  'three-rune-norn': {
+    name: 'The Three Norns',
+    description: 'Ancestral timeline: Past, Present, Future.',
+    cardCount: 3,
+    isPremium: false,
+    positions: ['Urd (Past)', 'Verdandi (Present)', 'Skuld (Future)'],
+    positionMeanings: ['What has arisen.', 'What is becoming.', 'What shall be.'],
+    deck: ['runes'],
+    layout: [
+      { x: 20, y: 50, rotation: 0 },
+      { x: 50, y: 50, rotation: 0 },
+      { x: 80, y: 50, rotation: 0 }
+    ]
+  },
+  'five-rune-cross': {
+    name: 'Five Rune Cross',
+    description: 'Elemental balance check using runes.',
+    cardCount: 5,
+    isPremium: true,
+    positions: ['The Self', 'The Challenge', 'The Path', 'The Sacrifice', 'The Gift'],
+    positionMeanings: ['Your current state.', 'What opposes you.', 'The way forward.', 'What must be given up.', 'The outcome.'],
+    deck: ['runes'],
+    layout: [
+      { x: 50, y: 50, rotation: 0 }, // Center
+      { x: 20, y: 50, rotation: -90 }, // Left
+      { x: 80, y: 50, rotation: 90 },  // Right
+      { x: 50, y: 80, rotation: 0 },   // Bottom
+      { x: 50, y: 20, rotation: 0 }    // Top
+    ]
+  },
+  'nine-rune-grid': {
+    name: 'Nine Rune Grid',
+    description: 'A deep weave of fate.',
+    cardCount: 9,
+    isPremium: true,
+    positions: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+    positionMeanings: ['Past hidden.', 'Past manifest.', 'Past active.', 'Present hidden.', 'Present manifest.', 'Present active.', 'Future hidden.', 'Future manifest.', 'Future active.'],
+    deck: ['runes'],
+    layout: [
+      { x: 30, y: 30, rotation: 0 }, { x: 50, y: 30, rotation: 0 }, { x: 70, y: 30, rotation: 0 },
+      { x: 30, y: 50, rotation: 0 }, { x: 50, y: 50, rotation: 0 }, { x: 70, y: 50, rotation: 0 },
+      { x: 30, y: 70, rotation: 0 }, { x: 50, y: 70, rotation: 0 }, { x: 70, y: 70, rotation: 0 }
+    ]
+  },
+  'full-cast': {
+    name: 'Full Casting',
+    description: 'The entire Elder Futhark speaks.',
+    cardCount: 24,
+    isPremium: true,
+    positions: [],
+    positionMeanings: [],
+    deck: ['runes'],
+    layout: [
+      { x: 15, y: 20, rotation: 0 }, { x: 29, y: 20, rotation: 0 }, { x: 43, y: 20, rotation: 0 }, { x: 57, y: 20, rotation: 0 }, { x: 71, y: 20, rotation: 0 }, { x: 85, y: 20, rotation: 0 },
+      { x: 15, y: 40, rotation: 0 }, { x: 29, y: 40, rotation: 0 }, { x: 43, y: 40, rotation: 0 }, { x: 57, y: 40, rotation: 0 }, { x: 71, y: 40, rotation: 0 }, { x: 85, y: 40, rotation: 0 },
+      { x: 15, y: 60, rotation: 0 }, { x: 29, y: 60, rotation: 0 }, { x: 43, y: 60, rotation: 0 }, { x: 57, y: 60, rotation: 0 }, { x: 71, y: 60, rotation: 0 }, { x: 85, y: 60, rotation: 0 },
+      { x: 15, y: 80, rotation: 0 }, { x: 29, y: 80, rotation: 0 }, { x: 43, y: 80, rotation: 0 }, { x: 57, y: 80, rotation: 0 }, { x: 71, y: 80, rotation: 0 }, { x: 85, y: 80, rotation: 0 }
+    ]
+  },
+  'relationship': {
+    name: 'Relationship Sync',
+    description: 'Diagnostic for two entities.',
+    cardCount: 3,
+    isPremium: true,
+    positions: ['You', 'Them', 'The Union'],
+    positionMeanings: ['Your contribution.', 'Their contribution.', 'The combined energy.'],
+    deck: ['tarot'],
+    layout: [
+      { x: 25, y: 50, rotation: -10 },
+      { x: 75, y: 50, rotation: 10 },
+      { x: 50, y: 35, rotation: 0 }
+    ]
+  },
+  'decision-making': {
+    name: 'Binary Fork',
+    description: 'Analyze two distinct paths.',
+    cardCount: 2,
+    isPremium: true,
+    positions: ['Path A', 'Path B'],
+    positionMeanings: ['Outcome of choice A.', 'Outcome of choice B.'],
+    deck: ['tarot'],
+    layout: [
+      { x: 30, y: 50, rotation: -5 },
+      { x: 70, y: 50, rotation: 5 }
+    ]
+  },
+  'the-great-work': {
+    name: 'The Great Work',
+    description: 'Alchemical transformation process.',
+    cardCount: 5,
+    isPremium: true,
+    positions: ['Nigredo (Black)', 'Albedo (White)', 'Citrinitas (Yellow)', 'Rubedo (Red)', 'The Stone'],
+    positionMeanings: ['Decomposition/Death.', 'Purification/Washing.', 'Transmutation/Awakening.', 'Completion/Wholeness.', 'The Ultimate Result.'],
+    deck: ['tarot'],
+    layout: [
+      { x: 20, y: 80, rotation: 0 }, // Nigredo
+      { x: 20, y: 20, rotation: 0 }, // Albedo
+      { x: 80, y: 20, rotation: 0 }, // Citrinitas
+      { x: 80, y: 80, rotation: 0 }, // Rubedo
+      { x: 50, y: 50, rotation: 0 }  // Stone
+    ]
+  },
+  'binary-star': {
+    name: 'Binary Star',
+    description: 'Orbiting forces analysis.',
+    cardCount: 2,
+    isPremium: false,
+    positions: ['Primary Star', 'Companion Star'],
+    positionMeanings: ['The dominant force.', 'The supporting/hidden force.'],
+    deck: ['tarot'],
+    layout: [
+      { x: 40, y: 40, rotation: 0 },
+      { x: 60, y: 60, rotation: 0 }
+    ]
+  },
+  'sacred-geometry': {
+    name: 'Sacred Triad',
+    description: 'The stability of the triangle.',
+    cardCount: 3,
+    isPremium: false,
+    positions: ['Thesis', 'Antithesis', 'Synthesis'],
+    positionMeanings: ['The proposition.', 'The opposition.', 'The resolution.'],
+    deck: ['oracle', 'angel'],
+    layout: [
+      { x: 50, y: 25, rotation: 0 },
+      { x: 25, y: 75, rotation: -15 },
+      { x: 75, y: 75, rotation: 15 }
+    ]
+  },
+  'animal-spirit-guide': {
+    name: 'Spirit Guide',
+    description: 'Call upon an archetype.',
+    cardCount: 1,
+    isPremium: false,
+    positions: ['Guide'],
+    positionMeanings: ['The archetype present with you now.'],
+    deck: ['oracle', 'angel'],
+    layout: [
+      { x: 50, y: 50, rotation: 0 }
+    ]
+  },
 };
