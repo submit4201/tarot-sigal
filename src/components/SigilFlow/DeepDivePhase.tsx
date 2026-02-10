@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { DrawnDivinationCard } from '../../types';
+import { DrawnDivinationCard, TarotCard } from '../../types';
 import HolographicCard from '../HolographicCard';
 import { SparklesIcon, XIcon, LayersIcon } from '../icons';
 
@@ -10,22 +10,81 @@ interface DeepDivePhaseProps {
     onClose: () => void;
 }
 
+/**
+ * DeepDivePhase — Full-screen modal for inspecting a single card at
+ * three AI-generated interpretation depths: Keywords, Symbolic, and Esoteric.
+ * 
+ * ! Each depth level pulls from a dedicated AI-populated field on the card.
+ * * Falls back gracefully to static card data when AI fields are null
+ *   (e.g. during background generation or API failure).
+ */
 const DeepDivePhase: React.FC<DeepDivePhaseProps> = ({ card, positionLabel, onClose }) => {
     const [depthLevel, setDepthLevel] = useState<'keywords' | 'symbolic' | 'esoteric'>('symbolic');
     const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
+
+    // * Cast to TarotCard for element/arcana access (safe — non-tarot cards just lack these fields)
+    const tarotCard = card.card as TarotCard;
 
     const handleHotspotClick = (target: string) => {
         setActiveTooltip(target);
     };
 
-    const getInterpretation = () => {
-        // In a real app, these would be dynamic fields from the AI reading. 
-        // For now, we simulate the "depth" by showing different text.
-        if (depthLevel === 'keywords') return "Keywords: " + card.card.keywords.join(', ');
-        if (depthLevel === 'symbolic') return card.card.meaning;
-        if (depthLevel === 'esoteric') return card.esotericInterpretation || "Esoteric data unavailable.";
-        return "";
+    /**
+     * Returns the interpretation text for the currently selected depth level.
+     * 
+     * ! Priority: AI-generated field → static card data fallback
+     * * This ensures the slider always shows *something*, even if the
+     *   Gemini response hasn't arrived yet or the API call failed.
+     */
+    const getInterpretation = (): { text: string; isAI: boolean } => {
+        if (depthLevel === 'keywords') {
+            // AI keyword analysis if available, otherwise raw keywords
+            const aiText = card.keywordAnalysis;
+            if (aiText) return { text: aiText, isAI: true };
+            return { text: "Keywords: " + card.card.keywords.join(', '), isAI: false };
+        }
+        if (depthLevel === 'symbolic') {
+            // AI symbolic interpretation if available, otherwise static meaning
+            const aiText = card.symbolicInterpretation;
+            if (aiText) return { text: aiText, isAI: true };
+            return { text: card.card.meaning, isAI: false };
+        }
+        if (depthLevel === 'esoteric') {
+            // AI esoteric interpretation — "Data encrypted." is the API failure fallback
+            const aiText = card.esotericInterpretation;
+            if (aiText && aiText !== "Data encrypted.") return { text: aiText, isAI: true };
+            if (aiText === "Data encrypted.") return { text: aiText, isAI: false };
+            return { text: "Esoteric data unavailable.", isAI: false };
+        }
+        return { text: "", isAI: false };
     };
+
+    /**
+     * Returns tooltip content based on the hotspot target.
+     * 
+     * ! Uses actual card data instead of hardcoded placeholder strings.
+     * * 'symbol' shows the card's archetypal identity and keywords.
+     * * 'element' shows the card's elemental association and orientation.
+     */
+    const getTooltipContent = (target: string): { title: string; body: string } => {
+        if (target === 'symbol') {
+            return {
+                title: 'Archetypal_Symbol',
+                body: `${card.card.name} — ${card.card.keywords.join(', ')}. ${card.isReversed ? 'Reversed: the shadow aspect of this archetype is active.' : 'Upright: this archetype expresses its full potential.'}`
+            };
+        }
+        // 'element' hotspot
+        const element = tarotCard.element || 'Unknown';
+        const arcana = tarotCard.arcana || 'Minor';
+        return {
+            title: 'Elemental_Essence',
+            body: `Element: ${element} | ${arcana} Arcana. ${card.isReversed
+                ? `Reversed ${element} energy suggests blocked or internalized force.`
+                : `Upright ${element} energy flows freely, amplifying the card's core message.`}`
+        };
+    };
+
+    const interpretation = getInterpretation();
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-10 bg-black/90 backdrop-blur-3xl animate-fade-in">
@@ -38,7 +97,7 @@ const DeepDivePhase: React.FC<DeepDivePhaseProps> = ({ card, positionLabel, onCl
             </button>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 w-full max-w-7xl h-full max-h-[90vh] items-center relative z-40">
-                {/* Visual Side (70% on mobile, 50% on desktop) */}
+                {/* Visual Side */}
                 <div className="flex items-center justify-center relative h-full">
                     <div className="relative w-full aspect-[2/3] max-w-[500px] animate-fade-in-up md:scale-90 lg:scale-100 transition-transform">
                         <HolographicCard
@@ -49,18 +108,21 @@ const DeepDivePhase: React.FC<DeepDivePhaseProps> = ({ card, positionLabel, onCl
                             className="w-full h-full shadow-[0_0_100px_rgba(168,85,247,0.2)]"
                         />
 
-                        {/* Tooltips Overlay */}
-                        {activeTooltip && (
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/90 border border-purple-500/50 p-6 rounded-2xl max-w-sm backdrop-blur-xl animate-scale-in z-50 shadow-2xl">
-                                <h4 className="text-xs font-mono text-purple-400 uppercase tracking-widest mb-2 font-bold">{activeTooltip === 'symbol' ? 'Archetypal_Symbol' : 'Elemental_Essence'}</h4>
-                                <p className="text-sm text-white leading-relaxed">
-                                    {activeTooltip === 'symbol' ? "This symbol represents the core energy of the card..." : "The elemental dignity here suggests..."}
-                                </p>
-                                <button className="absolute top-2 right-2 text-white/30 hover:text-white" onClick={(e) => { e.stopPropagation(); setActiveTooltip(null); }}>
-                                    <XIcon className="w-4 h-4" />
-                                </button>
-                            </div>
-                        )}
+                        {/* Tooltips Overlay — now uses dynamic card data */}
+                        {activeTooltip && (() => {
+                            const tooltip = getTooltipContent(activeTooltip);
+                            return (
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/90 border border-purple-500/50 p-6 rounded-2xl max-w-sm backdrop-blur-xl animate-scale-in z-50 shadow-2xl">
+                                    <h4 className="text-xs font-mono text-purple-400 uppercase tracking-widest mb-2 font-bold">{tooltip.title}</h4>
+                                    <p className="text-sm text-white leading-relaxed">
+                                        {tooltip.body}
+                                    </p>
+                                    <button className="absolute top-2 right-2 text-white/30 hover:text-white" onClick={(e) => { e.stopPropagation(); setActiveTooltip(null); }}>
+                                        <XIcon className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            );
+                        })()}
                     </div>
                 </div>
 
@@ -74,8 +136,17 @@ const DeepDivePhase: React.FC<DeepDivePhaseProps> = ({ card, positionLabel, onCl
 
                     <div className="glass-panel p-8 rounded-[2rem] border-white/10 bg-white/[0.02] relative overflow-hidden min-h-[200px]">
                         <div className="absolute top-0 right-0 p-6 opacity-10"><SparklesIcon className="w-32 h-32" /></div>
+
+                        {/* AI vs static indicator */}
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className={`w-1.5 h-1.5 rounded-full ${interpretation.isAI ? 'bg-green-400 animate-pulse' : 'bg-yellow-500/50'}`}></div>
+                            <span className="text-[9px] font-mono uppercase tracking-widest text-white/30">
+                                {interpretation.isAI ? 'AI_Generated' : 'Static_Fallback'}
+                            </span>
+                        </div>
+
                         <p className="text-lg leading-relaxed text-text-muted relative z-10 transition-all duration-500 ease-in-out">
-                            {getInterpretation()}
+                            {interpretation.text}
                         </p>
                     </div>
 

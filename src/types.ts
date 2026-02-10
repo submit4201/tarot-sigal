@@ -1,6 +1,6 @@
 export type Element = 'Fire' | 'Earth' | 'Air' | 'Water';
 export type Arcana = 'Major' | 'Wands' | 'Cups' | 'Swords' | 'Pentacles';
-export type DeckType = 'tarot' | 'runes' | 'oracle' | 'angel-cards';
+export type DeckType = 'tarot' | 'runes' | 'oracle' | 'angel';
 export type Page = 'Daily' | 'Readings' | 'Journal' | 'Progress' | 'Profile' | 'Onboarding' | 'Guide' | 'Shop' | 'Numerology' | 'Sigil';
 export type AstrologicalSign = 'Aries' | 'Taurus' | 'Gemini' | 'Cancer' | 'Leo' | 'Virgo' | 'Libra' | 'Scorpio' | 'Sagittarius' | 'Capricorn' | 'Aquarius' | 'Pisces' | 'None';
 
@@ -53,6 +53,8 @@ export interface DrawnDivinationCard {
   clusterId?: number;
   proximity?: 'inner' | 'middle' | 'outer';
   interpretation?: string; // AI interpretation for individual card in a specific position
+  keywordAnalysis?: string; // AI-generated keyword-level analysis for deep dive
+  symbolicInterpretation?: string; // AI-generated symbolic analysis for deep dive
   esotericInterpretation?: string; // Deep dive esoteric analysis
 }
 

@@ -64,7 +64,9 @@ const SigilPage: React.FC = () => {
             - practicalActions (3 actionable bullet points)
             - shadowMessage (warning or hidden influence to watch for)
             - reflectionQuestion (deep prompt)
-            - esotericInterpretations (Array of 3 strings: Deep kabbalistic/astrological analysis for Past, Present, Future cards respectively)
+            - keywordAnalyses (Array of 3 strings: For each card, a concise keyword-level breakdown highlighting the core themes, associations, and energies. 2-3 sentences.)
+            - symbolicInterpretations (Array of 3 strings: For each card, a rich symbolic reading connecting the card's imagery and archetype to the querent's focus question. 3-4 sentences.)
+            - esotericInterpretations (Array of 3 strings: Deep kabbalistic/astrological/hermetic analysis for Past, Present, Future cards respectively. 4-5 sentences.)
             `;
 
             const schema = {
@@ -74,6 +76,8 @@ const SigilPage: React.FC = () => {
                     practicalActions: { type: Type.ARRAY, items: { type: Type.STRING } },
                     shadowMessage: { type: Type.STRING },
                     reflectionQuestion: { type: Type.STRING },
+                    keywordAnalyses: { type: Type.ARRAY, items: { type: Type.STRING } },
+                    symbolicInterpretations: { type: Type.ARRAY, items: { type: Type.STRING } },
                     esotericInterpretations: { type: Type.ARRAY, items: { type: Type.STRING } }
                 }
             };
@@ -86,9 +90,11 @@ const SigilPage: React.FC = () => {
 
             const data = JSON.parse(result.text || '{}');
 
-            // Map esoteric interpretations to cards
+            // Map all depth-level interpretations to cards
             const cardsWithIntepretation = drawnCards.map((c, i) => ({
                 ...c,
+                keywordAnalysis: data.keywordAnalyses?.[i] || null,
+                symbolicInterpretation: data.symbolicInterpretations?.[i] || null,
                 esotericInterpretation: data.esotericInterpretations?.[i] || "Data encrypted."
             }));
 
