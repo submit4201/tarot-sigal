@@ -132,6 +132,12 @@ const JournalPage: React.FC = () => {
     const [activeTab, setActiveTab] = useState<'readings' | 'journal'>('readings');
     const [dynamicPrompt, setDynamicPrompt] = useState("What is the most important message you received today?");
 
+    // ! AI Journal Analysis state (Premium feature)
+    const [analysisResult, setAnalysisResult] = useState<string | null>(null);
+    const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const [analysisExpanded, setAnalysisExpanded] = useState(true);
+    const [analysisError, setAnalysisError] = useState<string | null>(null);
+
     // * Generate dynamic journal prompt on mount
     useEffect(() => {
         const prompts = [
@@ -173,6 +179,66 @@ const JournalPage: React.FC = () => {
         addXp(15);
     };
 
+    /**
+     * handleAnalyzePatterns — Build a Gemini prompt from journal entries and
+     * saved readings to surface recurring themes, patterns, and growth arcs.
+     * Premium-gated feature.
+     */
+    const handleAnalyzePatterns = async () => {
+        if (!isPremium) return;
+        if (journalEntries.length === 0 && savedReadings.length === 0) {
+            setAnalysisError('Insufficient data. Log more reflections or save readings first.');
+            return;
+        }
+
+        setIsAnalyzing(true);
+        setAnalysisError(null);
+        setAnalysisResult(null);
+        setAnalysisExpanded(true);
+
+        // * Build context from recent entries (limit to prevent token overflow)
+        const recentJournals = journalEntries.slice(0, 15).map((e, i) =>
+            `[Entry ${i + 1} — ${new Date(e.date).toLocaleDateString()}]: ${e.text}`
+        ).join('\n');
+
+        const recentReadings = savedReadings.slice(0, 10).map((r, i) => {
+            const cardNames = r.cards.map(c => c.card.name).join(', ');
+            return `[Reading ${i + 1} — ${r.title} (${r.spreadType}) on ${new Date(r.date).toLocaleDateString()}]:\n  Cards: ${cardNames}\n  Summary: ${r.aiSummary || 'N/A'}\n  Shadow: ${r.shadowMessage || 'N/A'}\n  User Notes: ${r.userNotes || 'N/A'}`;
+        }).join('\n\n');
+
+        const prompt = `You are a mystical AI pattern analyst for a cyber-divination app called Gridpunk Arcana. The user has been logging journal reflections and saving tarot/oracle readings. Your task: analyze ALL of the data below and surface deep, meaningful patterns.
+
+## Journal Reflections:
+${recentJournals || '(No journal entries yet)'}
+
+## Saved Readings:
+${recentReadings || '(No readings saved yet)'}
+
+## Your Analysis Should Include:
+1. **Recurring Themes** — What archetypes, elements, or emotional threads repeat?
+2. **Growth Arc** — How has the user's journey evolved over time?
+3. **Shadow Patterns** — What hidden or uncomfortable themes keep surfacing?
+4. **Elemental Balance** — Based on cards drawn, is there a Fire/Water/Air/Earth imbalance?
+5. **Actionable Insight** — One specific, practical recommendation.
+
+Format your response in clean sections with headers. Use a mystical but grounded tone. Keep it concise (under 400 words). Do NOT use markdown code blocks.`;
+
+        try {
+            const response = await generateContentWithRetry({
+                model: 'gemini-2.0-flash',
+                contents: prompt,
+            });
+            const text = response.text ?? '';
+            setAnalysisResult(text);
+            addXp(25); // * Reward for engaging with premium analysis
+        } catch (err: any) {
+            console.error('Journal analysis failed:', err);
+            setAnalysisError('Analysis failed. The neural link is unstable — try again.');
+        } finally {
+            setIsAnalyzing(false);
+        }
+    };
+
     return (
         <div className="w-full h-full p-6 md:p-14 flex flex-col bg-grid animate-fade-in overflow-hidden scroll-smooth">
             <header className="mb-10 flex-shrink-0 flex flex-col md:flex-row justify-between items-end gap-10">
@@ -183,9 +249,47 @@ const JournalPage: React.FC = () => {
                     </div>
                     <h1 className="text-6xl font-bold font-dm-sans text-white tracking-tighter neon-glow">Archive Logs</h1>
                 </div>
+                {/* ! AI Pattern Analysis button — Premium only */}
+                {isPremium && (
+                    <button
+                        onClick={handleAnalyzePatterns}
+                        disabled={isAnalyzing || (journalEntries.length === 0 && savedReadings.length === 0)}
+                        className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold rounded-2xl text-xs uppercase tracking-widest transition-all shadow-glow disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
+                    >
+                        <SparklesIcon className="w-4 h-4" />
+                        {isAnalyzing ? 'Analyzing...' : 'Analyze_Patterns'}
+                    </button>
+                )}
             </header>
 
             <div className="flex-grow overflow-y-auto space-y-8 pr-6 -mr-6 no-scrollbar">
+
+                {/* ! AI Analysis Result Panel */}
+                {(analysisResult || analysisError) && (
+                    <div className="glass-panel rounded-[2rem] border border-purple-500/20 bg-gradient-to-br from-purple-500/5 to-pink-500/5 overflow-hidden shadow-2xl">
+                        <button
+                            onClick={() => setAnalysisExpanded(!analysisExpanded)}
+                            className="w-full flex items-center justify-between p-6 hover:bg-white/[0.02] transition-all"
+                        >
+                            <div className="flex items-center gap-3">
+                                <div className="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></div>
+                                <h3 className="text-xs font-mono text-pink-400 uppercase tracking-widest font-bold">Pattern_Analysis_Report</h3>
+                            </div>
+                            <span className="text-white/30 text-xs font-mono">{analysisExpanded ? '▲ COLLAPSE' : '▼ EXPAND'}</span>
+                        </button>
+                        {analysisExpanded && (
+                            <div className="px-8 pb-8 animate-fade-in">
+                                {analysisError ? (
+                                    <p className="text-red-400 text-sm font-mono">{analysisError}</p>
+                                ) : (
+                                    <div className="text-sm text-white/80 leading-relaxed whitespace-pre-wrap font-dm-sans border-l-2 border-pink-500/30 pl-6 space-y-2">
+                                        {analysisResult}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                )}
 
                 {/* Journal Input with Dynamic Prompt */}
                 <div className="glass-panel p-8 rounded-[2rem] border-white/5 bg-gradient-to-br from-white/[0.02] to-transparent">
