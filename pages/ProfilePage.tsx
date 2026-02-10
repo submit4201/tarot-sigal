@@ -269,6 +269,46 @@ const ProfilePage: React.FC = () => {
 
           {/* Right Column: Blueprint & Status */}
           <div className="lg:col-span-2 space-y-10">
+            {/* Experience & Progression */}
+            <section className="glass-panel p-10 rounded-[2.5rem] border-purple-500/20 bg-purple-900/[0.05] shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
+                  <span className="text-[10px] font-mono text-purple-400 uppercase tracking-[0.4em] font-bold">Resonance_Level</span>
+                </div>
+                <div className="font-mono text-4xl font-bold text-white tracking-tighter">LVL_{displayProfile.level}</div>
+              </div>
+
+              <div className="mb-6 relative">
+                <div className="flex justify-between text-xs font-mono text-white/50 mb-2 uppercase tracking-widest">
+                  <span>XP: {displayProfile.xp}</span>
+                  <span>Next: {Math.round(500 * Math.pow(1.5, displayProfile.level - 1))}</span>
+                </div>
+                <div className="h-4 bg-black/50 rounded-full overflow-hidden border border-white/5 relative">
+                  <div
+                    className="h-full bg-gradient-to-r from-purple-900 via-purple-500 to-indigo-500 transition-all duration-1000 ease-out relative"
+                    style={{ width: `${(displayProfile.xp / Math.round(500 * Math.pow(1.5, displayProfile.level - 1))) * 100}%` }}
+                  >
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+                    <div className="absolute top-0 right-0 h-full w-[2px] bg-white/50 blur-[1px]"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 rounded-xl bg-black/20 border border-white/5 flex items-center gap-4">
+                <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center border border-purple-500/30">
+                  <SparklesIcon className="w-5 h-5 text-purple-400" />
+                </div>
+                <div>
+                  <h4 className="text-white font-bold text-sm mb-0.5">Next Reward</h4>
+                  <p className="text-[10px] text-white/40 font-mono uppercase tracking-widest">
+                    {(displayProfile.level + 1) * 10} Stardust + {(displayProfile.level + 1) % 5 === 0 ? 'New Deck Unlock' : 'Cosmic Insight'}
+                  </p>
+                </div>
+              </div>
+            </section>
+
             <section className="glass-panel p-10 rounded-[2.5rem] border-white/5 bg-white/[0.01] shadow-2xl">
               <div className="flex items-center gap-3 mb-6">
                 <SparklesIcon className="w-5 h-5 text-purple-400" />

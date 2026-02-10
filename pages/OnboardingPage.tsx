@@ -17,9 +17,10 @@ const initialFormData: Omit<UserProfile, 'id' | 'level' | 'xp' | 'unlockedAchiev
 };
 
 const OnboardingPage: React.FC = () => {
-  const { addProfile } = useApp();
+  const { addProfile, profiles, switchProfile } = useApp();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState(initialFormData);
+  const [mode, setMode] = useState<'select' | 'create'>(profiles.length > 0 ? 'select' : 'create');
 
   // * getSignFromDate imported from services/astroService.ts
 
@@ -47,7 +48,43 @@ const OnboardingPage: React.FC = () => {
     addProfile(finalData);
   };
 
+  const renderProfileSelection = () => (
+    <div className="space-y-8 animate-fade-in-up w-full max-w-2xl">
+      <div className="text-center">
+        <h2 className="text-4xl font-bold font-dm-sans text-white mb-2 tracking-tighter">Identity_Select</h2>
+        <p className="text-text-muted font-mono text-xs uppercase tracking-widest">Multiple_Signals_Detected</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {profiles.map(profile => (
+          <button
+            key={profile.id}
+            onClick={() => switchProfile(profile.id)}
+            className="glass-panel p-6 rounded-2xl border-white/5 hover:border-purple-500/50 hover:bg-white/5 transition-all group text-left relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform"><span className="text-4xl">👤</span></div>
+            <h3 className="text-xl font-bold text-white group-hover:text-purple-400 transition-colors mb-1">{profile.currentName || profile.givenName}</h3>
+            <p className="text-xs font-mono text-white/40 uppercase mb-4">Lvl {profile.level} • {profile.astrologicalSign}</p>
+            <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-teal-400 uppercase tracking-widest bg-teal-500/10 px-3 py-1 rounded-lg w-fit">
+              {'Jack_In ->'}
+            </div>
+          </button>
+        ))}
+
+        <button
+          onClick={() => { setMode('create'); setStep(1); }}
+          className="p-6 rounded-2xl border border-dashed border-white/10 hover:border-purple-500/50 hover:bg-purple-500/5 transition-all text-white/40 hover:text-white flex flex-col items-center justify-center gap-2"
+        >
+          <span className="text-2xl">+</span>
+          <span className="text-xs font-mono uppercase tracking-widest font-bold">New_Identity</span>
+        </button>
+      </div>
+    </div>
+  );
+
   const renderStep = () => {
+    if (mode === 'select') return renderProfileSelection();
+
     switch (step) {
       case 1:
         return (
@@ -134,7 +171,8 @@ const OnboardingPage: React.FC = () => {
 
   return (
     <div className="w-screen h-screen bg-[#0B0C10] text-text-primary flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md bg-[#111218] p-8 rounded-2xl border border-[#232533] shadow-2xl shadow-black/30">
+      <div className="w-full max-w-3xl bg-[#111218] p-8 rounded-3xl border border-[#232533] shadow-2xl shadow-black/30 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none"></div>
         {renderStep()}
       </div>
       <p className="text-xs text-text-muted mt-6">All data is stored locally on your device.</p>

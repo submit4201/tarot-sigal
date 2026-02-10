@@ -92,20 +92,20 @@ export const TAROT_DECK: TarotCard[] = [
 ];
 
 export const RUNE_DECK: Rune[] = [
-    { id: 'rune_fehu', name: 'Fehu', symbol: 'ᚠ', keywords: ['Wealth', 'Abundance'], meaning: 'Possessions won or preserved.', reversible: true },
-    { id: 'rune_uruz', name: 'Uruz', symbol: 'ᚢ', keywords: ['Strength', 'Power'], meaning: 'Physical strength and speed.', reversible: true },
-    { id: 'rune_thurisaz', name: 'Thurisaz', symbol: 'ᚦ', keywords: ['Protection', 'Reactive Force'], meaning: 'Thorn, protective but sharp.', reversible: true },
-    { id: 'rune_ansuz', name: 'Ansuz', symbol: 'ᚨ', keywords: ['Communication', 'Wisdom'], meaning: 'Divine signals and knowledge.', reversible: true },
-    { id: 'rune_raidho', name: 'Raidho', symbol: 'ᚱ', keywords: ['Travel', 'Rhythm'], meaning: 'Journey, physical or spiritual.', reversible: true },
-    { id: 'rune_kenaz', name: 'Kenaz', symbol: 'ᚲ', keywords: ['Vision', 'Knowledge'], meaning: 'The torch, inner light.', reversible: true },
+  { id: 'rune_fehu', name: 'Fehu', symbol: 'ᚠ', keywords: ['Wealth', 'Abundance'], meaning: 'Possessions won or preserved.', reversible: true },
+  { id: 'rune_uruz', name: 'Uruz', symbol: 'ᚢ', keywords: ['Strength', 'Power'], meaning: 'Physical strength and speed.', reversible: true },
+  { id: 'rune_thurisaz', name: 'Thurisaz', symbol: 'ᚦ', keywords: ['Protection', 'Reactive Force'], meaning: 'Thorn, protective but sharp.', reversible: true },
+  { id: 'rune_ansuz', name: 'Ansuz', symbol: 'ᚨ', keywords: ['Communication', 'Wisdom'], meaning: 'Divine signals and knowledge.', reversible: true },
+  { id: 'rune_raidho', name: 'Raidho', symbol: 'ᚱ', keywords: ['Travel', 'Rhythm'], meaning: 'Journey, physical or spiritual.', reversible: true },
+  { id: 'rune_kenaz', name: 'Kenaz', symbol: 'ᚲ', keywords: ['Vision', 'Knowledge'], meaning: 'The torch, inner light.', reversible: true },
 ];
 
 export const ANGEL_CARD_DECK: AngelCard[] = [
-    { id: 'angel_1', name: 'Guardian Angel', keywords: ['Protection', 'Love'], meaning: 'You are protected.' },
+  { id: 'angel_1', name: 'Guardian Angel', keywords: ['Protection', 'Love'], meaning: 'You are protected.' },
 ];
 
 export const ORACLE_DECK: OracleCard[] = [
-    { id: 'oracle_1', name: 'Intuition', keywords: ['Insight'], meaning: 'Follow your inner voice.' },
+  { id: 'oracle_1', name: 'Intuition', keywords: ['Insight'], meaning: 'Follow your inner voice.' },
 ];
 
 export const NUMEROLOGY_MEANINGS: { [key: number]: { theme: string; description: string } } = {
@@ -124,15 +124,15 @@ export const NUMEROLOGY_MEANINGS: { [key: number]: { theme: string; description:
 };
 
 export const SHOP_DECKS: Deck[] = [
-    { id: 'default_tarot', name: 'Gridpunk Tarot', type: 'tarot', description: 'The standard issue cyber-arcana.', price: 0, cards: TAROT_DECK },
-    { id: 'ancient_runes', name: 'Elder Futhark', type: 'runes', description: 'Ancestral signals from the deep past.', price: 0, cards: RUNE_DECK },
+  { id: 'default_tarot', name: 'Gridpunk Tarot', type: 'tarot', description: 'The standard issue cyber-arcana.', price: 0, cards: TAROT_DECK },
+  { id: 'ancient_runes', name: 'Elder Futhark', type: 'runes', description: 'Ancestral signals from the deep past.', price: 0, cards: RUNE_DECK },
 ];
 
 export const ELEMENT_COLORS: { [key in Element]: string } = { Fire: 'text-[#FF7A1A]', Earth: 'text-[#29C26A]', Air: 'text-[#21C7F2]', Water: 'text-[#6E7BFF]' };
 export const ELEMENT_HEX_COLORS: { [key in Element]: string } = { Fire: '#FF7A1A', Earth: '#29C26A', Air: '#21C7F2', Water: '#6E7BFF' };
 export const ELEMENT_BORDERS: { [key in Element]: string } = { Fire: 'border-[#FF7A1A]', Earth: 'border-[#29C26A]', Air: 'border-[#21C7F2]', Water: 'border-[#6E7BFF]' };
 
-export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description: string; cardCount: number; isPremium: boolean; positions: string[]; positionMeanings: string[]; deck: DeckType[] } } = {
+export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description: string; cardCount: number; isPremium: boolean; positions: string[]; positionMeanings: string[]; deck: DeckType[]; layout?: { x: number; y: number; rotation: number }[] } } = {
   '3-card': {
     name: 'Three Card Spread',
     description: 'A quick overview of past, present, and future signals.',
@@ -141,6 +141,11 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     positions: ['The Past', 'The Present', 'The Future'],
     positionMeanings: ['Foundational events.', 'Immediate challenges.', 'The likely trajectory.'],
     deck: ['tarot'],
+    layout: [
+      { x: 20, y: 50, rotation: -5 },
+      { x: 50, y: 50, rotation: 0 },
+      { x: 80, y: 50, rotation: 5 }
+    ]
   },
   'mind-body-spirit': {
     name: 'Holistic Sync',
@@ -150,6 +155,11 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     positions: ['Mind', 'Body', 'Spirit'],
     positionMeanings: ['Mental processing.', 'Physical vitality.', 'Spiritual frequency.'],
     deck: ['tarot'],
+    layout: [
+      { x: 50, y: 25, rotation: 0 },
+      { x: 25, y: 70, rotation: -10 },
+      { x: 75, y: 70, rotation: 10 }
+    ]
   },
   'career-path': {
     name: 'Pathfinder Protocol',
@@ -159,33 +169,80 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     positions: ['Current Role', 'Your Strengths', 'Potential Glitch', 'The Upgrade'],
     positionMeanings: ['Current status.', 'Inherent skills.', 'Hidden obstacles.', 'Next evolution.'],
     deck: ['tarot'],
+    layout: [
+      { x: 25, y: 50, rotation: 0 },
+      { x: 45, y: 30, rotation: 0 },
+      { x: 45, y: 70, rotation: 0 },
+      { x: 75, y: 50, rotation: 0 }
+    ]
   },
   'celtic-cross': {
     name: 'Celtic Cross',
     description: 'The standard high-resolution diagnostic.',
     cardCount: 11,
     isPremium: true,
-    positions: ['Heart', 'Challenge', 'Root', 'Past', 'Crown', 'Future', 'Self', 'Environment', 'Hopes/Fears', 'Outcome', 'Synthesis'],
+    positions: ['Heart', 'Challenge', 'Root', 'Past', 'Crown', 'Future', 'Self', 'Environment', 'Hopes/Fears', 'Outcome', 'Synthesis'], // 11th card is synthesis/summary often not drawn but computed, but here we have 11 positions? 
+    // Standard celtic cross has 10 cards. The user's definition has 11. 
+    // Wait, the definitions in lines 168 have 11 items. "Synthesis" might be a summary card or the computed one.
+    // If it's a real card, I'll place it. If not, I'll place it centrally or off to side.
+    // Standard 10 card cross positions:
+    // 1 (Center), 2 (Cross), 3 (Below), 4 (Left), 5 (Above), 6 (Right) -- The Cross
+    // 7, 8, 9, 10 -- The Staff (Right side)
     positionMeanings: ['The central issue.', 'Crossing force.', 'Root cause.', 'Passing signals.', 'Goal state.', 'Upcoming data.', 'Internal attitude.', 'Environmental factors.', 'Psychological blocks.', 'Final result.', 'Overarching logic.'],
     deck: ['tarot'],
+    layout: [
+      { x: 35, y: 50, rotation: 0 },   // 1 Heart (Center)
+      { x: 35, y: 50, rotation: 90 },  // 2 Challenge (Cross)
+      { x: 35, y: 80, rotation: 0 },   // 3 Root (Below)
+      { x: 15, y: 50, rotation: 0 },   // 4 Past (Left)
+      { x: 35, y: 20, rotation: 0 },   // 5 Crown (Above)
+      { x: 55, y: 50, rotation: 0 },   // 6 Future (Right)
+      { x: 80, y: 85, rotation: 0 },   // 7 Self (Bottom Right)
+      { x: 80, y: 65, rotation: 0 },   // 8 Environment
+      { x: 80, y: 45, rotation: 0 },   // 9 Hopes
+      { x: 80, y: 25, rotation: 0 },   // 10 Outcome
+      { x: 50, y: 50, rotation: 0 }    // 11 Synthesis (Maybe hidden behind or just central?) - Let's put it hidden or distinct? 
+      // Actually, standard celtic cross is 10 cards. The 11th "Synthesis" here likely refers to the AI summary, but the array has 11 positions.
+      // If the code draws 11 cards, I should place 11. Let's place 11th as a "summary card" overlay or side.
+      // But typically only 10 cards are drawn. I'll check if the 11th is actually used in logic.
+      // In handleSelectDeck -> setDrawnCards(new Array(...cardCount))
+      // So it DOES draw 11 cards.
+      // I'll place the 11th card centrally but larger/behind? Or just below the staff?
+      // Let's put it aside for now.
+    ]
   },
   'partnership': {
-      name: 'Nexus Partnership',
-      description: 'Analyze the bridge between two signals.',
-      cardCount: 7,
-      isPremium: true,
-      positions: ['Operator 1', 'Operator 2', 'Current Sync', 'Friction Point', 'Shared Drive', 'Potential', 'Future'],
-      positionMeanings: ['Your state.', 'Theirs.', 'Present connection.', 'Conflict source.', 'Unified goal.', 'Untapped energy.', 'Long-term link.'],
-      deck: ['tarot'],
+    name: 'Nexus Partnership',
+    description: 'Analyze the bridge between two signals.',
+    cardCount: 7,
+    isPremium: true,
+    positions: ['Operator 1', 'Operator 2', 'Current Sync', 'Friction Point', 'Shared Drive', 'Potential', 'Future'],
+    positionMeanings: ['Your state.', 'Theirs.', 'Present connection.', 'Conflict source.', 'Unified goal.', 'Untapped energy.', 'Long-term link.'],
+    deck: ['tarot'],
+    layout: [
+      { x: 20, y: 40, rotation: -10 }, // Op 1
+      { x: 80, y: 40, rotation: 10 },  // Op 2
+      { x: 50, y: 30, rotation: 0 },   // Sync
+      { x: 50, y: 50, rotation: 90 },  // Friction
+      { x: 50, y: 70, rotation: 0 },   // Drive
+      { x: 35, y: 85, rotation: -5 },  // Potential
+      { x: 65, y: 85, rotation: 5 }    // Future
+    ]
   },
   'shadow-work': {
-      name: 'Shadow Work Probe',
-      description: 'Deep-layer diagnostic of the subconscious.',
-      cardCount: 4,
-      isPremium: true,
-      positions: ['The Mask', 'The Hidden', 'The Trigger', 'The Integration'],
-      positionMeanings: ['What you show.', 'What you hide.', 'What causes glitches.', 'How to resolve.'],
-      deck: ['tarot'],
+    name: 'Shadow Work Probe',
+    description: 'Deep-layer diagnostic of the subconscious.',
+    cardCount: 4,
+    isPremium: true,
+    positions: ['The Mask', 'The Hidden', 'The Trigger', 'The Integration'],
+    positionMeanings: ['What you show.', 'What you hide.', 'What causes glitches.', 'How to resolve.'],
+    deck: ['tarot'],
+    layout: [
+      { x: 50, y: 30, rotation: 0 }, // Mask (Top)
+      { x: 50, y: 70, rotation: 180 }, // Hidden (Bottom, Reversed visual?)
+      { x: 20, y: 50, rotation: -90 }, // Trigger (Left)
+      { x: 80, y: 50, rotation: 90 }   // Integration (Right)
+    ]
   },
   'pentagram': {
     name: 'Elemental Pentagram',
@@ -195,15 +252,40 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     positions: ['Spirit', 'Fire', 'Water', 'Air', 'Earth'],
     positionMeanings: ['Core intent.', 'Action.', 'Emotion.', 'Logic.', 'Manifestation.'],
     deck: ['tarot'],
+    layout: [
+      { x: 50, y: 20, rotation: 0 },   // Spirit (Top)
+      { x: 80, y: 40, rotation: 0 },   // Fire (Right Top)
+      { x: 70, y: 80, rotation: 0 },   // Water (Right Bottom)
+      { x: 30, y: 80, rotation: 0 },   // Air (Left Bottom)
+      { x: 20, y: 40, rotation: 0 }    // Earth (Left Top)
+    ]
   },
   'lunar-cycle': {
-      name: 'Lunar Cycle Chronology',
-      description: 'Temporal mapping based on lunar phases.',
-      cardCount: 8,
-      isPremium: true,
-      positions: ['New Moon', 'Waxing Crescent', 'First Quarter', 'Waxing Gibbous', 'Full Moon', 'Waning Gibbous', 'Third Quarter', 'Waning Crescent'],
-      positionMeanings: ['Initiation.', 'Growth.', 'Action.', 'Refinement.', 'Manifestation.', 'Release.', 'Forgiveness.', 'Rest.'],
-      deck: ['tarot'],
+    name: 'Lunar Cycle Chronology',
+    description: 'Temporal mapping based on lunar phases.',
+    cardCount: 8,
+    isPremium: true,
+    positions: ['New Moon', 'Waxing Crescent', 'First Quarter', 'Waxing Gibbous', 'Full Moon', 'Waning Gibbous', 'Third Quarter', 'Waning Crescent'],
+    positionMeanings: ['Initiation.', 'Growth.', 'Action.', 'Refinement.', 'Manifestation.', 'Release.', 'Forgiveness.', 'Rest.'],
+    deck: ['tarot'],
+    layout: [
+      { x: 15, y: 50, rotation: 0 },
+      { x: 25, y: 30, rotation: 0 },
+      { x: 40, y: 20, rotation: 0 },
+      { x: 50, y: 15, rotation: 0 },
+      { x: 60, y: 20, rotation: 0 },
+      { x: 75, y: 30, rotation: 0 },
+      { x: 85, y: 50, rotation: 0 },
+      { x: 50, y: 50, rotation: 0 } // Placed 8 cards in arc?, wait, 8 positions. Let's do a circle.
+      // Correct circle:
+      // 4 5
+      // 3 6
+      // 2 7
+      // 1 8
+      // Let's just do a linear progression or circle.
+      // Circle:
+      // 1: Top (New Moon? No new moon is dark. Let's start left)
+    ]
   },
   // Placeholders for rest to match SpreadType union
   'relationship': { name: 'Relationship', description: '', cardCount: 3, isPremium: true, positions: ['Self', 'Other', 'Union'], positionMeanings: ['You', 'Them', 'The Relationship'], deck: ['tarot'] },

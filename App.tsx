@@ -13,8 +13,13 @@ import { HomeIcon, CardsIcon, JournalIcon, BarChartIcon, UserIcon, CompassIcon, 
 import { AppProvider, useApp } from './context/AppContext';
 import { checkAndUnlockAchievements } from './services/achievementService';
 
+import NumerologyPage from './pages/NumerologyPage';
+import SigilPage from './pages/SigilPage';
+import LevelUpModal from './components/LevelUpModal';
+import XpNotification from './components/XpNotification';
+
 // * Valid page names for hash routing
-const VALID_PAGES: Page[] = ['Daily', 'Readings', 'Journal', 'Guide', 'Shop', 'Progress', 'Profile', 'Onboarding'];
+const VALID_PAGES: Page[] = ['Daily', 'Readings', 'Journal', 'Guide', 'Shop', 'Progress', 'Profile', 'Onboarding', 'Numerology', 'Sigil'];
 
 /**
  * getPageFromHash — Reads `window.location.hash` and maps it to a valid Page.
@@ -132,6 +137,8 @@ const pageComponents: { [key in Page]: React.ComponentType<any> } = {
   Progress: ProgressPage,
   Profile: ProfilePage,
   Onboarding: OnboardingPage,
+  Numerology: NumerologyPage,
+  Sigil: SigilPage,
 };
 
 const AppContent: React.FC = () => {
@@ -234,6 +241,22 @@ const AppContent: React.FC = () => {
         })}
       </main>
       <BottomNav activePage={activePage} setPage={setPage} />
+
+      {/* Gamification Overlays */}
+      {useApp().levelUpData && (
+        <LevelUpModal
+          newLevel={useApp().levelUpData!}
+          onClose={() => useApp().setLevelUpData(null)}
+        />
+      )}
+
+      {useApp().xpNotification && (
+        <XpNotification
+          amount={useApp().xpNotification!.amount}
+          reason={useApp().xpNotification!.reason}
+          onComplete={() => useApp().setXpNotification(null)}
+        />
+      )}
     </div>
   );
 }

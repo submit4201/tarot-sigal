@@ -4,11 +4,15 @@ import { SpreadType, DrawnDivinationCard, Page, Deck, AnyCard } from '../types';
 import { SPREAD_DETAILS, SHOP_DECKS } from '../constants';
 import { getShuffledPreparedDeck } from '../services/tarotService';
 import DivinationCardDisplay from '../components/TarotCard';
+import { CardBack } from '../components/CardBack';
 import PremiumModal from '../components/PremiumModal';
 import { Type } from '@google/genai';
 import { generateContentWithRetry } from '../services/geminiService';
 import { SparklesIcon, LayersIcon, ZapIcon, BookOpenIcon, CompassIcon, UserIcon } from '../components/icons';
 import { generateCosmicBlueprint } from '../services/cosmicService';
+import { useHaptic } from '../hooks/useHaptic';
+import { useTilt } from '../hooks/useTilt';
+import { formatReadingForExport } from '../utils/exportUtils';
 
 // * TTS Helper function
 const speakText = (text: string) => {
@@ -22,8 +26,8 @@ const speakText = (text: string) => {
 const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) => {
     const { isPremium, addSavedReading, activeProfile, addXp, addStardust } = useApp();
 
-    // * Reading Steps: focus-intent (Premium) -> select-spread -> select-deck -> picking-cards -> revealing -> summary
-    const [readingStep, setReadingStep] = useState<'focus-intent' | 'select-spread' | 'select-deck' | 'picking-cards' | 'revealing' | 'summary'>('select-spread');
+    // * Reading Steps: focus-intent (Premium) -> select-spread -> select-deck -> charging -> picking-cards -> revealing -> summary
+    const [readingStep, setReadingStep] = useState<'focus-intent' | 'select-spread' | 'select-deck' | 'charging' | 'picking-cards' | 'revealing' | 'summary'>('select-spread');
 
     // * State
     const [searchQuery, setSearchQuery] = useState('');
@@ -35,6 +39,14 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
     const [currentPickingIndex, setCurrentPickingIndex] = useState(0);
     const [isShuffling, setIsShuffling] = useState(false);
     const [animatingCardId, setAnimatingCardId] = useState<string | null>(null);
+
+    // * Immersion State
+    const [shuffleEnergy, setShuffleEnergy] = useState(0); // Used for visual intensity now
+    const [stabilizationProgress, setStabilizationProgress] = useState(0);
+    const [hasShuffledEnough, setHasShuffledEnough] = useState(false);
+    const lastMoveTimeRef = useRef<number>(Date.now());
+    const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
+    const { triggerSelection, triggerHover, triggerImpact, triggerRipple } = useHaptic();
 
     // * Reading Data
     const [aiSummary, setAiSummary] = useState('');
@@ -104,19 +116,67 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
 
     const handleSelectDeck = (deck: Deck) => {
         setSelectedDeck(deck);
-        setIsShuffling(true);
+        setReadingStep('charging');
+        setShuffleEnergy(0);
+        setStabilizationProgress(0);
+        setHasShuffledEnough(false);
+        lastMoveTimeRef.current = Date.now();
+        triggerSelection();
+    };
+
+    // Charging Logic Loop
+    useEffect(() => {
+        if (readingStep !== 'charging') return;
+
+        const interval = setInterval(() => {
+            const timeSinceLastMove = Date.now() - lastMoveTimeRef.current;
+
+            // Visual Decay of Chaos
+            setShuffleEnergy(prev => Math.max(0, prev - 2));
+
+            // Stabilization Logic
+            if (hasShuffledEnough) {
+                const progress = Math.min(100, (timeSinceLastMove / 2500) * 100);
+                setStabilizationProgress(progress);
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    completeCharging();
+                }
+            }
+        }, 50);
+
+        return () => clearInterval(interval);
+    }, [readingStep, hasShuffledEnough]);
+
+    const handleChargingMove = () => {
+        lastMoveTimeRef.current = Date.now();
+        setShuffleEnergy(prev => Math.min(100, prev + 10)); // Spark energy
+        setStabilizationProgress(0); // Reset stabilization
+
+        if (!hasShuffledEnough && shuffleEnergy > 50) {
+            setHasShuffledEnough(true);
+        }
+
+        // Haptic feedback for "shuffling feel" - trigger occasionally
+        if (Math.random() > 0.7) triggerHover();
+    };
+
+    const completeCharging = () => {
+        const shuffled = getShuffledPreparedDeck(selectedDeck!.cards, Date.now());
+        setFullDeckInPlay(shuffled);
+        setDrawnCards(new Array(SPREAD_DETAILS[selectedSpread!].cardCount).fill(null));
+
         setTimeout(() => {
-            const shuffled = getShuffledPreparedDeck(deck.cards, Date.now());
-            setFullDeckInPlay(shuffled);
-            setDrawnCards(new Array(SPREAD_DETAILS[selectedSpread!].cardCount).fill(null));
             setReadingStep('picking-cards');
             setCurrentPickingIndex(0);
-            setIsShuffling(false);
-        }, 800);
+        }, 500);
     };
 
     const handlePickCard = (card: DrawnDivinationCard) => {
         if (!selectedSpread || currentPickingIndex >= SPREAD_DETAILS[selectedSpread].cardCount || animatingCardId) return;
+
+        triggerSelection();
         setAnimatingCardId(card.card.id);
         setTimeout(() => {
             setDrawnCards(prev => {
@@ -131,6 +191,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
                 setCurrentPickingIndex(prev => prev + 1);
             }
             setAnimatingCardId(null);
+            triggerImpact();
             addXp(2);
         }, 1000);
     };
@@ -172,26 +233,30 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
 
         const userContext = isPremium ? `User Question: ${refinedQuestion || userQuestion}. Intent: ${readingIntent}.` : '';
 
-        const basePrompt = `Perform a high-fidelity diagnostic synthesis for a Cyberpunk Tarot reading.
+        const basePrompt = `Perform a high-fidelity, mystical-cyberpunk diagnostic synthesis for a Tarot reading.
         Array Pattern: ${selectedSpread}.
         User Context: Life Path ${cosmicBlueprint?.lifePath.number}. ${userContext}
         Data Streams:
         ${nodesInfo}
         
         Task:
-        1. For each node, provide a ${isPremium ? 'deep, multi-layered' : '2-3 sentence'} interpretation.
-        2. Provide a master synthesis narrative (${isPremium ? 'holistic, highly detailed' : '200+ words'}).
-        3. Provide 3 specific actionable steps (practical rituals or actions).
-        4. Identify the "Shadow Message" (what is being avoided/overlooked).
+        1. **Node Analysis**: For each card position, provide a ${isPremium ? 'deep, multi-layered esoteric analysis (2 paragraphs)' : 'concise but profound interpretation'}. Connect the card's archetype to the position's meaning using rich, evocative language.
+        2. **Master Synthesis**: Weave a cohesive narrative that connects all cards into a singular "Cosmic Story". What is the overarching theme? (${isPremium ? 'Holistic, highly detailed, 500+ words. MUST reference card interactions.' : '200+ words'}).
+        3. **Tactical Directives**: Provide 3 specific, ritualistic or practical actions the user can take to align with this energy immediately.
+        4. **Shadow Signal**: Identify what is being avoided, repressed, or overlooked (The Shadow).
         ${isPremium ? `
-        5. Analyze Card Relationships (how adjacent cards influence each other).
-        6. Analyze Elemental Dignity (fire/water/air/earth interactions).
-        7. Identify Numerological Threads (repeating numbers).
-        8. Provide a "Spoken Narrative" script for TTS (warm, mystical tone).
-        9. Provide a "Deep Dive" esoteric analysis for EACH card (symbolism, astrology).
+        5. **Resonance Analysis**: Analyze how adjacent cards influence each other (elemental dignities, reinforcing/opposing energies).
+        6. **Elemental Audit**: Assess the balance of Fire/Water/Air/Earth in the spread.
+        7. **Numerological Threads**: Identify repeating numbers or sequences and their meaning.
+        8. **Spoken Narrative Script**: A DEEPLY IMMERSIVE, second-person narrative script designed to be read aloud (TTS).
+           - **Crucial**: It MUST explicitly reference the spread positions naturally (e.g., "In the foundation of your past, [Card] suggests...", "Crossing your path is [Card]...").
+           - Tone: Warm, authoritative, mystical Oracle. 
+           - Length: 300-500 words.
+        9. **Deep Dive Protocols**: Provide a deep esoteric symbolism analysis for EACH card (astrology, kabbalah, numerology connection).
         ` : ''}
         
-        Return JSON.`;
+        Tone: Cyber-Shamanic, Mystical, Empathetic, but clinically precise. Use terms like 'frequency', 'alignment', 'archetype', 'void', 'manifestation'.
+        Return strictly as JSON.`;
 
         // * Dynamic Schema
         const schemaProps: any = {
@@ -261,6 +326,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
 
     const handleSave = () => {
         if (!selectedSpread || !selectedDeck) return;
+        triggerSelection();
         addSavedReading({
             spreadType: selectedSpread,
             deckType: selectedDeck.type,
@@ -284,8 +350,94 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
         setRevealedIndices(new Set());
     };
 
+    const handleExport = () => {
+        if (!selectedSpread || !selectedDeck) return;
+        triggerSelection();
+        const exportText = formatReadingForExport({
+            spreadType: selectedSpread,
+            cards: drawnCards,
+            deckId: selectedDeck.id,
+            date: new Date().toISOString(),
+            intent: readingIntent,
+            summary: aiSummary,
+            practicalActions,
+            shadowMessage
+        });
+        navigator.clipboard.writeText(exportText);
+        // Could use a toast here, but for now just visual feedback via button text change or similar would be good. 
+        // Or just let the user assume it worked. Let's add a simple alert or reuse error state for "Copied!"
+        setError("DATA EXPORTED TO NEURAL-LINK (Clipboard)");
+        setTimeout(() => setError(""), 3000);
+    };
+
     // --- RENDERERS ---
 
+    // --- RENDERERS ---
+
+    const renderCharging = () => (
+        <div
+            className="w-full h-full flex flex-col items-center justify-center p-8 bg-grid animate-fade-in relative overflow-hidden"
+            onMouseMove={handleChargingMove}
+            onTouchMove={handleChargingMove}
+            onClick={handleChargingMove} // For tap-to-shuffle on mobile
+        >
+            <div className="absolute inset-0 bg-purple-900/10 pointer-events-none"></div>
+
+            <h2 className="text-6xl font-bold text-white mb-2 uppercase tracking-tighter neon-glow animate-pulse">
+                {hasShuffledEnough && stabilizationProgress > 0 ? 'Stabilizing Link...' : 'Shuffle Conduit'}
+            </h2>
+            <p className="text-white/40 font-mono text-sm uppercase tracking-[0.5em] mb-20">
+                {hasShuffledEnough ? (stabilizationProgress > 0 ? 'Hold Still to Lock Signal' : 'Keep Moving to Reshuffle') : 'Agitate Void to Initialize'}
+            </p>
+
+            <div className="relative w-96 h-96 flex items-center justify-center">
+                {/* Orbital Rings - Speed based on shuffleEnergy */}
+                <div className={`absolute inset-0 border border-white/10 rounded-full transition-all duration-300 ${shuffleEnergy > 10 ? 'animate-spin-fast' : 'animate-spin-slow'}`} style={{ width: '100%', height: '100%', animationDuration: `${3000 / (shuffleEnergy + 10)}ms` }}></div>
+                <div className={`absolute inset-0 border border-teal-500/20 rounded-full transition-all duration-300 ${shuffleEnergy > 10 ? 'animate-spin-fast-reverse' : 'animate-reverse-spin'}`} style={{ width: '80%', height: '80%', margin: '10%', animationDuration: `${5000 / (shuffleEnergy + 10)}ms` }}></div>
+
+                {/* Core Energy Orb - Pulses with shuffleEnergy */}
+                {/* Animated Deck Stack */}
+                <div className="relative w-48 h-72 perspective-1000">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                        <div
+                            key={i}
+                            className="absolute inset-0 transition-transform duration-100 ease-linear"
+                            style={{
+                                transform: `
+                                    translateZ(${i * -2}px) 
+                                    rotate(${Math.sin((Date.now() / 100) + i) * (shuffleEnergy / 10)}deg)
+                                    translateX(${Math.cos((Date.now() / 100) + i) * (shuffleEnergy / 5)}px)
+                                    translateY(${Math.sin((Date.now() / 100) + i) * (shuffleEnergy / 5)}px)
+                                `,
+                                zIndex: 10 - i,
+                                opacity: 1 - (i * 0.1)
+                            }}
+                        >
+                            <CardBack className="shadow-2xl border-white/20" />
+                        </div>
+                    ))}
+                </div>
+
+                {/* Stabilization Ring - Fills when still */}
+                <svg className="absolute w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 100 100">
+                    <circle
+                        cx="50" cy="50" r="45"
+                        fill="none"
+                        stroke="#2dd4bf"
+                        strokeWidth="2"
+                        strokeDasharray="283"
+                        strokeDashoffset={283 - (283 * stabilizationProgress / 100)}
+                        className="transition-all duration-100 ease-linear shadow-[0_0_20px_rgba(45,212,191,0.8)]"
+                    />
+                </svg>
+
+                {/* Text Indicator */}
+                <div className="absolute z-10 font-mono text-xl font-bold text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)] text-center">
+                    {stabilizationProgress > 0 && hasShuffledEnough ? `${(2.5 - (stabilizationProgress / 100 * 2.5)).toFixed(1)}s` : 'MIX'}
+                </div>
+            </div>
+        </div>
+    );
     const renderFocusIntent = () => (
         <div className="w-full h-full flex flex-col items-center justify-center p-8 bg-grid animate-fade-in">
             <h1 className="text-5xl font-bold font-dm-sans text-white mb-8 tracking-tighter neon-glow">Focus Your Energy</h1>
@@ -424,6 +576,11 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
                 <button onClick={handleSave} className="bg-teal-600 hover:bg-teal-500 text-white font-bold px-14 py-6 rounded-2xl transition-all shadow-glow active:scale-95 text-xl uppercase font-mono tracking-widest">Commit_Archive</button>
             </div>
 
+            {/* Export */}
+            <button onClick={handleExport} className="mb-20 text-white/40 hover:text-white font-mono text-xs uppercase tracking-widest border-b border-white/10 hover:border-white transition-all pb-1">
+                Export to Neural-Link
+            </button>
+
             {/* Cards Grid with Deep Dives */}
             <div className="mt-20 w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                 {drawnCards.map((c, i) => (
@@ -447,79 +604,178 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
         </div>
     );
 
-    const renderPicking = () => (
-        <div className="w-full h-full relative p-20 flex flex-col items-center animate-fade-in">
-            <header className="text-center mb-12">
-                <h2 className="text-4xl font-bold font-dm-sans text-white uppercase tracking-tighter">Manifest Array</h2>
-                <p className="text-text-muted font-mono text-xs mt-2 uppercase tracking-[0.4em] animate-pulse">Select {SPREAD_DETAILS[selectedSpread!].cardCount} vectors</p>
-            </header>
-            <div className="relative w-full max-w-5xl h-96">
-                {/* Deck Stack */}
-                {fullDeckInPlay.slice(0, 5).map((card, i) => (
-                    <div key={card.card.id} className="absolute left-1/2 top-1/2 w-48 h-80 rounded-xl bg-gradient-to-br from-[#1a1c25] to-[#0d0e14] border border-white/10 shadow-2xl transition-transform duration-300 hover:-translate-y-4 cursor-pointer"
-                        style={{ transform: `translate(-50%, -50%) translate(${i * 2}px, ${-i * 2}px)` }}
-                        onClick={() => handlePickCard(fullDeckInPlay[fullDeckInPlay.length - 1])}
-                    >
-                        <div className="w-full h-full opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-                    </div>
-                ))}
+    const renderPicking = () => {
+        // Fan-Out Logic for 78 Cards
+        const cardWidth = 140; // px
+        const deckSize = fullDeckInPlay.length;
+        const totalAngle = 120; // degrees spread
+        const startAngle = -60;
+        const anglePerCard = totalAngle / deckSize;
+        const radius = 800; // px, radius of the arc
 
-                {/* Animating Card */}
+        return (
+            <div className="w-full h-full relative p-20 flex flex-col items-center animate-fade-in overflow-hidden">
+                <header className="text-center mb-4 z-20 pointer-events-none">
+                    <h2 className="text-4xl font-bold font-dm-sans text-white uppercase tracking-tighter">Manifest Array</h2>
+                    <p className="text-text-muted font-mono text-xs mt-2 uppercase tracking-[0.4em] animate-pulse">
+                        Select {SPREAD_DETAILS[selectedSpread!].cardCount - drawnCards.filter(Boolean).length} more vectors
+                    </p>
+                </header>
+
+                {/* Drawn Cards Slots (Preview) */}
+                <div className="flex gap-4 mb-20 z-20 pointer-events-none">
+                    {drawnCards.map((c, i) => (
+                        <div key={i} className={`w-12 h-20 rounded border ${c ? 'bg-purple-500 border-purple-400' : 'bg-white/5 border-white/10'} transition-all`}></div>
+                    ))}
+                </div>
+
+                {/* Fan Container - Lifted up and contained */}
+                <div className="absolute inset-x-0 bottom-[5vh] h-[500px] flex justify-center items-end perspective-1000 overflow-visible">
+                    <div className="relative w-full h-full flex justify-center items-end">
+                        {fullDeckInPlay.map((card, i) => {
+                            const angle = startAngle + (i * anglePerCard);
+                            // Dynamic spread based on screen width to keep edges in view
+                            const spreadFactor = window.innerWidth < 768 ? 8 : 12;
+                            const isHovered = hoveredCardIndex === i;
+
+                            return (
+                                <div
+                                    key={card.card.id}
+                                    className={`absolute bottom-0 w-[140px] h-[220px] rounded-xl bg-gradient-to-br from-[#1a1c25] to-[#0d0e14] border border-white/20 shadow-2xl transition-all duration-200 cursor-pointer origin-bottom transform-gpu
+                                        ${isHovered ? 'z-50 scale-110 brightness-125 border-purple-500' : 'brightness-90'}
+                                    `}
+                                    style={{
+                                        transform: `
+                                            translateX(${(i - deckSize / 2) * spreadFactor}px) 
+                                            rotate(${angle}deg) 
+                                            translateY(${isHovered ? -120 : 0}px)
+                                        `,
+                                        zIndex: isHovered ? 100 : i,
+                                        boxShadow: isHovered ? '0 0 40px rgba(168,85,247,0.6)' : '0 4px 10px rgba(0,0,0,0.5)'
+                                    }}
+                                    onMouseEnter={() => { setHoveredCardIndex(i); triggerHover(); }}
+                                    onMouseLeave={() => setHoveredCardIndex(null)}
+                                    onClick={() => handlePickCard(card)}
+                                >
+                                    <div className="w-full h-full rounded-xl overflow-hidden bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-30"></div>
+                                    <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* Animating Card Overlay */}
                 {animatingCardId && (
-                    <div className="absolute left-1/2 top-1/2 w-48 h-80 rounded-xl bg-purple-500 shadow-[0_0_50px_rgba(168,85,247,0.5)] z-50 animate-ping-slow pointer-events-none"
-                        style={{ transform: 'translate(-50%, -50%)' }}
+                    <div className="absolute left-1/2 bottom-[200px] w-48 h-80 rounded-xl bg-purple-500 shadow-[0_0_50px_rgba(168,85,247,0.8)] z-[200] animate-ping-slow pointer-events-none"
+                        style={{ transform: 'translate(-50%, 0)' }}
                     ></div>
                 )}
             </div>
-            {/* Progress Bar */}
-            <div className="w-full max-w-xl h-1 bg-white/10 rounded-full mt-20 overflow-hidden">
-                <div className="h-full bg-purple-500 transition-all duration-300" style={{ width: `${(drawnCards.filter(Boolean).length / SPREAD_DETAILS[selectedSpread!].cardCount) * 100}%` }}></div>
-            </div>
-        </div>
-    );
+        );
+    };
 
-    const renderRevealing = () => (
-        <div className="w-full h-full relative overflow-hidden bg-[#030407] animate-fade-in">
-            <header className="absolute top-10 left-1/2 -translate-x-1/2 z-20 text-center">
-                <span className="px-6 py-2 rounded-full bg-purple-500/10 text-purple-400 font-mono text-[10px] uppercase tracking-[0.5em] border border-purple-500/20 font-bold">Ritual_Revealing</span>
-                <h2 className="text-5xl font-bold font-dm-sans text-white mt-4 tracking-tighter">Spread Manifestation</h2>
-            </header>
+    const renderRevealing = () => {
+        const totalCards = SPREAD_DETAILS[selectedSpread!].cardCount;
+        const centerIndex = (totalCards - 1) / 2;
 
-            <div className="w-full h-full relative p-20 grid place-items-center">
-                <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none"></div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+        return (
+            <div className="w-full h-full relative overflow-hidden bg-[#030407] animate-fade-in flex flex-col items-center justify-center">
+                <header className="absolute top-10 z-20 text-center w-full pointer-events-none">
+                    <span className="px-6 py-2 rounded-full bg-purple-500/10 text-purple-400 font-mono text-[10px] uppercase tracking-[0.5em] border border-purple-500/20 font-bold backdrop-blur-md">Ritual_Revealing</span>
+                    <h2 className="text-5xl font-bold font-dm-sans text-white mt-4 tracking-tighter neon-glow">Spread Manifestation</h2>
+                </header>
+
+                <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none"></div>
+
+                {/* LAYOUT CONTAINER */}
+                <div className="relative w-full max-w-[95vw] h-[60vh] flex items-center justify-center mb-20">
                     {drawnCards.map((card, i) => {
                         const isRevealed = revealedIndices.has(i);
+                        const layout = SPREAD_DETAILS[selectedSpread!].layout;
+                        const pos = layout ? layout[i] : null;
+
+                        // Default Fan Logic (Fallback)
+                        const offsetFromCenter = i - centerIndex;
+                        const spacing = 14;
+                        const fanRotation = offsetFromCenter * 5;
+                        const fanTranslateY = Math.abs(offsetFromCenter) * 15;
+                        const fanXOffset = `${offsetFromCenter * spacing}vw`;
+
+                        // Style Generation
+                        const style: React.CSSProperties = pos ? {
+                            position: 'absolute',
+                            left: `${pos.x}%`,
+                            top: `${pos.y}%`,
+                            transform: `translate(-50%, -50%) rotate(${pos.rotation}deg)`,
+                            zIndex: 10 + i,
+                            width: '18vw',
+                            maxWidth: '180px', // Smaller max width for complex spreads
+                            transition: 'all 0.7s cubic-bezier(0.25, 1, 0.5, 1)'
+                        } : {
+                            position: 'absolute',
+                            left: '50%',
+                            marginLeft: '-9vw',
+                            transform: `translateX(${fanXOffset}) rotate(${fanRotation}deg) translateY(${fanTranslateY}px)`,
+                            zIndex: 10 + i,
+                            transition: 'all 0.5s ease-out'
+                        };
+
+                        // Tilt Hook (Per card would be expensive if we called useTilt for every card in a loop without extraction)
+                        // Optimization: Create a TiltWrapper component.
+                        // For now, let's just wrap the DivinationCardDisplay in a TiltWrapper component defined below or inline it if simple.
+                        // Actually, defining a component inside render is bad practice -> remounts.
+                        // Let's create `components/TiltCardWrapper.tsx` real quick or use a helper file. 
+                        // I'll make a specialized TiltCard component in a separate file.
+                        // Wait, I can't restart this replacement block. 
+                        // I will use a simple inline Wrapper component defined OUTSIDE ReadingsPage or just perform the logic inside a mapped sub-component.
+                        // Refactoring `ReadingsPage` to use a sub-component for the card is better.
+
                         return (
-                            <div key={i} className="flex flex-col items-center gap-4">
-                                <p className="text-[10px] font-mono text-purple-400 uppercase tracking-widest font-bold opacity-60">{SPREAD_DETAILS[selectedSpread!].positions[i]}</p>
-                                <DivinationCardDisplay
-                                    drawnCard={card}
-                                    isRevealed={isRevealed}
-                                    onClick={() => handleReveal(i)}
-                                    className={`!w-[135px] !h-[215px] shadow-2xl transition-all duration-700 cursor-pointer ${isRevealed ? 'scale-100 ring-4 ring-purple-500/10' : 'scale-90 opacity-40 hover:opacity-100 hover:scale-95'}`}
-                                />
+                            <div
+                                key={i}
+                                className={`group origin-center ${pos ? '' : 'transition-all duration-500 ease-out hover:z-[100] hover:scale-110 hover:-translate-y-10'}`}
+                                style={style}
+                            >
+                                <TiltCardWrapper isRevealed={isRevealed} label={SPREAD_DETAILS[selectedSpread!].positions[i]}>
+                                    <DivinationCardDisplay
+                                        drawnCard={card}
+                                        isRevealed={isRevealed}
+                                        onClick={() => handleReveal(i)}
+                                        className={`!w-full !h-auto aspect-[2/3] shadow-2xl cursor-pointer ${isRevealed ? 'ring-1 ring-white/20' : 'brightness-75 hover:brightness-100'}`}
+                                    />
+                                </TiltCardWrapper>
                             </div>
                         );
                     })}
                 </div>
-            </div>
 
-            <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20">
-                {revealedIndices.size === SPREAD_DETAILS[selectedSpread!].cardCount && (
-                    <button onClick={handleGenerateSummary} disabled={isGeneratingSummary} className="px-16 py-6 bg-gradient-to-r from-purple-700 to-blue-700 hover:scale-105 transition-all text-white font-bold rounded-2xl shadow-glow active:scale-95 flex items-center gap-6 group">
-                        <SparklesIcon className="w-8 h-8 group-hover:rotate-90 transition-transform duration-1000" />
-                        <span className="text-2xl tracking-tighter uppercase font-mono">{isGeneratingSummary ? 'Processing_Batch...' : 'Unify_Array'}</span>
-                    </button>
-                )}
+                <div className="absolute bottom-12 z-20 flex gap-4">
+                    {revealedIndices.size < SPREAD_DETAILS[selectedSpread!].cardCount && (
+                        <button onClick={() => {
+                            const allIndices = new Set<number>();
+                            for (let i = 0; i < SPREAD_DETAILS[selectedSpread!].cardCount; i++) allIndices.add(i);
+                            setRevealedIndices(allIndices);
+                        }} className="px-8 py-4 bg-white/5 hover:bg-white/10 text-white/60 hover:text-white border border-white/10 rounded-xl transition-all font-mono text-xs uppercase tracking-widest backdrop-blur-md">
+                            Reveal_All_Signatures
+                        </button>
+                    )}
+
+                    {revealedIndices.size === SPREAD_DETAILS[selectedSpread!].cardCount && (
+                        <button onClick={handleGenerateSummary} disabled={isGeneratingSummary} className="px-16 py-6 bg-gradient-to-r from-purple-700 to-blue-700 hover:scale-105 transition-all text-white font-bold rounded-2xl shadow-glow active:scale-95 flex items-center gap-6 group">
+                            <SparklesIcon className="w-8 h-8 group-hover:rotate-90 transition-transform duration-1000" />
+                            <span className="text-2xl tracking-tighter uppercase font-mono">{isGeneratingSummary ? 'Processing_Batch...' : 'Unify_Array'}</span>
+                        </button>
+                    )}
+                </div>
+                {error && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-8 glass-panel border-red-500/50 text-red-400 rounded-3xl text-center max-w-sm animate-fade-in z-[100] backdrop-blur-xl">
+                    <p className="font-mono text-sm mb-4 uppercase tracking-widest font-bold">Link Failure</p>
+                    <p className="text-sm leading-relaxed">{error}</p>
+                    <button onClick={() => setError('')} className="mt-6 px-6 py-2 bg-red-500/20 hover:bg-red-500/40 rounded-xl transition-all font-mono text-[10px] uppercase">Acknowledge</button>
+                </div>}
             </div>
-            {error && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-8 glass-panel border-red-500/50 text-red-400 rounded-3xl text-center max-w-sm animate-fade-in z-[100] backdrop-blur-xl">
-                <p className="font-mono text-sm mb-4 uppercase tracking-widest font-bold">Link Failure</p>
-                <p className="text-sm leading-relaxed">{error}</p>
-                <button onClick={() => setError('')} className="mt-6 px-6 py-2 bg-red-500/20 hover:bg-red-500/40 rounded-xl transition-all font-mono text-[10px] uppercase">Acknowledge</button>
-            </div>}
-        </div>
-    );
+        );
+    };
 
     const renderSelectDeck = () => (
         <div className="w-full h-full flex flex-col items-center justify-center bg-grid animate-fade-in p-10">
@@ -552,11 +808,28 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
             {readingStep === 'focus-intent' && renderFocusIntent()}
             {readingStep === 'select-spread' && renderSelectSpread()}
             {readingStep === 'select-deck' && renderSelectDeck()}
+            {readingStep === 'charging' && renderCharging()}
             {readingStep === 'picking-cards' && renderPicking()}
             {readingStep === 'revealing' && renderRevealing()}
             {readingStep === 'summary' && renderSummary()}
 
             <PremiumModal isOpen={isPremiumModalOpen} onClose={() => setIsPremiumModalOpen(false)} onUpgrade={() => { setIsPremiumModalOpen(false); setPage('Profile'); }} />
+        </div>
+    );
+};
+
+// Sub-component for Tilt Logic
+const TiltCardWrapper: React.FC<{ children: React.ReactNode; isRevealed: boolean; label: string }> = ({ children, isRevealed, label }) => {
+    const { style, onMouseMove, onMouseLeave } = useTilt(10);
+    return (
+        <div
+            className={`flex flex-col items-center gap-2 transition-transform duration-300 relative`}
+            onMouseMove={onMouseMove}
+            onMouseLeave={onMouseLeave}
+            style={style}
+        >
+            <p className="text-[9px] font-mono text-purple-400 uppercase tracking-widest font-bold opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 px-2 py-1 rounded backdrop-blur-md border border-purple-500/30 absolute -top-8 z-50 whitespace-nowrap">{label}</p>
+            {children}
         </div>
     );
 };
