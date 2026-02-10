@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
 import { UserProfile } from '../types';
 import { getSignFromDate } from '../services/astroService';
 import { generateCosmicBlueprint } from '../services/cosmicService';
@@ -7,78 +8,11 @@ import CosmicBlueprintDisplay from '../components/CosmicBlueprintDisplay';
 import { SparklesIcon, SlidersIcon, UserIcon, LayersIcon } from '../components/icons';
 import { SHOP_DECKS } from '../constants';
 
-const initialNewProfileData: Omit<UserProfile, 'id' | 'level' | 'xp' | 'unlockedAchievements' | 'stardust' | 'ownedDeckIds'> = {
-  givenName: '',
-  currentName: '',
-  mothersMaidenName: '',
-  birthDate: '',
-  birthTime: '',
-  birthPlace: '',
-  astrologicalSign: 'None',
-  birthConstellation: '',
-  readingStyle: 'mystical',
-  readingFocus: 'general',
-};
-
-/**
- * AddProfileForm — Inline form for creating a new user profile.
- * Uses shared getSignFromDate from astroService.
- */
-const AddProfileForm: React.FC<{ onSave: (profileData: Omit<UserProfile, 'id' | 'level' | 'xp' | 'unlockedAchievements' | 'stardust' | 'ownedDeckIds'>) => void, onCancel: () => void }> = ({ onSave, onCancel }) => {
-  const [formData, setFormData] = useState(initialNewProfileData);
-
-  // * getSignFromDate imported from services/astroService.ts — no local duplicate
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setFormData(prev => {
-      const updatedData = { ...prev, [id]: value };
-      if (id === 'birthDate') {
-        updatedData.astrologicalSign = getSignFromDate(value);
-      }
-      return updatedData;
-    });
-  };
-
-  const handleSubmit = () => {
-    if (!formData.givenName || !formData.birthDate) {
-      alert("Given Name and Date of Birth are required.");
-      return;
-    }
-    const finalData = { ...formData, currentName: formData.currentName || formData.givenName };
-    onSave(finalData);
-  }
-
-  return (
-    <div className="glass-panel p-10 rounded-[2.5rem] border-white/5 animate-fade-in space-y-6">
-      <h2 className="text-2xl font-bold font-dm-sans text-white tracking-tight">Create New Profile</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label htmlFor="givenName" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Given_Name (at birth)</label>
-          <input type="text" id="givenName" value={formData.givenName} onChange={handleInputChange} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner" />
-        </div>
-        <div>
-          <label htmlFor="birthDate" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Date_of_Birth</label>
-          <input type="date" id="birthDate" value={formData.birthDate} onChange={handleInputChange} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner" />
-        </div>
-        <div className="md:col-span-2">
-          <p className="text-xs text-white/30 italic">You can add more details like current name and birth place from the main profile view after saving.</p>
-        </div>
-      </div>
-      <div className="flex gap-4 pt-4">
-        <button onClick={handleSubmit} className="flex-1 px-8 py-4 rounded-2xl font-bold font-mono text-sm uppercase tracking-widest bg-teal-600 text-white hover:bg-teal-500 transition-all shadow-glow">Save_Profile</button>
-        <button onClick={onCancel} className="flex-1 px-8 py-4 rounded-2xl font-bold font-mono text-sm uppercase tracking-widest bg-white/5 text-white/60 border border-white/10 hover:bg-white/10 transition-all">Cancel</button>
-      </div>
-    </div>
-  )
-}
-
-
 const ProfilePage: React.FC = () => {
-  const { isPremium, setIsPremium, activeProfile, updateActiveProfile, profiles, switchProfile, addProfile, deleteProfile, setPage } = useApp();
-  const [mode, setMode] = useState<'viewing' | 'adding'>('viewing');
+  const { isPremium, setIsPremium, activeProfile, updateActiveProfile, setPage } = useApp();
+  const { logout, user } = useAuth();
 
-  // ! Debounced profile saving — prevents writing to localStorage on every keystroke
+  // ! Debounced profile saving — prevents writing to DB on every keystroke
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [pendingProfile, setPendingProfile] = useState<UserProfile | null>(null);
@@ -138,15 +72,10 @@ const ProfilePage: React.FC = () => {
     return SHOP_DECKS.filter(deck => activeProfile.ownedDeckIds.includes(deck.id));
   }, [activeProfile]);
 
-  const handleAddNewProfile = (profileData: Omit<UserProfile, 'id' | 'level' | 'xp' | 'unlockedAchievements' | 'stardust' | 'ownedDeckIds'>) => {
-    addProfile(profileData);
-    setMode('viewing');
-  };
-
-  const handleDeleteProfile = () => {
-    if (!activeProfile) return;
-    if (window.confirm(`Are you sure you want to delete the profile for "${activeProfile.currentName || activeProfile.givenName}"? This action cannot be undone.`)) {
-      deleteProfile(activeProfile.id);
+  const handleLogout = async () => {
+    if (window.confirm("Are you sure you want to jack out?")) {
+      await logout();
+      // App.tsx auth state change will trigger redirect to Onboarding
     }
   };
 
@@ -175,30 +104,19 @@ const ProfilePage: React.FC = () => {
       </header>
 
       <div className="space-y-10">
-        {/* Profile Management Section */}
-        <section className="glass-panel p-10 rounded-[2.5rem] border-white/5 bg-white/[0.01] shadow-2xl">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></div>
-            <span className="text-[10px] font-mono text-teal-400 uppercase tracking-[0.4em] font-bold">Profile_Management</span>
+
+        {/* Identity & Logout Section (Replaced Profile Management) */}
+        <section className="glass-panel p-10 rounded-[2.5rem] border-white/5 bg-white/[0.01] shadow-2xl flex flex-col md:flex-row justify-between items-center gap-6">
+          <div>
+            <h3 className="text-2xl font-bold text-white mb-2">{displayProfile.currentName || displayProfile.givenName}</h3>
+            <p className="text-white/40 font-mono text-xs uppercase tracking-widest">{user?.email || 'Identified_User'}</p>
           </div>
-          {mode === 'viewing' ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-              <div className="md:col-span-1">
-                <label htmlFor="profile-switcher" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Active_Operator</label>
-                <select id="profile-switcher" value={activeProfile.id} onChange={(e) => switchProfile(e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500">
-                  {profiles.map(p => (
-                    <option key={p.id} value={p.id}>{p.currentName || p.givenName}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="flex gap-3 md:col-span-2">
-                <button onClick={() => setMode('adding')} className="flex-1 px-6 py-4 rounded-2xl font-bold font-mono text-[10px] uppercase tracking-widest bg-purple-600/20 border border-purple-500/30 text-purple-400 hover:bg-purple-600 hover:text-white transition-all">Add_Profile</button>
-                <button onClick={handleDeleteProfile} disabled={profiles.length <= 1} className="flex-1 px-6 py-4 rounded-2xl font-bold font-mono text-[10px] uppercase tracking-widest bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-600 hover:text-white transition-all disabled:opacity-20 disabled:cursor-not-allowed">Delete_Profile</button>
-              </div>
-            </div>
-          ) : (
-            <AddProfileForm onSave={handleAddNewProfile} onCancel={() => setMode('viewing')} />
-          )}
+          <button
+            onClick={handleLogout}
+            className="px-8 py-3 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors font-mono text-xs uppercase tracking-widest"
+          >
+            Disconnect_Session
+          </button>
         </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
@@ -209,13 +127,13 @@ const ProfilePage: React.FC = () => {
                 <UserIcon className="w-5 h-5 text-purple-400" />
                 <span className="text-[10px] font-mono text-purple-400 uppercase tracking-[0.4em] font-bold">Personal_Details</span>
               </div>
-              <h3 className="text-2xl font-bold font-dm-sans text-white tracking-tight mb-8">
-                {displayProfile.currentName || displayProfile.givenName}
-              </h3>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="givenName" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Given_Name</label>
-                  <input type="text" id="givenName" value={displayProfile.givenName} onChange={(e) => handleProfileChange('givenName', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner" />
+                  <div className="relative">
+                    <input type="text" id="givenName" value={displayProfile.givenName} onChange={(e) => handleProfileChange('givenName', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner" />
+                  </div>
                 </div>
                 <div>
                   <label htmlFor="currentName" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Current_Name</label>
