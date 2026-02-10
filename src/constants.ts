@@ -176,6 +176,8 @@ export const NUMEROLOGY_MEANINGS: { [key: number]: { theme: string; description:
 export const SHOP_DECKS: Deck[] = [
   { id: 'default_tarot', name: 'Gridpunk Tarot', type: 'tarot', description: 'The standard issue cyber-arcana.', price: 0, cards: TAROT_DECK },
   { id: 'ancient_runes', name: 'Elder Futhark', type: 'runes', description: 'Ancestral signals from the deep past.', price: 0, cards: RUNE_DECK },
+  { id: 'cyber_oracle', name: 'Cyber-Oracle', type: 'oracle', description: 'Direct neural interface messages.', price: 15, cards: ORACLE_DECK },
+  { id: 'angel_light', name: 'Neon Seraphim', type: 'angel', description: 'High-frequency angelic guidance.', price: 10, cards: ANGEL_CARD_DECK },
 ];
 
 export const ELEMENT_COLORS: { [key in Element]: string } = { Fire: 'text-[#FF7A1A]', Earth: 'text-[#29C26A]', Air: 'text-[#21C7F2]', Water: 'text-[#6E7BFF]' };
