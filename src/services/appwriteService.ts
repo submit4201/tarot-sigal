@@ -64,7 +64,11 @@ export const loginWithOAuth = (provider) => {
 
 export const db = {
     // Profile
-    getProfile: async (userId) => {
+    getProfile: async (userId: string) => {
+        if (!userId || typeof userId !== 'string') {
+            console.warn("Skipping getProfile: userId is invalid", userId);
+            return null;
+        }
         try {
             const response = await databases.listDocuments(
                 DATABASE_ID,
