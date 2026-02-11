@@ -132,7 +132,7 @@ export const db = {
         );
     },
 
-    getJournalEntries: async (userId) => {
+    getJournalEntries: async (userId: string) => {
         if (!userId || typeof userId !== 'string') {
             console.warn("Skipping getJournalEntries: userId is invalid");
             return { documents: [] };
