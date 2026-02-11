@@ -9,9 +9,6 @@ const PROJECT_ID = import.meta.env.VITE_APPWRITE_PROJECT_ID;
  */
 async function callFunction(functionId: string, data: any) {
   try {
-    // Get current session to include auth token
-    const session = await account.get();
-    
     const response = await fetch(`${FUNCTION_ENDPOINT}/functions/${functionId}/executions`, {
       method: 'POST',
       headers: {

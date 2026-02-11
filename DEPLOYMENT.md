@@ -114,7 +114,7 @@ Create these collections in Appwrite Console → Databases → gridpunk-arcana:
 | type | String | Yes |
 | tier | String | Yes |
 | stripeSessionId | String | Yes |
-| amount | Float | Yes |
+| amount | Float | No |
 | status | String | Yes |
 | createdAt | String | Yes |
 
