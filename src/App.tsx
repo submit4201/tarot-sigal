@@ -207,10 +207,6 @@ const AppContent: React.FC = () => {
     );
   }
 
-  if (!activeProfile) {
-    return <OnboardingPage />;
-  }
-
   // * Track pages that have been visited to lazily mount them
   // ! Each page stays mounted after first visit to preserve local state
   const [visitedPages, setVisitedPages] = useState<Set<Page>>(new Set([activePage]));
@@ -224,6 +220,10 @@ const AppContent: React.FC = () => {
       return next;
     });
   }, [activePage]);
+
+  if (!activeProfile) {
+    return <OnboardingPage />;
+  }
 
   return (
     <div className="w-screen h-screen flex bg-[#030407] text-[#E0E6F1] overflow-hidden">
