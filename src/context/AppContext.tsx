@@ -117,11 +117,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       level: 1,
       xp: 0,
       stardust: 100, // Starter dust
-      decks: ['default_tarot', 'ancient_runes'],
-      achievements: [],
+      ownedDeckIds: ['default_tarot', 'ancient_runes'],
+      unlockedAchievements: [],
       isPremium: false,
-      subTier: 'free',
-      subExpiry: new Date().toISOString(),
+      subscriptionTier: 'free',
+      subscriptionExpiry: new Date().toISOString(),
     };
     const response = await db.createProfile(newProfile);
     setActiveProfile(response as unknown as UserProfile);
@@ -242,21 +242,21 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
     await updateActiveProfile({
       stardust: activeProfile.stardust - deck.price,
-      decks: [...activeProfile.decks, deck.id]
+      ownedDeckIds: [...activeProfile.ownedDeckIds, deck.id]
     });
   };
 
   const awardDeck = async (deckId: string) => {
-    if (!activeProfile || activeProfile.decks.includes(deckId)) return;
+    if (!activeProfile || activeProfile.ownedDeckIds.includes(deckId)) return;
     await updateActiveProfile({
-      decks: [...activeProfile.decks, deckId]
+      ownedDeckIds: [...activeProfile.ownedDeckIds, deckId]
     });
   };
 
   const unlockAchievement = async (id: AchievementID) => {
-    if (!activeProfile || activeProfile.achievements.includes(id)) return;
+    if (!activeProfile || activeProfile.unlockedAchievements.includes(id)) return;
     await updateActiveProfile({
-      achievements: [...activeProfile.achievements, id]
+      unlockedAchievements: [...activeProfile.unlockedAchievements, id]
     });
   };
 

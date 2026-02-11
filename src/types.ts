@@ -96,10 +96,10 @@ export interface UserProfile {
   level: number;
   xp: number;
   stardust: number;
-  decks: string[];
-  achievements: AchievementID[];
-  subTier: 'free' | 'premium' | 'vip';
-  subExpiry?: string;
+  ownedDeckIds: string[];
+  unlockedAchievements: AchievementID[];
+  subscriptionTier: 'free' | 'premium' | 'vip';
+  subscriptionExpiry?: string;
   isPremium: boolean;
 }
 
