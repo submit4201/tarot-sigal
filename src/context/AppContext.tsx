@@ -119,7 +119,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       stardust: 100, // Starter dust
       ownedDeckIds: ['default_tarot', 'ancient_runes'],
       unlockedAchievements: [],
-      isPremium: false
+      isPremium: false,
+      subscriptionTier: 'free',
+      subscriptionExpiry: null
     };
     const response = await db.createProfile(newProfile);
     setActiveProfile(response as unknown as UserProfile);

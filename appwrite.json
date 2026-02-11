@@ -1,0 +1,22 @@
+{
+    "projectId": "69477c330029f16459cd",
+    "projectName": "gridpunk-arcana",
+    "hosting": [
+        {
+            "target": "web",
+            "public": "dist",
+            "ignore": [
+                ".env",
+                ".git",
+                "node_modules",
+                ".env.local",
+                "src",
+                "landing",
+                "scripts"
+            ],
+            "commands": {
+                "build": "npm run build"
+            }
+        }
+    ]
+}

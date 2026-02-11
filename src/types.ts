@@ -96,8 +96,11 @@ export interface UserProfile {
   level: number;
   xp: number;
   stardust: number;
-  ownedDeckIds: string[];
-  unlockedAchievements: AchievementID[];
+  decks: string[];
+  achievements: AchievementID[];
+  subTier: 'free' | 'premium' | 'vip';
+  subExpiry?: string;
+  isPremium: boolean;
 }
 
 export interface CardReadingOutput {
@@ -118,14 +121,15 @@ export interface DailyInsights {
 
 export interface DailyDrawRecord {
   date: string; // YYYY-MM-DD
-  drawnCard: DrawnCard;
+  card: string; // Was cardName
+  isRev: boolean; // Was isReversed
   insights?: DailyInsights;
 }
 
 export interface SavedReading {
   id: string;
   date: string;
-  spreadType: SpreadType;
+  spread: SpreadType; // Was spreadType
   deckType: DeckType;
   deckId: string;
   positions: string[];
@@ -151,7 +155,7 @@ export interface JournalEntry {
   id: string;
   date: string;
   text: string;
-  linkedCard?: DrawnCard;
+  linkedCard?: string; // Storing card ID/Name string in DB? User said linkedCard.
 }
 
 export interface CosmicNumber {

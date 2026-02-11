@@ -1,4 +1,4 @@
-import { Client, Databases, ID } from 'node-appwrite';
+import { Client, Databases, ID, Permission, Role } from 'node-appwrite';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 const envPath = path.resolve(__dirname, '../.env');
 dotenv.config({ path: envPath });
 
-const ENDPOINT = process.env.VITE_APPWRITE_ENDPOINT || 'https://cloud.appwrite.io/v1';
+const ENDPOINT = process.env.VITE_APPWRITE_ENDPOINT || 'https://sfo.cloud.appwrite.io/v1';
 const PROJECT_ID = process.env.VITE_APPWRITE_PROJECT_ID;
 const DATABASE_ID = process.env.VITE_APPWRITE_DATABASE_ID || 'gridpunk-arcana';
 const API_KEY = process.env.APPWRITE_API_KEY;
@@ -74,15 +74,15 @@ const setup = async () => {
     await createAttribute(COLLECTIONS.PROFILES, 'isPremium', 'boolean', null, false, false);
     await createAttribute(COLLECTIONS.PROFILES, 'subscriptionTier', 'string', 20, false, 'free');
     await createAttribute(COLLECTIONS.PROFILES, 'subscriptionExpiry', 'string', 50, false);
-    await createAttribute(COLLECTIONS.PROFILES, 'ownedDeckIds', 'string', 50, false, null, true); // Array
-    await createAttribute(COLLECTIONS.PROFILES, 'unlockedAchievements', 'string', 50, false, null, true); // Array
+    await createAttribute(COLLECTIONS.PROFILES, 'ownedDeckIds', 'string', 255, false, null, true); // Array
+    await createAttribute(COLLECTIONS.PROFILES, 'unlockedAchievements', 'string', 255, false, null, true); // Array
 
     // Readings
     await createAttribute(COLLECTIONS.READINGS, 'userId', 'string', 36, true);
     await createAttribute(COLLECTIONS.READINGS, 'profileId', 'string', 36, false);
     await createAttribute(COLLECTIONS.READINGS, 'spreadType', 'string', 50, true);
     await createAttribute(COLLECTIONS.READINGS, 'question', 'string', 500, false);
-    await createAttribute(COLLECTIONS.READINGS, 'cards', 'string', 5000, true); // JSON string or array? Storing as big string for JSON is safer for complex objects, but array of strings for IDs is standard. Implementation uses JSON.stringify usually. Let's use string size 5000 to be safe for JSON.
+    await createAttribute(COLLECTIONS.READINGS, 'cards', 'string', 5000, true);
     await createAttribute(COLLECTIONS.READINGS, 'aiSummary', 'string', 10000, false);
     await createAttribute(COLLECTIONS.READINGS, 'notes', 'string', 5000, false);
     await createAttribute(COLLECTIONS.READINGS, 'createdAt', 'string', 50, true);
@@ -110,6 +110,42 @@ const setup = async () => {
     await createAttribute(COLLECTIONS.PURCHASES, 'status', 'string', 20, true);
     await createAttribute(COLLECTIONS.PURCHASES, 'createdAt', 'string', 50, true);
 
+    // 4. Create Indexes (Required for queries)
+    console.log('Creating Indexes...');
+    // Profiles: index on userId
+    await createIndex(COLLECTIONS.PROFILES, 'idx_profiles_user', 'key', ['userId'], ['ASC']);
+
+    // Readings: index on userId, createdAt
+    await createIndex(COLLECTIONS.READINGS, 'idx_readings_user', 'key', ['userId'], ['ASC']);
+    await createIndex(COLLECTIONS.READINGS, 'idx_readings_created', 'key', ['createdAt'], ['DESC']);
+
+    // Journal: index on userId, createdAt
+    await createIndex(COLLECTIONS.JOURNAL, 'idx_journal_user', 'key', ['userId'], ['ASC']);
+    await createIndex(COLLECTIONS.JOURNAL, 'idx_journal_created', 'key', ['createdAt'], ['DESC']);
+
+    // Daily Draws: index on userId, date
+    await createIndex(COLLECTIONS.DAILY_DRAWS, 'idx_daily_user', 'key', ['userId'], ['ASC']);
+    await createIndex(COLLECTIONS.DAILY_DRAWS, 'idx_daily_date', 'key', ['date'], ['DESC']);
+
+    // 5. Update Permissions (Allow Access)
+    console.log('Updating Collection Permissions...');
+
+    // Default Permissions: Users can read/write their own data
+    // We enable Document Security so users can only access their own documents (if set on doc creation)
+    // But for "create", we must allow 'users' (any authenticated user) at the collection level.
+    const defaultPermissions = [
+        Permission.read(Role.users()),
+        Permission.create(Role.users()),
+        Permission.update(Role.users()),
+        Permission.delete(Role.users())
+    ];
+
+    await updatePermissions(COLLECTIONS.PROFILES, defaultPermissions);
+    await updatePermissions(COLLECTIONS.READINGS, defaultPermissions);
+    await updatePermissions(COLLECTIONS.JOURNAL, defaultPermissions);
+    await updatePermissions(COLLECTIONS.DAILY_DRAWS, defaultPermissions);
+    await updatePermissions(COLLECTIONS.PURCHASES, defaultPermissions);
+
     console.log('Setup Complete!');
 };
 
@@ -120,7 +156,13 @@ async function createCollection(id, name) {
     } catch (error) {
         if (error.code === 404) {
             console.log(`Creating collection '${name}' (${id})...`);
-            await db.createCollection(DATABASE_ID, id, name);
+            // Enabled document security by default
+            await db.createCollection(DATABASE_ID, id, name, [
+                Permission.read(Role.users()),
+                Permission.create(Role.users()),
+                Permission.update(Role.users()),
+                Permission.delete(Role.users())
+            ], true);
             console.log(`Collection '${name}' created.`);
         } else {
             throw error;
@@ -129,8 +171,6 @@ async function createCollection(id, name) {
 }
 
 async function createAttribute(collectionId, key, type, size, required, ...args) {
-    // Check if attribute exists (simplified: just try create and ignore 409 conflict)
-    // Actually, listing attributes is safer, but ignoring 409 is standard for init scripts.
     try {
         if (type === 'string') {
             await db.createStringAttribute(DATABASE_ID, collectionId, key, size, required, ...args);
@@ -140,7 +180,6 @@ async function createAttribute(collectionId, key, type, size, required, ...args)
             await db.createBooleanAttribute(DATABASE_ID, collectionId, key, required, ...args);
         }
         console.log(`Attribute '${key}' created in '${collectionId}'.`);
-        // Wait a bit because attribute creation is async in Appwrite backend
         await new Promise(resolve => setTimeout(resolve, 500));
     } catch (error) {
         if (error.code === 409) {
@@ -148,6 +187,30 @@ async function createAttribute(collectionId, key, type, size, required, ...args)
         } else {
             console.error(`Error creating attribute '${key}' in '${collectionId}':`, error.message);
         }
+    }
+}
+
+async function createIndex(collectionId, key, type, attributes, orders) {
+    try {
+        await db.createIndex(DATABASE_ID, collectionId, key, type, attributes, orders);
+        console.log(`Index '${key}' created in '${collectionId}'.`);
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Indexes take time
+    } catch (error) {
+        if (error.code === 409) {
+            console.log(`Index '${key}' already exists in '${collectionId}'.`);
+        } else {
+            console.error(`Error creating index '${key}' in '${collectionId}':`, error.message);
+        }
+    }
+}
+
+async function updatePermissions(collectionId, permissions) {
+    try {
+        // Update collection to enable document security and set permissions
+        await db.updateCollection(DATABASE_ID, collectionId, undefined, permissions, true);
+        console.log(`Permissions updated for '${collectionId}'.`);
+    } catch (error) {
+        console.error(`Error updating permissions for '${collectionId}':`, error.message);
     }
 }
 
