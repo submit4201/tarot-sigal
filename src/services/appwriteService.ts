@@ -66,7 +66,7 @@ export const db = {
     // Profile
     getProfile: async (userId: string) => {
         if (!userId || typeof userId !== 'string') {
-            console.warn("Skipping getProfile: userId is invalid", userId);
+            console.warn("Skipping getProfile: userId is invalid");
             return null;
         }
         try {
@@ -112,7 +112,7 @@ export const db = {
 
     getReadings: async (userId) => {
         if (!userId || typeof userId !== 'string') {
-            console.warn("Skipping getReadings: userId is invalid", userId);
+            console.warn("Skipping getReadings: userId is invalid");
             return { documents: [] };
         }
         return await databases.listDocuments(
@@ -134,7 +134,7 @@ export const db = {
 
     getJournalEntries: async (userId) => {
         if (!userId || typeof userId !== 'string') {
-            console.warn("Skipping getJournalEntries: userId is invalid", userId);
+            console.warn("Skipping getJournalEntries: userId is invalid");
             return { documents: [] };
         }
         return await databases.listDocuments(
@@ -156,7 +156,7 @@ export const db = {
 
     getDailyHistory: async (userId) => {
         if (!userId || typeof userId !== 'string') {
-            console.warn("Skipping getDailyHistory: userId is invalid", userId);
+            console.warn("Skipping getDailyHistory: userId is invalid");
             return { documents: [] };
         }
         return await databases.listDocuments(
