@@ -8,6 +8,7 @@ import ProfilePage from './pages/ProfilePage';
 import OnboardingPage from './pages/OnboardingPage';
 import GuidePage from './pages/GuidePage';
 import ShopPage from './pages/ShopPage';
+import PricingPage from './pages/PricingPage';
 import ErrorBoundary from './components/ErrorBoundary';
 import { HomeIcon, CardsIcon, JournalIcon, BarChartIcon, UserIcon, CompassIcon, ShoppingCartIcon, SparklesIcon, ZapIcon } from './components/icons';
 import { AppProvider, useApp } from './context/AppContext';
@@ -20,7 +21,7 @@ import LevelUpModal from './components/LevelUpModal';
 import XpNotification from './components/XpNotification';
 
 // * Valid page names for hash routing
-const VALID_PAGES: Page[] = ['Daily', 'Readings', 'Journal', 'Guide', 'Shop', 'Progress', 'Profile', 'Onboarding', 'Numerology', 'Sigil'];
+const VALID_PAGES: Page[] = ['Daily', 'Readings', 'Journal', 'Guide', 'Shop', 'Pricing', 'Progress', 'Profile', 'Onboarding', 'Numerology', 'Sigil'];
 
 /**
  * getPageFromHash — Reads `window.location.hash` and maps it to a valid Page.
@@ -135,6 +136,7 @@ const pageComponents: { [key in Page]: React.ComponentType<any> } = {
   Journal: JournalPage,
   Guide: GuidePage,
   Shop: ShopPage,
+  Pricing: PricingPage,
   Progress: ProgressPage,
   Profile: ProfilePage,
   Onboarding: OnboardingPage,
