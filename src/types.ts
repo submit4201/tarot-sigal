@@ -1,7 +1,7 @@
 export type Element = 'Fire' | 'Earth' | 'Air' | 'Water';
 export type Arcana = 'Major' | 'Wands' | 'Cups' | 'Swords' | 'Pentacles';
 export type DeckType = 'tarot' | 'runes' | 'oracle' | 'angel';
-export type Page = 'Daily' | 'Readings' | 'Journal' | 'Progress' | 'Profile' | 'Onboarding' | 'Guide' | 'Shop' | 'Numerology' | 'Sigil';
+export type Page = 'Daily' | 'Readings' | 'Journal' | 'Progress' | 'Profile' | 'Onboarding' | 'Guide' | 'Shop' | 'Pricing' | 'Numerology' | 'Sigil';
 export type AstrologicalSign = 'Aries' | 'Taurus' | 'Gemini' | 'Cancer' | 'Leo' | 'Virgo' | 'Libra' | 'Scorpio' | 'Sagittarius' | 'Capricorn' | 'Aquarius' | 'Pisces' | 'None';
 
 export interface DivinationCard {

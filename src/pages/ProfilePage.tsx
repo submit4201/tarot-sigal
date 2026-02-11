@@ -260,11 +260,35 @@ const ProfilePage: React.FC = () => {
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-amber-500/30 to-transparent"></div>
               <div className="flex items-center gap-3 mb-4">
                 <SparklesIcon className="w-5 h-5 text-amber-500" />
-                <span className="text-[10px] font-mono text-amber-500 uppercase tracking-[0.4em] font-bold">Gridpunk_Premium</span>
+                <span className="text-[10px] font-mono text-amber-500 uppercase tracking-[0.4em] font-bold">Subscription_Status</span>
               </div>
-              <p className="text-sm text-white/40 mb-6 leading-relaxed">{isPremium ? "You have unlocked all features. Thank you for your support!" : "Unlock advanced features, unlimited readings, and deeper AI insights."}</p>
-              <button onClick={() => setIsPremium(!isPremium)} className="w-full px-8 py-4 rounded-2xl font-bold font-mono text-[10px] uppercase tracking-widest bg-amber-600/20 border border-amber-500/30 text-amber-400 hover:bg-amber-600 hover:text-white transition-all shadow-glow">
-                {isPremium ? "Disable_Premium" : "Activate_Premium (Dev)"}
+              
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-white/60">Current Plan:</span>
+                  <span className="text-white font-bold capitalize">{displayProfile.subscriptionTier || 'free'}</span>
+                </div>
+                {isPremium && displayProfile.subscriptionExpiry && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-white/60">Expires:</span>
+                    <span className="text-white/80 text-sm">
+                      {new Date(displayProfile.subscriptionExpiry).toLocaleDateString()}
+                    </span>
+                  </div>
+                )}
+              </div>
+              
+              <p className="text-sm text-white/40 mb-6 leading-relaxed">
+                {isPremium 
+                  ? "You have unlocked premium features. Thank you for your support!" 
+                  : "Unlock advanced features, unlimited readings, and deeper AI insights."}
+              </p>
+              
+              <button 
+                onClick={() => setPage('Pricing')} 
+                className="w-full px-8 py-4 rounded-2xl font-bold font-mono text-[10px] uppercase tracking-widest bg-amber-600/20 border border-amber-500/30 text-amber-400 hover:bg-amber-600 hover:text-white transition-all shadow-glow"
+              >
+                {isPremium ? "Manage_Subscription" : "Upgrade_Now"}
               </button>
             </section>
           </div>

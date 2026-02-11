@@ -40,7 +40,7 @@ const ShopPage: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {SHOP_DECKS.map(deck => {
-                    const isOwned = decks.includes(deck.id);
+                    const isOwned = ownedDeckIds.includes(deck.id);
                     const canAfford = stardust >= deck.price;
 
                     return (
@@ -78,6 +78,58 @@ const ShopPage: React.FC = () => {
                     );
                 })}
             </div>
+
+            {/* Stardust Packs Section */}
+            <div className="mt-20">
+                <div className="text-center mb-12">
+                    <h2 className="text-4xl font-bold font-dm-sans text-white tracking-tighter mb-3">Stardust Packs</h2>
+                    <p className="text-lg text-white/40">One-time purchases for instant Stardust</p>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+                    {[
+                        { name: 'Spark', price: 0.99, stardust: 250, color: 'purple' },
+                        { name: 'Ember', price: 2.99, stardust: 1000, color: 'purple' },
+                        { name: 'Supernova', price: 4.99, stardust: 2500, color: 'amber', popular: true },
+                        { name: 'Cosmic Rift', price: 9.99, stardust: 7500, color: 'amber', bestValue: true }
+                    ].map(pack => (
+                        <div key={pack.name} className={`glass-panel p-6 rounded-2xl border-${pack.color}-500/20 bg-${pack.color}-500/[0.02] text-center relative overflow-hidden group hover:border-${pack.color}-500/40 transition-all`}>
+                            {pack.popular && (
+                                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-amber-500 text-black px-3 py-1 rounded-full text-[8px] font-mono uppercase font-bold">
+                                    Popular
+                                </div>
+                            )}
+                            {pack.bestValue && (
+                                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-purple-500 text-white px-3 py-1 rounded-full text-[8px] font-mono uppercase font-bold">
+                                    Best Value
+                                </div>
+                            )}
+                            <div className="font-mono text-[10px] text-amber-400 uppercase tracking-widest mb-2">{pack.name}</div>
+                            <div className="text-3xl font-bold text-white mb-1">${pack.price}</div>
+                            <div className="text-2xl font-bold text-amber-400 mb-4 flex items-center justify-center gap-1">
+                                <SparklesIcon className="w-5 h-5" />
+                                {pack.stardust.toLocaleString()}
+                            </div>
+                            <button
+                                onClick={() => alert(`Stripe integration coming soon!\n\n${pack.name} Pack - $${pack.price}\n${pack.stardust} Stardust\n\nThis will integrate with Stripe Checkout through Appwrite Functions.`)}
+                                className={`w-full px-4 py-3 rounded-xl font-bold font-mono text-[9px] uppercase tracking-widest bg-${pack.color}-600/20 border border-${pack.color}-500/30 text-${pack.color}-400 hover:bg-${pack.color}-600 hover:text-white transition-all`}
+                            >
+                                Purchase
+                            </button>
+                        </div>
+                    ))}
+                </div>
+
+                {activeProfile.isPremium && (
+                    <div className="mt-8 text-center">
+                        <div className="inline-flex items-center gap-2 px-6 py-3 bg-purple-500/10 border border-purple-500/30 rounded-xl">
+                            <SparklesIcon className="w-4 h-4 text-purple-400" />
+                            <span className="text-sm font-bold text-purple-400">Premium subscribers get 2x Stardust on all purchases!</span>
+                        </div>
+                    </div>
+                )}
+            </div>
+
             <div className="mt-16 text-center glass-panel p-10 rounded-[2.5rem] border-white/5 bg-white/[0.01]">
                 <h3 className="text-xl font-bold text-white font-dm-sans mb-3">How to Earn Stardust?</h3>
                 <p className="text-sm text-white/40 max-w-md mx-auto leading-relaxed">
