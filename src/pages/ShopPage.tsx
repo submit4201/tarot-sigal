@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { SHOP_DECKS } from '../constants';
 import { SparklesIcon, LayersIcon } from '../components/icons';
+import { createCheckoutSession } from '../services/stripeService';
 
 /**
  * ShopPage — Stardust-powered deck marketplace.
@@ -9,6 +10,17 @@ import { SparklesIcon, LayersIcon } from '../components/icons';
  */
 const ShopPage: React.FC = () => {
     const { activeProfile, purchaseDeck, setPage } = useApp();
+    const [isPurchasing, setIsPurchasing] = useState(false);
+
+    const handleStardustPurchase = async (packTier: string) => {
+        setIsPurchasing(true);
+        try {
+            await createCheckoutSession('stardust', packTier);
+        } catch (error) {
+            alert(`Failed to start checkout: ${error.message}`);
+            setIsPurchasing(false);
+        }
+    };
 
     if (!activeProfile) {
         return <div className="p-8 text-center text-text-muted animate-pulse font-mono">Initializing_Shop_Data...</div>;
@@ -123,10 +135,11 @@ const ShopPage: React.FC = () => {
                                     {pack.stardust.toLocaleString()}
                                 </div>
                                 <button
-                                    onClick={() => alert(`Stripe integration coming soon!\n\n${pack.name} Pack - $${pack.price}\n${pack.stardust} Stardust\n\nThis will integrate with Stripe Checkout through Appwrite Functions.`)}
-                                    className={`w-full px-4 py-3 rounded-xl font-bold font-mono text-[9px] uppercase tracking-widest border hover:text-white transition-all ${colorClasses.button}`}
+                                    onClick={() => handleStardustPurchase(pack.name.toLowerCase().replace(' ', '_'))}
+                                    disabled={isPurchasing}
+                                    className={`w-full px-4 py-3 rounded-xl font-bold font-mono text-[9px] uppercase tracking-widest border hover:text-white transition-all ${colorClasses.button} disabled:opacity-50 disabled:cursor-not-allowed`}
                                 >
-                                    Purchase
+                                    {isPurchasing ? 'Processing...' : 'Purchase'}
                                 </button>
                             </div>
                         );

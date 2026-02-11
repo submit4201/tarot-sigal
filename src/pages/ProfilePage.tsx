@@ -9,7 +9,7 @@ import { SparklesIcon, SlidersIcon, UserIcon, LayersIcon } from '../components/i
 import { SHOP_DECKS } from '../constants';
 
 const ProfilePage: React.FC = () => {
-  const { isPremium, setIsPremium, activeProfile, updateActiveProfile, setPage } = useApp();
+  const { isPremium, activeProfile, updateActiveProfile, setPage } = useApp();
   const { logout, user } = useAuth();
 
   // ! Debounced profile saving — prevents writing to DB on every keystroke

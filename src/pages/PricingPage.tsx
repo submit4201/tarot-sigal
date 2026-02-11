@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { SparklesIcon, ZapIcon, CrownIcon } from '../components/icons';
+import { createCheckoutSession } from '../services/stripeService';
 
 interface PricingTier {
   name: string;
   price: string;
-  priceValue: number;
   period: string;
   description: string;
   features: string[];
@@ -18,7 +18,6 @@ const tiers: PricingTier[] = [
   {
     name: 'Initiate',
     price: '$0',
-    priceValue: 0,
     period: 'forever',
     description: 'For casual observers',
     tier: 'free',
@@ -34,7 +33,6 @@ const tiers: PricingTier[] = [
   {
     name: 'Seeker',
     price: '$8.99',
-    priceValue: 8.99,
     period: 'per month',
     description: 'For serious practitioners',
     tier: 'seeker',
@@ -52,7 +50,6 @@ const tiers: PricingTier[] = [
   {
     name: 'Oracle',
     price: '$14.99',
-    priceValue: 14.99,
     period: 'per month',
     description: 'For the fully awakened',
     tier: 'oracle',
@@ -70,14 +67,20 @@ const tiers: PricingTier[] = [
 
 const PricingPage: React.FC = () => {
   const { activeProfile, setPage } = useApp();
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleSubscribe = (tier: PricingTier) => {
+  const handleSubscribe = async (tier: PricingTier) => {
     if (tier.tier === 'free') {
       return;
     }
     
-    // TODO: Integrate with Stripe Checkout via Appwrite Function
-    alert(`Subscription flow coming soon!\n\nYou selected: ${tier.name} - ${tier.price}/${tier.period}\n\nThis will integrate with Stripe Checkout through Appwrite Functions.`);
+    setIsProcessing(true);
+    try {
+      await createCheckoutSession('subscription', tier.tier);
+    } catch (error) {
+      alert(`Failed to start checkout: ${error.message}`);
+      setIsProcessing(false);
+    }
   };
 
   const currentTier = activeProfile?.subscriptionTier || 'free';
@@ -147,16 +150,16 @@ const PricingPage: React.FC = () => {
 
               <button
                 onClick={() => handleSubscribe(tier)}
-                disabled={isCurrent}
+                disabled={isCurrent || isProcessing}
                 className={`w-full py-4 rounded-2xl font-bold font-mono text-[10px] uppercase tracking-widest transition-all ${
-                  isCurrent
+                  isCurrent || isProcessing
                     ? 'bg-white/5 border border-white/10 text-white/30 cursor-not-allowed'
                     : tier.highlighted
                     ? 'bg-purple-600 border border-purple-500 text-white hover:bg-purple-500 shadow-[0_0_20px_rgba(147,51,234,0.3)]'
                     : 'bg-purple-600/20 border border-purple-500/30 text-purple-400 hover:bg-purple-600 hover:text-white'
                 }`}
               >
-                {isCurrent ? 'Current Plan' : tier.cta}
+                {isProcessing ? 'Processing...' : isCurrent ? 'Current Plan' : tier.cta}
               </button>
             </div>
           );

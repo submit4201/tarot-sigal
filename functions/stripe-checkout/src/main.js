@@ -24,11 +24,23 @@ const PRICE_IDS = {
   cosmic_rift: process.env.STRIPE_PRICE_COSMIC_RIFT || '',
 };
 
+// Valid tiers by type
+const SUBSCRIPTION_TIERS = ['seeker', 'oracle'];
+const STARDUST_TIERS = ['spark', 'ember', 'supernova', 'cosmic_rift'];
+
 export default async ({ req, res, log, error }) => {
+  // Get allowed origins from environment or use function domain
+  const allowedOrigins = process.env.ALLOWED_ORIGINS 
+    ? process.env.ALLOWED_ORIGINS.split(',')
+    : ['https://sigil.app.cultofthefork.tech'];
+  
+  const origin = req.headers.origin || req.headers.referer;
+  const isAllowedOrigin = allowedOrigins.some(allowed => origin && origin.includes(allowed));
+  
   const headers = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': isAllowedOrigin ? origin : allowedOrigins[0],
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Headers': 'Content-Type, X-Appwrite-Project',
     'Content-Type': 'application/json',
   };
 
@@ -38,6 +50,12 @@ export default async ({ req, res, log, error }) => {
 
   if (req.method !== 'POST') {
     return res.json({ error: 'Method not allowed' }, 405, headers);
+  }
+
+  // Verify origin
+  if (!isAllowedOrigin) {
+    error(`Unauthorized origin: ${origin}`);
+    return res.json({ error: 'Unauthorized origin' }, 403, headers);
   }
 
   try {
@@ -57,6 +75,16 @@ export default async ({ req, res, log, error }) => {
     if (!['subscription', 'stardust'].includes(type)) {
       return res.json(
         { error: 'Invalid type. Must be "subscription" or "stardust"' },
+        400,
+        headers
+      );
+    }
+
+    // Validate tier against type
+    const validTiers = type === 'subscription' ? SUBSCRIPTION_TIERS : STARDUST_TIERS;
+    if (!validTiers.includes(tier)) {
+      return res.json(
+        { error: `Invalid tier "${tier}" for type "${type}". Valid tiers: ${validTiers.join(', ')}` },
         400,
         headers
       );
@@ -85,7 +113,7 @@ export default async ({ req, res, log, error }) => {
     // Create checkout session
     const mode = type === 'subscription' ? 'subscription' : 'payment';
     
-    const session = await stripe.checkout.sessions.create({
+    const sessionConfig = {
       mode,
       line_items: [{
         price: priceId,
@@ -99,7 +127,19 @@ export default async ({ req, res, log, error }) => {
         type,
         tier,
       },
-    });
+    };
+
+    // For subscriptions, also set metadata on the subscription object
+    if (mode === 'subscription') {
+      sessionConfig.subscription_data = {
+        metadata: {
+          userId,
+          tier,
+        },
+      };
+    }
+    
+    const session = await stripe.checkout.sessions.create(sessionConfig);
 
     // Record pending purchase in database
     const client = new Client()
@@ -119,7 +159,7 @@ export default async ({ req, res, log, error }) => {
         type,
         tier,
         stripeSessionId: session.id,
-        amount: session.amount_total / 100, // Convert from cents
+        amount: session.amount_total != null ? session.amount_total / 100 : null, // Convert from cents when available
         status: 'pending',
         createdAt: new Date().toISOString(),
       }

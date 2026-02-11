@@ -74,11 +74,30 @@ export default async ({ req, res, log, error }) => {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object;
+
+        // Ensure required metadata is present before processing
+        if (
+          !session.metadata ||
+          !session.metadata.userId ||
+          !session.metadata.type ||
+          !session.metadata.tier
+        ) {
+          error(
+            `checkout.session.completed missing required metadata: ` +
+            JSON.stringify(session.metadata || null)
+          );
+          return res.json(
+            { error: 'Missing required metadata on checkout session' },
+            400,
+            headers
+          );
+        }
+        
         const { userId, type, tier } = session.metadata;
 
         log(`Processing completed checkout for user ${userId}`);
 
-        // Update purchase record
+        // Update purchase record and check for idempotency
         const purchases = await databases.listDocuments(
           databaseId,
           'purchases',
@@ -86,10 +105,19 @@ export default async ({ req, res, log, error }) => {
         );
 
         if (purchases.documents.length > 0) {
+          const purchase = purchases.documents[0];
+          
+          // Check if already processed (idempotency)
+          if (purchase.status === 'completed') {
+            log(`Checkout session ${session.id} already processed, skipping`);
+            return res.json({ received: true, skipped: 'already_processed' }, 200, headers);
+          }
+          
+          // Mark as completed
           await databases.updateDocument(
             databaseId,
             'purchases',
-            purchases.documents[0].$id,
+            purchase.$id,
             { status: 'completed' }
           );
         }
@@ -109,9 +137,26 @@ export default async ({ req, res, log, error }) => {
         const profile = profiles.documents[0];
 
         if (type === 'subscription') {
-          // Update subscription - calculate expiry 30 days from now
-          const expiryDate = new Date();
-          expiryDate.setDate(expiryDate.getDate() + 30); // Add 30 days instead of using setMonth
+          // Get subscription details from Stripe to use actual billing period
+          let subscriptionExpiry;
+          
+          if (session.subscription) {
+            try {
+              const subscription = await stripe.subscriptions.retrieve(session.subscription);
+              subscriptionExpiry = new Date(subscription.current_period_end * 1000).toISOString();
+            } catch (err) {
+              error(`Failed to fetch subscription details: ${err.message}`);
+              // Fallback to 30 days
+              const fallbackDate = new Date();
+              fallbackDate.setDate(fallbackDate.getDate() + 30);
+              subscriptionExpiry = fallbackDate.toISOString();
+            }
+          } else {
+            // Fallback to 30 days if no subscription ID
+            const fallbackDate = new Date();
+            fallbackDate.setDate(fallbackDate.getDate() + 30);
+            subscriptionExpiry = fallbackDate.toISOString();
+          }
 
           await databases.updateDocument(
             databaseId,
@@ -120,11 +165,11 @@ export default async ({ req, res, log, error }) => {
             {
               isPremium: true,
               subscriptionTier: tier,
-              subscriptionExpiry: expiryDate.toISOString(),
+              subscriptionExpiry,
             }
           );
 
-          log(`Updated subscription for user ${userId} to ${tier}`);
+          log(`Updated subscription for user ${userId} to ${tier}, expires ${subscriptionExpiry}`);
 
         } else if (type === 'stardust') {
           // Award Stardust
@@ -152,7 +197,10 @@ export default async ({ req, res, log, error }) => {
         const subscription = event.data.object;
         const userId = subscription.metadata?.userId;
 
-        if (!userId) break;
+        if (!userId) {
+          log(`Subscription event missing userId metadata, skipping`);
+          break;
+        }
 
         // Get user profile
         const profiles = await databases.listDocuments(
@@ -161,10 +209,18 @@ export default async ({ req, res, log, error }) => {
           [Query.equal('userId', userId)]
         );
 
-        if (profiles.documents.length === 0) break;
+        if (profiles.documents.length === 0) {
+          log(`User profile not found for userId: ${userId}`);
+          break;
+        }
 
         const profile = profiles.documents[0];
         const isActive = subscription.status === 'active';
+        
+        // Use Stripe's current_period_end for subscription expiry
+        const subscriptionExpiry = subscription.current_period_end 
+          ? new Date(subscription.current_period_end * 1000).toISOString()
+          : new Date().toISOString();
 
         await databases.updateDocument(
           databaseId,
@@ -172,11 +228,12 @@ export default async ({ req, res, log, error }) => {
           profile.$id,
           {
             isPremium: isActive,
-            subscriptionTier: isActive ? subscription.metadata?.tier || 'free' : 'free',
+            subscriptionTier: isActive ? (subscription.metadata?.tier || 'seeker') : 'free',
+            subscriptionExpiry,
           }
         );
 
-        log(`Updated subscription status for user ${userId}: ${isActive ? 'active' : 'inactive'}`);
+        log(`Updated subscription status for user ${userId}: ${isActive ? 'active' : 'inactive'}, expires: ${subscriptionExpiry}`);
         break;
       }
 

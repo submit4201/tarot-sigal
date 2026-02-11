@@ -1,5 +1,3 @@
-import { Client } from 'node-appwrite';
-
 /**
  * Gemini Proxy Function
  * 
@@ -10,14 +8,23 @@ import { Client } from 'node-appwrite';
  * - GEMINI_API_KEY: Your Google Gemini API key
  * - APPWRITE_FUNCTION_PROJECT_ID: Auto-provided by Appwrite
  * - APPWRITE_FUNCTION_API_KEY: Auto-provided by Appwrite
+ * - ALLOWED_ORIGINS: Comma-separated list of allowed origins (optional, defaults to function domain)
  */
 
 export default async ({ req, res, log, error }) => {
+  // Get allowed origins from environment or use function domain
+  const allowedOrigins = process.env.ALLOWED_ORIGINS 
+    ? process.env.ALLOWED_ORIGINS.split(',')
+    : ['https://sigil.app.cultofthefork.tech'];
+  
+  const origin = req.headers.origin || req.headers.referer;
+  const isAllowedOrigin = allowedOrigins.some(allowed => origin && origin.includes(allowed));
+  
   // CORS headers
   const headers = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': isAllowedOrigin ? origin : allowedOrigins[0],
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, X-Appwrite-Project',
     'Content-Type': 'application/json',
   };
 
@@ -31,6 +38,16 @@ export default async ({ req, res, log, error }) => {
     return res.json(
       { error: 'Method not allowed. Use POST.' },
       405,
+      headers
+    );
+  }
+
+  // Verify origin
+  if (!isAllowedOrigin) {
+    error(`Unauthorized origin: ${origin}`);
+    return res.json(
+      { error: 'Unauthorized origin' },
+      403,
       headers
     );
   }

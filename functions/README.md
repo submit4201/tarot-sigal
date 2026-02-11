@@ -64,7 +64,7 @@ This directory contains serverless functions for Gridpunk Arcana.
 }
 ```
 
-**Note:** You must configure Stripe Price IDs in the function code (PRICE_IDS constant).
+**Note:** Stripe Price IDs are configured via the `STRIPE_PRICE_*` environment variables listed above; you do not need to edit the source code to change them. The function validates that the tier matches the type (subscriptions: seeker/oracle; stardust: spark/ember/supernova/cosmic_rift).
 
 ### 3. stripe-webhook
 **Purpose:** Handles Stripe webhook events to update user subscriptions and award Stardust.

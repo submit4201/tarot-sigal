@@ -305,11 +305,16 @@ Point your domains to Appwrite:
 VITE_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
 VITE_APPWRITE_PROJECT_ID=69477c330029f16459cd
 VITE_APPWRITE_DATABASE_ID=gridpunk-arcana
+
+# Appwrite Function IDs (replace with actual IDs from Appwrite Console after deployment)
+VITE_STRIPE_CHECKOUT_FUNCTION_ID=your-stripe-checkout-function-id
+VITE_GEMINI_PROXY_FUNCTION_ID=your-gemini-proxy-function-id
 ```
 
 ### Function: gemini-proxy
 ```
 GEMINI_API_KEY=your_key
+ALLOWED_ORIGINS=https://sigil.app.cultofthefork.tech
 ```
 
 ### Function: stripe-checkout
@@ -324,6 +329,7 @@ STRIPE_PRICE_COSMIC_RIFT=price_xxx
 DATABASE_ID=gridpunk-arcana
 SUCCESS_URL=https://sigil.app.cultofthefork.tech?payment=success
 CANCEL_URL=https://sigil.app.cultofthefork.tech?payment=cancelled
+ALLOWED_ORIGINS=https://sigil.app.cultofthefork.tech
 ```
 
 ### Function: stripe-webhook
