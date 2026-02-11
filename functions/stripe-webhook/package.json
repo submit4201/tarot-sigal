@@ -1,0 +1,14 @@
+{
+  "name": "stripe-webhook",
+  "version": "1.0.0",
+  "description": "Handles Stripe webhook events for payment processing",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"No tests specified\""
+  },
+  "dependencies": {
+    "node-appwrite": "^22.0.0",
+    "stripe": "^14.0.0"
+  }
+}
