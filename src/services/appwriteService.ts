@@ -110,7 +110,7 @@ export const db = {
         );
     },
 
-    getReadings: async (userId) => {
+    getReadings: async (userId: string) => {
         if (!userId || typeof userId !== 'string') {
             console.warn("Skipping getReadings: userId is invalid");
             return { documents: [] };
@@ -154,7 +154,7 @@ export const db = {
         );
     },
 
-    getDailyHistory: async (userId) => {
+    getDailyHistory: async (userId: string) => {
         if (!userId || typeof userId !== 'string') {
             console.warn("Skipping getDailyHistory: userId is invalid");
             return { documents: [] };
