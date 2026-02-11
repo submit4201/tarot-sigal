@@ -66,7 +66,7 @@ export const db = {
     // Profile
     getProfile: async (userId: string) => {
         if (!userId || typeof userId !== 'string') {
-            console.warn("Skipping getProfile: userId is invalid", userId);
+            console.warn("Skipping getProfile: userId is invalid");
             return null;
         }
         try {
