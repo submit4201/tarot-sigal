@@ -3,6 +3,9 @@ import { useApp } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
 import { UserProfile } from '../types';
 import { getSignFromDate } from '../services/astroService';
+import { GlassPanel } from '../components/ui/GlassPanel';
+import { CyberButton } from '../components/ui/CyberButton';
+import { CyberInput } from '../components/ui/CyberInput';
 
 const initialFormData: Omit<UserProfile, 'id' | 'level' | 'xp' | 'unlockedAchievements' | 'stardust' | 'ownedDeckIds' | 'subscriptionTier' | 'subscriptionExpiry' | 'isPremium'> = {
   givenName: '',
@@ -50,7 +53,7 @@ const OnboardingPage: React.FC = () => {
 
   // --- Wizard Handlers ---
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
     setFormData(prev => {
       const updatedData = { ...prev, [id]: value };
@@ -85,74 +88,72 @@ const OnboardingPage: React.FC = () => {
   // 1. Auth Form (Login / Signup)
   if (!user) {
     return (
-      <div className="w-screen h-screen bg-[#0B0C10] text-[#E0E6F1] flex flex-col items-center justify-center p-4">
-        <div className="w-full max-w-md bg-[#111218] p-8 rounded-3xl border border-[#232533] shadow-2xl relative overflow-hidden">
-          <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none"></div>
+      <div className="w-screen h-screen bg-void text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none"></div>
+        <div className="noise-bg"></div>
 
-          <h2 className="text-3xl font-bold font-dm-sans text-white mb-6 tracking-tighter text-center">
-            {authMode === 'login' ? 'Jack In' : 'New Identity'}
+        <GlassPanel className="w-full max-w-md p-8 relative overflow-hidden animate-fade-in-up">
+          <h2 className="text-4xl font-bold font-display text-white mb-8 tracking-tighter text-center neon-glow">
+            {authMode === 'login' ? 'JACK IN' : 'INITIATE'}
           </h2>
 
           {authError && (
-            <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-3 rounded-lg text-sm mb-4">
-              {authError}
+            <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-4 rounded-xl text-sm mb-6 font-mono">
+              //! ERROR: {authError}
             </div>
           )}
 
-          <form onSubmit={handleAuthSubmit} className="space-y-4">
+          <form onSubmit={handleAuthSubmit} className="space-y-6">
             {authMode === 'signup' && (
-              <div>
-                <label className="block text-xs font-mono text-white/40 uppercase tracking-widest mb-1">Operator Name</label>
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={e => setFullName(e.target.value)}
-                  className="w-full p-3 bg-black/40 border border-white/10 rounded-xl focus:border-purple-500 transition-colors"
-                  required
-                />
-              </div>
+              <CyberInput
+                label="Operator Name"
+                type="text"
+                value={fullName}
+                onChange={e => setFullName(e.target.value)}
+                required
+              />
             )}
 
-            <div>
-              <label className="block text-xs font-mono text-white/40 uppercase tracking-widest mb-1">Email_Address</label>
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                className="w-full p-3 bg-black/40 border border-white/10 rounded-xl focus:border-purple-500 transition-colors"
-                required
-              />
-            </div>
+            <CyberInput
+              label="Email_Address"
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+            />
 
-            <div>
-              <label className="block text-xs font-mono text-white/40 uppercase tracking-widest mb-1">Passcode</label>
-              <input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                className="w-full p-3 bg-black/40 border border-white/10 rounded-xl focus:border-purple-500 transition-colors"
-                required
-              />
-            </div>
+            <CyberInput
+              label="Passcode_Sequence"
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
 
-            <button
+            <CyberButton
               type="submit"
-              disabled={authLoading}
-              className="w-full py-4 rounded-xl font-bold bg-purple-600 hover:bg-purple-500 text-white transition-all shadow-[0_0_20px_rgba(147,51,234,0.3)] disabled:opacity-50"
+              isLoading={authLoading}
+              className="w-full"
+              variant="primary"
             >
-              {authLoading ? 'Authenticating...' : (authMode === 'login' ? 'Connect' : 'Initialize')}
-            </button>
+              {authMode === 'login' ? 'Establish Link' : 'Create Identity'}
+            </CyberButton>
           </form>
 
-          <div className="mt-6 text-center">
+          <div className="mt-8 text-center bg-white/5 p-4 rounded-xl">
             <button
               onClick={() => { setAuthMode(authMode === 'login' ? 'signup' : 'login'); setAuthError(null); }}
-              className="text-sm text-purple-400 hover:text-purple-300 underline underline-offset-4"
+              className="text-xs font-mono text-cosmic-light hover:text-cosmic-glow transition-colors uppercase tracking-widest hover:underline underline-offset-4"
             >
-              {authMode === 'login' ? "Require new credentials? Initialize here." : "Already waiting? Connect here."}
+              {authMode === 'login' ? "[ NO_CREDENTIALS? INITIALIZE_NEW_USER ]" : "[ EXISTING_USER? ACCESS_LINK ]"}
             </button>
           </div>
-        </div>
+        </GlassPanel>
+
+        <p className="fixed bottom-6 text-[10px] font-mono text-white/20 uppercase tracking-[0.3em]">
+          Gridpunk Arcana v3.0 :: Secure Connection
+        </p>
       </div>
     );
   }
@@ -162,69 +163,120 @@ const OnboardingPage: React.FC = () => {
     switch (step) {
       case 1:
         return (
-          <div className="space-y-6 animate-fade-in-up">
-            <h2 className="text-3xl font-bold font-dm-sans text-white">Cosmic Blueprint</h2>
-            <p className="text-white/60">Initialize your Gridpunk Arcana profile. This data seeds your numerological and astrological algorithms.</p>
+          <div className="space-y-8 animate-fade-in-up">
             <div>
-              <label htmlFor="givenName" className="block text-sm font-medium text-white/60 mb-1">Given Name (at birth)</label>
-              <input type="text" id="givenName" value={formData.givenName} onChange={handleInputChange} className="w-full p-3 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]" />
+              <h2 className="text-4xl font-bold font-display text-white mb-2 neon-glow">Cosmic Blueprint</h2>
+              <p className="text-white/60 text-sm font-mono">STEP 1/3 :: IDENTITY_SEED</p>
             </div>
-            <div>
-              <label htmlFor="currentName" className="block text-sm font-medium text-white/60 mb-1">Current Name</label>
-              <input type="text" id="currentName" value={formData.currentName} onChange={handleInputChange} className="w-full p-3 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]" />
-              <p className="text-xs text-white/40 mt-1">The name you go by now. Used for 'Current Vibe'.</p>
-            </div>
-            <div>
-              <label htmlFor="mothersMaidenName" className="block text-sm font-medium text-white/60 mb-1">Mother's Maiden Name</label>
-              <input type="text" id="mothersMaidenName" value={formData.mothersMaidenName} onChange={handleInputChange} className="w-full p-3 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]" />
-              <p className="text-xs text-white/40 mt-1">Calculates Heritage Number.</p>
-            </div>
-            <button onClick={nextStep} disabled={!formData.givenName} className="w-full px-6 py-3 rounded-lg font-bold bg-[#5A67D8] text-white hover:bg-opacity-80 transition-colors disabled:bg-gray-600 disabled:cursor-not-allowed">Next_Sequence</button>
+
+            <CyberInput
+              id="givenName"
+              label="Given Name (Birth)"
+              value={formData.givenName}
+              onChange={handleInputChange}
+            />
+
+            <CyberInput
+              id="currentName"
+              label="Current Alias"
+              value={formData.currentName}
+              onChange={handleInputChange}
+              placeholder="How should we address you?"
+            />
+
+            <CyberInput
+              id="mothersMaidenName"
+              label="Matrilineal Code (Mother's Maiden)"
+              value={formData.mothersMaidenName}
+              onChange={handleInputChange}
+              placeholder="Used for heritage algorithms"
+            />
+
+            <CyberButton
+              onClick={nextStep}
+              disabled={!formData.givenName}
+              className="w-full"
+              variant="primary"
+            >
+              Next_Sequence
+            </CyberButton>
           </div>
         );
       case 2:
         return (
-          <div className="space-y-6 animate-fade-in-up">
-            <h2 className="text-3xl font-bold font-dm-sans text-white">Natal Coordinates</h2>
-            <p className="text-white/60">Precise temporal and spatial coordinates unlock deeper insights.</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="birthDate" className="block text-sm font-medium text-white/60 mb-1">Date of Birth</label>
-                <input type="date" id="birthDate" value={formData.birthDate} onChange={handleInputChange} className="w-full p-3 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]" />
-              </div>
-              <div>
-                <label htmlFor="birthTime" className="block text-sm font-medium text-white/60 mb-1">Time of Birth</label>
-                <input type="time" id="birthTime" value={formData.birthTime} onChange={handleInputChange} className="w-full p-3 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]" />
-              </div>
-            </div>
+          <div className="space-y-8 animate-fade-in-up">
             <div>
-              <label htmlFor="birthPlace" className="block text-sm font-medium text-white/60 mb-1">Place of Birth (City, Country)</label>
-              <input type="text" id="birthPlace" value={formData.birthPlace} onChange={handleInputChange} className="w-full p-3 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]" />
+              <h2 className="text-4xl font-bold font-display text-white mb-2 neon-glow">Natal Coordinates</h2>
+              <p className="text-white/60 text-sm font-mono">STEP 2/3 :: TEMPORAL_LOCK</p>
             </div>
-            <div className="flex gap-4">
-              <button onClick={prevStep} className="w-full px-6 py-3 rounded-lg font-bold bg-[#232533] text-white/60 hover:bg-opacity-80 transition-colors">Back</button>
-              <button onClick={nextStep} disabled={!formData.birthDate} className="w-full px-6 py-3 rounded-lg font-bold bg-[#5A67D8] text-white hover:bg-opacity-80 transition-colors disabled:bg-gray-600 disabled:cursor-not-allowed">Next_Sequence</button>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <CyberInput
+                id="birthDate"
+                label="Date of Birth"
+                type="date"
+                value={formData.birthDate}
+                onChange={handleInputChange}
+              />
+              <CyberInput
+                id="birthTime"
+                label="Time of Birth"
+                type="time"
+                value={formData.birthTime}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <CyberInput
+              id="birthPlace"
+              label="Origin Point (City, Country)"
+              value={formData.birthPlace}
+              onChange={handleInputChange}
+            />
+
+            <div className="flex gap-4 pt-4">
+              <CyberButton onClick={prevStep} variant="secondary" className="flex-1">Back</CyberButton>
+              <CyberButton
+                onClick={nextStep}
+                disabled={!formData.birthDate}
+                className="flex-1"
+                variant="primary"
+              >
+                Next_Sequence
+              </CyberButton>
             </div>
           </div>
         );
-      case 3:
+      case 3: // Select boxes need custom styling or a CyberSelect component. For now, mimicking CyberInput style.
         return (
-          <div className="space-y-6 animate-fade-in-up">
-            <h2 className="text-3xl font-bold font-dm-sans text-white">System Calibration</h2>
-            <p className="text-white/60">Configure the AI's interaction parameters.</p>
-
+          <div className="space-y-8 animate-fade-in-up">
             <div>
-              <label htmlFor="readingStyle" className="block text-sm font-medium text-white/60 mb-2">Interpretation Protocol</label>
-              <select id="readingStyle" value={formData.readingStyle} onChange={handleInputChange} className="w-full p-3 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]">
+              <h2 className="text-4xl font-bold font-display text-white mb-2 neon-glow">System Calibration</h2>
+              <p className="text-white/60 text-sm font-mono">STEP 3/3 :: INTERFACE_PROTOCOLS</p>
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="readingStyle" className="block text-xs font-mono text-white/40 uppercase tracking-widest pl-1">Interpretation Protocol</label>
+              <select
+                id="readingStyle"
+                value={formData.readingStyle}
+                onChange={handleInputChange}
+                className="w-full bg-void-lighter border-white/10 rounded-xl px-6 py-4 text-white font-mono text-sm border focus:border-cosmic-glow focus:outline-none appearance-none transition-all hover:border-white/20"
+              >
                 <option value="mystical">Mystical & Poetic</option>
                 <option value="practical">Practical & Action-Oriented</option>
                 <option value="psychological">Psychological & Reflective</option>
               </select>
             </div>
 
-            <div>
-              <label htmlFor="readingFocus" className="block text-sm font-medium text-white/60 mb-2">Primary Directive</label>
-              <select id="readingFocus" value={formData.readingFocus} onChange={handleInputChange} className="w-full p-3 bg-[#0B0C10] border border-[#232533] rounded-lg focus:ring-2 focus:ring-[#6E7BFF]">
+            <div className="space-y-2">
+              <label htmlFor="readingFocus" className="block text-xs font-mono text-white/40 uppercase tracking-widest pl-1">Primary Directive</label>
+              <select
+                id="readingFocus"
+                value={formData.readingFocus}
+                onChange={handleInputChange}
+                className="w-full bg-void-lighter border-white/10 rounded-xl px-6 py-4 text-white font-mono text-sm border focus:border-cosmic-glow focus:outline-none appearance-none transition-all hover:border-white/20"
+              >
                 <option value="general">General Guidance</option>
                 <option value="love">Love & Relationships</option>
                 <option value="career">Career & Ambition</option>
@@ -232,9 +284,9 @@ const OnboardingPage: React.FC = () => {
               </select>
             </div>
 
-            <div className="flex gap-4">
-              <button onClick={prevStep} className="w-full px-6 py-3 rounded-lg font-bold bg-[#232533] text-white/60 hover:bg-opacity-80 transition-colors">Back</button>
-              <button onClick={handleProfileSubmit} className="w-full px-6 py-3 rounded-lg font-bold bg-[#29C26A] text-white hover:bg-opacity-80 transition-colors">Complete_Initialization</button>
+            <div className="flex gap-4 pt-4">
+              <CyberButton onClick={prevStep} variant="secondary" className="flex-1">Back</CyberButton>
+              <CyberButton onClick={handleProfileSubmit} variant="primary" className="flex-1">Initialize_System</CyberButton>
             </div>
           </div>
         );
@@ -244,12 +296,18 @@ const OnboardingPage: React.FC = () => {
   };
 
   return (
-    <div className="w-screen h-screen bg-[#0B0C10] text-[#E0E6F1] flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-3xl bg-[#111218] p-8 rounded-3xl border border-[#232533] shadow-2xl shadow-black/30 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none"></div>
+    <div className="w-screen h-screen bg-void text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none"></div>
+      <div className="noise-bg"></div>
+
+      <GlassPanel className="w-full max-w-2xl p-8 relative overflow-hidden shadow-2xl shadow-cosmic/10">
         {renderWizardStep()}
-      </div>
-      <p className="text-xs text-text-muted mt-6">Cyber-Spiritual Link :: Establishing Connection...</p>
+      </GlassPanel>
+
+      <p className="fixed bottom-6 text-[10px] font-mono text-white/20 uppercase tracking-[0.3em] animate-pulse-slow">
+        Cyber-Spiritual Link :: Establishing Connection...
+      </p>
     </div>
   );
 };

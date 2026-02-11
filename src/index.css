@@ -1,112 +1,115 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --color-accent: #6E7BFF;
-  --color-bg: #030407;
-  --color-panel: rgba(13, 15, 25, 0.7);
-  --neon-blue: #21C7F2;
-  --neon-purple: #6E7BFF;
-}
+@theme {
+  --color-void: #030407;
+  --color-void-light: #0B0C10;
+  --color-void-lighter: #111218;
+  --color-void-dark: #010103;
 
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: var(--color-bg);
-  color: #E0E6F1;
-  overflow: hidden;
-}
+  --color-cosmic: #A855F7;
+  --color-cosmic-light: #D8B4FE;
+  --color-cosmic-dark: #7E22CE;
+  --color-cosmic-glow: #C084FC;
 
-/* Holographic Scanline Effect */
-body::after {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
-    linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
-  z-index: 9999;
-  background-size: 100% 2px, 3px 100%;
-  pointer-events: none;
-  opacity: 0.3;
-}
+  --color-hologram: #14B8A6;
+  --color-hologram-light: #5EEAD4;
+  --color-hologram-dark: #0F766E;
+  --color-hologram-glow: #2DD4BF;
 
-/* Animated Ether Background */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at 50% 100%, rgba(110, 123, 255, 0.1) 0%, transparent 60%),
-    radial-gradient(circle at 10% 20%, rgba(33, 199, 242, 0.05) 0%, transparent 40%),
-    url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
-  opacity: 0.6;
-  pointer-events: none;
-  z-index: -1;
-}
+  --color-nebula: #F59E0B;
+  --color-nebula-pink: #EC4899;
 
-.glass-panel {
-  background: var(--color-panel);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-}
+  --font-sans: "DM Sans", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  --font-display: "Outfit", sans-serif;
 
-.font-mono {
-  font-family: 'JetBrains Mono', monospace;
-}
+  --image-grid: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(255 255 255 / 0.05)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
 
-.font-dm-sans {
-  font-family: 'DM Sans', sans-serif;
-}
+  --animate-fade-in: fadeIn 0.5s ease-out;
+  --animate-fade-in-up: fadeInUp 0.7s ease-out;
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-glow: glow 2s ease-in-out infinite alternate;
 
-/* Tactile Fanned Deck Styles */
-.picking-card-wrapper {
-  position: absolute;
-  width: 120px;
-  height: 190px;
-  transform: translate(-50%, -50%) var(--fan-translate) rotate(var(--fan-rotation));
-  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1.1), filter 0.3s ease;
-  filter: brightness(0.6) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
-  cursor: pointer;
-}
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
 
-.picking-card-wrapper:hover {
-  z-index: 1000 !important;
-  transform: translate(-50%, -60%) var(--fan-translate) rotate(var(--fan-rotation)) scale(1.2);
-  filter: brightness(1.2) drop-shadow(0 15px 30px rgba(110, 123, 255, 0.6));
-}
-
-.picking-card-wrapper.selected {
-  animation: card-select-and-fly 1s cubic-bezier(0.19, 1, 0.22, 1) forwards;
-  pointer-events: none;
-  z-index: 1001 !important;
-}
-
-@keyframes card-select-and-fly {
-  0% {
-    transform: translate(-50%, -50%) var(--fan-translate) rotate(var(--fan-rotation)) scale(1);
-    filter: brightness(0.6) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
-    opacity: 1;
+    100% {
+      opacity: 1;
+    }
   }
 
-  40% {
-    transform: translate(-50%, -60%) var(--fan-translate) rotate(var(--fan-rotation)) scale(1.2);
-    filter: brightness(1.2) drop-shadow(0 15px 30px rgba(110, 123, 255, 0.6));
-    opacity: 1;
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  100% {
-    transform: translate(-50%, -250%) scale(0.4) rotate(0deg);
-    filter: brightness(0);
-    opacity: 0;
+  @keyframes glow {
+    0% {
+      box-shadow: 0 0 5px rgba(168, 85, 247, 0.2);
+    }
+
+    100% {
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.6), 0 0 10px rgba(168, 85, 247, 0.4);
+    }
   }
 }
 
+@layer base {
+  body {}
+
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-cosmic-dark/30 rounded-full transition-colors hover:bg-cosmic/50;
+  }
+}
+
+@layer components {
+
+  /* Legacy class for easier refactoring, favors the React component though */
+  .glass-panel {
+    @apply bg-void-light/70 backdrop-blur-xl border border-white/5 shadow-2xl;
+  }
+
+  .neon-glow {
+    text-shadow: 0 0 10px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.3);
+  }
+}
+
+@layer utilities {
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Animations that are hard to do with pure Tailwind config utility classes */
 @keyframes scan {
   0% {
     transform: translateY(-100%);
@@ -115,12 +118,6 @@ body::before {
   100% {
     transform: translateY(500%);
   }
-}
-
-.shimmer-reveal {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite linear;
 }
 
 @keyframes shimmer {
@@ -133,49 +130,13 @@ body::before {
   }
 }
 
-::-webkit-scrollbar {
-  width: 4px;
+.shimmer-reveal {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite linear;
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(110, 123, 255, 0.2);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(110, 123, 255, 0.4);
-}
-
-.bg-grid {
-  background-image: radial-gradient(rgba(110, 123, 255, 0.15) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
-.neon-glow {
-  text-shadow: 0 0 10px rgba(110, 123, 255, 0.8), 0 0 20px rgba(110, 123, 255, 0.4);
-}
-
-.border-neon {
-  box-shadow: 0 0 15px rgba(110, 123, 255, 0.2);
-}
-
-/* Noise Overlay */
-.noise-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('https://www.transparenttextures.com/patterns/60-lines.png');
-  opacity: 0.05;
-  pointer-events: none;
-  z-index: 10000;
-}
-
+/* Glitch Effect */
 .glitch-text {
   position: relative;
   display: inline-block;
@@ -184,24 +145,22 @@ body::before {
 .glitch-text::before,
 .glitch-text::after {
   content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--color-bg);
+  @apply absolute top-0 left-0 w-full h-full bg-void;
 }
 
 .glitch-text::before {
   left: 2px;
-  text-shadow: -2px 0 #ff00c1;
+  text-shadow: -2px 0 #A855F7;
+  /* Cosmic */
   clip: rect(44px, 450px, 56px, 0);
   animation: glitch-anim 5s infinite linear alternate-reverse;
 }
 
 .glitch-text::after {
   left: -2px;
-  text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
+  text-shadow: -2px 0 #14B8A6;
+  /* Hologram */
+  clip: rect(44px, 450px, 56px, 0);
   animation: glitch-anim2 1s infinite linear alternate-reverse;
 }
 
@@ -216,7 +175,6 @@ body::before {
     transform: skew(0.33deg);
   }
 
-  /* Add more steps for jitter */
   100% {
     clip: rect(67px, 9999px, 81px, 0);
     transform: skew(0.1deg);
@@ -233,4 +191,13 @@ body::before {
     clip: rect(10px, 9999px, 20px, 0);
     transform: skew(1deg);
   }
+}
+
+/* Holographic Overlays */
+body::after {
+  content: " ";
+  @apply block fixed inset-0 pointer-events-none z-[9999] opacity-20;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  background-size: 100% 2px, 3px 100%;
 }

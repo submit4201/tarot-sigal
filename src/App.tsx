@@ -199,18 +199,6 @@ const AppContent: React.FC = () => {
     };
   }, [activeProfile, dailyDrawHistory, savedReadings, journalEntries, unlockAchievement]);
 
-  if (isLoadingData) {
-    return (
-      <div className="w-screen h-screen flex items-center justify-center bg-[#030407] text-purple-500">
-        <div className="animate-pulse font-mono text-sm tracking-[0.3em]">INITIALIZING_UPLINK...</div>
-      </div>
-    );
-  }
-
-  if (!activeProfile) {
-    return <OnboardingPage />;
-  }
-
   // * Track pages that have been visited to lazily mount them
   // ! Each page stays mounted after first visit to preserve local state
   const [visitedPages, setVisitedPages] = useState<Set<Page>>(new Set([activePage]));
@@ -224,6 +212,18 @@ const AppContent: React.FC = () => {
       return next;
     });
   }, [activePage]);
+
+  if (isLoadingData) {
+    return (
+      <div className="w-screen h-screen flex items-center justify-center bg-[#030407] text-purple-500">
+        <div className="animate-pulse font-mono text-sm tracking-[0.3em]">INITIALIZING_UPLINK...</div>
+      </div>
+    );
+  }
+
+  if (!activeProfile) {
+    return <OnboardingPage />;
+  }
 
   return (
     <div className="w-screen h-screen flex bg-[#030407] text-[#E0E6F1] overflow-hidden">

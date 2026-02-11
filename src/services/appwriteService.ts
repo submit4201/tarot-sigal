@@ -110,11 +110,8 @@ export const db = {
         );
     },
 
-    getReadings: async (userId: string) => {
-        if (!userId || typeof userId !== 'string') {
-            console.warn("Skipping getReadings: userId is invalid");
-            return { documents: [] };
-        }
+    getReadings: async (userId) => {
+        if (!userId) return { documents: [], total: 0 };
         return await databases.listDocuments(
             DATABASE_ID,
             COLLECTIONS.READINGS,
@@ -132,11 +129,8 @@ export const db = {
         );
     },
 
-    getJournalEntries: async (userId: string) => {
-        if (!userId || typeof userId !== 'string') {
-            console.warn("Skipping getJournalEntries: userId is invalid");
-            return { documents: [] };
-        }
+    getJournalEntries: async (userId) => {
+        if (!userId) return { documents: [], total: 0 };
         return await databases.listDocuments(
             DATABASE_ID,
             COLLECTIONS.JOURNAL,
@@ -154,11 +148,8 @@ export const db = {
         );
     },
 
-    getDailyHistory: async (userId: string) => {
-        if (!userId || typeof userId !== 'string') {
-            console.warn("Skipping getDailyHistory: userId is invalid");
-            return { documents: [] };
-        }
+    getDailyHistory: async (userId) => {
+        if (!userId) return { documents: [], total: 0 };
         return await databases.listDocuments(
             DATABASE_ID,
             COLLECTIONS.DAILY_DRAWS,
