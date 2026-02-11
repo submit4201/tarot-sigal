@@ -19,7 +19,7 @@ const ShopPage: React.FC = () => {
     const handleStardustPurchase = async (packTier: string) => {
         setIsPurchasing(true);
         try {
-            await createCheckoutSession('stardust', packTier);
+            await createCheckoutSession('stardust', packTier as any);
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
             alert(`Failed to start checkout: ${errorMessage}`);
@@ -111,16 +111,16 @@ const ShopPage: React.FC = () => {
                         { name: 'Cosmic Rift', tier: 'cosmic_rift', price: 9.99, stardust: 7500, color: 'amber', bestValue: true }
                     ] as StardustPack[]).map(pack => {
                         // Static Tailwind classes based on color
-                        const colorClasses = pack.color === 'amber' 
+                        const colorClasses = pack.color === 'amber'
                             ? {
                                 card: 'border-amber-500/20 bg-amber-500/[0.02] hover:border-amber-500/40',
                                 button: 'bg-amber-600/20 border-amber-500/30 text-amber-400 hover:bg-amber-600'
-                              }
+                            }
                             : {
                                 card: 'border-purple-500/20 bg-purple-500/[0.02] hover:border-purple-500/40',
                                 button: 'bg-purple-600/20 border-purple-500/30 text-purple-400 hover:bg-purple-600'
-                              };
-                        
+                            };
+
                         return (
                             <div key={pack.tier} className={`glass-panel p-6 rounded-2xl text-center relative overflow-hidden group transition-all ${colorClasses.card}`}>
                                 {pack.popular && (

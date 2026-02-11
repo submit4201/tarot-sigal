@@ -50,12 +50,12 @@ const DailyPage: React.FC = () => {
     useEffect(() => {
         const todayRecord = dailyDrawHistory.find(record => record.date === todayStr);
         if (todayRecord) {
-            const fullCardData = TAROT_DECK.find(c => c.id === todayRecord.drawnCard.card.id);
+            const fullCardData = TAROT_DECK.find(c => c.name === todayRecord.card);
             if (fullCardData) {
-                setChosenCard({ card: fullCardData, isReversed: !!todayRecord.drawnCard.isReversed });
+                setChosenCard({ card: fullCardData, isReversed: !!todayRecord.isRev });
                 setHasChosen(true);
                 if (todayRecord.insights) setDailyInsights(todayRecord.insights);
-                else generateInsights({ card: fullCardData, isReversed: !!todayRecord.drawnCard.isReversed });
+                else generateInsights({ card: fullCardData, isReversed: !!todayRecord.isRev });
             }
         }
     }, [todayStr, dailyDrawHistory]);

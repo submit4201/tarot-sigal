@@ -1,40 +1,47 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { JournalIcon, CompassIcon, SparklesIcon, LayersIcon, ZapIcon } from '../components/icons';
-import { SPREAD_DETAILS, SHOP_DECKS } from '../constants';
-import { SavedReading, DrawnDivinationCard, Rune, DeckType, JournalEntry } from '../types';
+import { SavedReading, DrawnDivinationCard, DeckType, JournalEntry } from '../types';
 import DivinationCardDisplay from '../components/TarotCard';
 import { generateContentWithRetry } from '../services/geminiService';
+import { GlassPanel } from '../components/ui/GlassPanel';
+import { CyberButton } from '../components/ui/CyberButton';
+import { CyberInput } from '../components/ui/CyberInput';
+import { SpreadCanvas } from '../components/3d/SpreadCanvas';
 
 /**
  * SavedReadingEntry — Displays a single saved reading with rich tiered data.
  */
-const SavedReadingEntry: React.FC<{ reading: SavedReading; onCardClick: (card: DrawnDivinationCard) => void; isPremium: boolean }> = ({ reading, onCardClick, isPremium }) => {
+const SavedReadingEntry: React.FC<{ reading: SavedReading; onCardClick: (card: DrawnDivinationCard) => void; onView3D: (reading: SavedReading) => void; isPremium: boolean }> = ({ reading, onCardClick, onView3D, isPremium }) => {
     const { updateSavedReadingNotes, addXp } = useApp();
     const [notes, setNotes] = useState(reading.userNotes);
     const [isEditing, setIsEditing] = useState(false);
-    const [activeDeepDiveIndex, setActiveDeepDiveIndex] = useState<number | null>(null);
 
     useEffect(() => { setNotes(reading.userNotes); }, [reading.userNotes]);
 
     return (
-        <div className="glass-panel p-8 rounded-[2.5rem] border-white/5 space-y-8 hover:border-purple-500/20 transition-all group shadow-2xl relative overflow-hidden bg-[#0a0b12]/60">
-            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/20 to-transparent"></div>
+        <GlassPanel className="p-8 space-y-8 group relative overflow-hidden" variant="default" hoverEffect>
+            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cosmic/20 to-transparent"></div>
 
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start gap-4">
                 <div>
                     <div className="flex items-center gap-3 mb-2">
-                        <p className="text-[10px] font-mono text-text-muted uppercase tracking-[0.4em] font-bold">
+                        <p className="text-[10px] font-mono text-white/40 uppercase tracking-[0.4em] font-bold">
                             {new Date(reading.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}
                         </p>
-                        {reading.readingIntent && <span className="text-[9px] font-mono font-bold text-teal-400 bg-teal-400/10 px-2 py-0.5 rounded border border-teal-400/20 uppercase">Focus: {reading.readingIntent}</span>}
+                        {reading.readingIntent && <span className="text-[9px] font-mono font-bold text-hologram bg-hologram/10 px-2 py-0.5 rounded border border-hologram/20 uppercase">Focus: {reading.readingIntent}</span>}
                     </div>
-                    <h4 className="text-3xl font-bold font-dm-sans text-white group-hover:text-purple-400 transition-colors tracking-tight">{reading.title}</h4>
+                    <h4 className="text-3xl font-bold font-display text-white group-hover:text-cosmic-light transition-colors tracking-tight">{reading.title}</h4>
                     <div className="flex gap-3 mt-4">
-                        <span className="text-[9px] font-mono font-bold text-purple-400 bg-purple-400/10 px-3 py-1 rounded-xl border border-purple-400/20 uppercase">{reading.spreadType.replace(/-/g, '_')}</span>
-                        <span className="text-[9px] font-mono font-bold text-teal-400 bg-teal-400/10 px-3 py-1 rounded-xl border border-teal-400/20 uppercase">{reading.deckType}</span>
+                        <span className="text-[9px] font-mono font-bold text-cosmic-light bg-cosmic/10 px-3 py-1 rounded-xl border border-cosmic/20 uppercase">{reading.spreadType.replace(/-/g, '_')}</span>
+                        <span className="text-[9px] font-mono font-bold text-hologram bg-hologram/10 px-3 py-1 rounded-xl border border-hologram/20 uppercase">{reading.deckType}</span>
                     </div>
+                </div>
+                <div className="flex flex-col items-end gap-2">
+                    <CyberButton variant="ghost" size="sm" onClick={() => onView3D(reading)} icon={<LayersIcon className="w-4 h-4" />}>
+                        Simulate_Holo
+                    </CyberButton>
                 </div>
             </div>
 
@@ -42,22 +49,22 @@ const SavedReadingEntry: React.FC<{ reading: SavedReading; onCardClick: (card: D
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-white/5 pt-8">
                 <div>
                     <h5 className="text-[10px] font-mono text-white/30 uppercase tracking-[0.5em] mb-4 font-bold">Synthesis_Narrative</h5>
-                    <p className="text-sm text-white/80 leading-relaxed whitespace-pre-wrap font-dm-sans italic border-l-2 border-purple-500/30 pl-4">{reading.aiSummary}</p>
+                    <p className="text-sm text-white/80 leading-relaxed whitespace-pre-wrap font-sans italic border-l-2 border-cosmic/30 pl-4">{reading.aiSummary}</p>
                 </div>
                 <div className="space-y-6">
                     {reading.shadowMessage && (
-                        <div className="bg-purple-500/5 p-6 rounded-2xl border border-purple-500/10">
-                            <h5 className="text-[10px] font-mono text-purple-400 uppercase tracking-[0.3em] mb-2 font-bold flex items-center gap-2"><LayersIcon className="w-3 h-3" /> Shadow_Signal</h5>
+                        <div className="bg-cosmic/5 p-6 rounded-2xl border border-cosmic/10">
+                            <h5 className="text-[10px] font-mono text-cosmic-light uppercase tracking-[0.3em] mb-2 font-bold flex items-center gap-2"><LayersIcon className="w-3 h-3" /> Shadow_Signal</h5>
                             <p className="text-xs text-white/70 leading-relaxed">{reading.shadowMessage}</p>
                         </div>
                     )}
                     {reading.practicalActions && reading.practicalActions.length > 0 && (
                         <div>
-                            <h5 className="text-[10px] font-mono text-teal-400 uppercase tracking-[0.3em] mb-3 font-bold flex items-center gap-2"><ZapIcon className="w-3 h-3" /> Action_Protocols</h5>
+                            <h5 className="text-[10px] font-mono text-hologram uppercase tracking-[0.3em] mb-3 font-bold flex items-center gap-2"><ZapIcon className="w-3 h-3" /> Action_Protocols</h5>
                             <ul className="space-y-2">
                                 {reading.practicalActions.map((action, i) => (
                                     <li key={i} className="flex gap-3 items-start text-xs text-white/70">
-                                        <span className="font-mono text-teal-500/50 font-bold">{i + 1}.</span>
+                                        <span className="font-mono text-hologram/50 font-bold">{i + 1}.</span>
                                         {action}
                                     </li>
                                 ))}
@@ -70,7 +77,7 @@ const SavedReadingEntry: React.FC<{ reading: SavedReading; onCardClick: (card: D
             {/* Premium Panels */}
             {(reading.cardRelationships || reading.elementalDignity || reading.numerologyThreads) && (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 border-t border-white/5 pt-8">
-                    {reading.cardRelationships && <div className="bg-white/5 p-4 rounded-xl"><p className="text-[9px] text-amber-500 mb-2 font-bold uppercase tracking-wider">Resonance</p><p className="text-xs text-white/60">{reading.cardRelationships}</p></div>}
+                    {reading.cardRelationships && <div className="bg-white/5 p-4 rounded-xl"><p className="text-[9px] text-nebula mb-2 font-bold uppercase tracking-wider">Resonance</p><p className="text-xs text-white/60">{reading.cardRelationships}</p></div>}
                     {reading.elementalDignity && <div className="bg-white/5 p-4 rounded-xl"><p className="text-[9px] text-blue-400 mb-2 font-bold uppercase tracking-wider">Elements</p><p className="text-xs text-white/60">{reading.elementalDignity}</p></div>}
                     {reading.numerologyThreads && <div className="bg-white/5 p-4 rounded-xl"><p className="text-[9px] text-pink-400 mb-2 font-bold uppercase tracking-wider">Numerology</p><p className="text-xs text-white/60">{reading.numerologyThreads}</p></div>}
                 </div>
@@ -81,7 +88,7 @@ const SavedReadingEntry: React.FC<{ reading: SavedReading; onCardClick: (card: D
                 <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-6">
                     {reading.cards.map((c, i) => (
                         <div key={i} className="text-center group/card flex flex-col gap-3">
-                            <p className="text-[8px] font-mono text-text-muted truncate uppercase opacity-40 group-hover/card:opacity-100">{reading.positions[i]}</p>
+                            <p className="text-[8px] font-mono text-white/40 truncate uppercase opacity-40 group-hover/card:opacity-100">{reading.positions[i]}</p>
                             <DivinationCardDisplay drawnCard={c} isRevealed={true} onClick={() => onCardClick(c)} className="!w-full !h-auto aspect-[2/3] mx-auto cursor-pointer hover:scale-105 transition-all shadow-xl" />
                             {c.interpretation && (
                                 <p className="text-[9px] text-white/50 leading-relaxed line-clamp-3 group-hover/card:line-clamp-none transition-all">{c.interpretation}</p>
@@ -96,41 +103,44 @@ const SavedReadingEntry: React.FC<{ reading: SavedReading; onCardClick: (card: D
                 <h5 className="text-[10px] font-mono text-white/30 uppercase tracking-[0.5em] mb-4 font-bold">Operator_Observations</h5>
                 {isEditing ? (
                     <div className="space-y-4">
-                        <textarea value={notes} onChange={e => setNotes(e.target.value)} className="w-full h-32 p-6 bg-black/40 border border-white/10 rounded-3xl focus:ring-2 focus:ring-purple-500 font-mono text-sm shadow-inner" placeholder="INPUT_LOG_DATA..." />
-                        <button onClick={() => { updateSavedReadingNotes(reading.id, notes); setIsEditing(false); addXp(5); }} className="px-8 py-3 text-xs font-mono font-bold rounded-2xl bg-teal-600 text-white uppercase tracking-widest shadow-glow">Commit_Memory</button>
+                        <CyberInput multiline rows={4} value={notes} onChange={e => setNotes(e.target.value)} placeholder="INPUT_LOG_DATA..." />
+                        <div className="flex justify-end gap-2">
+                            <CyberButton variant="ghost" size="sm" onClick={() => setIsEditing(false)}>Cancel</CyberButton>
+                            <CyberButton variant="primary" size="sm" onClick={() => { updateSavedReadingNotes(reading.id, notes); setIsEditing(false); addXp(5); }}>Commit_Memory</CyberButton>
+                        </div>
                     </div>
                 ) : (
-                    <div onClick={() => setIsEditing(true)} className="w-full p-6 rounded-3xl cursor-pointer hover:bg-white/5 bg-black/30 border border-transparent hover:border-white/10 transition-all shadow-inner">
-                        <p className="text-sm text-text-muted italic">{notes || 'SIGNAL_PENDING: Click to add observations...'}</p>
+                    <div onClick={() => setIsEditing(true)} className="w-full p-6 rounded-3xl cursor-pointer hover:bg-white/5 bg-void-darker/30 border border-transparent hover:border-white/10 transition-all shadow-inner">
+                        <p className="text-sm text-white/40 italic">{notes || 'SIGNAL_PENDING: Click to add observations...'}</p>
                     </div>
                 )}
             </div>
-        </div>
+        </GlassPanel>
     );
 };
 
 const JournalEntryCard: React.FC<{ entry: JournalEntry }> = ({ entry }) => {
     return (
-        <div className="glass-panel p-6 rounded-2xl border-white/5 hover:border-teal-500/20 transition-all group relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-1 h-full bg-teal-500/20 group-hover:bg-teal-500 transition-colors"></div>
+        <GlassPanel className="p-6 relative overflow-hidden group" hoverEffect>
+            <div className="absolute top-0 left-0 w-1 h-full bg-hologram/20 group-hover:bg-hologram transition-colors"></div>
             <div className="flex justify-between items-start mb-3 pl-4">
-                <p className="text-[10px] font-mono text-text-muted uppercase tracking-[0.4em] font-bold">
+                <p className="text-[10px] font-mono text-white/40 uppercase tracking-[0.4em] font-bold">
                     {new Date(entry.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}
                 </p>
-                <span className="text-[9px] font-mono font-bold text-teal-400 bg-teal-400/10 px-3 py-1 rounded-xl border border-teal-400/20 uppercase">Reflection</span>
+                <span className="text-[9px] font-mono font-bold text-hologram bg-hologram/10 px-3 py-1 rounded-xl border border-hologram/20 uppercase">Reflection</span>
             </div>
-            <p className="pl-4 text-sm text-white/80 leading-relaxed whitespace-pre-wrap font-dm-sans">{entry.text}</p>
-        </div>
+            <p className="pl-4 text-sm text-white/80 leading-relaxed whitespace-pre-wrap font-sans">{entry.text}</p>
+        </GlassPanel>
     );
 };
 
 const JournalPage: React.FC = () => {
     const { journalEntries, addJournalEntry, savedReadings, addXp, isPremium } = useApp();
     const [searchQuery, setSearchQuery] = useState('');
-    const [filterDeck, setFilterDeck] = useState<DeckType | 'all'>('all');
     const [newEntryText, setNewEntryText] = useState('');
     const [activeTab, setActiveTab] = useState<'readings' | 'journal'>('readings');
     const [dynamicPrompt, setDynamicPrompt] = useState("What is the most important message you received today?");
+    const [readingIn3D, setReadingIn3D] = useState<SavedReading | null>(null);
 
     // ! AI Journal Analysis state (Premium feature)
     const [analysisResult, setAnalysisResult] = useState<string | null>(null);
@@ -240,40 +250,59 @@ Format your response in clean sections with headers. Use a mystical but grounded
     };
 
     return (
-        <div className="w-full h-full p-6 md:p-14 flex flex-col bg-grid animate-fade-in overflow-hidden scroll-smooth">
-            <header className="mb-10 flex-shrink-0 flex flex-col md:flex-row justify-between items-end gap-10">
-                <div className="max-w-2xl">
-                    <div className="flex items-center gap-3 mb-3">
-                        <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
-                        <span className="text-[10px] font-mono text-purple-400 uppercase tracking-[0.6em] font-bold">Signal_Archive_v2.5</span>
+        <div className="w-full h-full p-6 md:p-14 flex flex-col bg-void text-white animate-fade-in overflow-hidden scroll-smooth relative">
+            {readingIn3D && (
+                <div className="fixed inset-0 z-[100] bg-black/95 animate-fade-in flex flex-col">
+                    <div className="absolute top-8 right-8 z-50">
+                        <CyberButton onClick={() => setReadingIn3D(null)} variant="secondary" icon={<ZapIcon className="w-4 h-4" />}>
+                            TERMINATE_SIMULATION
+                        </CyberButton>
                     </div>
-                    <h1 className="text-6xl font-bold font-dm-sans text-white tracking-tighter neon-glow">Archive Logs</h1>
+                    <SpreadCanvas
+                        spreadType={readingIn3D.spreadType}
+                        cards={readingIn3D.cards}
+                        revealedIndices={new Set(readingIn3D.cards.map((_, i) => i))}
+                        isReadOnly={true}
+                    />
+                </div>
+            )}
+            <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none"></div>
+
+            <header className="mb-10 flex-shrink-0 flex flex-col md:flex-row justify-between items-end gap-10">
+                <div className="max-w-2xl z-10">
+                    <div className="flex items-center gap-3 mb-3">
+                        <div className="w-2 h-2 rounded-full bg-cosmic animate-pulse"></div>
+                        <span className="text-[10px] font-mono text-cosmic-light uppercase tracking-[0.6em] font-bold">Signal_Archive_v2.5</span>
+                    </div>
+                    <h1 className="text-6xl font-bold font-display text-white tracking-tighter neon-glow">Archive Logs</h1>
                 </div>
                 {/* ! AI Pattern Analysis button — Premium only */}
                 {isPremium && (
-                    <button
+                    <CyberButton
+                        variant="primary"
                         onClick={handleAnalyzePatterns}
                         disabled={isAnalyzing || (journalEntries.length === 0 && savedReadings.length === 0)}
-                        className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold rounded-2xl text-xs uppercase tracking-widest transition-all shadow-glow disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
+                        isLoading={isAnalyzing}
+                        icon={<SparklesIcon className="w-4 h-4" />}
+                        className="z-10"
                     >
-                        <SparklesIcon className="w-4 h-4" />
                         {isAnalyzing ? 'Analyzing...' : 'Analyze_Patterns'}
-                    </button>
+                    </CyberButton>
                 )}
             </header>
 
-            <div className="flex-grow overflow-y-auto space-y-8 pr-6 -mr-6 no-scrollbar">
+            <div className="flex-grow overflow-y-auto space-y-8 pr-6 -mr-6 no-scrollbar z-10">
 
                 {/* ! AI Analysis Result Panel */}
                 {(analysisResult || analysisError) && (
-                    <div className="glass-panel rounded-[2rem] border border-purple-500/20 bg-gradient-to-br from-purple-500/5 to-pink-500/5 overflow-hidden shadow-2xl">
+                    <GlassPanel className="overflow-hidden shadow-2xl bg-gradient-to-br from-cosmic/5 to-nebula/5">
                         <button
                             onClick={() => setAnalysisExpanded(!analysisExpanded)}
                             className="w-full flex items-center justify-between p-6 hover:bg-white/[0.02] transition-all"
                         >
                             <div className="flex items-center gap-3">
-                                <div className="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></div>
-                                <h3 className="text-xs font-mono text-pink-400 uppercase tracking-widest font-bold">Pattern_Analysis_Report</h3>
+                                <div className="w-2 h-2 rounded-full bg-nebula animate-pulse"></div>
+                                <h3 className="text-xs font-mono text-nebula uppercase tracking-widest font-bold">Pattern_Analysis_Report</h3>
                             </div>
                             <span className="text-white/30 text-xs font-mono">{analysisExpanded ? '▲ COLLAPSE' : '▼ EXPAND'}</span>
                         </button>
@@ -282,40 +311,44 @@ Format your response in clean sections with headers. Use a mystical but grounded
                                 {analysisError ? (
                                     <p className="text-red-400 text-sm font-mono">{analysisError}</p>
                                 ) : (
-                                    <div className="text-sm text-white/80 leading-relaxed whitespace-pre-wrap font-dm-sans border-l-2 border-pink-500/30 pl-6 space-y-2">
+                                    <div className="text-sm text-white/80 leading-relaxed whitespace-pre-wrap font-sans border-l-2 border-nebula/30 pl-6 space-y-2">
                                         {analysisResult}
                                     </div>
                                 )}
                             </div>
                         )}
-                    </div>
+                    </GlassPanel>
                 )}
 
                 {/* Journal Input with Dynamic Prompt */}
-                <div className="glass-panel p-8 rounded-[2rem] border-white/5 bg-gradient-to-br from-white/[0.02] to-transparent">
-                    <h3 className="text-xs font-mono text-teal-400 uppercase tracking-widest mb-4 font-bold flex items-center gap-2"><SparklesIcon className="w-4 h-4" /> Daily_Reflection_Protocol</h3>
+                <GlassPanel className="p-8 bg-gradient-to-br from-white/[0.02] to-transparent">
+                    <h3 className="text-xs font-mono text-hologram uppercase tracking-widest mb-4 font-bold flex items-center gap-2"><SparklesIcon className="w-4 h-4" /> Daily_Reflection_Protocol</h3>
                     <p className="text-white/60 text-sm mb-4 italic">"{dynamicPrompt}"</p>
                     <div className="relative">
-                        <textarea
+                        <CyberInput
+                            multiline
+                            rows={3}
                             value={newEntryText}
                             onChange={e => setNewEntryText(e.target.value)}
                             placeholder="Type your reflection here..."
-                            className="w-full h-24 p-4 bg-black/40 border border-white/10 rounded-2xl focus:ring-2 focus:ring-teal-500 font-mono text-sm resize-none"
                         />
-                        <button
-                            onClick={handleAddJournalEntry}
-                            disabled={!newEntryText.trim()}
-                            className="absolute bottom-4 right-4 px-6 py-2 bg-teal-600 hover:bg-teal-500 text-white font-bold rounded-xl text-xs uppercase tracking-widest transition-all shadow-glow disabled:opacity-50"
-                        >
-                            Log_Entry
-                        </button>
+                        <div className="mt-4 flex justify-end">
+                            <CyberButton
+                                onClick={handleAddJournalEntry}
+                                disabled={!newEntryText.trim()}
+                                size="sm"
+                                variant="secondary"
+                            >
+                                Log_Entry
+                            </CyberButton>
+                        </div>
                     </div>
-                </div>
+                </GlassPanel>
 
                 {/* Tabs */}
                 <div className="flex gap-6 border-b border-white/10 pb-4">
-                    <button onClick={() => setActiveTab('readings')} className={`text-sm font-mono uppercase tracking-widest font-bold pb-2 transition-all ${activeTab === 'readings' ? 'text-purple-400 border-b-2 border-purple-400' : 'text-white/40 hover:text-white'}`}>Saved_Readings ({savedReadings.length})</button>
-                    <button onClick={() => setActiveTab('journal')} className={`text-sm font-mono uppercase tracking-widest font-bold pb-2 transition-all ${activeTab === 'journal' ? 'text-teal-400 border-b-2 border-teal-400' : 'text-white/40 hover:text-white'}`}>Journal_Entries ({journalEntries.length})</button>
+                    <button onClick={() => setActiveTab('readings')} className={`text-sm font-mono uppercase tracking-widest font-bold pb-2 transition-all ${activeTab === 'readings' ? 'text-cosmic-light border-b-2 border-cosmic' : 'text-white/40 hover:text-white'}`}>Saved_Readings ({savedReadings.length})</button>
+                    <button onClick={() => setActiveTab('journal')} className={`text-sm font-mono uppercase tracking-widest font-bold pb-2 transition-all ${activeTab === 'journal' ? 'text-hologram border-b-2 border-hologram' : 'text-white/40 hover:text-white'}`}>Journal_Entries ({journalEntries.length})</button>
                 </div>
 
                 {/* Content */}
@@ -323,7 +356,7 @@ Format your response in clean sections with headers. Use a mystical but grounded
                     {activeTab === 'readings' ? (
                         filteredReadings.length > 0 ? (
                             filteredReadings.map(reading => (
-                                <SavedReadingEntry key={reading.id} reading={reading} onCardClick={() => { }} isPremium={isPremium} />
+                                <SavedReadingEntry key={reading.id} reading={reading} onCardClick={() => { }} onView3D={setReadingIn3D} isPremium={isPremium} />
                             ))
                         ) : (
                             <p className="text-center text-white/20 font-mono py-10">NO_SIGNAL_FOUND_IN_ARCHIVE</p>

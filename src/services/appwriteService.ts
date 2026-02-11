@@ -111,6 +111,7 @@ export const db = {
     },
 
     getReadings: async (userId) => {
+        if (!userId) return { documents: [], total: 0 };
         return await databases.listDocuments(
             DATABASE_ID,
             COLLECTIONS.READINGS,
@@ -129,6 +130,7 @@ export const db = {
     },
 
     getJournalEntries: async (userId) => {
+        if (!userId) return { documents: [], total: 0 };
         return await databases.listDocuments(
             DATABASE_ID,
             COLLECTIONS.JOURNAL,
@@ -147,6 +149,7 @@ export const db = {
     },
 
     getDailyHistory: async (userId) => {
+        if (!userId) return { documents: [], total: 0 };
         return await databases.listDocuments(
             DATABASE_ID,
             COLLECTIONS.DAILY_DRAWS,

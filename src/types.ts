@@ -9,6 +9,7 @@ export interface DivinationCard {
   name: string;
   keywords: string[];
   meaning: string;
+  imageUrl?: string;
 }
 
 export interface TarotCard extends DivinationCard {
@@ -98,10 +99,28 @@ export interface UserProfile {
   stardust: number;
   ownedDeckIds: string[];
   unlockedAchievements: AchievementID[];
-  subscriptionTier: 'free' | 'premium' | 'vip';
-  subscriptionExpiry?: string;
   isPremium: boolean;
+  subscriptionTier: 'free' | 'seeker' | 'mystic' | 'oracle';
+  subscriptionExpiry: string; // ISO Date
 }
+
+export type AchievementID =
+  | 'first_draw'
+  | 'first_reading'
+  | 'scribe_1'
+  | 'scribe_10'
+  | 'historian_5'
+  | 'streak_3'
+  | 'streak_7'
+  | 'major_arcana_initiate'
+  | 'major_arcana_master'
+  | 'wands_adept'
+  | 'cups_adept'
+  | 'swords_adept'
+  | 'pentacles_adept'
+  | 'rune_caster_1'
+  | 'rune_caster_5';
+
 
 export interface CardReadingOutput {
   coreMessage: string;
@@ -127,9 +146,9 @@ export interface DailyDrawRecord {
 }
 
 export interface SavedReading {
+  date: string | number | Date;
   id: string;
-  date: string;
-  spread: SpreadType; // Was spreadType
+  spreadType: SpreadType;
   deckType: DeckType;
   deckId: string;
   positions: string[];
@@ -183,19 +202,3 @@ export interface CosmicBlueprint {
   karmicDebts: number[];
 }
 
-export type AchievementID =
-  | 'first_draw'
-  | 'first_reading'
-  | 'scribe_1'
-  | 'scribe_10'
-  | 'historian_5'
-  | 'streak_3'
-  | 'streak_7'
-  | 'major_arcana_initiate'
-  | 'major_arcana_master'
-  | 'wands_adept'
-  | 'cups_adept'
-  | 'swords_adept'
-  | 'pentacles_adept'
-  | 'rune_caster_1'
-  | 'rune_caster_5';
