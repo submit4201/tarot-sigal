@@ -17,9 +17,20 @@ export default async ({ req, res, log, error }) => {
     ? process.env.ALLOWED_ORIGINS.split(',')
     : ['https://sigil.app.cultofthefork.tech'];
   
-  const origin = req.headers.origin || req.headers.referer;
-  const isAllowedOrigin = allowedOrigins.some(allowed => origin && origin.includes(allowed));
-  
+  const rawOriginHeader = req.headers.origin || req.headers.referer;
+  let origin;
+
+  if (rawOriginHeader) {
+    try {
+      const parsed = new URL(rawOriginHeader);
+      origin = `${parsed.protocol}//${parsed.host}`;
+    } catch {
+      origin = undefined;
+    }
+  }
+
+  const isAllowedOrigin = !!origin && allowedOrigins.includes(origin);
+
   // CORS headers
   const headers = {
     'Access-Control-Allow-Origin': isAllowedOrigin ? origin : allowedOrigins[0],
