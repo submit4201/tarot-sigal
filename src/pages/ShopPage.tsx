@@ -92,32 +92,45 @@ const ShopPage: React.FC = () => {
                         { name: 'Ember', price: 2.99, stardust: 1000, color: 'purple' },
                         { name: 'Supernova', price: 4.99, stardust: 2500, color: 'amber', popular: true },
                         { name: 'Cosmic Rift', price: 9.99, stardust: 7500, color: 'amber', bestValue: true }
-                    ].map(pack => (
-                        <div key={pack.name} className={`glass-panel p-6 rounded-2xl border-${pack.color}-500/20 bg-${pack.color}-500/[0.02] text-center relative overflow-hidden group hover:border-${pack.color}-500/40 transition-all`}>
-                            {pack.popular && (
-                                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-amber-500 text-black px-3 py-1 rounded-full text-[8px] font-mono uppercase font-bold">
-                                    Popular
+                    ].map(pack => {
+                        // Static Tailwind classes based on color
+                        const colorClasses = pack.color === 'amber' 
+                            ? {
+                                card: 'border-amber-500/20 bg-amber-500/[0.02] hover:border-amber-500/40',
+                                button: 'bg-amber-600/20 border-amber-500/30 text-amber-400 hover:bg-amber-600'
+                              }
+                            : {
+                                card: 'border-purple-500/20 bg-purple-500/[0.02] hover:border-purple-500/40',
+                                button: 'bg-purple-600/20 border-purple-500/30 text-purple-400 hover:bg-purple-600'
+                              };
+                        
+                        return (
+                            <div key={pack.name} className={`glass-panel p-6 rounded-2xl text-center relative overflow-hidden group transition-all ${colorClasses.card}`}>
+                                {pack.popular && (
+                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-amber-500 text-black px-3 py-1 rounded-full text-[8px] font-mono uppercase font-bold">
+                                        Popular
+                                    </div>
+                                )}
+                                {pack.bestValue && (
+                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-purple-500 text-white px-3 py-1 rounded-full text-[8px] font-mono uppercase font-bold">
+                                        Best Value
+                                    </div>
+                                )}
+                                <div className="font-mono text-[10px] text-amber-400 uppercase tracking-widest mb-2">{pack.name}</div>
+                                <div className="text-3xl font-bold text-white mb-1">${pack.price}</div>
+                                <div className="text-2xl font-bold text-amber-400 mb-4 flex items-center justify-center gap-1">
+                                    <SparklesIcon className="w-5 h-5" />
+                                    {pack.stardust.toLocaleString()}
                                 </div>
-                            )}
-                            {pack.bestValue && (
-                                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-purple-500 text-white px-3 py-1 rounded-full text-[8px] font-mono uppercase font-bold">
-                                    Best Value
-                                </div>
-                            )}
-                            <div className="font-mono text-[10px] text-amber-400 uppercase tracking-widest mb-2">{pack.name}</div>
-                            <div className="text-3xl font-bold text-white mb-1">${pack.price}</div>
-                            <div className="text-2xl font-bold text-amber-400 mb-4 flex items-center justify-center gap-1">
-                                <SparklesIcon className="w-5 h-5" />
-                                {pack.stardust.toLocaleString()}
+                                <button
+                                    onClick={() => alert(`Stripe integration coming soon!\n\n${pack.name} Pack - $${pack.price}\n${pack.stardust} Stardust\n\nThis will integrate with Stripe Checkout through Appwrite Functions.`)}
+                                    className={`w-full px-4 py-3 rounded-xl font-bold font-mono text-[9px] uppercase tracking-widest border hover:text-white transition-all ${colorClasses.button}`}
+                                >
+                                    Purchase
+                                </button>
                             </div>
-                            <button
-                                onClick={() => alert(`Stripe integration coming soon!\n\n${pack.name} Pack - $${pack.price}\n${pack.stardust} Stardust\n\nThis will integrate with Stripe Checkout through Appwrite Functions.`)}
-                                className={`w-full px-4 py-3 rounded-xl font-bold font-mono text-[9px] uppercase tracking-widest bg-${pack.color}-600/20 border border-${pack.color}-500/30 text-${pack.color}-400 hover:bg-${pack.color}-600 hover:text-white transition-all`}
-                            >
-                                Purchase
-                            </button>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {activeProfile.isPremium && (

@@ -34,6 +34,12 @@ This directory contains serverless functions for Gridpunk Arcana.
 
 **Environment Variables:**
 - `STRIPE_SECRET_KEY` - Your Stripe secret key
+- `STRIPE_PRICE_SEEKER` - Stripe Price ID for Seeker subscription ($8.99/mo)
+- `STRIPE_PRICE_ORACLE` - Stripe Price ID for Oracle subscription ($14.99/mo)
+- `STRIPE_PRICE_SPARK` - Stripe Price ID for Spark pack ($0.99)
+- `STRIPE_PRICE_EMBER` - Stripe Price ID for Ember pack ($2.99)
+- `STRIPE_PRICE_SUPERNOVA` - Stripe Price ID for Supernova pack ($4.99)
+- `STRIPE_PRICE_COSMIC_RIFT` - Stripe Price ID for Cosmic Rift pack ($9.99)
 - `DATABASE_ID` - Appwrite database ID (default: gridpunk-arcana)
 - `SUCCESS_URL` - Redirect URL after successful payment
 - `CANCEL_URL` - Redirect URL if payment is cancelled
@@ -146,4 +152,10 @@ Before using the Stripe functions, create products and prices in your Stripe Das
 - **Supernova** - $4.99 one-time (2,500 Stardust)
 - **Cosmic Rift** - $9.99 one-time (7,500 Stardust)
 
-Update the `PRICE_IDS` constant in `stripe-checkout/src/main.js` with your actual Stripe Price IDs.
+After creating the prices in Stripe, configure the corresponding Price IDs as environment variables in Appwrite:
+- `STRIPE_PRICE_SEEKER`
+- `STRIPE_PRICE_ORACLE`
+- `STRIPE_PRICE_SPARK`
+- `STRIPE_PRICE_EMBER`
+- `STRIPE_PRICE_SUPERNOVA`
+- `STRIPE_PRICE_COSMIC_RIFT`

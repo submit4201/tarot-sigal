@@ -109,9 +109,9 @@ export default async ({ req, res, log, error }) => {
         const profile = profiles.documents[0];
 
         if (type === 'subscription') {
-          // Update subscription
+          // Update subscription - calculate expiry 30 days from now
           const expiryDate = new Date();
-          expiryDate.setMonth(expiryDate.getMonth() + 1);
+          expiryDate.setDate(expiryDate.getDate() + 30); // Add 30 days instead of using setMonth
 
           await databases.updateDocument(
             databaseId,

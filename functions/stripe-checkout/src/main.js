@@ -14,14 +14,14 @@ import { Client, Databases, ID } from 'node-appwrite';
  * - CANCEL_URL: URL to redirect if payment is cancelled
  */
 
-// Stripe price IDs (these should be created in Stripe Dashboard)
+// Stripe price IDs (these should be created in Stripe Dashboard and configured via environment variables)
 const PRICE_IDS = {
-  seeker: 'price_seeker_monthly',  // Replace with actual Stripe Price ID
-  oracle: 'price_oracle_monthly',  // Replace with actual Stripe Price ID
-  spark: 'price_stardust_spark',
-  ember: 'price_stardust_ember',
-  supernova: 'price_stardust_supernova',
-  cosmic_rift: 'price_stardust_cosmic_rift',
+  seeker: process.env.STRIPE_PRICE_SEEKER || '',
+  oracle: process.env.STRIPE_PRICE_ORACLE || '',
+  spark: process.env.STRIPE_PRICE_SPARK || '',
+  ember: process.env.STRIPE_PRICE_EMBER || '',
+  supernova: process.env.STRIPE_PRICE_SUPERNOVA || '',
+  cosmic_rift: process.env.STRIPE_PRICE_COSMIC_RIFT || '',
 };
 
 export default async ({ req, res, log, error }) => {
@@ -76,7 +76,8 @@ export default async ({ req, res, log, error }) => {
     // Get price ID
     const priceId = PRICE_IDS[tier];
     if (!priceId) {
-      return res.json({ error: `Invalid tier: ${tier}` }, 400, headers);
+      error(`Invalid or unconfigured tier: ${tier}`);
+      return res.json({ error: `Invalid tier: ${tier}. Please ensure STRIPE_PRICE_${tier.toUpperCase()} environment variable is set.` }, 400, headers);
     }
 
     log(`Creating Stripe checkout for user ${userId}, type: ${type}, tier: ${tier}`);
