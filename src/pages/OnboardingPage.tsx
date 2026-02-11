@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { UserProfile } from '../types';
 import { getSignFromDate } from '../services/astroService';
 
-const initialFormData: Omit<UserProfile, 'id' | 'level' | 'xp' | 'unlockedAchievements' | 'stardust' | 'ownedDeckIds'> = {
+const initialFormData: Omit<UserProfile, 'id' | 'level' | 'xp' | 'achievements' | 'stardust' | 'decks' | 'subTier' | 'subExpiry' | 'isPremium'> = {
   givenName: '',
   currentName: '',
   mothersMaidenName: '',

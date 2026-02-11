@@ -1,6 +1,8 @@
 # Appwrite Manual Setup Checklist
 
-Since you created the database manually, you need to ensure the **Indexes** and **Attributes** match exactly what the code expects. If these are missing, you will see "Invalid query" or "Missing attribute" errors.
+Since you created the database manually, you need to ensure the **Indexes** and **Attributes** match exactly what the code expects.
+
+**Your Chosen Schema (Short Names)**
 
 ## 1. Collection: `profiles`
 **Attributes:**
@@ -11,16 +13,14 @@ Since you created the database manually, you need to ensure the **Indexes** and 
 - `level` (Integer)
 - `xp` (Integer)
 - `stardust` (Integer)
-- `isPremium` (Boolean)  <-- *Check this*
-- `subscriptionTier` (String, 20 chars, default: 'free')
-- `subscriptionExpiry` (String, 50 chars, optional) <-- *Rename 'subExpiry' to this*
-- `ownedDeckIds` (String, 255 chars, Array)
-- `unlockedAchievements` (String, 255 chars, Array)
+- `isPremium` (Boolean)
+- `subTier` (String, 20 chars, default: 'free')
+- `subExpiry` (String, 50 chars, optional)
+- `decks` (String, 255 chars, Array)
+- `achievements` (String, 255 chars, Array)
 
-**Indexes (Required for Queries):**
-- **Key:** `idx_profiles_user`
-- **Type:** `Key`
-- **Attribute:** `userId` (ASC)
+**Indexes (Required):**
+- **Key:** `idx_profiles_user` | **Type:** `Key` | **Attribute:** `userId` (ASC)
 
 ---
 
@@ -28,7 +28,7 @@ Since you created the database manually, you need to ensure the **Indexes** and 
 **Attributes:**
 - `userId` (String, 36 chars, Required)
 - `profileId` (String, 36 chars)
-- `spreadType` (String, 50 chars)
+- `spread` (String, 50 chars)
 - `question` (String, 500 chars)
 - `cards` (String, 5000 chars)
 - `aiSummary` (String, 10000 chars)
@@ -58,8 +58,8 @@ Since you created the database manually, you need to ensure the **Indexes** and 
 ## 4. Collection: `daily_draws`
 **Attributes:**
 - `userId` (String, 36 chars, Required)
-- `cardName` (String, 50 chars)
-- `isReversed` (Boolean)
+- `card` (String, 50 chars)
+- `isRev` (Boolean)
 - `date` (String, 20 chars)
 - `insights` (String, 1000 chars)
 
@@ -74,7 +74,7 @@ Since you created the database manually, you need to ensure the **Indexes** and 
 - `userId` (String, 36 chars, Required)
 - `type` (String, 50 chars)
 - `amount` (Integer)
-- `stripeSessionId` (String, 100 chars)
+- `stripeId` (String, 100 chars)
 - `status` (String, 20 chars)
 - `createdAt` (String, 50 chars, Required)
 

@@ -40,7 +40,7 @@ const ShopPage: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {SHOP_DECKS.map(deck => {
-                    const isOwned = ownedDeckIds.includes(deck.id);
+                    const isOwned = decks.includes(deck.id);
                     const canAfford = stardust >= deck.price;
 
                     return (

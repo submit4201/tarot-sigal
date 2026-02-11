@@ -117,11 +117,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       level: 1,
       xp: 0,
       stardust: 100, // Starter dust
-      ownedDeckIds: ['default_tarot', 'ancient_runes'],
-      unlockedAchievements: [],
+      decks: ['default_tarot', 'ancient_runes'],
+      achievements: [],
       isPremium: false,
-      subscriptionTier: 'free',
-      subscriptionExpiry: null
+      subTier: 'free',
+      subExpiry: null
     };
     const response = await db.createProfile(newProfile);
     setActiveProfile(response as unknown as UserProfile);
@@ -194,7 +194,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     await db.addDailyDraw(dbRecord);
 
-    const newRecord: DailyDrawRecord = { date: todayStr, drawnCard: draw };
+    const newRecord: DailyDrawRecord = { date: todayStr, card: draw.name, isRev: draw.isReversed };
     setDailyDrawHistory(prev => [newRecord, ...prev]);
   };
 
@@ -242,21 +242,21 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
     await updateActiveProfile({
       stardust: activeProfile.stardust - deck.price,
-      ownedDeckIds: [...activeProfile.ownedDeckIds, deck.id]
+      decks: [...activeProfile.decks, deck.id]
     });
   };
 
   const awardDeck = async (deckId: string) => {
-    if (!activeProfile || activeProfile.ownedDeckIds.includes(deckId)) return;
+    if (!activeProfile || activeProfile.decks.includes(deckId)) return;
     await updateActiveProfile({
-      ownedDeckIds: [...activeProfile.ownedDeckIds, deckId]
+      decks: [...activeProfile.decks, deckId]
     });
   };
 
   const unlockAchievement = async (id: AchievementID) => {
-    if (!activeProfile || activeProfile.unlockedAchievements.includes(id)) return;
+    if (!activeProfile || activeProfile.achievements.includes(id)) return;
     await updateActiveProfile({
-      unlockedAchievements: [...activeProfile.unlockedAchievements, id]
+      achievements: [...activeProfile.achievements, id]
     });
   };
 

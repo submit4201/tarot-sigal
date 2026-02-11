@@ -69,7 +69,7 @@ const ProfilePage: React.FC = () => {
 
   const myDecks = useMemo(() => {
     if (!activeProfile) return [];
-    return SHOP_DECKS.filter(deck => activeProfile.ownedDeckIds.includes(deck.id));
+    return SHOP_DECKS.filter(deck => activeProfile.decks.includes(deck.id));
   }, [activeProfile]);
 
   const handleLogout = async () => {
