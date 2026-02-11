@@ -121,7 +121,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       achievements: [],
       isPremium: false,
       subTier: 'free',
-      subExpiry: null
+      subExpiry: new Date().toISOString(),
     };
     const response = await db.createProfile(newProfile);
     setActiveProfile(response as unknown as UserProfile);
@@ -194,7 +194,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     await db.addDailyDraw(dbRecord);
 
-    const newRecord: DailyDrawRecord = { date: todayStr, card: draw.name, isRev: draw.isReversed };
+    const newRecord: DailyDrawRecord = { date: todayStr, card: draw.card.name, isRev: draw.isReversed };
     setDailyDrawHistory(prev => [newRecord, ...prev]);
   };
 
