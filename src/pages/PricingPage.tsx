@@ -78,7 +78,8 @@ const PricingPage: React.FC = () => {
     try {
       await createCheckoutSession('subscription', tier.tier);
     } catch (error) {
-      alert(`Failed to start checkout: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+      alert(`Failed to start checkout: ${errorMessage}`);
       setIsProcessing(false);
     }
   };

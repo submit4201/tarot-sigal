@@ -3,10 +3,14 @@ import { useApp } from '../context/AppContext';
 import { SHOP_DECKS } from '../constants';
 import { SparklesIcon, LayersIcon } from '../components/icons';
 import { createCheckoutSession } from '../services/stripeService';
+import type { StardustPack } from '../types/stripe';
 
 /**
  * ShopPage — Stardust-powered deck marketplace.
  * ! Rethemed to match cyberpunk glass-panel design system.
+ * 
+ * Note: Pack tiers must match the STARDUST_TIERS array in stripe-checkout function:
+ * - spark, ember, supernova, cosmic_rift (all lowercase with underscores)
  */
 const ShopPage: React.FC = () => {
     const { activeProfile, purchaseDeck, setPage } = useApp();
@@ -17,7 +21,8 @@ const ShopPage: React.FC = () => {
         try {
             await createCheckoutSession('stardust', packTier);
         } catch (error) {
-            alert(`Failed to start checkout: ${error.message}`);
+            const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+            alert(`Failed to start checkout: ${errorMessage}`);
             setIsPurchasing(false);
         }
     };
@@ -99,12 +104,12 @@ const ShopPage: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-                    {[
-                        { name: 'Spark', price: 0.99, stardust: 250, color: 'purple' },
-                        { name: 'Ember', price: 2.99, stardust: 1000, color: 'purple' },
-                        { name: 'Supernova', price: 4.99, stardust: 2500, color: 'amber', popular: true },
-                        { name: 'Cosmic Rift', price: 9.99, stardust: 7500, color: 'amber', bestValue: true }
-                    ].map(pack => {
+                    {([
+                        { name: 'Spark', tier: 'spark', price: 0.99, stardust: 250, color: 'purple' },
+                        { name: 'Ember', tier: 'ember', price: 2.99, stardust: 1000, color: 'purple' },
+                        { name: 'Supernova', tier: 'supernova', price: 4.99, stardust: 2500, color: 'amber', popular: true },
+                        { name: 'Cosmic Rift', tier: 'cosmic_rift', price: 9.99, stardust: 7500, color: 'amber', bestValue: true }
+                    ] as StardustPack[]).map(pack => {
                         // Static Tailwind classes based on color
                         const colorClasses = pack.color === 'amber' 
                             ? {
@@ -117,7 +122,7 @@ const ShopPage: React.FC = () => {
                               };
                         
                         return (
-                            <div key={pack.name} className={`glass-panel p-6 rounded-2xl text-center relative overflow-hidden group transition-all ${colorClasses.card}`}>
+                            <div key={pack.tier} className={`glass-panel p-6 rounded-2xl text-center relative overflow-hidden group transition-all ${colorClasses.card}`}>
                                 {pack.popular && (
                                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-amber-500 text-black px-3 py-1 rounded-full text-[8px] font-mono uppercase font-bold">
                                         Popular
@@ -135,7 +140,7 @@ const ShopPage: React.FC = () => {
                                     {pack.stardust.toLocaleString()}
                                 </div>
                                 <button
-                                    onClick={() => handleStardustPurchase(pack.name.toLowerCase().replace(' ', '_'))}
+                                    onClick={() => handleStardustPurchase(pack.tier)}
                                     disabled={isPurchasing}
                                     className={`w-full px-4 py-3 rounded-xl font-bold font-mono text-[9px] uppercase tracking-widest border hover:text-white transition-all ${colorClasses.button} disabled:opacity-50 disabled:cursor-not-allowed`}
                                 >

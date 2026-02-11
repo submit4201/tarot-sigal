@@ -1,4 +1,5 @@
 import { account } from './appwriteService';
+import type { PurchaseType, SubscriptionTier, StardustTier } from '../types/stripe';
 
 const FUNCTION_ENDPOINT = import.meta.env.VITE_APPWRITE_ENDPOINT || 'https://cloud.appwrite.io/v1';
 const PROJECT_ID = import.meta.env.VITE_APPWRITE_PROJECT_ID;
@@ -24,7 +25,8 @@ async function callFunction(functionId: string, data: any) {
     });
 
     if (!response.ok) {
-      throw new Error(`Function call failed: ${response.statusText}`);
+      const errorText = await response.text().catch(() => response.statusText);
+      throw new Error(`Function call failed: ${errorText}`);
     }
 
     const result = await response.json();
@@ -44,7 +46,10 @@ async function callFunction(functionId: string, data: any) {
 /**
  * Create a Stripe Checkout session and redirect user
  */
-export async function createCheckoutSession(type: 'subscription' | 'stardust', tier: string) {
+export async function createCheckoutSession(
+  type: PurchaseType,
+  tier: SubscriptionTier | StardustTier
+): Promise<void> {
   try {
     const user = await account.get();
     
