@@ -14,7 +14,8 @@ export const COLLECTIONS = {
     READINGS: 'readings',
     JOURNAL: 'journal_entries',
     DAILY_DRAWS: 'daily_draws',
-    PURCHASES: 'purchases'
+    PURCHASES: 'purchases',
+    SYSTEM_LOGS: 'system_logs'
 };
 
 if (PROJECT_ID) {
@@ -154,6 +155,16 @@ export const db = {
             DATABASE_ID,
             COLLECTIONS.DAILY_DRAWS,
             [Query.equal('userId', userId), Query.orderDesc('date'), Query.limit(30)]
+        );
+    },
+
+    // System Logs
+    createLogEntry: async (entry: any) => {
+        return await databases.createDocument(
+            DATABASE_ID,
+            COLLECTIONS.SYSTEM_LOGS,
+            ID.unique(),
+            entry
         );
     }
 };

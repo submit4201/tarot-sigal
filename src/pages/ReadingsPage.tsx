@@ -385,6 +385,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
                     deckCount={selectedDeck?.cards.length || 78}
                     onShuffle={handleChargingMove}
                     onDraw={completeCharging}
+                    isFanned={hasShuffledEnough}
                 />
                 <p className="absolute bottom-20 text-white/40 font-mono text-xs uppercase tracking-[0.2em]">
                     {hasShuffledEnough ? 'Throw to Deal' : 'Drag to Shuffle'}

@@ -1,7 +1,7 @@
 
 import { GoogleGenAI, GenerateContentParameters, GenerateContentResponse } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 
 /**
  * Wraps the Gemini generateContent call with exponential backoff retry logic.
@@ -20,10 +20,10 @@ export async function generateContentWithRetry(
       const response = await ai.models.generateContent(params);
       return response;
     } catch (error: any) {
-      const isRetryable = 
-        error.status === 429 || 
-        error.code === 429 || 
-        error.status === 503 || 
+      const isRetryable =
+        error.status === 429 ||
+        error.code === 429 ||
+        error.status === 503 ||
         error.message?.includes('429') ||
         error.message?.includes('quota');
 
