@@ -29,7 +29,7 @@ export async function createCheckoutSession(
 /**
  * Call Gemini API through FastAPI proxy
  */
-export async function callGeminiProxy(prompt: string, model: string = 'gemini-2.0-flash') {
+export async function callGeminiProxy(prompt: string, model: string = 'gemini-flash-latest') {
   try {
     const result = await apiFetch('/gemini/generate', {
       method: 'POST',
