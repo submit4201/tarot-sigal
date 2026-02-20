@@ -1,9 +1,14 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { Models } from 'appwrite';
-import { loginWithEmail, signupWithEmail, logout as apiLogout, getCurrentUser, loginWithOAuth } from '../services/appwriteService';
+import { auth } from '../services/apiService';
+
+interface AuthUser {
+    id: string;
+    email: string;
+    given_name?: string;
+}
 
 interface AuthContextType {
-    user: Models.User<Models.Preferences> | null;
+    user: AuthUser | null;
     isLoading: boolean;
     isAuthenticated: boolean;
     login: (email: string, password: string) => Promise<void>;
@@ -16,7 +21,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [user, setUser] = useState<Models.User<Models.Preferences> | null>(null);
+    const [user, setUser] = useState<AuthUser | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -25,7 +30,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const checkUserStatus = async () => {
         try {
-            const currentUser = await getCurrentUser();
+            const currentUser = await auth.getCurrentUser();
             setUser(currentUser);
         } catch (error) {
             setUser(null);
@@ -35,22 +40,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     const login = async (email: string, password: string) => {
-        await loginWithEmail(email, password);
+        await auth.login(email, password);
         await checkUserStatus();
     };
 
     const signup = async (email: string, password: string, name: string) => {
-        await signupWithEmail(email, password, name);
-        await checkUserStatus();
+        await auth.register(email, password, name);
+        await login(email, password); // API registers but might not return token directly, so we login right after.
     };
 
     const logout = async () => {
-        await apiLogout();
+        await auth.logout();
         setUser(null);
     };
 
-    const loginWithGitHub = () => loginWithOAuth('github');
-    const loginWithGoogle = () => loginWithOAuth('google');
+    const loginWithGitHub = () => { console.warn("GitHub login not yet implemented in FastAPI"); };
+    const loginWithGoogle = () => { console.warn("Google login not yet implemented in FastAPI"); };
 
     return (
         <AuthContext.Provider value={{

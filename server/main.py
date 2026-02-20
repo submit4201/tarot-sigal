@@ -1,0 +1,48 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from core.logger import app_logger
+from core.database import engine
+from models.database_models import Base
+
+# API Routers
+from api import auth, readings, journal, daily_draws, purchases, stripe_routes, gemini_routes
+
+# Create all tables in the database (if they don't exist)
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI(
+    title="Gridpunk Arcana API",
+    description="Backend API for Gridpunk Arcana",
+    version="1.0.0"
+)
+
+# CORS middleware to allow React frontend connection
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # In production, restrict this to the DigitalOcean frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.on_event("startup")
+async def startup_event():
+    app_logger.info("Gridpunk Arcana Backend started successfully.")
+
+@app.get("/")
+async def root():
+    app_logger.info("Root endpoint accessed.")
+    return {"message": "Gridpunk Arcana API is online."}
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
+
+# Register Routers
+app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
+app.include_router(readings.router, prefix="/api/readings", tags=["Readings"])
+app.include_router(journal.router, prefix="/api/journal", tags=["Journal Entries"])
+app.include_router(daily_draws.router, prefix="/api/daily-draws", tags=["Daily Draws"])
+app.include_router(purchases.router, prefix="/api/purchases", tags=["Purchases"])
+app.include_router(stripe_routes.router, prefix="/api/stripe", tags=["Stripe"])
+app.include_router(gemini_routes.router, prefix="/api/gemini", tags=["Gemini AI"])

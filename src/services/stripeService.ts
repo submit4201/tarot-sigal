@@ -1,44 +1,5 @@
-import { account } from './appwriteService';
+import { apiFetch } from './apiService';
 import type { PurchaseType, SubscriptionTier, StardustTier } from '../types/stripe';
-
-const FUNCTION_ENDPOINT = import.meta.env.VITE_APPWRITE_ENDPOINT || 'https://cloud.appwrite.io/v1';
-const PROJECT_ID = import.meta.env.VITE_APPWRITE_PROJECT_ID;
-
-/**
- * Call an Appwrite Function with authentication
- */
-async function callFunction(functionId: string, data: any) {
-  try {
-    const response = await fetch(`${FUNCTION_ENDPOINT}/functions/${functionId}/executions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Appwrite-Project': PROJECT_ID,
-      },
-      body: JSON.stringify({
-        async: false,
-        body: JSON.stringify(data),
-      }),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text().catch(() => response.statusText);
-      throw new Error(`Function call failed: ${errorText}`);
-    }
-
-    const result = await response.json();
-    
-    // Parse the response body
-    if (result.responseBody) {
-      return JSON.parse(result.responseBody);
-    }
-    
-    return result;
-  } catch (error) {
-    console.error('Function call error:', error);
-    throw error;
-  }
-}
 
 /**
  * Create a Stripe Checkout session and redirect user
@@ -48,16 +9,9 @@ export async function createCheckoutSession(
   tier: SubscriptionTier | StardustTier
 ): Promise<void> {
   try {
-    const user = await account.get();
-    
-    // Call the stripe-checkout function
-    // Note: Replace 'stripe-checkout-function-id' with actual function ID from Appwrite Console
-    const functionId = import.meta.env.VITE_STRIPE_CHECKOUT_FUNCTION_ID || 'stripe-checkout';
-    
-    const result = await callFunction(functionId, {
-      userId: user.$id,
-      type,
-      tier,
+    const result = await apiFetch('/stripe/create-checkout-session', {
+      method: 'POST',
+      body: JSON.stringify({ type, tier })
     });
 
     if (result.success && result.url) {
@@ -73,16 +27,13 @@ export async function createCheckoutSession(
 }
 
 /**
- * Call Gemini API through proxy function
+ * Call Gemini API through FastAPI proxy
  */
-export async function callGeminiProxy(prompt: string, model: string = 'gemini-pro') {
+export async function callGeminiProxy(prompt: string, model: string = 'gemini-2.5-flash') {
   try {
-    // Note: Replace 'gemini-proxy-function-id' with actual function ID from Appwrite Console
-    const functionId = import.meta.env.VITE_GEMINI_PROXY_FUNCTION_ID || 'gemini-proxy';
-    
-    const result = await callFunction(functionId, {
-      prompt,
-      model,
+    const result = await apiFetch('/gemini/generate', {
+      method: 'POST',
+      body: JSON.stringify({ prompt, model })
     });
 
     if (result.success && result.text) {
@@ -95,3 +46,4 @@ export async function callGeminiProxy(prompt: string, model: string = 'gemini-pr
     throw error;
   }
 }
+

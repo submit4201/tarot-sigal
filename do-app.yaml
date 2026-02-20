@@ -1,0 +1,47 @@
+name: gridpunk-arcana
+services:
+  - name: backend
+    github:
+      # NOTE: Replace with your actual repository 
+      repo: your-github-username/gridpunk-arcana
+      branch: main
+    source_dir: server
+    environment_slug: python
+    http_port: 8000
+    run_command: uvicorn main:app --host 0.0.0.0 --port 8000
+    envs:
+      - key: DATABASE_URL
+        value: ${db.DATABASE_URL}
+      - key: JWT_SECRET_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: STRIPE_SECRET_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: STRIPE_WEBHOOK_SECRET
+        scope: RUN_TIME
+        type: SECRET
+      - key: GEMINI_API_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: SUCCESS_URL
+        value: ${frontend.PUBLIC_URL}?payment=success
+      - key: CANCEL_URL
+        value: ${frontend.PUBLIC_URL}?payment=cancelled
+
+static_sites:
+  - name: frontend
+    github:
+      repo: your-github-username/gridpunk-arcana
+      branch: main
+    build_command: npm run build
+    output_dir: dist
+    envs:
+      - key: VITE_APP_URL
+        # Maps the frontend API calls to the DO backend service
+        value: ${backend.PUBLIC_URL}/api
+
+databases:
+  - name: db
+    engine: PG
+    version: "15" # DO Managed Database or Dev DB

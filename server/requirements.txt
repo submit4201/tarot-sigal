@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+pydantic
+pydantic-settings
+python-jose[cryptography]
+passlib[bcrypt]
+stripe
+google-genai
+python-dotenv
+python-multipart
+# Add email validator for Pydantic
+email-validator

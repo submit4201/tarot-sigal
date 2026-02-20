@@ -1,6 +1,6 @@
 import React, { createContext, useContext, ReactNode, useEffect, useState, useCallback } from 'react';
 import { useAuth } from './AuthContext';
-import { db } from '../services/appwriteService';
+import { db } from '../services/apiService';
 import { JournalEntry, SavedReading, DrawnCard, DailyDrawRecord, UserProfile, Page, AchievementID, Deck, DailyInsights, DrawnDivinationCard } from '../types';
 
 interface AppContextType {
@@ -78,20 +78,28 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const loadData = async () => {
       setIsLoadingData(true);
       try {
-        const profile = await db.getProfile(user.$id);
+        const profile = await db.getProfile();
         if (profile) {
-          setActiveProfile(profile as unknown as UserProfile);
+          // Add default fields since API doesn't fully represent Appwrite's old structure yet
+          const fullProfile = {
+            ...profile,
+            level: profile.level || 1,
+            xp: profile.xp || 0,
+            ownedDeckIds: profile.ownedDeckIds || ['default_tarot', 'ancient_runes'],
+            unlockedAchievements: profile.unlockedAchievements || []
+          };
+          setActiveProfile(fullProfile as UserProfile);
 
           // Parallel fetch of sub-collections
           const [readings, journal, draws] = await Promise.all([
-            db.getReadings(user.$id),
-            db.getJournalEntries(user.$id),
-            db.getDailyHistory(user.$id)
+            db.getReadings(),
+            db.getJournalEntries(),
+            db.getDailyHistory()
           ]);
 
-          setSavedReadings(readings.documents as unknown as SavedReading[]);
-          setJournalEntries(journal.documents as unknown as JournalEntry[]);
-          setDailyDrawHistory(draws.documents as unknown as DailyDrawRecord[]);
+          setSavedReadings(readings as unknown as SavedReading[]);
+          setJournalEntries(journal as unknown as JournalEntry[]);
+          setDailyDrawHistory(draws as unknown as DailyDrawRecord[]);
         } else {
           // No profile yet - OnboardingPage will handle creation
           setActiveProfile(null);
@@ -113,42 +121,37 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     if (!user) return;
     const newProfile = {
       ...data,
-      userId: user.$id,
-      level: 1,
-      xp: 0,
-      stardust: 100, // Starter dust
-      ownedDeckIds: ['default_tarot', 'ancient_runes'],
-      unlockedAchievements: [],
-      isPremium: false,
-      subscriptionTier: 'free',
-      subscriptionExpiry: new Date().toISOString(),
     };
-    const response = await db.createProfile(newProfile);
-    setActiveProfile(response as unknown as UserProfile);
+    await db.updateProfile(newProfile);
+    const profile = await db.getProfile();
+    setActiveProfile({
+      ...profile,
+      level: profile.level || 1,
+      xp: profile.xp || 0,
+      ownedDeckIds: profile.ownedDeckIds || ['default_tarot', 'ancient_runes'],
+      unlockedAchievements: profile.unlockedAchievements || []
+    } as UserProfile);
   };
 
   const updateActiveProfile = async (updates: Partial<UserProfile>) => {
     if (!activeProfile || !user) return;
     // Optimistic update
     setActiveProfile(prev => prev ? { ...prev, ...updates } : null);
-    await db.updateProfile(activeProfile.id, updates);
+    await db.updateProfile(updates);
   };
 
   const addJournalEntry = async (text: string, linkedCard?: DrawnCard) => {
     if (!user || !activeProfile) return;
     const entry = {
-      userId: user.$id,
-      profileId: activeProfile.id,
       text,
-      linkedCard: linkedCard ? JSON.stringify(linkedCard) : null,
-      date: new Date().toISOString()
+      linked_card: linkedCard ? JSON.stringify(linkedCard) : null,
     };
 
     // DB Call
     const res = await db.addJournalEntry(entry);
 
     // State Update
-    const newEntryObj = { ...entry, id: res.$id, linkedCard } as any;
+    const newEntryObj = { ...res, linkedCard } as any;
     setJournalEntries(prev => [newEntryObj, ...prev]);
   };
 
@@ -157,19 +160,19 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     // Serialize cards for DB
     const dbReading = {
-      userId: user.$id,
-      profileId: activeProfile.id,
-      ...reading,
-      cards: reading.cards.map(c => JSON.stringify(c)), // Array of strings
-      date: new Date().toISOString()
+      spread: reading.spreadType,
+      question: reading.title,
+      cards: JSON.stringify(reading.cards), // Array of strings converted back inside
+      ai_summary: reading.aiSummary,
+      notes: reading.userNotes,
     };
 
     const res = await db.saveReading(dbReading);
 
     const newLocalReading = {
       ...reading,
-      id: res.$id,
-      date: dbReading.date
+      id: res.id,
+      date: res.created_at
     } as SavedReading;
 
     setSavedReadings(prev => [newLocalReading, ...prev]);
@@ -186,10 +189,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const todayStr = new Date().toISOString().split('T')[0];
 
     const dbRecord = {
-      userId: user.$id,
-      profileId: activeProfile.id,
       date: todayStr,
-      drawnCard: JSON.stringify(draw)
+      card: draw.card.name,
+      is_rev: draw.isReversed
     };
 
     await db.addDailyDraw(dbRecord);
