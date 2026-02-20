@@ -2,13 +2,13 @@ name: gridpunk-arcana
 services:
   - name: backend
     github:
-      # NOTE: Replace with your actual repository 
-      repo: your-github-username/gridpunk-arcana
-      branch: main
+      repo: submit4201/tarot-sigal
+      branch: feature/digitalocean-fastapi-migration
     source_dir: server
     environment_slug: python
-    http_port: 8000
-    run_command: uvicorn main:app --host 0.0.0.0 --port $PORT
+    build_command: pip install -r requirements.txt
+    run_command: uvicorn main:app --host 0.0.0.0 --port 8080
+    http_port: 8080
     envs:
       - key: DATABASE_URL
         value: ${db.DATABASE_URL}
@@ -32,9 +32,10 @@ services:
 static_sites:
   - name: frontend
     github:
-      repo: your-github-username/gridpunk-arcana
-      branch: main
-    build_command: npm run build
+      repo: submit4201/tarot-sigal
+      branch: feature/digitalocean-fastapi-migration
+    source_dir: /
+    build_command: npm install && npm run build
     output_dir: dist
     envs:
       - key: VITE_APP_URL
