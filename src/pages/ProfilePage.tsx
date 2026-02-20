@@ -7,6 +7,7 @@ import { generateCosmicBlueprint } from '../services/cosmicService';
 import CosmicBlueprintDisplay from '../components/CosmicBlueprintDisplay';
 import { SparklesIcon, SlidersIcon, UserIcon, LayersIcon } from '../components/icons';
 import { SHOP_DECKS } from '../constants';
+import { verifySubscription } from '../services/stripeService';
 
 const ProfilePage: React.FC = () => {
   const { isPremium, activeProfile, updateActiveProfile, setPage } = useApp();
@@ -71,6 +72,29 @@ const ProfilePage: React.FC = () => {
     if (!activeProfile) return [];
     return SHOP_DECKS.filter(deck => activeProfile.ownedDeckIds.includes(deck.id));
   }, [activeProfile]);
+
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncMessage, setSyncMessage] = useState('');
+
+  const handleSyncSubscription = async () => {
+    setIsSyncing(true);
+    setSyncMessage('Checking Stripe...');
+    try {
+      const res = await verifySubscription();
+      if ((res as any).is_premium && (res as any).tier) {
+        setSyncMessage('Subscription mapped! Reloading...');
+        setTimeout(() => window.location.reload(), 1500);
+      } else {
+        setSyncMessage((res as any).message || 'Verification complete.');
+        setTimeout(() => setSyncMessage(''), 3000);
+      }
+    } catch (err) {
+      setSyncMessage('Sync failed.');
+      setTimeout(() => setSyncMessage(''), 3000);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   const handleLogout = async () => {
     if (window.confirm("Are you sure you want to jack out?")) {
@@ -262,7 +286,7 @@ const ProfilePage: React.FC = () => {
                 <SparklesIcon className="w-5 h-5 text-amber-500" />
                 <span className="text-[10px] font-mono text-amber-500 uppercase tracking-[0.4em] font-bold">Subscription_Status</span>
               </div>
-              
+
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-white/60">Current Plan:</span>
@@ -277,19 +301,33 @@ const ProfilePage: React.FC = () => {
                   </div>
                 )}
               </div>
-              
+
               <p className="text-sm text-white/40 mb-6 leading-relaxed">
-                {isPremium 
-                  ? "You have unlocked premium features. Thank you for your support!" 
+                {isPremium
+                  ? "You have unlocked premium features. Thank you for your support!"
                   : "Unlock advanced features, unlimited readings, and deeper AI insights."}
               </p>
-              
-              <button 
-                onClick={() => setPage('Pricing')} 
-                className="w-full px-8 py-4 rounded-2xl font-bold font-mono text-[10px] uppercase tracking-widest bg-amber-600/20 border border-amber-500/30 text-amber-400 hover:bg-amber-600 hover:text-white transition-all shadow-glow"
+
+              <button
+                onClick={() => setPage('Pricing')}
+                className="w-full mb-3 px-8 py-4 rounded-2xl font-bold font-mono text-[10px] uppercase tracking-widest bg-amber-600/20 border border-amber-500/30 text-amber-400 hover:bg-amber-600 hover:text-white transition-all shadow-glow"
               >
                 {isPremium ? "Manage_Subscription" : "Upgrade_Now"}
               </button>
+
+              <button
+                onClick={handleSyncSubscription}
+                disabled={isSyncing}
+                className="w-full px-8 py-4 rounded-2xl font-bold font-mono text-[10px] uppercase tracking-widest bg-white/5 border border-white/10 text-white/60 hover:bg-white/10 hover:text-white transition-all disabled:opacity-50"
+              >
+                {isSyncing ? "Syncing..." : "Sync_Subscription_With_Stripe"}
+              </button>
+
+              {syncMessage && (
+                <p className="text-center mt-4 text-xs font-mono text-amber-400 animate-pulse">
+                  {syncMessage}
+                </p>
+              )}
             </section>
           </div>
         </div>

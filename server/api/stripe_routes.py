@@ -181,3 +181,59 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
         app_logger.info(f"Updated subscription status for {user_id}: {is_active}")
 
     return Response(status_code=200)
+
+@router.get("/verify-subscription")
+def verify_subscription(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """
+    Manually check Stripe for an active subscription tied to the user's email.
+    Useful for local dev when webhooks aren't flowing, or if a webhook was missed.
+    """
+    try:
+        # 1. Find customer in Stripe by email
+        customers = stripe.Customer.list(email=current_user.email, limit=1)
+        if not customers.data:
+            return {"is_premium": current_user.is_premium, "message": "No Stripe customer found for this email."}
+            
+        customer = customers.data[0]
+        
+        # Save customer ID if we didn't have it
+        if not current_user.stripe_customer_id:
+            current_user.stripe_customer_id = customer.id
+            db.commit()
+
+        # 2. Get active subscriptions for this customer
+        subscriptions = stripe.Subscription.list(customer=customer.id, status="active", limit=1)
+        
+        if subscriptions.data:
+            sub = subscriptions.data[0]
+            price_id = sub.plan.id
+            
+            # Map price ID back to our tier name
+            tier_name = "seeker"
+            for t_name, t_price in PRICE_IDS.items():
+                if t_price == price_id:
+                    tier_name = t_name
+                    break
+                    
+            # Overwrite metadata fallback if the sub has it
+            if sub.metadata and "tier" in sub.metadata:
+                tier_name = sub.metadata["tier"]
+                
+            current_user.is_premium = True
+            current_user.subscription_tier = tier_name
+            current_user.subscription_expiry = datetime.utcfromtimestamp(sub.current_period_end)
+            db.commit()
+            return {"is_premium": True, "tier": tier_name, "message": "Subscription mapped and activated!"}
+            
+        else:
+            # If they had premium but no active sub found, downgrade
+            if current_user.is_premium:
+                current_user.is_premium = False
+                current_user.subscription_tier = "free"
+                db.commit()
+            return {"is_premium": False, "message": "No active subscriptions found in Stripe."}
+
+    except Exception as e:
+        app_logger.error(f"Error verifying subscription manually: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+

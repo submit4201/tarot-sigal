@@ -47,3 +47,15 @@ export async function callGeminiProxy(prompt: string, model: string = 'gemini-2.
   }
 }
 
+
+export async function verifySubscription() {
+  try {
+    const result = await apiFetch('/stripe/verify-subscription', {
+      method: 'GET'
+    });
+    return result;
+  } catch (error) {
+    console.error('Verify subscription error:', error);
+    throw error;
+  }
+}
