@@ -212,7 +212,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
             Context: ${readingIntent} focus.
             Output: Just the refined question text.`;
 
-            const response = await generateContentWithRetry({ model: 'gemini-2.5-flash', contents: prompt });
+            const response = await generateContentWithRetry({ model: 'llama-3.3-70b-versatile', contents: prompt });
             setRefinedQuestion(response.text || userQuestion);
         } catch (e) {
             console.error(e);
@@ -291,7 +291,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
 
         try {
             const response = await generateContentWithRetry({
-                model: 'gemini-2.5-flash',
+                model: 'llama-3.3-70b-versatile',
                 contents: basePrompt,
                 config: { responseMimeType: 'application/json', responseSchema: schema }
             });

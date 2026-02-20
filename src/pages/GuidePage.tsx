@@ -89,7 +89,7 @@ const GuidePage: React.FC<{ setPage: (page: string) => void }> = ({ setPage }) =
 
         try {
             const response = await generateContentWithRetry({
-                model: 'gemini-2.5-flash',
+                model: 'llama-3.3-70b-versatile',
                 contents: prompt,
             });
             setInterpretation(response.text || "Interpretation unavailable.");

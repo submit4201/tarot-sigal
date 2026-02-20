@@ -19,7 +19,7 @@ const InitiationPhase: React.FC<InitiationPhaseProps> = ({ onComplete }) => {
         try {
             const prompt = `Rephrase this tarot question to be more empowering and open-ended: "${focus}". Return only the refined question, no quotes.`;
             const result = await generateContentWithRetry({
-                model: 'gemini-2.5-flash',
+                model: 'llama-3.3-70b-versatile',
                 contents: prompt
             });
             setSuggestion(result.text || focus);

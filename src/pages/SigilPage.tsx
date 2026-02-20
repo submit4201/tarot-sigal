@@ -83,7 +83,7 @@ const SigilPage: React.FC = () => {
             };
 
             const result = await generateContentWithRetry({
-                model: 'gemini-2.5-flash',
+                model: 'llama-3.3-70b-versatile',
                 contents: [{ role: 'user', parts: [{ text: prompt }] }],
                 config: { responseMimeType: 'application/json', responseSchema: schema }
             });

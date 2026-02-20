@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 import os
-from google import genai
+import requests
 
 from api.deps import get_current_user
 from models.database_models import User
@@ -10,31 +10,47 @@ from core.logger import app_logger
 router = APIRouter()
 
 # API Keys
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-client = None
-
-if GEMINI_API_KEY:
-    try:
-        client = genai.Client(api_key=GEMINI_API_KEY)
-    except Exception as e:
-        app_logger.error(f"Failed to initialize Gemini Client: {e}")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 class GeminiRequest(BaseModel):
     prompt: str
-    model: str = "gemini-2.5-flash"
+    model: str = "llama-3.3-70b-versatile"
 
 @router.post("/generate")
 def generate_content(request: GeminiRequest, current_user: User = Depends(get_current_user)):
-    if not client:
-        raise HTTPException(status_code=500, detail="Gemini API is not configured on the server.")
+    if not GROQ_API_KEY:
+        app_logger.error("Groq API key is missing.")
+        raise HTTPException(status_code=500, detail="Groq API is not configured on the server.")
         
     try:
-        app_logger.info(f"Generating Gemini content for user: {current_user.id} with model: {request.model}")
-        response = client.models.generate_content(
-            model=request.model,
-            contents=request.prompt
+        app_logger.info(f"Generating Groq content for user: {current_user.id} with model: {request.model}")
+        
+        headers = {
+            "Authorization": f"Bearer {GROQ_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "model": request.model,
+            "messages": [
+                {"role": "user", "content": request.prompt}
+            ],
+            "temperature": 0.7
+        }
+        
+        response = requests.post(
+            "https://api.groq.com/openai/v1/chat/completions",
+            headers=headers,
+            json=payload,
+            timeout=30
         )
-        return {"success": True, "text": response.text, "model": request.model}
+        
+        response.raise_for_status()
+        data = response.json()
+        
+        generated_text = data["choices"][0]["message"]["content"]
+        
+        return {"success": True, "text": generated_text, "model": request.model}
     except Exception as e:
-        app_logger.error(f"Gemini API error: {e}")
+        app_logger.error(f"Groq API error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
