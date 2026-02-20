@@ -1,3 +1,11 @@
+import os
+from dotenv import load_dotenv
+
+# Automatically load environment variables from the parent directory's .env.local file
+dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env.local')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from core.logger import app_logger

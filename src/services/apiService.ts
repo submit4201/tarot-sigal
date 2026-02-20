@@ -106,8 +106,7 @@ export const db = {
     // Readings
     getReadings: async () => {
         const data = await apiFetch('/readings/');
-        // Mock Appwrite structure for compatibility
-        return { documents: data };
+        return data;
     },
     saveReading: async (reading: any) => {
         return apiFetch('/readings/', {
@@ -119,7 +118,7 @@ export const db = {
     // Journal
     getJournalEntries: async () => {
         const data = await apiFetch('/journal/');
-        return { documents: data };
+        return data;
     },
     addJournalEntry: async (entry: any) => {
         return apiFetch('/journal/', {
@@ -131,7 +130,7 @@ export const db = {
     // Daily Draws
     getDailyHistory: async () => {
         const data = await apiFetch('/daily-draws/');
-        return { documents: data };
+        return data;
     },
     addDailyDraw: async (draw: any) => {
         return apiFetch('/daily-draws/', {
