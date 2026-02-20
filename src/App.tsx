@@ -150,7 +150,20 @@ const pageComponents: { [key in Page]: React.ComponentType<any> } = {
 };
 
 const AppContent: React.FC = () => {
-  const { activeProfile, activePage, setPage, dailyDrawHistory, savedReadings, journalEntries, unlockAchievement, isLoadingData } = useApp();
+  const {
+    activeProfile,
+    activePage,
+    setPage,
+    dailyDrawHistory,
+    savedReadings,
+    journalEntries,
+    unlockAchievement,
+    isLoadingData,
+    levelUpData,
+    setLevelUpData,
+    xpNotification,
+    setXpNotification
+  } = useApp();
   const { user, isLoading: authLoading } = useAuth();
   const [showAuth, setShowAuth] = useState<'login' | 'signup' | null>(null);
 
@@ -284,18 +297,18 @@ const AppContent: React.FC = () => {
       <BottomNav activePage={activePage} setPage={setPage} />
 
       {/* Gamification Overlays */}
-      {useApp().levelUpData && (
+      {levelUpData && (
         <LevelUpModal
-          newLevel={useApp().levelUpData!}
-          onClose={() => useApp().setLevelUpData(null)}
+          newLevel={levelUpData}
+          onClose={() => setLevelUpData(null)}
         />
       )}
 
-      {useApp().xpNotification && (
+      {xpNotification && (
         <XpNotification
-          amount={useApp().xpNotification!.amount}
-          reason={useApp().xpNotification!.reason}
-          onComplete={() => useApp().setXpNotification(null)}
+          amount={xpNotification.amount}
+          reason={xpNotification.reason}
+          onComplete={() => setXpNotification(null)}
         />
       )}
     </div>

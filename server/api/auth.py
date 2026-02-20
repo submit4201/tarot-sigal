@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from models.schemas import UserCreate, UserResponse, Token
+from models.schemas import UserCreate, UserResponse, Token, ProfileUpdate
 from models.database_models import User
 from core.database import get_db
 from core.security import get_password_hash, verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
@@ -52,4 +52,19 @@ def login_access_token(db: Session = Depends(get_db), form_data: OAuth2PasswordR
 
 @router.get("/me", response_model=UserResponse)
 def read_current_user(current_user: User = Depends(get_current_user)):
+    return current_user
+
+@router.patch("/me", response_model=UserResponse)
+def update_current_user(
+    profile_in: ProfileUpdate, 
+    db: Session = Depends(get_db), 
+    current_user: User = Depends(get_current_user)
+):
+    update_data = profile_in.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(current_user, field, value)
+    
+    db.commit()
+    db.refresh(current_user)
+    app_logger.info(f"User {current_user.email} updated profile. Fields: {list(update_data.keys())}")
     return current_user

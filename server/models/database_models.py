@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text, ForeignKey, JSON
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from core.database import Base
@@ -19,6 +19,12 @@ class User(Base):
     subscription_expiry = Column(DateTime(timezone=True), nullable=True)
     stripe_customer_id = Column(String(100), nullable=True)
     stardust = Column(Integer, default=0)
+    
+    # Gamification
+    level = Column(Integer, default=1)
+    xp = Column(Integer, default=0)
+    owned_deck_ids = Column(JSON, default=lambda: ["default_tarot", "ancient_runes"])
+    unlocked_achievements = Column(JSON, default=lambda: [])
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
