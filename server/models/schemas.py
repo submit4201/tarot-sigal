@@ -13,12 +13,12 @@ class TokenData(BaseModel):
 # --- Auth / User Schemas ---
 class UserCreate(BaseModel):
     email: EmailStr
-    password: str
+    password: str = Field(..., max_length=72)
     given_name: Optional[str] = None
 
 class UserLogin(BaseModel):
     email: EmailStr
-    password: str
+    password: str = Field(..., max_length=72)
 
 class UserResponse(BaseModel):
     id: str

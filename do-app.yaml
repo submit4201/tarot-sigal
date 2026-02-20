@@ -6,12 +6,14 @@ services:
       branch: feature/digitalocean-fastapi-migration
     source_dir: server
     environment_slug: python
+    routes:
+      - path: /api
     build_command: pip install -r requirements.txt
     run_command: uvicorn main:app --host 0.0.0.0 --port 8080
     http_port: 8080
     envs:
       - key: DATABASE_URL
-        value: ${db.DATABASE_URL}
+        value: ${db-postgresql-sfo2-42962.DATABASE_URL}
       - key: JWT_SECRET_KEY
         scope: RUN_TIME
         type: SECRET
@@ -35,6 +37,8 @@ static_sites:
       repo: submit4201/tarot-sigal
       branch: feature/digitalocean-fastapi-migration
     source_dir: /
+    routes:
+      - path: /
     build_command: npm install && npm run build
     output_dir: dist
     envs:
@@ -43,6 +47,9 @@ static_sites:
         value: ${backend.PUBLIC_URL}/api
 
 databases:
-  - name: db
+  - cluster_name: db-postgresql-sfo2-42962
+    db_name: defaultdb
+    db_user: doadmin
     engine: PG
-    version: "15" # DO Managed Database or Dev DB
+    name: db-postgresql-sfo2-42962
+    production: true
