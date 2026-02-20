@@ -21,7 +21,7 @@ if GEMINI_API_KEY:
 
 class GeminiRequest(BaseModel):
     prompt: str
-    model: str = "gemini-flash-latest"
+    model: str = "gemini-2.5-flash"
 
 @router.post("/generate")
 def generate_content(request: GeminiRequest, current_user: User = Depends(get_current_user)):

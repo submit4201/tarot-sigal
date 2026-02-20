@@ -125,7 +125,7 @@ const DailyPage: React.FC = () => {
 
             // Step 1: Generate Text (Critical)
             const textRes = await generateContentWithRetry({
-                model: 'gemini-flash-latest',
+                model: 'gemini-2.5-flash',
                 contents: batchPrompt,
                 config: { responseMimeType: 'application/json', responseSchema: textSchema }
             });

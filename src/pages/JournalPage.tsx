@@ -235,7 +235,7 @@ Format your response in clean sections with headers. Use a mystical but grounded
 
         try {
             const response = await generateContentWithRetry({
-                model: 'gemini-flash-latest',
+                model: 'gemini-2.5-flash',
                 contents: prompt,
             });
             const text = response.text ?? '';
