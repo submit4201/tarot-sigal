@@ -1,6 +1,6 @@
 {
-    "projectId": "69477c330029f16459cd",
-    "projectName": "gridpunk-arcana",
+    "projectId": "6997f46e002a99aeab7a",
+    "projectName": "sigal",
     "hosting": [
         {
             "target": "web",
@@ -23,7 +23,7 @@
         {
             "$id": "gemini-proxy",
             "name": "gemini-proxy",
-            "runtime": "node-20.0",
+            "runtime": "node-18.0",
             "execute": [],
             "events": [],
             "schedule": "",
@@ -39,7 +39,7 @@
         {
             "$id": "stripe-checkout",
             "name": "stripe-checkout",
-            "runtime": "node-20.0",
+            "runtime": "node-18.0",
             "execute": [],
             "events": [],
             "schedule": "",
@@ -55,7 +55,7 @@
         {
             "$id": "stripe-webhook",
             "name": "stripe-webhook",
-            "runtime": "node-20.0",
+            "runtime": "node-18.0",
             "execute": [],
             "events": [],
             "schedule": "",
