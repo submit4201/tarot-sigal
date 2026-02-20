@@ -1,4 +1,30 @@
 {
     "projectId": "69477c330029f16459cd",
-    "endpoint": "https://sfo.cloud.appwrite.io/v1"
+    "endpoint": "https://sfo.cloud.appwrite.io/v1",
+    "functions": [
+        {
+            "$id": "2",
+            "name": "checkoutstripe",
+            "runtime": "node-22",
+            "specification": "s-0.5vcpu-512mb",
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "scopes": [
+                "users.read"
+            ],
+            "schedule": "",
+            "timeout": 15,
+            "enabled": true,
+            "logging": true,
+            "entrypoint": "src/main.js",
+            "commands": "npm install",
+            "ignore": [
+                "node_modules",
+                ".npm"
+            ],
+            "path": "functions/checkoutstripe"
+        }
+    ]
 }

@@ -17,11 +17,13 @@ import { checkAndUnlockAchievements } from './services/achievementService';
 
 import NumerologyPage from './pages/NumerologyPage';
 import SigilPage from './pages/SigilPage';
+import SuccessPage from './pages/SuccessPage';
+import CancelPage from './pages/CancelPage';
 import LevelUpModal from './components/LevelUpModal';
 import XpNotification from './components/XpNotification';
 
 // * Valid page names for hash routing
-const VALID_PAGES: Page[] = ['Daily', 'Readings', 'Journal', 'Guide', 'Shop', 'Pricing', 'Progress', 'Profile', 'Onboarding', 'Numerology', 'Sigil'];
+const VALID_PAGES: Page[] = ['Daily', 'Readings', 'Journal', 'Guide', 'Shop', 'Pricing', 'Progress', 'Profile', 'Onboarding', 'Numerology', 'Sigil', 'Success', 'Cancel'];
 
 /**
  * getPageFromHash — Reads `window.location.hash` and maps it to a valid Page.
@@ -142,6 +144,8 @@ const pageComponents: { [key in Page]: React.ComponentType<any> } = {
   Onboarding: OnboardingPage,
   Numerology: NumerologyPage,
   Sigil: SigilPage,
+  Success: SuccessPage,
+  Cancel: CancelPage,
 };
 
 const AppContent: React.FC = () => {
@@ -149,7 +153,19 @@ const AppContent: React.FC = () => {
 
   // ! Hash-based routing: sync activePage with URL hash
   useEffect(() => {
-    // * On mount, read hash and navigate to it
+    // * Handle Stripe redirect parameters first
+    const searchParams = new URLSearchParams(window.location.search);
+    const paymentStatus = searchParams.get('payment');
+
+    if (paymentStatus === 'success') {
+      setPage('Success');
+      return; // Don't override with hash
+    } else if (paymentStatus === 'cancelled') {
+      setPage('Cancel');
+      return; // Don't override with hash
+    }
+
+    // * On mount, read hash and navigate to it if no payment redirect
     const initialPage = getPageFromHash();
     if (initialPage !== activePage) {
       setPage(initialPage);

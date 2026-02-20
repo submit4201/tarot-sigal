@@ -33,16 +33,16 @@ This directory contains serverless functions for Gridpunk Arcana.
 **Purpose:** Creates Stripe Checkout sessions for subscriptions and one-time Stardust purchases.
 
 **Environment Variables:**
-- `STRIPE_SECRET_KEY` - Your Stripe secret key
-- `STRIPE_PRICE_SEEKER` - Stripe Price ID for Seeker subscription ($8.99/mo)
-- `STRIPE_PRICE_ORACLE` - Stripe Price ID for Oracle subscription ($14.99/mo)
-- `STRIPE_PRICE_SPARK` - Stripe Price ID for Spark pack ($0.99)
-- `STRIPE_PRICE_EMBER` - Stripe Price ID for Ember pack ($2.99)
-- `STRIPE_PRICE_SUPERNOVA` - Stripe Price ID for Supernova pack ($4.99)
-- `STRIPE_PRICE_COSMIC_RIFT` - Stripe Price ID for Cosmic Rift pack ($9.99)
-- `DATABASE_ID` - Appwrite database ID (default: gridpunk-arcana)
-- `SUCCESS_URL` - Redirect URL after successful payment
-- `CANCEL_URL` - Redirect URL if payment is cancelled
+- STRIPE_SECRET_KEY=pk_live_51SC38t1plQAIOVhNpx6ZSl705JHqcjDIWp3Re0fwoI0a4W1Irgq5G5y9fUuNU5DZ6Dt15VBZR39G9L0FdGPcjt5X00cz73yBrm
+- STRIPE_PRICE_SEEKER =8.99
+- STRIPE_PRICE_ORACLE =14.99
+- STRIPE_PRICE_SPARK =0.99
+- STRIPE_PRICE_EMBER =2.99
+- STRIPE_PRICE_SUPERNOVA =4.99
+- STRIPE_PRICE_COSMIC_RIFT =9.99
+- DATABASE_ID = gridpunk-arcana
+- SUCCESS_URL = Redirect URL after successful payment
+- CANCEL_URL = Redirect URL if payment is cancelled
 
 **Endpoint:** POST `/v1/functions/[FUNCTION_ID]/executions`
 

@@ -10,7 +10,8 @@
     "audit:comments": "node scripts/parse_comments.js",
     "test": "vitest",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\"",
+    "deploy:functions": "appwrite push functions"
   },
   "dependencies": {
     "@google/genai": "^1.19.0",
