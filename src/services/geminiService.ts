@@ -1,7 +1,16 @@
 
 import { GoogleGenAI, GenerateContentParameters, GenerateContentResponse } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+let ai: GoogleGenAI | null = null;
+try {
+  if (import.meta.env.VITE_GEMINI_API_KEY) {
+    ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
+  } else {
+    console.warn("VITE_GEMINI_API_KEY is missing. AI features will fail.");
+  }
+} catch (e) {
+  console.error("Error initializing GoogleGenAI:", e);
+}
 
 /**
  * Wraps the Gemini generateContent call with exponential backoff retry logic.
@@ -16,6 +25,7 @@ export async function generateContentWithRetry(
 
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
+      if (!ai) throw new Error("Gemini AI is not initialized. Check your VITE_GEMINI_API_KEY environment variable.");
       // Direct call to the model
       const response = await ai.models.generateContent(params);
       return response;

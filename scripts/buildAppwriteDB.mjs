@@ -1,4 +1,4 @@
-import { Client, Databases } from 'node-appwrite';
+import { Client, Databases, Permission, Role } from 'node-appwrite';
 
 const client = new Client();
 const databases = new Databases(client);
@@ -53,6 +53,8 @@ const buildDatabase = async () => {
             ]
         },
         readings: {
+            documentSecurity: true,
+            permissions: [Permission.create(Role.users())],
             attributes: [
                 { key: 'userId', type: 'string', size: 36, required: true },
                 { key: 'profileId', type: 'string', size: 36, required: false },
@@ -69,6 +71,8 @@ const buildDatabase = async () => {
             ]
         },
         journal_entries: {
+            documentSecurity: true,
+            permissions: [Permission.create(Role.users())],
             attributes: [
                 { key: 'userId', type: 'string', size: 36, required: true },
                 { key: 'profileId', type: 'string', size: 36, required: false },
@@ -82,6 +86,8 @@ const buildDatabase = async () => {
             ]
         },
         daily_draws: {
+            documentSecurity: true,
+            permissions: [Permission.create(Role.users())],
             attributes: [
                 { key: 'userId', type: 'string', size: 36, required: true },
                 { key: 'card', type: 'string', size: 50, required: false },
@@ -95,6 +101,8 @@ const buildDatabase = async () => {
             ]
         },
         purchases: {
+            documentSecurity: true,
+            permissions: [Permission.create(Role.users())],
             attributes: [
                 { key: 'userId', type: 'string', size: 36, required: true },
                 { key: 'type', type: 'string', size: 50, required: false },
