@@ -83,7 +83,7 @@ const SigilPage: React.FC = () => {
             };
 
             const result = await generateContentWithRetry({
-                model: 'llama-3.3-70b-versatile',
+                model: 'arcee-ai/trinity-large-preview:free',
                 contents: [{ role: 'user', parts: [{ text: prompt }] }],
                 config: { responseMimeType: 'application/json', responseSchema: schema }
             });

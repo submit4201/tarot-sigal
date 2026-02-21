@@ -89,7 +89,7 @@ const GuidePage: React.FC<{ setPage: (page: string) => void }> = ({ setPage }) =
 
         try {
             const response = await generateContentWithRetry({
-                model: 'llama-3.3-70b-versatile',
+                model: 'arcee-ai/trinity-large-preview:free',
                 contents: prompt,
             });
             setInterpretation(response.text || "Interpretation unavailable.");

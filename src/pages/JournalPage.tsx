@@ -235,7 +235,7 @@ Format your response in clean sections with headers. Use a mystical but grounded
 
         try {
             const response = await generateContentWithRetry({
-                model: 'llama-3.3-70b-versatile',
+                model: 'arcee-ai/trinity-large-preview:free',
                 contents: prompt,
             });
             const text = response.text ?? '';

@@ -29,7 +29,7 @@ export async function createCheckoutSession(
 /**
  * Call Gemini API through FastAPI proxy
  */
-export async function callGeminiProxy(prompt: string, model: string = 'llama-3.3-70b-versatile') {
+export async function callGeminiProxy(prompt: string, model: string = 'arcee-ai/trinity-large-preview:free') {
   try {
     const result = await apiFetch('/gemini/generate', {
       method: 'POST',

@@ -10,23 +10,28 @@ from core.logger import app_logger
 router = APIRouter()
 
 # API Keys
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+OPENROUTER_API = os.getenv("OPENROUTER_API")
+# Fallback to the one the user defined at the bottom if the first one was grabbed wrongly
+if not OPENROUTER_API:
+   OPENROUTER_API = os.getenv("OPENROUTER_API", "")
 
 class GeminiRequest(BaseModel):
     prompt: str
-    model: str = "llama-3.3-70b-versatile"
+    model: str = "arcee-ai/trinity-large-preview:free"
 
 @router.post("/generate")
 def generate_content(request: GeminiRequest, current_user: User = Depends(get_current_user)):
-    if not GROQ_API_KEY:
-        app_logger.error("Groq API key is missing.")
-        raise HTTPException(status_code=500, detail="Groq API is not configured on the server.")
+    if not OPENROUTER_API:
+        app_logger.error("OpenRouter API key is missing.")
+        raise HTTPException(status_code=500, detail="OpenRouter API is not configured on the server.")
         
     try:
-        app_logger.info(f"Generating Groq content for user: {current_user.id} with model: {request.model}")
+        app_logger.info(f"Generating OpenRouter content for user: {current_user.id} with model: {request.model}")
         
         headers = {
-            "Authorization": f"Bearer {GROQ_API_KEY}",
+            "Authorization": f"Bearer {OPENROUTER_API}",
+            "HTTP-Referer": "http://localhost:5173", # Update in prod
+            "X-Title": "Gridpunk Arcana",
             "Content-Type": "application/json"
         }
         
@@ -39,7 +44,7 @@ def generate_content(request: GeminiRequest, current_user: User = Depends(get_cu
         }
         
         response = requests.post(
-            "https://api.groq.com/openai/v1/chat/completions",
+            "https://openrouter.ai/api/v1/chat/completions",
             headers=headers,
             json=payload,
             timeout=30
@@ -52,5 +57,6 @@ def generate_content(request: GeminiRequest, current_user: User = Depends(get_cu
         
         return {"success": True, "text": generated_text, "model": request.model}
     except Exception as e:
-        app_logger.error(f"Groq API error: {e}")
+        app_logger.error(f"OpenRouter API error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+

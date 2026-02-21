@@ -125,7 +125,7 @@ const DailyPage: React.FC = () => {
 
             // Step 1: Generate Text (Critical)
             const textRes = await generateContentWithRetry({
-                model: 'llama-3.3-70b-versatile',
+                model: 'arcee-ai/trinity-large-preview:free',
                 contents: batchPrompt,
                 config: { responseMimeType: 'application/json', responseSchema: textSchema }
             });

@@ -212,7 +212,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
             Context: ${readingIntent} focus.
             Output: Just the refined question text.`;
 
-            const response = await generateContentWithRetry({ model: 'llama-3.3-70b-versatile', contents: prompt });
+            const response = await generateContentWithRetry({ model: 'arcee-ai/trinity-large-preview:free', contents: prompt });
             setRefinedQuestion(response.text || userQuestion);
         } catch (e) {
             console.error(e);
@@ -291,7 +291,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
 
         try {
             const response = await generateContentWithRetry({
-                model: 'llama-3.3-70b-versatile',
+                model: 'arcee-ai/trinity-large-preview:free',
                 contents: basePrompt,
                 config: { responseMimeType: 'application/json', responseSchema: schema }
             });
