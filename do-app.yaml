@@ -23,7 +23,7 @@ services:
       - key: STRIPE_WEBHOOK_SECRET
         scope: RUN_TIME
         type: SECRET
-      - key: GEMINI_API_KEY
+      - key: OPENROUTER_API
         scope: RUN_TIME
         type: SECRET
       - key: SUCCESS_URL
