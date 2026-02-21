@@ -229,7 +229,9 @@ def verify_subscription(db: Session = Depends(get_db), current_user: User = Depe
                 break
                 
         if active_sub:
-            price_id = active_sub.plan.id
+            # Fallback for plan ID if 'plan' object structure varies
+            plan_obj = active_sub.get("plan", {})
+            price_id = plan_obj.get("id") if isinstance(plan_obj, dict) else getattr(plan_obj, "id", None)
             
             # Map price ID back to our tier name
             tier_name = "seeker"
@@ -239,12 +241,19 @@ def verify_subscription(db: Session = Depends(get_db), current_user: User = Depe
                     break
                     
             # Overwrite metadata fallback if the sub has it
-            if active_sub.metadata and "tier" in active_sub.metadata:
-                tier_name = active_sub.metadata["tier"]
+            metadata = active_sub.get("metadata", {})
+            if metadata and "tier" in metadata:
+                tier_name = metadata["tier"]
                 
             current_user.is_premium = True
             current_user.subscription_tier = tier_name
-            current_user.subscription_expiry = datetime.utcfromtimestamp(active_sub.current_period_end)
+            
+            # Safely get current_period_end
+            period_end = active_sub.get("current_period_end")
+            if not period_end:
+                 period_end = datetime.utcnow().timestamp() + (30 * 24 * 60 * 60)
+            
+            current_user.subscription_expiry = datetime.utcfromtimestamp(period_end)
             db.commit()
             return {"is_premium": True, "tier": tier_name, "message": "Subscription mapped and activated!"}
             
