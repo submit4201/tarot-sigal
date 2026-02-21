@@ -1,17 +1,43 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { SparklesIcon, HomeIcon } from '../components/icons';
+import { verifySubscription } from '../services/stripeService';
 
 const SuccessPage: React.FC<{ setPage: (page: any) => void }> = ({ setPage }) => {
-    const { activeProfile } = useApp();
+    const { activeProfile, refetchProfile } = useApp();
+    const [syncMessage, setSyncMessage] = useState('Verifying your purchase with the Nexus...');
 
     // Clear the search params so it doesn't get stuck in a loop if they refresh
     useEffect(() => {
+        let isMounted = true;
+
+        const verifyPurchase = async () => {
+            try {
+                const res = await verifySubscription();
+                if (isMounted) {
+                    if ((res as any).is_premium) {
+                        setSyncMessage('Transaction Complete and Subscription Activated!');
+                        await refetchProfile();
+                    } else {
+                        setSyncMessage('Transaction Complete. Wait a few moments for the Nexus to update.');
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to verify subscription on success page:", error);
+                if (isMounted) setSyncMessage('Transaction Complete. We could not verify it immediately, try the Sync button in your Profile.');
+            }
+        };
+
         if (window.location.search.includes('payment=success')) {
             const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + window.location.hash;
             window.history.replaceState({ path: newUrl }, '', newUrl);
+            verifyPurchase();
+        } else {
+            setSyncMessage('Transaction Complete');
         }
-    }, []);
+
+        return () => { isMounted = false; };
+    }, [refetchProfile]);
 
     return (
         <div className="w-full h-full p-6 md:p-14 flex flex-col items-center justify-center bg-grid animate-fade-in">
@@ -23,7 +49,7 @@ const SuccessPage: React.FC<{ setPage: (page: any) => void }> = ({ setPage }) =>
                 </div>
 
                 <h1 className="text-5xl font-bold font-dm-sans text-white tracking-tighter mb-4 neon-glow">
-                    Transaction Complete
+                    {syncMessage}
                 </h1>
 
                 <p className="text-lg text-white/60 mb-8 max-w-md">

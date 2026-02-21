@@ -9,6 +9,7 @@ interface AppContextType {
   isLoadingData: boolean;
   createProfile: (data: any) => Promise<void>;
   updateActiveProfile: (profileData: Partial<UserProfile>) => Promise<void>;
+  refetchProfile: () => Promise<void>;
 
   purchaseDeck: (deck: Deck) => Promise<void>;
   awardDeck: (deckId: string) => Promise<void>;
@@ -113,6 +114,28 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     loadData();
   }, [user]);
+
+  const refetchProfile = async () => {
+    if (!user) return;
+    setIsLoadingData(true);
+    try {
+      const profile = await db.getProfile();
+      if (profile) {
+        const fullProfile = {
+          ...profile,
+          level: profile.level || 1,
+          xp: profile.xp || 0,
+          ownedDeckIds: profile.ownedDeckIds || ['default_tarot', 'ancient_runes'],
+          unlockedAchievements: profile.unlockedAchievements || []
+        };
+        setActiveProfile(fullProfile as UserProfile);
+      }
+    } catch (error) {
+      console.error("Failed to refetch user profile", error);
+    } finally {
+      setIsLoadingData(false);
+    }
+  };
 
 
   // --- Actions ---
@@ -275,6 +298,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     isLoadingData,
     createProfile,
     updateActiveProfile,
+    refetchProfile,
 
     journalEntries,
     addJournalEntry,
