@@ -188,41 +188,48 @@ def verify_subscription(db: Session = Depends(get_db), current_user: User = Depe
     """
     Manually check Stripe for an active subscription tied to the user's email.
     Useful for local dev when webhooks aren't flowing, or if a webhook was missed.
+    Aggressively handles duplicate guest Customer records in Stripe.
     """
     try:
-        # Check if we already have the customer ID cached locally
-        customer_id_to_check = current_user.stripe_customer_id
-        
-        if not customer_id_to_check:
-            # 1. Find customer in Stripe by email
-            app_logger.info(f"Searching Stripe for customer with email: {current_user.email}")
-            customers = stripe.Customer.search(
+        candidate_customer_ids = []
+        if current_user.stripe_customer_id:
+            candidate_customer_ids.append(current_user.stripe_customer_id)
+            
+        app_logger.info(f"Searching Stripe for customer with email: {current_user.email}")
+        try:
+            customers_search = stripe.Customer.search(
                 query=f"email:'{current_user.email}'",
-                limit=1
+                limit=3
             )
+            for c in customers_search.data:
+                if c.id not in candidate_customer_ids:
+                    candidate_customer_ids.append(c.id)
+        except Exception:
+            # Fallback to standard list if search API isn't enabled/available
+            customers_list = stripe.Customer.list(email=current_user.email, limit=5)
+            for c in customers_list.data:
+                if c.id not in candidate_customer_ids:
+                    candidate_customer_ids.append(c.id)
+                    
+        if not candidate_customer_ids:
+            app_logger.info(f"No Stripe customer found for email {current_user.email}")
+            return {"is_premium": current_user.is_premium, "message": "No Stripe customer found for this email."}
             
-            # Fallback to standard list if search API isn't enabled/available on this account tier
-            if not customers.data:
-                 customers = stripe.Customer.list(email=current_user.email, limit=1)
-                 
-            if not customers.data:
-                app_logger.info(f"No Stripe customer found for email {current_user.email}")
-                return {"is_premium": current_user.is_premium, "message": "No Stripe customer found for this email."}
+        # Check all candidate customers for an active sub
+        active_sub = None
+        for cid in candidate_customer_ids:
+            app_logger.info(f"Checking subscriptions for Stripe Customer: {cid}")
+            subscriptions = stripe.Subscription.list(customer=cid, status="active", limit=1)
+            if subscriptions.data:
+                active_sub = subscriptions.data[0]
+                # If this customer has the active sub, update our local pointer to match
+                if current_user.stripe_customer_id != cid:
+                    current_user.stripe_customer_id = cid
+                    db.commit()
+                break
                 
-            customer = customers.data[0]
-            customer_id_to_check = customer.id
-            
-            # Save customer ID for next time
-            current_user.stripe_customer_id = customer_id_to_check
-            db.commit()
-
-        # 2. Get active subscriptions for this customer
-        app_logger.info(f"Checking subscriptions for Stripe Customer: {customer_id_to_check}")
-        subscriptions = stripe.Subscription.list(customer=customer_id_to_check, status="active", limit=1)
-        
-        if subscriptions.data:
-            sub = subscriptions.data[0]
-            price_id = sub.plan.id
+        if active_sub:
+            price_id = active_sub.plan.id
             
             # Map price ID back to our tier name
             tier_name = "seeker"
@@ -232,24 +239,23 @@ def verify_subscription(db: Session = Depends(get_db), current_user: User = Depe
                     break
                     
             # Overwrite metadata fallback if the sub has it
-            if sub.metadata and "tier" in sub.metadata:
-                tier_name = sub.metadata["tier"]
+            if active_sub.metadata and "tier" in active_sub.metadata:
+                tier_name = active_sub.metadata["tier"]
                 
             current_user.is_premium = True
             current_user.subscription_tier = tier_name
-            current_user.subscription_expiry = datetime.utcfromtimestamp(sub.current_period_end)
+            current_user.subscription_expiry = datetime.utcfromtimestamp(active_sub.current_period_end)
             db.commit()
             return {"is_premium": True, "tier": tier_name, "message": "Subscription mapped and activated!"}
             
         else:
-            # If they had premium but no active sub found, downgrade
+            # If they had premium but no active sub found across all customer profiles, downgrade
             if current_user.is_premium:
                 current_user.is_premium = False
                 current_user.subscription_tier = "free"
                 db.commit()
-            return {"is_premium": False, "message": "No active subscriptions found in Stripe."}
+            return {"is_premium": False, "message": "No active subscriptions found across your Stripe profiles."}
 
     except Exception as e:
         app_logger.error(f"Error verifying subscription manually: {e}")
         raise HTTPException(status_code=500, detail=str(e))
-
