@@ -60,6 +60,7 @@ def create_checkout_session(
         "success_url": SUCCESS_URL,
         "cancel_url": CANCEL_URL,
         "client_reference_id": current_user.id,
+        "customer_email": current_user.email if hasattr(current_user, 'email') and current_user.email else None,
         "metadata": {
             "userId": current_user.id,
             "type": request.type,
@@ -189,20 +190,35 @@ def verify_subscription(db: Session = Depends(get_db), current_user: User = Depe
     Useful for local dev when webhooks aren't flowing, or if a webhook was missed.
     """
     try:
-        # 1. Find customer in Stripe by email
-        customers = stripe.Customer.list(email=current_user.email, limit=1)
-        if not customers.data:
-            return {"is_premium": current_user.is_premium, "message": "No Stripe customer found for this email."}
-            
-        customer = customers.data[0]
+        # Check if we already have the customer ID cached locally
+        customer_id_to_check = current_user.stripe_customer_id
         
-        # Save customer ID if we didn't have it
-        if not current_user.stripe_customer_id:
-            current_user.stripe_customer_id = customer.id
+        if not customer_id_to_check:
+            # 1. Find customer in Stripe by email
+            app_logger.info(f"Searching Stripe for customer with email: {current_user.email}")
+            customers = stripe.Customer.search(
+                query=f"email:'{current_user.email}'",
+                limit=1
+            )
+            
+            # Fallback to standard list if search API isn't enabled/available on this account tier
+            if not customers.data:
+                 customers = stripe.Customer.list(email=current_user.email, limit=1)
+                 
+            if not customers.data:
+                app_logger.info(f"No Stripe customer found for email {current_user.email}")
+                return {"is_premium": current_user.is_premium, "message": "No Stripe customer found for this email."}
+                
+            customer = customers.data[0]
+            customer_id_to_check = customer.id
+            
+            # Save customer ID for next time
+            current_user.stripe_customer_id = customer_id_to_check
             db.commit()
 
         # 2. Get active subscriptions for this customer
-        subscriptions = stripe.Subscription.list(customer=customer.id, status="active", limit=1)
+        app_logger.info(f"Checking subscriptions for Stripe Customer: {customer_id_to_check}")
+        subscriptions = stripe.Subscription.list(customer=customer_id_to_check, status="active", limit=1)
         
         if subscriptions.data:
             sub = subscriptions.data[0]
