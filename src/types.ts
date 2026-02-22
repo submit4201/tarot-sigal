@@ -1,7 +1,7 @@
 export type Element = 'Fire' | 'Earth' | 'Air' | 'Water';
 export type Arcana = 'Major' | 'Wands' | 'Cups' | 'Swords' | 'Pentacles';
 export type DeckType = 'tarot' | 'runes' | 'oracle' | 'angel';
-export type Page = 'Daily' | 'Readings' | 'Journal' | 'Progress' | 'Profile' | 'Onboarding' | 'Guide' | 'Shop' | 'Pricing' | 'Numerology' | 'Sigil' | 'Success' | 'Cancel';
+export type Page = 'Daily' | 'Readings' | 'Journal' | 'Progress' | 'Profile' | 'Onboarding' | 'Guide' | 'Shop' | 'Pricing' | 'Numerology' | 'Sigil' | 'Success' | 'Cancel' | 'BirthProfile';
 export type AstrologicalSign = 'Aries' | 'Taurus' | 'Gemini' | 'Cancer' | 'Leo' | 'Virgo' | 'Libra' | 'Scorpio' | 'Sagittarius' | 'Capricorn' | 'Aquarius' | 'Pisces' | 'None';
 
 export interface DivinationCard {
@@ -202,3 +202,30 @@ export interface CosmicBlueprint {
   karmicDebts: number[];
 }
 
+export interface BirthProfileTeaser {
+  sunSign: string;
+  moonSign: string;
+  ascendantSign: string;
+  auraPreview: string;
+  isPremiumLocked: true;
+}
+
+export interface BirthProfileData {
+  id: string;
+  fullName: string;
+  birthDate: string;
+  birthTime: string;
+  birthLocation: string;
+  latitude: string;
+  longitude: string;
+  profileData: {
+    numerology: any;
+    astrology: any;
+    eastern: any;
+    humanDesign: any;
+    progressedMoon: any;
+  };
+  llmNarrative: string;
+  createdAt: string;
+  updatedAt: string;
+}
