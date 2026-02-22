@@ -1,7 +1,0 @@
-src/components/3d/CyberDeck.tsx(37,17): error TS2349: This expression is not callable.
-  Type 'void' has no call signatures.
-src/components/3d/HoloCard.tsx(56,37): error TS2339: Property 'imageUrl' does not exist on type 'AnyCard'.
-  Property 'imageUrl' does not exist on type 'TarotCard'.
-src/pages/ProgressPage.tsx(5,10): error TS2305: Module '"../services/achievementService"' has no exported member 'ACHIEVEMENTS_LIST'.
-src/pages/ProgressPage.tsx(52,52): error TS2339: Property 'drawnCard' does not exist on type 'DailyDrawRecord'.
-src/pages/ShopPage.tsx(22,53): error TS2345: Argument of type 'string' is not assignable to parameter of type 'SubscriptionTier | StardustTier'.

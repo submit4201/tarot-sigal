@@ -1,5 +1,5 @@
-from pydantic import BaseModel, EmailStr, Field, field_validator
-from typing import Optional, List
+from pydantic import BaseModel, EmailStr, Field, field_validator, Json
+from typing import Optional, List, Union
 from datetime import datetime
 import json
 
@@ -31,21 +31,9 @@ class UserResponse(BaseModel):
     stardust: int = 0
     level: int = 1
     xp: int = 0
-    owned_deck_ids: List[str] = Field(default_factory=lambda: ["default_tarot", "ancient_runes"], alias="ownedDeckIds")
-    unlocked_achievements: List[str] = Field(default_factory=list, alias="unlockedAchievements")
+    owned_deck_ids: Union[List[str], Json[List[str]]] = Field(default_factory=lambda: ["default_tarot", "ancient_runes"], alias="ownedDeckIds")
+    unlocked_achievements: Union[List[str], Json[List[str]]] = Field(default_factory=list, alias="unlockedAchievements")
     created_at: datetime
-
-    @field_validator('owned_deck_ids', 'unlocked_achievements', mode='before')
-    @classmethod
-    def parse_json_lists(cls, v):
-        if isinstance(v, str):
-            try:
-                return json.loads(v)
-            except Exception:
-                if v == '["default_tarot", "ancient_runes"]':
-                    return ["default_tarot", "ancient_runes"]
-                return []
-        return v
 
     class Config:
         from_attributes = True
@@ -144,21 +132,10 @@ class BirthProfileCreate(BirthProfileBase):
 class BirthProfileResponse(BirthProfileBase):
     id: str
     user_id: str
-    profile_data: Optional[dict] = Field(None, alias="profileData")
+    profile_data: Union[dict, Json[dict], None] = Field(None, alias="profileData")
     llm_narrative: Optional[str] = Field(None, alias="llmNarrative")
     created_at: datetime
     updated_at: Optional[datetime] = None
-
-    @field_validator('profile_data', mode='before')
-    @classmethod
-    def parse_json_dict(cls, v):
-        if isinstance(v, str):
-            try:
-                import json
-                return json.loads(v)
-            except Exception:
-                return {}
-        return v
 
     class Config:
         from_attributes = True

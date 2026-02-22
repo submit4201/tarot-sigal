@@ -43,15 +43,23 @@ Developed with **React**, **TypeScript**, and **Google Gemini AI**, it features 
 
 ## 📂 Project Structure
 
-- **`/src`**: Source code root.
-    - **`/components`**: Reusable UI components (`TarotCard`, `CosmicBlueprintDisplay`, `CardBack`, etc.).
-    - **`/pages`**: Main route views (`ReadingsPage`, `DailyPage`, `OnboardingPage`).
-    -   **`/services`**: Business logic and API integrations (`tarotService`, `geminiService`).
-    -   **`/hooks`**: Custom React hooks (`useHaptic`, `useTilt`).
-    -   **`/context`**: Global state management (`AppContext`).
-    -   **`/types`**: TypeScript interfaces and type definitions.
-    -   **`/utils`**: Helper functions (`exportUtils`, `numerologyUtils`).
--   **`/public`**: Static assets.
+- **`/src`**: React Frontend Source Code.
+  - **`/components`**, **`/pages`**, **`/services`**, **`/hooks`**, **`/context`**, **`/types`**, **`/utils`**
+- **`/server`**: Python FastAPI Backend Source Code.
+  - **`/api`**, **`/core`**, **`/models`**
+- **`/scripts`**: Automation and maintenance scripts (e.g. `audit_todos.py`).
+- **`.log/`**: Structured runtime and testing logs.
+- **`.test/`**: Pytest directory mirroring the project structure.
+- **`.todo/`**: Auto-generated task lists from comment parsing.
+- **`/public`**: Static assets.
+
+---
+
+## 📜 Standards & Rules
+
+Before contributing, ALL developers must read and adhere to the strict project rules and best practices.
+- **[Project Rules & Expectations](RULES.md)**: Hard constraints on languages, logging, testing, and commenting.
+- **[Codebase Best Practices](BEST_PRACTICES.md)**: Architectural and structural guidelines for maintainability.
 
 ---
 
