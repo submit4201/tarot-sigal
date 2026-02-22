@@ -1,6 +1,7 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Optional, List
 from datetime import datetime
+import json
 
 # --- Token Schemas ---
 class Token(BaseModel):
@@ -33,6 +34,18 @@ class UserResponse(BaseModel):
     owned_deck_ids: List[str] = Field(default_factory=lambda: ["default_tarot", "ancient_runes"], alias="ownedDeckIds")
     unlocked_achievements: List[str] = Field(default_factory=list, alias="unlockedAchievements")
     created_at: datetime
+
+    @field_validator('owned_deck_ids', 'unlocked_achievements', mode='before')
+    @classmethod
+    def parse_json_lists(cls, v):
+        if isinstance(v, str):
+            try:
+                return json.loads(v)
+            except Exception:
+                if v == '["default_tarot", "ancient_runes"]':
+                    return ["default_tarot", "ancient_runes"]
+                return []
+        return v
 
     class Config:
         from_attributes = True
@@ -135,6 +148,17 @@ class BirthProfileResponse(BirthProfileBase):
     llm_narrative: Optional[str] = Field(None, alias="llmNarrative")
     created_at: datetime
     updated_at: Optional[datetime] = None
+
+    @field_validator('profile_data', mode='before')
+    @classmethod
+    def parse_json_dict(cls, v):
+        if isinstance(v, str):
+            try:
+                import json
+                return json.loads(v)
+            except Exception:
+                return {}
+        return v
 
     class Config:
         from_attributes = True
