@@ -20,12 +20,17 @@ const initialFormData: Omit<UserProfile, 'id' | 'level' | 'xp' | 'unlockedAchiev
   readingFocus: 'general',
 };
 
-const OnboardingPage: React.FC = () => {
+interface OnboardingPageProps {
+  initialAuthMode?: 'login' | 'signup';
+  onBackToLanding?: () => void;
+}
+
+const OnboardingPage: React.FC<OnboardingPageProps> = ({ initialAuthMode = 'signup', onBackToLanding }) => {
   const { createProfile } = useApp();
   const { login, signup, user, isLoading: authLoading } = useAuth(); // Auth Context
 
   // Auth state
-  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>(initialAuthMode);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState(''); // For signup
@@ -94,7 +99,16 @@ const OnboardingPage: React.FC = () => {
         <div className="noise-bg"></div>
 
         <GlassPanel className="w-full max-w-md p-8 relative overflow-hidden animate-fade-in-up">
-          <h2 className="text-4xl font-bold font-display text-white mb-8 tracking-tighter text-center neon-glow">
+          {onBackToLanding && (
+            <button
+              onClick={onBackToLanding}
+              className="absolute top-4 left-4 text-xs font-mono text-white/40 hover:text-white uppercase tracking-widest transition-colors flex items-center gap-1"
+            >
+              &lt; System_Root
+            </button>
+          )}
+
+          <h2 className="text-4xl font-bold font-display text-white mb-8 tracking-tighter text-center neon-glow mt-4">
             {authMode === 'login' ? 'JACK IN' : 'INITIATE'}
           </h2>
 

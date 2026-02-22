@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg2-binary
+pydantic
+pydantic-settings
+python-jose[cryptography]
+pwdlib[argon2]
+stripe
+google-genai
+python-dotenv
+python-multipart
+# Add email validator for Pydantic
+email-validator
+gunicorn

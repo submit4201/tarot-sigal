@@ -1,0 +1,55 @@
+name: gridpunk-arcana
+services:
+  - name: backend
+    github:
+      repo: submit4201/tarot-sigal
+      branch: feature/digitalocean-fastapi-migration
+    source_dir: server
+    environment_slug: python
+    routes:
+      - path: /api
+    build_command: pip install -r requirements.txt
+    run_command: uvicorn main:app --host 0.0.0.0 --port 8080
+    http_port: 8080
+    envs:
+      - key: DATABASE_URL
+        value: ${db-postgresql-sfo2-42962.DATABASE_URL}
+      - key: JWT_SECRET_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: STRIPE_SECRET_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: STRIPE_WEBHOOK_SECRET
+        scope: RUN_TIME
+        type: SECRET
+      - key: OPENROUTER_API
+        scope: RUN_TIME
+        type: SECRET
+      - key: SUCCESS_URL
+        value: ${frontend.PUBLIC_URL}?payment=success
+      - key: CANCEL_URL
+        value: ${frontend.PUBLIC_URL}?payment=cancelled
+
+static_sites:
+  - name: frontend
+    github:
+      repo: submit4201/tarot-sigal
+      branch: feature/digitalocean-fastapi-migration
+    source_dir: /
+    routes:
+      - path: /
+    build_command: npm install && npm run build
+    output_dir: dist
+    envs:
+      - key: VITE_APP_URL
+        # Maps the frontend API calls to the DO backend service
+        value: ${backend.PUBLIC_URL}/api
+
+databases:
+  - cluster_name: db-postgresql-sfo2-42962
+    db_name: defaultdb
+    db_user: doadmin
+    engine: PG
+    name: db-postgresql-sfo2-42962
+    production: true

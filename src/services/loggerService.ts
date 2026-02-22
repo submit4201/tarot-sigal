@@ -1,7 +1,4 @@
-
-import { db, COLLECTIONS } from './appwriteService';
 import JSZip from 'jszip';
-import { ID } from 'appwrite';
 
 type LogLevel = 'INFO' | 'WARN' | 'ERROR' | 'DEBUG' | 'TODO';
 
@@ -77,21 +74,10 @@ class LoggerService {
 
     private async persistLog(entry: LogEntry) {
         try {
-            if (!db.createLogEntry) {
-                console.warn('Appwrite Logger not configured yet.');
-                return;
-            }
-            await db.createLogEntry({
-                timestamp: entry.timestamp,
-                level: entry.level,
-                message: entry.message,
-                context: entry.context,
-                session_id: 'current_session_would_be_good_here' // Context can handle this
-                // Note: Make sure 'system_logs' collection exists in Appwrite with these attributes!
-            });
+            // Optional/TODO: Send logs to a FastAPI endpoint when implemented
+            // e.g., await apiFetch('/logs', { method: 'POST', body: JSON.stringify(entry) });
         } catch (e) {
             // Fail silently to avoid infinite loops if logging errors
-            // console.error(e); 
         }
     }
 

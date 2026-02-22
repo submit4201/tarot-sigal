@@ -6,13 +6,14 @@ import JournalPage from './pages/JournalPage';
 import ProgressPage from './pages/ProgressPage';
 import ProfilePage from './pages/ProfilePage';
 import OnboardingPage from './pages/OnboardingPage';
+import LandingPage from './pages/LandingPage';
 import GuidePage from './pages/GuidePage';
 import ShopPage from './pages/ShopPage';
 import PricingPage from './pages/PricingPage';
 import ErrorBoundary from './components/ErrorBoundary';
 import { HomeIcon, CardsIcon, JournalIcon, BarChartIcon, UserIcon, CompassIcon, ShoppingCartIcon, SparklesIcon, ZapIcon } from './components/icons';
 import { AppProvider, useApp } from './context/AppContext';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { checkAndUnlockAchievements } from './services/achievementService';
 
 import NumerologyPage from './pages/NumerologyPage';
@@ -149,7 +150,22 @@ const pageComponents: { [key in Page]: React.ComponentType<any> } = {
 };
 
 const AppContent: React.FC = () => {
-  const { activeProfile, activePage, setPage, dailyDrawHistory, savedReadings, journalEntries, unlockAchievement, isLoadingData } = useApp();
+  const {
+    activeProfile,
+    activePage,
+    setPage,
+    dailyDrawHistory,
+    savedReadings,
+    journalEntries,
+    unlockAchievement,
+    isLoadingData,
+    levelUpData,
+    setLevelUpData,
+    xpNotification,
+    setXpNotification
+  } = useApp();
+  const { user, isLoading: authLoading } = useAuth();
+  const [showAuth, setShowAuth] = useState<'login' | 'signup' | null>(null);
 
   // ! Hash-based routing: sync activePage with URL hash
   useEffect(() => {
@@ -229,7 +245,7 @@ const AppContent: React.FC = () => {
     });
   }, [activePage]);
 
-  if (isLoadingData) {
+  if (isLoadingData || authLoading) {
     return (
       <div className="w-screen h-screen flex items-center justify-center bg-[#030407] text-purple-500">
         <div className="animate-pulse font-mono text-sm tracking-[0.3em]">INITIALIZING_UPLINK...</div>
@@ -237,8 +253,19 @@ const AppContent: React.FC = () => {
     );
   }
 
+  // Not logged in at all, and hasn't clicked "Login" or "Signup"
+  if (!user && !showAuth) {
+    return <LandingPage onInitiate={setShowAuth} />;
+  }
+
+  // Either they clicked "Login"/"Signup" or they logged in but don't have a profile yet
   if (!activeProfile) {
-    return <OnboardingPage />;
+    return (
+      <OnboardingPage
+        initialAuthMode={showAuth || 'signup'}
+        onBackToLanding={!user ? () => setShowAuth(null) : undefined}
+      />
+    );
   }
 
   return (
@@ -270,18 +297,18 @@ const AppContent: React.FC = () => {
       <BottomNav activePage={activePage} setPage={setPage} />
 
       {/* Gamification Overlays */}
-      {useApp().levelUpData && (
+      {levelUpData && (
         <LevelUpModal
-          newLevel={useApp().levelUpData!}
-          onClose={() => useApp().setLevelUpData(null)}
+          newLevel={levelUpData}
+          onClose={() => setLevelUpData(null)}
         />
       )}
 
-      {useApp().xpNotification && (
+      {xpNotification && (
         <XpNotification
-          amount={useApp().xpNotification!.amount}
-          reason={useApp().xpNotification!.reason}
-          onComplete={() => useApp().setXpNotification(null)}
+          amount={xpNotification.amount}
+          reason={xpNotification.reason}
+          onComplete={() => setXpNotification(null)}
         />
       )}
     </div>
