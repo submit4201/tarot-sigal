@@ -1,0 +1,130 @@
+databases:
+- cluster_name: db-postgresql-sfo2-42962
+  db_name: defaultdb
+  db_user: doadmin
+  engine: PG
+  name: db-postgresql-sfo2-42962
+  production: true
+envs:
+- key: VITE_GEMINI_API_KEY
+  scope: RUN_AND_BUILD_TIME
+  value: AIzaSyA2fiYyS5ton5l9r6EYVNnnYxGPHwEQjwQ
+- key: VITE_APPWRITE_ENDPOINT
+  scope: RUN_AND_BUILD_TIME
+  value: https://sfo.cloud.appwrite.io/v1
+- key: VITE_APPWRITE_PROJECT_ID
+  scope: RUN_AND_BUILD_TIME
+  value: 6997f46e002a99aeab7a
+- key: VITE_APPWRITE_DATABASE_ID
+  scope: RUN_AND_BUILD_TIME
+  value: gridpunk-arcana
+- key: APPWRITE_API_KEY
+  scope: RUN_AND_BUILD_TIME
+  value: standard_e4d93f09a648d5831ba314148bfb6f5228baa5ddc18b15e636d6e7c0bcaca68bbc67b49ae597c71aa321033cd9b0597216f24c772f707212bfdea6ebfd90f8d94b6fd1447d7d0717c6c2f5807709d15027ec86e20a402183a417f92f379fe9744dca87dd251d59d46d188c69efcae766491476bbe1ef2a1e48f8871577cce2d5
+- key: STRIPE_PUBLISH_KEY
+  scope: RUN_AND_BUILD_TIME
+  value: pk_live_51SC38t1plQAIOVhNpx6ZSl705JHqcjDIWp3Re0fwoI0a4W1Irgq5G5y9fUuNU5DZ6Dt15VBZR39G9L0FdGPcjt5X00cz73yBrm
+- key: STRIPE_PRICE_SEEKER
+  scope: RUN_AND_BUILD_TIME
+  value: price_1T2u4o1plQAIOVhNQiPkH2Zk
+- key: STRIPE_PRICE_ORACLE
+  scope: RUN_AND_BUILD_TIME
+  value: price_1T2u4o1plQAIOVhN8DzTUaQa
+- key: STRIPE_PRICE_SPARK
+  scope: RUN_AND_BUILD_TIME
+  value: price_1T2u4p1plQAIOVhNXtkcIxsH
+- key: STRIPE_PRICE_EMBER
+  scope: RUN_AND_BUILD_TIME
+  value: price_1T2u4p1plQAIOVhN0oiA6n79
+- key: STRIPE_PRICE_SUPERNOVA
+  scope: RUN_AND_BUILD_TIME
+  value: price_1T2u4q1plQAIOVhNRwjIKcp3
+- key: STRIPE_PRICE_COSMIC_RIFT
+  scope: RUN_AND_BUILD_TIME
+  value: price_1T2u4q1plQAIOVhN3T9LrO9M
+- key: DATABASE_ID
+  scope: RUN_AND_BUILD_TIME
+  value: gridpunk-arcana
+- key: DATABASE_URL
+  scope: RUN_AND_BUILD_TIME
+  value: sqlite:///./gridpunk.db
+- key: JWT_SECRET_KEY
+  scope: RUN_AND_BUILD_TIME
+  value: gridpunk-arcana-jwt-secret-key-change-in-production-123!
+- key: STRIPE_WEBHOOK_SECRET
+  scope: RUN_AND_BUILD_TIME
+  value: whsec_Eqfe19DypZg4QlRCEoAqZ6HTav60yQAw
+- key: STRIPE_SECRET_KEY
+  scope: RUN_AND_BUILD_TIME
+  value: REDACTED_STRIPE_SECRET_KEY
+- key: OPENROUTER_API
+  scope: RUN_AND_BUILD_TIME
+  value: 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
+- key: OPENROUTER_MODEL
+  scope: RUN_AND_BUILD_TIME
+  value: arcee-ai/trinity-large-preview:free
+ingress:
+  rules:
+  - component:
+      name: backend
+      preserve_path_prefix: true
+    match:
+      path:
+        prefix: /api
+  - component:
+      name: frontend
+    match:
+      path:
+        prefix: /
+name: gridpunk-arcana
+region: nyc
+services:
+- build_command: pip install -r requirements.txt
+  environment_slug: python
+  envs:
+  - key: DATABASE_URL
+    scope: RUN_AND_BUILD_TIME
+    value: ${db-postgresql-sfo2-42962.DATABASE_URL}
+  - key: JWT_SECRET_KEY
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:ImkX/2mvNBO0lxV4YzAIjQOxxasj94wD:cfU8XApO2+v3LhPsMBdbWA==]
+  - key: STRIPE_SECRET_KEY
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:USALcNvr2bRjDFqamUN0KTaeubR4Jzen:nKO1tGULE4y1whBvA6EDEewZXJ27inP9IOXLh8TyjPms4XmK+Ir6I3r95t0uw0JpiF5aw+by8ckzaeZMqKkrdpebm5oXmEEVidEtp8kY6vu0MXjqbRUhPKSeQWydw21Dg/i/aLaDNn39nJUiwmfskKwx5+fCDxrzbo3w]
+  - key: STRIPE_WEBHOOK_SECRET
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:nBe085nYCHeQfpY65LEc6Kg2rXTB0wbM:oM0g2mY7ZiR3dJe+mQxLfA==]
+  - key: GEMINI_API_KEY
+    scope: RUN_TIME
+    type: SECRET
+    value: EV[1:eKlbZXyYfHLelkvbU6uFA58PksJtwnRW:Hz2kcfJdRFmYv9gA9GtE9A==]
+  - key: SUCCESS_URL
+    scope: RUN_AND_BUILD_TIME
+    value: ${frontend.PUBLIC_URL}?payment=success
+  - key: CANCEL_URL
+    scope: RUN_AND_BUILD_TIME
+    value: ${frontend.PUBLIC_URL}?payment=cancelled
+  github:
+    branch: feature/deepdive-ai-integration
+    repo: submit4201/tarot-sigal
+  http_port: 8080
+  instance_count: 1
+  instance_size_slug: apps-s-1vcpu-0.5gb
+  name: backend
+  run_command: uvicorn main:app --host 0.0.0.0 --port 8080
+  source_dir: server
+static_sites:
+- build_command: npm install && npm run build
+  envs:
+  - key: VITE_APP_URL
+    scope: BUILD_TIME
+    value: ${backend.PUBLIC_URL}
+  github:
+    branch: feature/deepdive-ai-integration
+    repo: submit4201/tarot-sigal
+  name: frontend
+  output_dir: dist
+  source_dir: /

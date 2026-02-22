@@ -44,7 +44,7 @@ static_sites:
     envs:
       - key: VITE_APP_URL
         # Maps the frontend API calls to the DO backend service
-        value: ${backend.PUBLIC_URL}/api
+        value: ${backend.PUBLIC_URL}
 
 databases:
   - cluster_name: db-postgresql-sfo2-42962

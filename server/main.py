@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from core.logger import app_logger
 from core.database import engine
 from models.database_models import Base
+from auto_migrate import run_auto_migrations
 
 # API Routers
 from api import auth, readings, journal, daily_draws, purchases, stripe_routes, gemini_routes, birth_profile
@@ -21,7 +22,9 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Gridpunk Arcana API",
     description="Backend API for Gridpunk Arcana",
-    version="1.0.0"
+    version="1.0.0",
+    docs_url="/api/docs",
+    openapi_url="/api/openapi.json"
 )
 
 # CORS middleware to allow React frontend connection
@@ -35,13 +38,17 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def startup_event():
+    run_auto_migrations()
     app_logger.info("Gridpunk Arcana Backend started successfully.")
 
+@app.get("/api")
+@app.get("/api/")
 @app.get("/")
 async def root():
     app_logger.info("Root endpoint accessed.")
     return {"message": "Gridpunk Arcana API is online."}
 
+@app.get("/api/health")
 @app.get("/health")
 async def health_check():
     return {"status": "healthy"}
