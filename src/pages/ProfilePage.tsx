@@ -10,7 +10,7 @@ import { SHOP_DECKS } from '../constants';
 import { verifySubscription } from '../services/stripeService';
 
 const ProfilePage: React.FC = () => {
-  const { isPremium, activeProfile, updateActiveProfile, setPage } = useApp();
+  const { isPremium, activeProfile, updateActiveProfile, setPage, refetchProfile } = useApp();
   const { logout, user } = useAuth();
 
   const [isSaving, setIsSaving] = useState(false);
@@ -71,8 +71,16 @@ const ProfilePage: React.FC = () => {
     try {
       const res = await verifySubscription();
       if ((res as any).is_premium && (res as any).tier) {
-        setSyncMessage('Subscription mapped! Reloading...');
-        setTimeout(() => window.location.reload(), 1500);
+        setSyncMessage('Subscription mapped! Updating profile...');
+        try {
+          await refetchProfile();
+          setSyncMessage('Subscription mapped!');
+        } catch {
+          // If refetch fails, still clear the message after a short delay
+          setSyncMessage('Subscription mapped, but failed to refresh profile. Please reload.');
+        } finally {
+          setTimeout(() => setSyncMessage(''), 3000);
+        }
       } else {
         setSyncMessage((res as any).message || 'Verification complete.');
         setTimeout(() => setSyncMessage(''), 3000);

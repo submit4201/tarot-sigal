@@ -2,9 +2,13 @@ from datetime import datetime, timedelta
 from pwdlib import PasswordHash
 from jose import JWTError, jwt
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path="../.env.local")
+# Load environment variables from a path resolved relative to this file
+BASE_DIR = Path(__file__).resolve().parent.parent
+env_path = BASE_DIR / ".env.local"
+load_dotenv(dotenv_path=env_path)
 
 # Security configuration
 SECRET_KEY = os.getenv("JWT_SECRET_KEY", "gridpunk-arcana-jwt-secret-key-change-in-production-123!")
