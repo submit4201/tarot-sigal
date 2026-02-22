@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from core.logger import app_logger
 
 # Load environment variables from a path resolved relative to this file
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent  # points to the `server/` directory
 env_path = BASE_DIR / ".env.local"
 load_dotenv(dotenv_path=env_path)
 
