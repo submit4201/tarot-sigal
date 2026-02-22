@@ -2,11 +2,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from urllib.parse import urlparse
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 from core.logger import app_logger
 
-# Load environment variables
-load_dotenv(dotenv_path="../.env.local")
+# Load environment variables from a path resolved relative to this file
+BASE_DIR = Path(__file__).resolve().parent.parent  # points to the `server/` directory
+env_path = BASE_DIR / ".env.local"
+load_dotenv(dotenv_path=env_path)
 
 # Database URL from env or default local sqlite for dev
 # In production, DO App Platform will provide DATABASE_URL automatically
