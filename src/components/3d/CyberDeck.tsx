@@ -8,9 +8,10 @@ interface CyberDeckProps {
     onDraw: () => void;
     deckCount: number;
     isFanned?: boolean;
+    deckId?: string;
 }
 
-export const CyberDeck: React.FC<CyberDeckProps> = ({ onShuffle, onDraw, deckCount, isFanned = false }) => {
+export const CyberDeck: React.FC<CyberDeckProps> = ({ onShuffle, onDraw, deckCount, isFanned = false, deckId }) => {
 
     const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
 
@@ -75,14 +76,14 @@ export const CyberDeck: React.FC<CyberDeckProps> = ({ onShuffle, onDraw, deckCou
                             zIndex: 10 - i
                         }}
                     >
-                        <CardBack />
+                        <CardBack deckId={deckId} />
                     </animated.div>
                 );
             })}
 
             {/* Top Card (Active) */}
             <div className="absolute inset-0 rounded-xl border border-teal-500/50 shadow-[0_0_30px_rgba(45,212,191,0.3)] z-50">
-                <CardBack />
+                <CardBack deckId={deckId} />
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <span className="text-white/50 font-mono text-xs font-bold bg-black/50 px-2 py-1 rounded">
                         {isFanned ? 'THROW_TO_DEAL' : 'DRAG_TO_SHUFFLE'}

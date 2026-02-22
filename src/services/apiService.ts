@@ -139,3 +139,15 @@ export const db = {
         });
     }
 };
+
+export const birthProfile = {
+    get: async () => {
+        return apiFetch('/birth-profile/');
+    },
+    update: async (data: any) => {
+        return apiFetch('/birth-profile/', {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    }
+};

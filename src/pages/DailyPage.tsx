@@ -5,11 +5,12 @@ import { getDailySeed, calculateDailyNumber, drawDailyCard, calculateMonthlyNumb
 import { DrawnCard, DailyInsights } from '../types';
 import DivinationCardDisplay from '../components/TarotCard';
 import { SunIcon, BookOpenIcon, SparklesIcon, ZapIcon, DnaIcon, CompassIcon } from '../components/icons';
-import { Type } from '@google/genai';
 import { generateContentWithRetry } from '../services/geminiService'; // Import the retry service
 import { generateCosmicBlueprint } from '../services/cosmicService';
 import CosmicBlueprintDisplay from '../components/CosmicBlueprintDisplay';
 import { TAROT_DECK } from '../constants';
+
+import { db } from '../services/apiService';
 
 const TelemetryModule: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode; delay: number; className?: string }> = ({ icon, title, children, delay, className }) => {
     return (
@@ -28,7 +29,7 @@ const TelemetryModule: React.FC<{ icon: React.ReactNode; title: string; children
 };
 
 const DailyPage: React.FC = () => {
-    const { addDailyDrawToHistory, dailyDrawHistory, activeProfile, addXp, updateDailyDrawInsights } = useApp();
+    const { addDailyDrawToHistory, dailyDrawHistory, activeProfile, addXp, updateDailyDrawInsights, isPremium } = useApp();
     const [chosenCard, setChosenCard] = useState<DrawnCard | null>(null);
     const [hasChosen, setHasChosen] = useState(false);
     const [dailyInsights, setDailyInsights] = useState<DailyInsights | null>(null);
@@ -81,20 +82,42 @@ const DailyPage: React.FC = () => {
         window.location.hash = '#numerology';
     };
 
+    const [recentJournalContext, setRecentJournalContext] = useState<string>('');
+
+    const cosmicBlueprint = useMemo(() => activeProfile ? generateCosmicBlueprint(activeProfile) : null, [activeProfile]);
+
+    useEffect(() => {
+        const fetchContext = async () => {
+            try {
+                const entries = await db.getJournalEntries();
+                if (entries && entries.length > 0) {
+                    const context = entries.slice(-3).map((e: any) => e.content).join(' | ');
+                    setRecentJournalContext(context);
+                }
+            } catch (e) {
+                console.error("Failed to fetch journal context for daily:", e);
+            }
+        };
+        fetchContext();
+    }, []);
+
     const generateInsights = async (card: DrawnCard) => {
         if (isGenerating || dailyInsights) return;
         setIsGenerating(true);
         setError(null);
         try {
             const sign = activeProfile.astrologicalSign !== 'None' ? activeProfile.astrologicalSign : 'the Seeker';
+            const journalContext = isPremium && recentJournalContext ? `Recent Life Data: ${recentJournalContext}` : '';
 
             // BATCH TEXT PROMPT - Enhanced for Mysticism & Depth
             const batchPrompt = `Generate a high-frequency, mystical-cyberpunk daily diagnostic for ${sign}.
         Tarot Signal: "${card.card?.name}" (${card.isReversed ? 'Inverted Polarity' : 'Standard Polarity'}).
         Life Path Frequency: ${activeProfile.birthDate ? 'Calculated' : 'Unknown'}. Focus: ${activeProfile.readingFocus}.
+        Cosmic Alignment: Life Path ${cosmicBlueprint?.lifePath.number}
+        ${journalContext}
         
          Directives:
-        1. **Horoscope**: A 100-word cyberpunk-shamanic forecast. abstract, poetic, yet piercingly relevant. Use terms like 'flux', 'void', 'signal', 'ether'.
+        1. **Horoscope**: A deeply evocative, mystical, yet practically precise horoscope for today (3-4 paragraphs). Use Cyber-Shamanic terminology (resonance, alignment, archetypes, void, manifestation).
         2. **Tarot Reading**:
            - **Core Message**: A deep, soul-level truth. Not generic.
            - **Mystical Insight**: Esoteric connections (astrology, kabbalah, alchemy).
@@ -102,51 +125,38 @@ const DailyPage: React.FC = () => {
            - **Reflection**: A koan-like question to haunt the user's thoughts.
         3. **Synthesis**: A final transmission combining all signals into a cohesive guidance.
         
-        Return strictly as JSON.`;
-
-            const textSchema = {
-                type: Type.OBJECT,
-                properties: {
-                    horoscope: { type: Type.STRING },
-                    cardReading: {
-                        type: Type.OBJECT,
-                        properties: {
-                            coreMessage: { type: Type.STRING },
-                            mysticalInsight: { type: Type.STRING },
-                            todaysAction: { type: Type.STRING },
-                            reflectionQuestion: { type: Type.STRING }
-                        }
-                    },
-                    combinedGuidance: { type: Type.STRING }
-                }
-            };
+        Return strictly as JSON matching this schema:
+        {
+          "horoscope": "string",
+          "cardReading": {
+            "coreMessage": "string",
+            "mysticalInsight": "string",
+            "todaysAction": "string",
+            "reflectionQuestion": "string"
+          },
+          "combinedGuidance": "string"
+        }`;
 
             setGenerationStatus('Establishing uplink...');
 
             // Step 1: Generate Text (Critical)
             const textRes = await generateContentWithRetry({
-                model: 'arcee-ai/trinity-large-preview:free',
-                contents: batchPrompt,
-                config: { responseMimeType: 'application/json', responseSchema: textSchema }
+                model: 'z-ai/glm-4.5-air:free',
+                contents: batchPrompt
             });
 
-            const data = JSON.parse(textRes.text || '{}');
+            // Extract text handling potential json markdown wrappers
+            let rawText = textRes.text || '{}';
+            rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+            const data = JSON.parse(rawText);
 
             setGenerationStatus('Rendering visual data...');
 
             // Step 2: Generate Sigil (Secondary)
             let sigilBase64 = "";
-            try {
-                const sigilRes = await generateContentWithRetry({
-                    model: 'gemini-2.5-flash-image',
-                    contents: { parts: [{ text: `A cyberpunk digital sigil for card ${card.card.name}. Electric cyan circuitry, abstract sacred geometry, dark background.` }] }
-                });
-                for (const part of sigilRes.candidates?.[0]?.content?.parts || []) {
-                    if (part.inlineData) sigilBase64 = `data:image/png;base64,${part.inlineData.data}`;
-                }
-            } catch (imgErr) {
-                console.warn("Sigil generation failed, skipping visual artifact.", imgErr);
-            }
+            // Sigil generation deactivated due to OpenRouter chat/completions limitation.
+            // Image generation via OpenRouter requires specialized routing 
+            // and an image-capable model.
 
             const newInsights: DailyInsights = {
                 horoscope: data.horoscope,

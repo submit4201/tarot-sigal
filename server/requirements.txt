@@ -13,3 +13,5 @@ python-multipart
 # Add email validator for Pydantic
 email-validator
 gunicorn
+pyswisseph
+geopy

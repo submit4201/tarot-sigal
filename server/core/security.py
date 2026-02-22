@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv(dotenv_path="../.env.local")
 
 # Security configuration
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "super-secret-fallback-key-for-dev-only")
+SECRET_KEY = os.getenv("JWT_SECRET_KEY", "gridpunk-arcana-jwt-secret-key-change-in-production-123!")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 days for convenience
 

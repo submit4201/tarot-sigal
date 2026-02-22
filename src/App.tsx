@@ -20,11 +20,12 @@ import NumerologyPage from './pages/NumerologyPage';
 import SigilPage from './pages/SigilPage';
 import SuccessPage from './pages/SuccessPage';
 import CancelPage from './pages/CancelPage';
+import BirthProfilePage from './pages/BirthProfilePage';
 import LevelUpModal from './components/LevelUpModal';
 import XpNotification from './components/XpNotification';
 
 // * Valid page names for hash routing
-const VALID_PAGES: Page[] = ['Daily', 'Readings', 'Journal', 'Guide', 'Shop', 'Pricing', 'Progress', 'Profile', 'Onboarding', 'Numerology', 'Sigil', 'Success', 'Cancel'];
+const VALID_PAGES: Page[] = ['Daily', 'Readings', 'Journal', 'Guide', 'Shop', 'Pricing', 'Progress', 'Profile', 'Onboarding', 'Numerology', 'Sigil', 'Success', 'Cancel', 'BirthProfile'];
 
 /**
  * getPageFromHash — Reads `window.location.hash` and maps it to a valid Page.
@@ -55,6 +56,7 @@ const navItems = [
   { name: 'Guide', icon: CompassIcon, page: 'Guide' as Page },
   { name: 'Shop', icon: ShoppingCartIcon, page: 'Shop' as Page },
   { name: 'Progress', icon: BarChartIcon, page: 'Progress' as Page },
+  { name: 'Birth Profile', icon: SparklesIcon, page: 'BirthProfile' as Page },
   { name: 'Profile', icon: UserIcon, page: 'Profile' as Page },
 ];
 
@@ -147,6 +149,7 @@ const pageComponents: { [key in Page]: React.ComponentType<any> } = {
   Sigil: SigilPage,
   Success: SuccessPage,
   Cancel: CancelPage,
+  BirthProfile: BirthProfilePage,
 };
 
 const AppContent: React.FC = () => {

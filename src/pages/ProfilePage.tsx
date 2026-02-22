@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
 import { UserProfile } from '../types';
@@ -13,57 +13,46 @@ const ProfilePage: React.FC = () => {
   const { isPremium, activeProfile, updateActiveProfile, setPage } = useApp();
   const { logout, user } = useAuth();
 
-  // ! Debounced profile saving — prevents writing to DB on every keystroke
-  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [pendingProfile, setPendingProfile] = useState<UserProfile | null>(null);
 
-  /**
-   * debouncedSave — Queues a profile update with 500ms debounce.
-   * Shows a subtle "saving" indicator while the timeout is pending.
-   */
-  const debouncedSave = useCallback((updatedProfile: UserProfile) => {
-    setPendingProfile(updatedProfile);
-    setIsSaving(true);
-
-    if (saveTimeoutRef.current) {
-      clearTimeout(saveTimeoutRef.current);
-    }
-
-    saveTimeoutRef.current = setTimeout(() => {
-      updateActiveProfile(updatedProfile);
-      setIsSaving(false);
-      setPendingProfile(null);
-    }, 500);
-  }, [updateActiveProfile]);
-
-  // * Cleanup timeout on unmount
+  // Initialize pending profile when active profile loads
   useEffect(() => {
-    return () => {
-      if (saveTimeoutRef.current) {
-        clearTimeout(saveTimeoutRef.current);
-      }
-    };
-  }, []);
+    if (activeProfile && !pendingProfile) {
+      setPendingProfile(activeProfile);
+    }
+  }, [activeProfile]);
 
   /**
-   * handleProfileChange — Updates a single field on the active profile.
-   * Uses debounced save to avoid writing on every keystroke.
+   * handleProfileChange — Updates a single field on the locally cached profile.
+   * Does NOT automatically save to server.
    */
   const handleProfileChange = (field: keyof UserProfile, value: string | UserProfile['readingStyle'] | UserProfile['readingFocus']) => {
-    if (!activeProfile) return;
-    const base = pendingProfile || activeProfile;
-    const updated = { ...base, [field]: value };
+    if (!pendingProfile) return;
+    const updated = { ...pendingProfile, [field]: value };
 
     // * If changing birthDate, also recalculate astrological sign
     if (field === 'birthDate') {
       updated.astrologicalSign = getSignFromDate(value as string);
     }
 
-    debouncedSave(updated);
+    setPendingProfile(updated);
   };
 
-  // * Use pending profile for display if we have uncommitted changes
+  /**
+   * handleSaveChanges — Manually commits the pending profile to the backend.
+   */
+  const handleSaveChanges = async () => {
+    if (!pendingProfile) return;
+    setIsSaving(true);
+    try {
+      await updateActiveProfile(pendingProfile);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  // * Use pending profile for display
   const displayProfile = pendingProfile || activeProfile;
 
   const cosmicBlueprint = useMemo(() => displayProfile ? generateCosmicBlueprint(displayProfile) : null, [displayProfile]);
@@ -179,6 +168,24 @@ const ProfilePage: React.FC = () => {
                   <label htmlFor="birthPlace" className="block text-[10px] font-mono text-white/40 uppercase tracking-[0.3em] mb-2 font-bold">Place_of_Origin</label>
                   <input type="text" id="birthPlace" value={displayProfile.birthPlace} onChange={(e) => handleProfileChange('birthPlace', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl text-white font-mono text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all shadow-inner" />
                 </div>
+              </div>
+
+              {/* Explicit Save Button */}
+              <div className="mt-8 flex justify-end">
+                <button
+                  onClick={handleSaveChanges}
+                  disabled={isSaving}
+                  className={`px-8 py-3 rounded-xl border border-teal-500/50 bg-teal-500/10 hover:bg-teal-500/30 text-teal-400 font-mono text-sm uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(20,184,166,0.15)] flex items-center gap-2 ${isSaving ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  {isSaving ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-teal-400 border-t-transparent rounded-full animate-spin"></div>
+                      Encrypting_Data...
+                    </>
+                  ) : (
+                    'Update_Profile'
+                  )}
+                </button>
               </div>
             </section>
 

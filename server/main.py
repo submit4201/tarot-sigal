@@ -13,7 +13,7 @@ from core.database import engine
 from models.database_models import Base
 
 # API Routers
-from api import auth, readings, journal, daily_draws, purchases, stripe_routes, gemini_routes
+from api import auth, readings, journal, daily_draws, purchases, stripe_routes, gemini_routes, birth_profile
 
 # Create all tables in the database (if they don't exist)
 Base.metadata.create_all(bind=engine)
@@ -54,3 +54,4 @@ app.include_router(daily_draws.router, prefix="/api/daily-draws", tags=["Daily D
 app.include_router(purchases.router, prefix="/api/purchases", tags=["Purchases"])
 app.include_router(stripe_routes.router, prefix="/api/stripe", tags=["Stripe"])
 app.include_router(gemini_routes.router, prefix="/api/gemini", tags=["Gemini AI"])
+app.include_router(birth_profile.router, prefix="/api/birth-profile", tags=["Birth Profile"])

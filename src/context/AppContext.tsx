@@ -98,9 +98,36 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
             db.getDailyHistory()
           ]);
 
-          setSavedReadings(readings as unknown as SavedReading[]);
-          setJournalEntries(journal as unknown as JournalEntry[]);
-          setDailyDrawHistory(draws as unknown as DailyDrawRecord[]);
+          const extractArray = (data: any): any[] => {
+            if (Array.isArray(data)) return data;
+            if (data && typeof data === 'object') {
+              if (Array.isArray(data.documents)) return data.documents;
+              if (Array.isArray(data.data)) return data.data;
+              if (Array.isArray(data.items)) return data.items;
+              if (Array.isArray(data.records)) return data.records;
+            }
+            return [];
+          };
+
+          const safeParse = (str: any) => {
+            if (typeof str !== 'string') return str;
+            try { return JSON.parse(str); } catch { return str; }
+          };
+
+          const parsedReadings = extractArray(readings).map(r => ({
+            ...r,
+            cards: safeParse(r.cards)
+          }));
+
+          const parsedJournal = extractArray(journal).map(j => ({
+            ...j,
+            linked_card: safeParse(j.linked_card),
+            linkedCard: safeParse(j.linked_card || j.linkedCard)
+          }));
+
+          setSavedReadings(parsedReadings as unknown as SavedReading[]);
+          setJournalEntries(parsedJournal as unknown as JournalEntry[]);
+          setDailyDrawHistory(extractArray(draws) as unknown as DailyDrawRecord[]);
         } else {
           // No profile yet - OnboardingPage will handle creation
           setActiveProfile(null);

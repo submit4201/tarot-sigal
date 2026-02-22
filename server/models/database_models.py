@@ -34,6 +34,7 @@ class User(Base):
     journal_entries = relationship("JournalEntry", back_populates="user", cascade="all, delete-orphan")
     daily_draws = relationship("DailyDraw", back_populates="user", cascade="all, delete-orphan")
     purchases = relationship("Purchase", back_populates="user")
+    birth_profile = relationship("BirthProfile", back_populates="user", uselist=False, cascade="all, delete-orphan")
 
 
 class Reading(Base):
@@ -50,6 +51,28 @@ class Reading(Base):
 
     user = relationship("User", back_populates="readings")
 
+
+class BirthProfile(Base):
+    __tablename__ = "birth_profiles"
+
+    id = Column(String(36), primary_key=True, default=generate_uuid, index=True)
+    user_id = Column(String(36), ForeignKey("users.id"), unique=True, index=True, nullable=False)
+    
+    full_name = Column(String(255), nullable=False)
+    birth_date = Column(String(20), nullable=False) # ISO 8601
+    birth_time = Column(String(10), nullable=False) # HH:MM
+    birth_location = Column(String(255), nullable=False)
+    latitude = Column(Text, nullable=True)
+    longitude = Column(Text, nullable=True)
+    
+    # The calculated data blob and the AI-generated narrative
+    profile_data = Column(JSON, nullable=True)
+    llm_narrative = Column(Text, nullable=True)
+    
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    user = relationship("User", back_populates="birth_profile")
 
 class JournalEntry(Base):
     __tablename__ = "journal_entries"

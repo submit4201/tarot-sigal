@@ -11,34 +11,33 @@ interface HoloCardProps {
     isRevealed: boolean;
     onClick?: () => void;
     className?: string;
+    deckId?: string;
 }
 
-export const HoloCard: React.FC<HoloCardProps> = ({ card, isRevealed, onClick, className }) => {
+export const HoloCard: React.FC<HoloCardProps> = ({ card, isRevealed, onClick, className, deckId = 'tarot' }) => {
 
     // Flip animation
-    const { transform, opacity } = useSpring({
-        opacity: isRevealed ? 1 : 0,
-        transform: `perspective(600px) rotateY(${isRevealed ? 180 : 0}deg)`,
+    const { rotateY } = useSpring({
+        rotateY: isRevealed ? 180 : 0,
         config: { mass: 5, tension: 500, friction: 80 }
     });
 
-
-    // Back face style (starts visible, rotates away)
+    // Back face: front facing initially, rotates away to 180deg
     const backStyle = {
-        transform: transform.to(t => `${t} rotateY(180deg)`),
-        opacity: opacity.to(o => 1 - o),
+        transform: rotateY.to(val => `perspective(600px) rotateY(${val}deg)`),
         position: 'absolute' as 'absolute',
         inset: 0,
-        backfaceVisibility: 'hidden' as 'hidden'
+        backfaceVisibility: 'hidden' as 'hidden',
+        WebkitBackfaceVisibility: 'hidden' as 'hidden',
     };
 
-    // Front face style (starts hidden, rotates into view)
+    // Front face: flipped 180deg initially, rotates to 360deg (0deg)
     const frontStyle = {
-        transform,
-        opacity,
+        transform: rotateY.to(val => `perspective(600px) rotateY(${val + 180}deg)`),
         position: 'absolute' as 'absolute',
         inset: 0,
-        backfaceVisibility: 'hidden' as 'hidden'
+        backfaceVisibility: 'hidden' as 'hidden',
+        WebkitBackfaceVisibility: 'hidden' as 'hidden',
     };
 
 
@@ -49,16 +48,25 @@ export const HoloCard: React.FC<HoloCardProps> = ({ card, isRevealed, onClick, c
         }}>
             {/* Card Back Container */}
             <animated.div style={backStyle} className="w-full h-full rounded-xl overflow-hidden shadow-2xl border border-white/20 bg-black">
-                <CardBack />
+                <CardBack deckId={deckId} />
                 {/* Glass Shatter Overlay would go here as another absolute layer triggered on click before reveal */}
             </animated.div>
 
             {/* Card Front Container */}
             <animated.div style={frontStyle} className="w-full h-full rounded-xl overflow-hidden shadow-2xl border border-purple-500/50 bg-black">
-                {/* Reuse existing display or custom image logic */}
-                <img src={(card.card as any).imageUrl || "placeholder.png"} alt={card.card.name} className="w-full h-full object-cover" />
+                <img
+                    src={`/assets/cards/${deckId}/${card.card.id}.png`}
+                    alt={card.card.name}
+                    className={`w-full h-full object-cover transition-transform duration-700 ${card.isReversed ? 'rotate-180' : ''}`}
+                    onError={(e) => {
+                        // Fallback to the generated generic tarot front if specific image is missing
+                        (e.target as HTMLImageElement).src = '/assets/cards/tarot/generic_front.png';
+                    }}
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
-                <div className="absolute bottom-2 left-0 right-0 text-center text-white font-bold text-sm drop-shadow-md">
+
+                {/* Text overlay for visibility just in case */}
+                <div className="absolute bottom-2 left-0 right-0 text-center text-white font-bold text-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] px-2">
                     {card.card.name} {card.isReversed ? '(Rev)' : ''}
                 </div>
             </animated.div>

@@ -114,3 +114,38 @@ class PurchaseResponse(PurchaseCreate):
 
     class Config:
         from_attributes = True
+
+
+# --- Birth Profile Schemas ---
+class BirthProfileBase(BaseModel):
+    full_name: str = Field(..., alias="fullName")
+    birth_date: str = Field(..., alias="birthDate")
+    birth_time: str = Field(..., alias="birthTime")
+    birth_location: str = Field(..., alias="birthLocation")
+    latitude: Optional[str] = None
+    longitude: Optional[str] = None
+
+class BirthProfileCreate(BirthProfileBase):
+    pass
+
+class BirthProfileResponse(BirthProfileBase):
+    id: str
+    user_id: str
+    profile_data: Optional[dict] = Field(None, alias="profileData")
+    llm_narrative: Optional[str] = Field(None, alias="llmNarrative")
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+        populate_by_name = True
+
+class BirthProfileTeaser(BaseModel):
+    sun_sign: str = Field(..., alias="sunSign")
+    moon_sign: str = Field(..., alias="moonSign")
+    ascendant_sign: str = Field(..., alias="ascendantSign")
+    aura_preview: str = Field(..., alias="auraPreview")
+    is_premium_locked: bool = Field(True, alias="isPremiumLocked")
+
+    class Config:
+        populate_by_name = True

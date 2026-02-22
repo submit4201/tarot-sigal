@@ -3,7 +3,6 @@ import { useApp } from '../context/AppContext';
 import { DrawnDivinationCard, SavedReading } from '../types';
 import { drawTarotCard } from '../services/tarotService';
 import { generateContentWithRetry } from '../services/geminiService';
-import { Type } from '@google/genai';
 import InitiationPhase from '../components/SigilFlow/InitiationPhase';
 import RevealPhase from '../components/SigilFlow/RevealPhase';
 import CoreReadingPhase from '../components/SigilFlow/CoreReadingPhase';
@@ -52,43 +51,37 @@ const SigilPage: React.FC = () => {
     const generateReading = async (drawnCards: DrawnDivinationCard[], question: string) => {
         try {
             const prompt = `
-            Perform a 3-card Past/Present/Future Sigil Reading for ${activeProfile?.givenName}.
-            Focus: "${question}".
+            You are a master of the Gridpunk Sigil Ritual. The user has provided a raw focus for their reading.
+            Your task: 
+            1. First, refine the user's focus: "${question}" into a "Refined Sigil Intent" that is more empowering, open-ended, and suitable for a mystical cyberpunk divination.
+            2. Perform a 3-card Past/Present/Future Sigil Reading for ${activeProfile?.givenName} based on this refined intent.
+            
             Cards: 
             1. Past: ${drawnCards[0].card.name} (${drawnCards[0].isReversed ? 'Rev' : 'Up'})
             2. Present: ${drawnCards[1].card.name} (${drawnCards[1].isReversed ? 'Rev' : 'Up'})
             3. Future: ${drawnCards[2].card.name} (${drawnCards[2].isReversed ? 'Rev' : 'Up'})
 
-            Return JSON with:
-            - aiSummary (approx 100 words, mystical cyberpunk tone)
-            - practicalActions (3 actionable bullet points)
-            - shadowMessage (warning or hidden influence to watch for)
-            - reflectionQuestion (deep prompt)
-            - keywordAnalyses (Array of 3 strings: For each card, a concise keyword-level breakdown highlighting the core themes, associations, and energies. 2-3 sentences.)
-            - symbolicInterpretations (Array of 3 strings: For each card, a rich symbolic reading connecting the card's imagery and archetype to the querent's focus question. 3-4 sentences.)
-            - esotericInterpretations (Array of 3 strings: Deep kabbalistic/astrological/hermetic analysis for Past, Present, Future cards respectively. 4-5 sentences.)
+            Return JSON strictly matching this structure:
+            {
+              "refinedFocus": "The improved, empowered version of the user's question",
+              "aiSummary": "High-level synthesis of the 3-card resonance",
+              "practicalActions": ["Three actionable steps based on the reading"],
+              "shadowMessage": "A warning or hidden truth found in the spread",
+              "reflectionQuestion": "A deep question for the seeker to ponder",
+              "keywordAnalyses": ["Keyword analysis for card 1", "Keyword analysis for card 2", "Keyword analysis for card 3"],
+              "symbolicInterpretations": ["Symbolic interpretation for card 1", "Symbolic interpretation for card 2", "Symbolic interpretation for card 3"],
+              "esotericInterpretations": ["Esoteric interpretation for card 1", "Esoteric interpretation for card 2", "Esoteric interpretation for card 3"]
+            }
             `;
-
-            const schema = {
-                type: Type.OBJECT,
-                properties: {
-                    aiSummary: { type: Type.STRING },
-                    practicalActions: { type: Type.ARRAY, items: { type: Type.STRING } },
-                    shadowMessage: { type: Type.STRING },
-                    reflectionQuestion: { type: Type.STRING },
-                    keywordAnalyses: { type: Type.ARRAY, items: { type: Type.STRING } },
-                    symbolicInterpretations: { type: Type.ARRAY, items: { type: Type.STRING } },
-                    esotericInterpretations: { type: Type.ARRAY, items: { type: Type.STRING } }
-                }
-            };
 
             const result = await generateContentWithRetry({
                 model: 'arcee-ai/trinity-large-preview:free',
-                contents: [{ role: 'user', parts: [{ text: prompt }] }],
-                config: { responseMimeType: 'application/json', responseSchema: schema }
+                contents: [{ role: 'user', parts: [{ text: prompt }] }]
             });
 
-            const data = JSON.parse(result.text || '{}');
+            let rawText = result.text || '{}';
+            rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
+            const data = JSON.parse(rawText);
 
             // Map all depth-level interpretations to cards
             const cardsWithIntepretation = drawnCards.map((c, i) => ({
@@ -111,6 +104,7 @@ const SigilPage: React.FC = () => {
                 userNotes: '',
                 practicalActions: data.practicalActions,
                 shadowMessage: data.shadowMessage,
+                refinedQuestion: data.refinedFocus,
                 reflectionQuestion: data.reflectionQuestion
             };
             setReadingData(newReading);
@@ -166,8 +160,15 @@ const SigilPage: React.FC = () => {
                 {phase === 'core' && readingData && (
                     <div className="pt-20 pb-20 fade-in">
                         <div className="text-center mb-10 px-4">
-                            <p className="text-xs font-mono text-purple-400 uppercase tracking-widest mb-2 font-bold">Focus_Lock</p>
-                            <h2 className="text-2xl md:text-4xl text-white font-dm-sans neon-glow max-w-2xl mx-auto">"{focus}"</h2>
+                            <p className="text-xs font-mono text-purple-400 uppercase tracking-widest mb-2 font-bold">Signal_Source</p>
+                            <h2 className="text-xl md:text-2xl text-white/60 font-dm-sans italic max-w-2xl mx-auto mb-4">"{focus}"</h2>
+
+                            {readingData.refinedQuestion && (
+                                <div className="animate-fade-in">
+                                    <p className="text-xs font-mono text-amber-400 uppercase tracking-widest mb-2 font-bold">Refined_Sigil_Intent</p>
+                                    <h2 className="text-2xl md:text-4xl text-white font-dm-sans neon-glow max-w-2xl mx-auto">"{readingData.refinedQuestion}"</h2>
+                                </div>
+                            )}
                         </div>
 
                         <CoreReadingPhase reading={readingData} onCardClick={setDeepDiveIndex} />
