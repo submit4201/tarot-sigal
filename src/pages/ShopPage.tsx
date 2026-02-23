@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { SHOP_DECKS } from '../constants';
-import { SparklesIcon, LayersIcon } from '../components/icons';
+import { SparklesIcon, ZapIcon } from '../components/icons';
 import { createCheckoutSession } from '../services/stripeService';
-import type { StardustPack } from '../types/stripe';
+import { AnimatedCardFront } from '../components/AnimatedCardFront';
 
 /**
- * ShopPage — Stardust-powered deck marketplace.
- * ! Rethemed to match cyberpunk glass-panel design system.
- * 
- * Note: Pack tiers must match the STARDUST_TIERS array in stripe-checkout function:
- * - spark, ember, supernova, cosmic_rift (all lowercase with underscores)
+ * ShopPage — Restructured premium marketplace.
+ * Stardust CTAs at top/bottom, decks look like "Daily Cards" with fluid previews.
  */
 const ShopPage: React.FC = () => {
-    const { activeProfile, purchaseDeck, setPage } = useApp();
+    const { activeProfile, purchaseDeck, setPage, decks, activeDeckId, setActiveDeck } = useApp();
     const [isPurchasing, setIsPurchasing] = useState(false);
 
     const handleStardustPurchase = async (packTier: string) => {
@@ -33,141 +29,148 @@ const ShopPage: React.FC = () => {
 
     const { stardust, ownedDeckIds } = activeProfile;
 
+    const stardustPacks = [
+        { name: 'Volt', tier: 'spark', price: 0.99, stardust: 250, color: 'purple', status: 'STABLE' },
+        { name: 'Kinetic', tier: 'ember', price: 2.99, stardust: 1000, color: 'purple', status: 'HIGH' },
+        { name: 'Core', tier: 'supernova', price: 4.99, stardust: 2500, color: 'amber', popular: true, status: 'SURGE' },
+        { name: 'Quantum', tier: 'cosmic_rift', price: 9.99, stardust: 7500, color: 'amber', bestValue: true, status: 'RIFT' }
+    ];
+
+    const StardustSurgeBar = () => (
+        <div className="flex flex-nowrap md:grid md:grid-cols-4 gap-4 overflow-x-auto pb-4 md:pb-0 no-scrollbar">
+            {stardustPacks.map(pack => {
+                const isAmber = pack.color === 'amber';
+                return (
+                    <button
+                        key={pack.tier}
+                        onClick={() => handleStardustPurchase(pack.tier)}
+                        disabled={isPurchasing}
+                        className={`flex-shrink-0 w-64 md:w-auto glass-panel p-5 rounded-2xl border-white/5 bg-white/[0.02] flex items-center justify-between group transition-all duration-500 hover:scale-[1.02] active:scale-95 ${isAmber ? 'hover:border-amber-500/40' : 'hover:border-purple-500/40'}`}
+                    >
+                        <div className="flex items-center gap-4">
+                            <ZapIcon className={`w-8 h-8 ${isAmber ? 'text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.6)]' : 'text-purple-400 drop-shadow-[0_0_10px_rgba(168,85,247,0.6)]'}`} />
+                            <div className="text-left">
+                                <p className="text-[9px] font-mono text-white/30 uppercase font-bold leading-none mb-1">{pack.name}_Surge</p>
+                                <p className="text-lg font-bold text-white font-dm-sans">+{pack.stardust}</p>
+                            </div>
+                        </div>
+                        <div className="text-right">
+                            <p className="text-xs font-bold text-white/60 mb-1">${pack.price}</p>
+                            <span className={`text-[7px] font-mono px-2 py-0.5 rounded border uppercase tracking-widest ${isAmber ? 'bg-amber-500/20 border-amber-500/40 text-amber-400' : 'bg-purple-500/20 border-purple-500/40 text-purple-400'}`}>
+                                {isPurchasing ? '...' : pack.status}
+                            </span>
+                        </div>
+                    </button>
+                );
+            })}
+        </div>
+    );
+
     return (
-        <div className="w-full h-full p-6 md:p-14 flex flex-col bg-grid animate-fade-in overflow-y-auto scroll-smooth">
-            <header className="mb-12 flex-shrink-0 flex flex-col md:flex-row justify-between items-end gap-6">
-                <div className="max-w-2xl">
-                    <div className="flex items-center gap-3 mb-3">
-                        <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></div>
-                        <span className="text-[10px] font-mono text-amber-400 uppercase tracking-[0.6em] font-bold">Nexus_Exchange_v2.5</span>
+        <div className="w-full h-full p-6 md:px-14 md:py-10 flex flex-col bg-grid animate-fade-in overflow-y-auto scroll-smooth gap-16">
+            {/* Header section with Balance */}
+            <header className="flex flex-col md:flex-row justify-between items-end gap-6 relative z-10">
+                <div className="max-w-2xl text-left">
+                    <div className="flex items-center gap-3 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></div>
+                        <span className="text-[10px] font-mono text-teal-400 uppercase tracking-[0.5em] font-bold">Nexus_Exchange_v5.0 // FLUID_SYNC_ACTIVE</span>
                     </div>
-                    <h1 className="text-6xl font-bold font-dm-sans text-white tracking-tighter neon-glow">The Nexus Shop</h1>
-                    <p className="text-lg text-white/40 mt-2">Acquire new conduits to amplify your signal.</p>
+                    <h1 className="text-5xl md:text-6xl font-bold font-dm-sans text-white tracking-tighter neon-glow">Marketplace</h1>
                 </div>
-                <div className="glass-panel px-8 py-5 rounded-2xl border-amber-500/20 flex items-center gap-4">
-                    <div>
-                        <p className="text-[9px] font-mono text-white/30 uppercase tracking-[0.3em] font-bold mb-1">Balance</p>
-                        <p className="text-3xl font-bold text-amber-400 flex items-center gap-2 font-dm-sans">
-                            <SparklesIcon className="w-6 h-6" />
+                <div className="glass-panel px-8 py-5 rounded-2xl border-purple-500/30 flex items-center gap-4 bg-purple-500/5 shadow-glow">
+                    <div className="text-right">
+                        <p className="text-[9px] font-mono text-white/30 uppercase tracking-[0.3em] font-bold mb-1">Energy_Balance</p>
+                        <p className="text-3xl font-bold text-teal-400 flex items-center justify-end gap-2 font-dm-sans">
+                            <ZapIcon className="w-6 h-6 animate-pulse" />
                             {stardust}
                         </p>
                     </div>
                 </div>
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                {SHOP_DECKS.map(deck => {
-                    const isOwned = ownedDeckIds.includes(deck.id);
-                    const canAfford = stardust >= deck.price;
+            {/* Top CTA Row */}
+            <section className="space-y-4">
+                <header className="flex items-center gap-4">
+                    <h2 className="text-[10px] font-mono text-white/40 uppercase tracking-[0.4em] font-bold">Surge_Energy</h2>
+                    <div className="h-[1px] flex-grow bg-gradient-to-r from-white/10 to-transparent"></div>
+                </header>
+                <StardustSurgeBar />
+            </section>
 
-                    return (
-                        <div key={deck.id} className={`glass-panel p-10 rounded-[2.5rem] border-white/5 bg-white/[0.01] shadow-2xl flex flex-col transition-all duration-500 group relative overflow-hidden hover:border-purple-500/20 ${isOwned ? 'opacity-50' : ''}`}>
-                            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/20 to-transparent"></div>
-                            <div className="flex-grow">
-                                <div className="flex justify-between items-start mb-4">
-                                    <h2 className="text-2xl font-bold font-dm-sans text-white group-hover:text-purple-400 transition-colors tracking-tight">{deck.name}</h2>
-                                    <span className={`text-[9px] font-mono font-bold capitalize text-white px-3 py-1.5 rounded-xl border uppercase tracking-wider ${deck.type === 'tarot' ? 'bg-purple-500/10 border-purple-500/30 text-purple-400' : 'bg-teal-500/10 border-teal-500/30 text-teal-400'}`}>{deck.type}</span>
+            {/* Deck Marketplace Row */}
+            <section className="space-y-8">
+                <header className="flex items-center gap-4">
+                    <h2 className="text-[10px] font-mono text-white/40 uppercase tracking-[0.4em] font-bold">Signal_Conduits</h2>
+                    <div className="h-[1px] flex-grow bg-gradient-to-r from-white/10 to-transparent"></div>
+                </header>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
+                    {decks.map(deck => {
+                        const isOwned = ownedDeckIds.includes(deck.id) || deck.price === 0;
+                        const isActive = activeDeckId === deck.id;
+                        const canAfford = stardust >= (deck.price || 0);
+
+                        return (
+                            <div key={deck.id} className="flex flex-col group items-center">
+                                {/* The "Daily Card" Container */}
+                                <div className={`relative w-full max-w-[280px] transition-all duration-700 ${isActive ? 'scale-105' : 'hover:scale-[1.02]'}`}>
+                                    <AnimatedCardFront
+                                        deckId={deck.id}
+                                        className={`${isActive ? 'ring-4 ring-teal-400/30' : 'group-hover:ring-2 group-hover:ring-purple-500/30'}`}
+                                    />
+
+                                    {isActive && (
+                                        <div className="absolute top-4 right-4 z-50">
+                                            <div className="bg-teal-400 text-black px-3 py-1 rounded-full font-mono text-[7px] uppercase font-bold tracking-widest shadow-glow">Active</div>
+                                        </div>
+                                    )}
                                 </div>
-                                <p className="text-sm text-white/40 leading-relaxed">{deck.description}</p>
-                            </div>
-                            <div className="mt-8 pt-6 border-t border-white/5">
-                                {isOwned ? (
-                                    <div className="w-full px-6 py-4 text-center rounded-2xl bg-white/5 border border-white/10 text-white/30 font-mono text-[10px] uppercase tracking-widest">
-                                        In_Collection ✓
-                                    </div>
-                                ) : (
-                                    <div className="flex items-center justify-between">
-                                        <p className="text-2xl font-bold text-amber-400 flex items-center gap-2 font-dm-sans">
-                                            <SparklesIcon className="w-5 h-5" />
-                                            {deck.price}
-                                        </p>
+
+                                {/* Actions below the card */}
+                                <div className="w-full max-w-[280px] mt-6 flex flex-col items-center">
+                                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">{deck.name}</h3>
+                                    {isOwned ? (
+                                        <button
+                                            onClick={() => setActiveDeck(deck.id)}
+                                            disabled={isActive}
+                                            className={`w-full py-3 rounded-xl font-bold font-mono text-[9px] uppercase tracking-[0.2em] transition-all border ${isActive
+                                                ? 'bg-white/5 text-white/20 border-white/5 cursor-default'
+                                                : 'bg-teal-500/10 border-teal-500/30 text-teal-400 hover:bg-teal-500 hover:text-black shadow-glow'}`}
+                                        >
+                                            {isActive ? 'SIGNAL_LOCKED' : 'ESTABLISH_LINK'}
+                                        </button>
+                                    ) : (
                                         <button
                                             onClick={() => purchaseDeck(deck)}
                                             disabled={!canAfford}
-                                            className="px-8 py-4 rounded-2xl font-bold font-mono text-[10px] uppercase tracking-widest bg-purple-600/20 border border-purple-500/30 text-purple-400 hover:bg-purple-600 hover:text-white transition-all shadow-glow disabled:opacity-20 disabled:cursor-not-allowed"
+                                            className={`w-full py-3 rounded-xl font-bold font-mono text-[9px] uppercase tracking-[0.2em] transition-all border flex items-center justify-center gap-2 ${canAfford
+                                                ? 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500 hover:text-black shadow-glow'
+                                                : 'bg-white/5 border-white/10 text-white/20 cursor-not-allowed'}`}
                                         >
-                                            {canAfford ? 'Acquire_Signal' : 'Insufficient_Dust'}
+                                            <SparklesIcon className="w-3 h-3" />
+                                            {canAfford ? `ACQUIRE (${deck.price})` : `LOW_ENERGY (${deck.price})`}
                                         </button>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    );
-                })}
-            </div>
-
-            {/* Stardust Packs Section */}
-            <div className="mt-20">
-                <div className="text-center mb-12">
-                    <h2 className="text-4xl font-bold font-dm-sans text-white tracking-tighter mb-3">Stardust Packs</h2>
-                    <p className="text-lg text-white/40">One-time purchases for instant Stardust</p>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-                    {([
-                        { name: 'Spark', tier: 'spark', price: 0.99, stardust: 250, color: 'purple' },
-                        { name: 'Ember', tier: 'ember', price: 2.99, stardust: 1000, color: 'purple' },
-                        { name: 'Supernova', tier: 'supernova', price: 4.99, stardust: 2500, color: 'amber', popular: true },
-                        { name: 'Cosmic Rift', tier: 'cosmic_rift', price: 9.99, stardust: 7500, color: 'amber', bestValue: true }
-                    ] as StardustPack[]).map(pack => {
-                        // Static Tailwind classes based on color
-                        const colorClasses = pack.color === 'amber'
-                            ? {
-                                card: 'border-amber-500/20 bg-amber-500/[0.02] hover:border-amber-500/40',
-                                button: 'bg-amber-600/20 border-amber-500/30 text-amber-400 hover:bg-amber-600'
-                            }
-                            : {
-                                card: 'border-purple-500/20 bg-purple-500/[0.02] hover:border-purple-500/40',
-                                button: 'bg-purple-600/20 border-purple-500/30 text-purple-400 hover:bg-purple-600'
-                            };
-
-                        return (
-                            <div key={pack.tier} className={`glass-panel p-6 rounded-2xl text-center relative overflow-hidden group transition-all ${colorClasses.card}`}>
-                                {pack.popular && (
-                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-amber-500 text-black px-3 py-1 rounded-full text-[8px] font-mono uppercase font-bold">
-                                        Popular
-                                    </div>
-                                )}
-                                {pack.bestValue && (
-                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-purple-500 text-white px-3 py-1 rounded-full text-[8px] font-mono uppercase font-bold">
-                                        Best Value
-                                    </div>
-                                )}
-                                <div className="font-mono text-[10px] text-amber-400 uppercase tracking-widest mb-2">{pack.name}</div>
-                                <div className="text-3xl font-bold text-white mb-1">${pack.price}</div>
-                                <div className="text-2xl font-bold text-amber-400 mb-4 flex items-center justify-center gap-1">
-                                    <SparklesIcon className="w-5 h-5" />
-                                    {pack.stardust.toLocaleString()}
+                                    )}
                                 </div>
-                                <button
-                                    onClick={() => handleStardustPurchase(pack.tier)}
-                                    disabled={isPurchasing}
-                                    className={`w-full px-4 py-3 rounded-xl font-bold font-mono text-[9px] uppercase tracking-widest border hover:text-white transition-all ${colorClasses.button} disabled:opacity-50 disabled:cursor-not-allowed`}
-                                >
-                                    {isPurchasing ? 'Processing...' : 'Purchase'}
-                                </button>
                             </div>
                         );
                     })}
                 </div>
+            </section>
 
-                {activeProfile.isPremium && (
-                    <div className="mt-8 text-center">
-                        <div className="inline-flex items-center gap-2 px-6 py-3 bg-purple-500/10 border border-purple-500/30 rounded-xl">
-                            <SparklesIcon className="w-4 h-4 text-purple-400" />
-                            <span className="text-sm font-bold text-purple-400">Premium subscribers get 2x Stardust on all purchases!</span>
-                        </div>
-                    </div>
-                )}
-            </div>
+            {/* Bottom CTA Row */}
+            <section className="space-y-4 pt-10">
+                <header className="flex items-center gap-4">
+                    <h2 className="text-[10px] font-mono text-white/40 uppercase tracking-[0.4em] font-bold">Surge_Repeat</h2>
+                    <div className="h-[1px] flex-grow bg-gradient-to-r from-white/10 to-transparent"></div>
+                </header>
+                <StardustSurgeBar />
+            </section>
 
-            <div className="mt-16 text-center glass-panel p-10 rounded-[2.5rem] border-white/5 bg-white/[0.01]">
-                <h3 className="text-xl font-bold text-white font-dm-sans mb-3">How to Earn Stardust?</h3>
-                <p className="text-sm text-white/40 max-w-md mx-auto leading-relaxed">
-                    You earn Stardust by engaging with the system: complete your daily draw, perform readings, write in your journal, and level up by gaining XP.
-                    Visit your <button onClick={() => setPage('Progress')} className="font-bold text-purple-400 hover:underline">Progress</button> page to see your stats.
+            <footer className="mt-20 text-center glass-panel p-10 rounded-[2rem] border-white/5 bg-white/[0.01]">
+                <p className="text-[10px] text-white/20 font-mono uppercase tracking-[0.3em] flex items-center justify-center gap-2">
+                    <ZapIcon className="w-3 h-3" /> Data_Transmission_Secured // Nexus_Core_v5.0
                 </p>
-            </div>
+            </footer>
         </div>
     );
 };

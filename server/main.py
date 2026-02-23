@@ -16,8 +16,7 @@ from auto_migrate import run_auto_migrations
 # API Routers
 from api import auth, readings, journal, daily_draws, purchases, stripe_routes, gemini_routes, birth_profile
 
-# Create all tables in the database (if they don't exist)
-Base.metadata.create_all(bind=engine)
+# API Routers
 
 app = FastAPI(
     title="Gridpunk Arcana API",
@@ -38,6 +37,8 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def startup_event():
+    # Create all tables in the database (if they don't exist)
+    Base.metadata.create_all(bind=engine)
     run_auto_migrations()
     app_logger.info("Gridpunk Arcana Backend started successfully.")
 

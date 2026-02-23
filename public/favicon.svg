@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Gridpunk Arcana Logo -->
+  <defs>
+    <!-- Glow Filters -->
+    <filter id="neon-cyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#00f3ff" flood-opacity="0.8"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="16" flood-color="#00f3ff" flood-opacity="0.5"/>
+    </filter>
+    <filter id="neon-magenta" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#ff00ea" flood-opacity="0.8"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="16" flood-color="#ff00ea" flood-opacity="0.5"/>
+    </filter>
+    
+    <!-- Cyberpunk Grid Pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#2a004f" stroke-width="2"/>
+    </pattern>
+    
+    <!-- Gradient for center emblem -->
+    <linearGradient id="cyber-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f3ff" />
+      <stop offset="100%" stop-color="#ff00ea" />
+    </linearGradient>
+  </defs>
+
+  <!-- Dark void background hex -->
+  <polygon points="256,20 480,130 480,380 256,490 32,380 32,130" fill="#05050A" stroke="#2a004f" stroke-width="4"/>
+  <!-- Grid overlay -->
+  <polygon points="256,20 480,130 480,380 256,490 32,380 32,130" fill="url(#grid)" opacity="0.6"/>
+
+  <!-- Outer Tarot Card Outline -->
+  <rect x="120" y="80" width="272" height="352" rx="16" ry="16" fill="#0A0A1A" stroke="#00f3ff" stroke-width="6" filter="url(#neon-cyan)"/>
+  
+  <!-- Inner cyber/circuit details around the edge of the card -->
+  <path d="M 120 180 L 140 180 M 120 330 L 140 330 M 392 180 L 372 180 M 392 330 L 372 330" stroke="#00f3ff" stroke-width="4"/>
+  
+  <!-- Shamanic Eye / Mystical Symbol -->
+  <!-- Outer Triangle -->
+  <polygon points="256,120 160,320 352,320" fill="none" stroke="#ff00ea" stroke-width="8" filter="url(#neon-magenta)" stroke-linejoin="round"/>
+  
+  <!-- Cyber Eye -->
+  <path d="M 200 240 Q 256 200 312 240 Q 256 280 200 240 Z" fill="#05050A" stroke="#00f3ff" stroke-width="6" filter="url(#neon-cyan)" stroke-linecap="round"/>
+  <circle cx="256" cy="240" r="16" fill="#ff00ea" filter="url(#neon-magenta)"/>
+  <circle cx="256" cy="240" r="6" fill="#00f3ff"/>
+
+  <!-- Circuit lines radiating from the eye down to the bottom of the card -->
+  <path d="M 256 320 L 256 390 M 236 390 L 276 390" fill="none" stroke="#00f3ff" stroke-width="4" filter="url(#neon-cyan)"/>
+  <path d="M 190 320 L 190 350 L 170 350" fill="none" stroke="#00f3ff" stroke-width="4"/>
+  <path d="M 322 320 L 322 350 L 342 350" fill="none" stroke="#00f3ff" stroke-width="4"/>
+  
+  <!-- Constellation / Star details -->
+  <circle cx="256" cy="110" r="4" fill="#00f3ff" filter="url(#neon-cyan)"/>
+  <path d="M 256 80 L 256 100 M 256 120 L 256 140 M 240 110 L 272 110" stroke="#00f3ff" stroke-width="2"/>
+  
+</svg>

@@ -141,7 +141,6 @@ const DailyPage: React.FC = () => {
 
             // Step 1: Generate Text (Critical)
             const textRes = await generateContentWithRetry({
-                model: 'z-ai/glm-4.5-air:free',
                 contents: batchPrompt
             });
 

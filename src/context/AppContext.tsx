@@ -1,6 +1,9 @@
 import React, { createContext, useContext, ReactNode, useEffect, useState, useCallback } from 'react';
 import { useAuth } from './AuthContext';
 import { db } from '../services/apiService';
+import decksData from '../data/decks.json';
+
+const decks = decksData as Deck[];
 import { JournalEntry, SavedReading, DrawnCard, DailyDrawRecord, UserProfile, Page, AchievementID, Deck, DailyInsights, DrawnDivinationCard } from '../types';
 
 interface AppContextType {
@@ -39,6 +42,14 @@ interface AppContextType {
   isPremium: boolean;
   setIsPremium: (val: boolean) => void; // Kept for interface compat, but acts as local override or stub
 
+  // Deck management
+  activeDeckId: string;
+  setActiveDeck: (deckId: string) => void;
+  getCardImagePath: (cardId: string, deckId?: string) => string;
+  getDeckBackPath: (deckId?: string) => string;
+  decks: Deck[];
+  unlockDeck: (deckId: string, price: number) => Promise<void>;
+
   // UI Notifs
   xpNotification: { amount: number; reason?: string } | null;
   setXpNotification: (notification: { amount: number; reason?: string } | null) => void;
@@ -59,9 +70,68 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [isLoadingData, setIsLoadingData] = useState(false);
 
   // Local UI state
+  const [activeDeckId, setActiveDeckId] = useState<string>(() => localStorage.getItem('activeDeckId') || 'giggling-glade');
   const [xpNotification, setXpNotification] = useState<{ amount: number; reason?: string } | null>(null);
   const [levelUpData, setLevelUpData] = useState<number | null>(null);
   const [runeCastsToday, setRuneCastsToday] = useState(0);
+
+  const unlockDeck = async (deckId: string, price: number) => {
+    if (!activeProfile) return;
+    if (activeProfile.stardust < price) return;
+
+    const updatedProfile = {
+      ...activeProfile,
+      stardust: activeProfile.stardust - price,
+      ownedDeckIds: [...(activeProfile.ownedDeckIds || []), deckId]
+    };
+
+    await updateActiveProfile(updatedProfile);
+    setXpNotification({ amount: 0, reason: `UNLOCKED: ${deckId.toUpperCase()}` });
+  };
+
+  // Persistence
+  useEffect(() => {
+    localStorage.setItem('activeDeckId', activeDeckId);
+  }, [activeDeckId]);
+
+  // Deck metadata
+  // No changes needed here, just removed the local require
+
+  const getCardImagePath = useCallback((cardId: string, deckId?: string) => {
+    const targetId = deckId || activeDeckId;
+    const deckDef = decks.find((d: any) => d.id === targetId) || decks[0];
+    const mapping = deckDef.mapping;
+    if (!mapping) return `${(import.meta as any).env.VITE_ASSETS_BASE_URL || '/assets/cards/tarot'}/${cardId}.png`;
+
+    const [suitPrefix, numStr] = cardId.split('_');
+    const pattern = (mapping as any)[suitPrefix];
+    if (!pattern) return `${(import.meta as any).env.VITE_ASSETS_BASE_URL || '/assets/cards/tarot'}/${cardId}.png`;
+
+    // Handle {0} or {00} padding
+    const paddedNum = pattern.includes('{00}')
+      ? numStr.padStart(2, '0')
+      : numStr;
+
+    const ASSET_BASE = (import.meta as any).env.VITE_ASSETS_BASE_URL || '/assets/cards/tarot';
+    const filename = pattern.replace(/{0+}/, paddedNum);
+    return `${ASSET_BASE}/${deckDef.path}/${filename}.png`;
+  }, [activeDeckId]);
+
+  const getDeckBackPath = useCallback((deckId?: string) => {
+    const targetId = deckId || activeDeckId;
+    const deckDef = (decks as any[]).find((d: any) => d.id === targetId) || decks[0];
+    const ASSET_BASE = '/assets/cards/tarot';
+
+    // If it's a themed deck (not the standard default_tarot), show a card front instead of a generic back
+    // This creates a "data leak" aesthetic as requested by the user.
+    if (deckDef && deckDef.id !== 'default_tarot') {
+      // Use the "The Fool" (maj_0) as the representative face for the deck back
+      return getCardImagePath('maj_0', deckDef.id);
+    }
+
+    // Standard fallback for the default deck
+    return `${ASSET_BASE}/back.png`;
+  }, [activeDeckId, decks, getCardImagePath]);
 
   // Derived state
   const isPremium = activeProfile?.isPremium || false;
@@ -352,6 +422,13 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     isPremium,
     setIsPremium,
+
+    activeDeckId,
+    setActiveDeck: setActiveDeckId,
+    getCardImagePath,
+    getDeckBackPath,
+    decks,
+    unlockDeck,
 
     xpNotification,
     setXpNotification,

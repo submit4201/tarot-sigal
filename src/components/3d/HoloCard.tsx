@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSpring, animated } from 'react-spring';
 import { DrawnDivinationCard } from '../../types';
+import { useApp } from '../../context/AppContext';
 import { CardBack } from '../CardBack';
 // Assuming DivinationCardDisplay is strictly for the card face content or we refactor it.
 // For HoloCard, we want a custom implementation that handles the 3D flip and shatter.
@@ -14,7 +15,8 @@ interface HoloCardProps {
     deckId?: string;
 }
 
-export const HoloCard: React.FC<HoloCardProps> = ({ card, isRevealed, onClick, className, deckId = 'tarot' }) => {
+export const HoloCard: React.FC<HoloCardProps> = ({ card, isRevealed, onClick, className }) => {
+    const { getCardImagePath, activeDeckId } = useApp();
 
     // Flip animation
     const { rotateY } = useSpring({
@@ -48,14 +50,14 @@ export const HoloCard: React.FC<HoloCardProps> = ({ card, isRevealed, onClick, c
         }}>
             {/* Card Back Container */}
             <animated.div style={backStyle} className="w-full h-full rounded-xl overflow-hidden shadow-2xl border border-white/20 bg-black">
-                <CardBack deckId={deckId} />
+                <CardBack />
                 {/* Glass Shatter Overlay would go here as another absolute layer triggered on click before reveal */}
             </animated.div>
 
             {/* Card Front Container */}
             <animated.div style={frontStyle} className="w-full h-full rounded-xl overflow-hidden shadow-2xl border border-purple-500/50 bg-black">
                 <img
-                    src={`/assets/cards/${deckId}/${card.card.id}.png`}
+                    src={getCardImagePath(card.card.id)}
                     alt={card.card.name}
                     className={`w-full h-full object-cover transition-transform duration-700 ${card.isReversed ? 'rotate-180' : ''}`}
                     onError={(e) => {

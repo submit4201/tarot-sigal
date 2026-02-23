@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { SpreadType, DrawnDivinationCard, Page, Deck, AnyCard } from '../types';
-import { SPREAD_DETAILS, SHOP_DECKS } from '../constants';
+import { SPREAD_DETAILS, SHOP_DECKS, TAROT_DECK } from '../constants';
 import { getShuffledPreparedDeck } from '../services/tarotService';
 import PremiumModal from '../components/PremiumModal';
 import { generateContentWithRetry } from '../services/geminiService';
@@ -30,7 +30,7 @@ const speakText = (text: string) => {
 };
 
 const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) => {
-    const { isPremium, addSavedReading, activeProfile, addXp, addStardust } = useApp();
+    const { isPremium, addSavedReading, activeProfile, addXp, addStardust, decks } = useApp();
 
     // * Reading Steps: focus-intent (Premium) -> select-spread -> select-deck -> charging -> picking-cards -> revealing -> summary
     const [readingStep, setReadingStep] = useState<'focus-intent' | 'select-spread' | 'select-deck' | 'charging' | 'picking-cards' | 'revealing' | 'summary'>('select-spread');
@@ -163,7 +163,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
 
                 if (progress >= 100) {
                     clearInterval(interval);
-                    completeCharging();
+                    // Stabilization complete. User can now click to draw.
                 }
             }
         }, 50);
@@ -189,14 +189,14 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
     };
 
     const completeCharging = () => {
-        const shuffled = getShuffledPreparedDeck(selectedDeck!.cards, Date.now());
+        // Use the master TAROT_DECK for logic, while selectedDeck provides the visual theme
+        const deckToUse = TAROT_DECK;
+        const shuffled = getShuffledPreparedDeck(deckToUse || [], Date.now());
         setFullDeckInPlay(shuffled);
         setDrawnCards(new Array(SPREAD_DETAILS[selectedSpread!].cardCount).fill(null));
+        setCurrentPickingIndex(0);
 
-        setTimeout(() => {
-            setReadingStep('picking-cards');
-            setCurrentPickingIndex(0);
-        }, 500);
+        // Final transition to picking is handled by the caller or effect
     };
 
     const handlePickCard = (card: DrawnDivinationCard) => {
@@ -450,7 +450,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
                     onMove={() => {
                         if (hasShuffledEnough) {
                             completeCharging();
-                            setReadingStep('picking-cards');
+                            setTimeout(() => setReadingStep('picking-cards'), 300);
                         }
                     }}
                     selectedDeckId={selectedDeck?.id}

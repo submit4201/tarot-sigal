@@ -1,0 +1,86 @@
+[
+    {
+        "id": "giggling-glade",
+        "name": "The Giggling Glade",
+        "description": "A whimsical, nature-entwined deck where the shadows whisper and the flora giggles.",
+        "path": "The_Giggling_Glade_Deck",
+        "price": 0,
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "sun_{00}",
+            "c": "dew_{00}",
+            "s": "tic_{00}",
+            "p": "roo_{00}"
+        }
+    },
+    {
+        "id": "gridpunk-arcana",
+        "name": "Gridpunk Arcana",
+        "description": "The original high-fidelity holographic deck used by elite deck-runners.",
+        "path": "Gridpunk_Arcana_Deck",
+        "price": 50,
+        "mapping": {
+            "maj": "maj_{0}",
+            "w": "sparks_{0}",
+            "c": "c_{0}",
+            "s": "s_{0}",
+            "p": "p_{0}"
+        }
+    },
+    {
+        "id": "syndicate-cipher",
+        "name": "The Syndicate’s Cipher",
+        "description": "A deck forged in the backrooms of the megacorps, used for high-stakes corporate espionage.",
+        "path": "The_Syndicates_Cipher_Deck",
+        "price": 150,
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "pie_{00}",
+            "c": "sta_{00}",
+            "s": "spi_{00}",
+            "p": "bur_{00}"
+        }
+    },
+    {
+        "id": "brutalist-bitstream",
+        "name": "The Brutalist Bitstream",
+        "description": "Industrial, raw, and binary. This deck values logic and hard truths above all.",
+        "path": "The_Brutalist_Bitstream_Deck",
+        "price": 120,
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "vol_{00}",
+            "c": "inf_{00}",
+            "s": "vec_{00}",
+            "p": "mon_{00}"
+        }
+    },
+    {
+        "id": "mana-bloom-mythos",
+        "name": "The Mana-Bloom Mythos",
+        "description": "Organic signals amplified by mana-pulse. A bridge between magic and machinery.",
+        "path": "The_Mana-Bloom_Mythos_Deck",
+        "price": 200,
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "lif_{00}",
+            "c": "reju_{00}",
+            "s": "tho_{00}",
+            "p": "seed_{00}"
+        }
+    },
+    {
+        "id": "eternal-grove",
+        "name": "The Eternal Grove",
+        "description": "Roots that span the network and leaves that carry data. Ancient wisdom in the silicon age.",
+        "path": "The_Eternal_Grove_Deck",
+        "price": 180,
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "sun_{00}",
+            "c": "ves_{00}",
+            "s": "bri_{00}",
+            "p": "roo_{00}"
+        }
+    }
+]

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import { useTrail, animated, config as springConfig } from 'react-spring';
 import { GlassPanel } from '../ui/GlassPanel';
 import {
     CpuIcon,
@@ -11,34 +12,37 @@ import {
     CompassIcon,
     SparklesIcon,
     DnaIcon,
-    SunIcon,
+    TerminalIcon,
+    CrownIcon,
 } from '../icons';
 
 /**
  * NarrativeSection
  * ================
- * * NOTE: Parses structured LLM output (split by '### ') and renders each
- *   narrative module as a premium interactive card.
+ * * NOTE: Parses structured LLM output and renders each narrative module 
+ *   as a premium interactive card with staggered animations.
  *
- * ! IMPORTANT: The LLM output MUST use '### [SECTION_NAME]' headers for parsing.
- *   This component maps each header to a unique icon, color, and layout.
+ * ! IMPROVED: Handle both '### TITLE' and 'TITLE: Content' formats for resilience.
  */
 
 interface NarrativeSectionProps {
     content: string;
-    /** Raw profile data for displaying structured stats alongside narrative */
     profileData?: any;
 }
 
-// ----------------------------------------------------------------
-// Section configuration: maps section keywords to visual treatments
-// ----------------------------------------------------------------
+interface SectionData {
+    id: number;
+    title: string;
+    body: string;
+}
+
 interface SectionConfig {
     icon: React.ReactNode;
     accentColor: string;
     bgGradient: string;
     borderColor: string;
     label: string;
+    pattern?: string;
 }
 
 const getSectionConfig = (title: string): SectionConfig => {
@@ -46,19 +50,20 @@ const getSectionConfig = (title: string): SectionConfig => {
 
     if (t.includes('ARCHETYPE'))
         return {
-            icon: <SparklesIcon className="w-5 h-5" />,
+            icon: <CrownIcon className="w-5 h-5" />,
             accentColor: 'text-purple-400',
             bgGradient: 'from-purple-500/10 via-transparent to-transparent',
             borderColor: 'border-purple-500/20 hover:border-purple-500/40',
-            label: 'ARCHETYPE DESIGNATION'
+            label: 'ARCHETYPE DESIGNATION',
         };
-    if (t.includes('CORE'))
+    if (t.includes('CORE') || t.includes('IDENTITY'))
         return {
             icon: <CpuIcon className="w-5 h-5" />,
             accentColor: 'text-blue-400',
             bgGradient: 'from-blue-500/10 via-transparent to-transparent',
             borderColor: 'border-blue-500/20 hover:border-blue-500/40',
-            label: 'CORE SYNTHESIS'
+            label: 'CORE SYNTHESIS',
+            pattern: 'bg-grid-white/[0.02]'
         };
     if (t.includes('DECISION'))
         return {
@@ -66,7 +71,8 @@ const getSectionConfig = (title: string): SectionConfig => {
             accentColor: 'text-amber-400',
             bgGradient: 'from-amber-500/10 via-transparent to-transparent',
             borderColor: 'border-amber-500/20 hover:border-amber-500/40',
-            label: 'DECISION ENGINE'
+            label: 'DECISION ENGINE',
+            pattern: 'bg-scanline opacity-[0.05]'
         };
     if (t.includes('PROSPERITY'))
         return {
@@ -82,7 +88,8 @@ const getSectionConfig = (title: string): SectionConfig => {
             accentColor: 'text-red-400',
             bgGradient: 'from-red-500/10 via-transparent to-transparent',
             borderColor: 'border-red-500/20 hover:border-red-500/40',
-            label: 'BIO-RESONANCE'
+            label: 'BIO-RESONANCE',
+            pattern: 'bg-dot-white/[0.05]'
         };
     if (t.includes('ANCESTRAL'))
         return {
@@ -94,7 +101,7 @@ const getSectionConfig = (title: string): SectionConfig => {
         };
     if (t.includes('HERO'))
         return {
-            icon: <ChevronRightIcon className="w-5 h-5" />,
+            icon: <ZapIcon className="w-5 h-5" />,
             accentColor: 'text-indigo-400',
             bgGradient: 'from-indigo-500/10 via-transparent to-transparent',
             borderColor: 'border-indigo-500/20 hover:border-indigo-500/40',
@@ -109,7 +116,6 @@ const getSectionConfig = (title: string): SectionConfig => {
             label: 'GENE KEY TRANSMISSION'
         };
 
-    // Default fallback
     return {
         icon: <BinaryIcon className="w-5 h-5" />,
         accentColor: 'text-purple-400',
@@ -122,157 +128,178 @@ const getSectionConfig = (title: string): SectionConfig => {
 const NarrativeSection: React.FC<NarrativeSectionProps> = ({ content, profileData }) => {
     const [expandedIdx, setExpandedIdx] = useState<number | null>(null);
 
-    // Parsing logic to split markdown sections
-    const sections = content.split('### ').filter(s => s.trim().length > 0);
+    // Robust parsing logic
+    const sections: SectionData[] = useMemo(() => {
+        // First try splitting by '### '
+        let parts = content.split('### ').filter(s => s.trim().length > 0);
 
-    const cleanTitle = (title: string) => title.replace(/[\[\]]/g, '').trim();
+        // If that failed (e.g. LLM used only headers or newlines), try a secondary split
+        if (parts.length <= 1 && content.includes('\n\n')) {
+            // Fallback: look for Title: Content pattern
+            const matches = Array.from(content.matchAll(/([A-Z\s_]{3,}):([\s\S]+?)(?=[A-Z\s_]{3,}:|$)/g));
+            if (matches.length > 0) {
+                return matches.map((m, i) => ({
+                    id: i,
+                    title: m[1].trim().replace(/_/g, ' '),
+                    body: m[2].trim()
+                }));
+            }
+        }
 
-    // Format body text: handle bullet points and paragraphs
+        return parts.map((part, i) => {
+            const lines = part.split('\n');
+            const title = lines[0].trim().replace(/[\[\]]/g, '');
+            const body = lines.slice(1).join('\n').trim();
+            return {
+                id: i,
+                title,
+                body
+            };
+        });
+    }, [content]);
+
+    // Memoize animation config to prevent recursion/feedback loops
+    const trailConfig = React.useMemo(() => ({
+        from: { opacity: 0, transform: 'translate3d(-20px,0,0) scale(0.95)', filter: 'blur(10px)' },
+        to: { opacity: 1, transform: 'translate3d(0,0,0) scale(1)', filter: 'blur(0px)' },
+        config: springConfig.gentle,
+        delay: 200,
+    }), []);
+
+    // Staggered animation for section reveals
+    const trail = useTrail(sections.length, trailConfig);
+
     const renderBody = (body: string) => {
-        const lines = body.split('\n').filter(l => l.trim().length > 0);
-
-        return lines.map((line, i) => {
+        return body.split('\n').filter(l => l.trim().length > 0).map((line, i) => {
             const trimmed = line.trim();
-
-            // Bullet point
             if (trimmed.startsWith('- ') || trimmed.startsWith('• ')) {
                 return (
-                    <div key={i} className="flex items-start gap-3 py-1.5">
-                        <div className="w-1.5 h-1.5 rounded-full bg-current mt-2.5 flex-shrink-0 opacity-60" />
-                        <span className="text-blue-50/80 leading-relaxed">{trimmed.replace(/^[-•]\s*/, '')}</span>
+                    <div key={i} className="flex items-start gap-3 py-1.5 group/line">
+                        <div className="w-1.5 h-1.5 rounded-full bg-blue-400/50 mt-2.5 flex-shrink-0 group-hover/line:scale-125 transition-transform" />
+                        <span className="text-blue-50/70 leading-relaxed text-sm">{trimmed.replace(/^[-•]\s*/, '')}</span>
                     </div>
                 );
             }
-
-            // Regular paragraph
-            return (
-                <p key={i} className="text-blue-50/80 leading-relaxed mb-3">
-                    {trimmed}
-                </p>
-            );
+            return <p key={i} className="text-blue-50/80 leading-relaxed mb-4 text-sm md:text-base">{trimmed}</p>;
         });
     };
 
     return (
         <div className="space-y-6">
-            {sections.map((section, idx) => {
-                const lines = section.split('\n');
-                const title = lines[0].trim();
-                const body = lines.slice(1).join('\n').trim();
-                const config = getSectionConfig(title);
+            {trail.map((style, idx) => {
+                const section = sections[idx];
+                const config = getSectionConfig(section.title);
                 const isExpanded = expandedIdx === idx;
 
-                // ---- ARCHETYPE: Hero Module (full-width, large, dramatic) ----
-                if (title.toUpperCase().includes('ARCHETYPE')) {
+                // ---- ARCHETYPE: Dramatic Hero Module ----
+                if (section.title.toUpperCase().includes('ARCHETYPE')) {
                     return (
-                        <div key={idx} className="relative py-12 flex flex-col items-center justify-center">
-                            {/* Glow background */}
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent blur-3xl -z-10 animate-pulse" />
-                            <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 via-transparent to-transparent -z-10" />
-
-                            {/* Designation badge */}
-                            <div className="mb-4 px-4 py-1 bg-purple-500/10 border border-purple-500/20 rounded-full">
-                                <span className="text-[10px] font-mono text-purple-400 tracking-[0.5em] uppercase">
+                        <animated.div key={section.id} style={style} className="relative py-16 flex flex-col items-center justify-center overflow-hidden">
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/5 to-transparent blur-3xl -z-10 animate-pulse" />
+                            <div className="mb-4 px-6 py-1.5 bg-purple-500/10 border border-purple-500/20 rounded-full backdrop-blur-sm">
+                                <span className="text-[10px] font-mono text-purple-400 tracking-[0.6em] uppercase font-bold">
                                     Archetype Designation
                                 </span>
                             </div>
-
-                            {/* The big title */}
-                            <h2 className="text-4xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-white/90 to-white/20 tracking-tighter uppercase italic text-center leading-tight">
-                                {body.trim()}
+                            <h2 className="text-5xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-white/80 to-white/10 tracking-tighter uppercase italic text-center leading-[0.9]">
+                                {section.body.trim()}
                             </h2>
-
-                            {/* Decorative line */}
-                            <div className="mt-6 flex items-center gap-2">
-                                <div className="w-12 h-px bg-gradient-to-r from-transparent to-purple-500/50" />
-                                <SparklesIcon className="w-4 h-4 text-purple-500 animate-pulse" />
-                                <div className="w-12 h-px bg-gradient-to-l from-transparent to-purple-500/50" />
+                            <div className="mt-8 flex items-center gap-4">
+                                <div className="w-16 h-px bg-gradient-to-r from-transparent to-purple-500/40" />
+                                <div className="p-2 rounded-full border border-purple-500/20 bg-purple-500/5">
+                                    <SparklesIcon className="w-4 h-4 text-purple-400" />
+                                </div>
+                                <div className="w-16 h-px bg-gradient-to-l from-transparent to-purple-500/40" />
                             </div>
-                        </div>
+                        </animated.div>
                     );
                 }
 
-                // ---- GENE KEY: Special poetic layout ----
-                if (title.toUpperCase().includes('GENE')) {
-                    return (
-                        <GlassPanel key={idx} className={`p-8 relative overflow-hidden ${config.borderColor} transition-all duration-500`}>
-                            <div className={`absolute inset-0 bg-gradient-to-br ${config.bgGradient} opacity-50`} />
-                            <div className="absolute inset-0 pointer-events-none bg-scanline opacity-[0.02] z-10" />
+                // ---- Standard Interactive Module Card ----
+                return (
+                    <animated.div key={section.id} style={style}>
+                        <GlassPanel
+                            className={`relative overflow-hidden group transition-all duration-500 ${isExpanded ? 'ring-1 ring-white/10' : ''} ${config.borderColor}`}
+                        >
+                            {/* Visual patterns and gradients */}
+                            <div className={`absolute inset-0 bg-gradient-to-br ${config.bgGradient} opacity-0 group-hover:opacity-40 transition-opacity duration-700`} />
+                            {config.pattern && <div className={`absolute inset-0 pointer-events-none ${config.pattern} z-0`} />}
 
-                            <div className="relative z-20">
-                                <div className="flex items-center gap-3 mb-6">
-                                    <div className={`p-2 rounded-lg bg-white/5 border border-white/10 ${config.accentColor}`}>
-                                        {config.icon}
+                            <div className="relative z-10 p-6 md:p-8">
+                                <header
+                                    className="flex items-center justify-between cursor-pointer"
+                                    onClick={() => setExpandedIdx(isExpanded ? null : idx)}
+                                >
+                                    <div className="flex items-center gap-5">
+                                        <div className={`p-4 rounded-2xl bg-white/5 border border-white/10 group-hover:shadow-[0_0_20px_-5px_rgba(255,255,255,0.1)] group-hover:border-white/20 transition-all duration-500 ${config.accentColor}`}>
+                                            {config.icon}
+                                        </div>
+                                        <div>
+                                            <span className="text-[10px] font-mono text-white/30 tracking-[0.4em] uppercase block mb-1">{config.label}</span>
+                                            <h3 className="text-lg md:text-xl font-black text-white tracking-widest uppercase flex items-center gap-3">
+                                                {section.title}
+                                                <div className={`w-1.5 h-1.5 rounded-full ${config.accentColor.replace('text', 'bg')} animate-ping shadow-[0_0_8px_currentColor]`} />
+                                            </h3>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <span className="text-xs font-mono text-white/30 tracking-[0.3em] uppercase">{config.label}</span>
-                                        <div className="h-px w-16 bg-gradient-to-r from-pink-500/30 to-transparent mt-1" />
+
+                                    <div className={`p-2 rounded-full bg-white/5 border border-white/5 text-white/20 transition-all duration-500 ${isExpanded ? 'rotate-90 text-white' : 'group-hover:text-white/40'}`}>
+                                        <ChevronRightIcon className="w-5 h-5" />
+                                    </div>
+                                </header>
+
+                                <div className={`mt-6 overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.4, 0, 0.2, 1)] ${isExpanded ? 'max-h-[2500px] opacity-100' : 'max-h-0 opacity-0 px-2'}`}>
+                                    <div className="pt-6 border-t border-white/5">
+                                        <div className="prose prose-invert max-w-none">
+                                            {renderBody(section.body)}
+                                        </div>
+
+                                        {/* Dynamic stats footer if profile data matches this section */}
+                                        {(section.title.toUpperCase().includes('SYNTHESIS') || section.title.toUpperCase().includes('IDENTITY')) && profileData?.astrology && (
+                                            <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5">
+                                                <div className="text-center">
+                                                    <div className="text-[9px] font-mono text-white/20 uppercase mb-1">Sun Sign</div>
+                                                    <div className="text-xs font-bold text-white">{profileData.astrology.sun?.sign}</div>
+                                                </div>
+                                                <div className="text-center">
+                                                    <div className="text-[9px] font-mono text-white/20 uppercase mb-1">Moon Sign</div>
+                                                    <div className="text-xs font-bold text-white">{profileData.astrology.moon?.sign}</div>
+                                                </div>
+                                                <div className="text-center">
+                                                    <div className="text-[9px] font-mono text-white/20 uppercase mb-1">Human Design</div>
+                                                    <div className="text-xs font-bold text-white">{profileData.humanDesign?.type}</div>
+                                                </div>
+                                                <div className="text-center">
+                                                    <div className="text-[9px] font-mono text-white/20 uppercase mb-1">Life Path</div>
+                                                    <div className="text-xs font-bold text-white">{profileData.numerology?.lifePath}</div>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
-                                <div className="border-l-2 border-pink-500/30 pl-6 py-2 italic">
-                                    <div className="text-blue-50/80 leading-relaxed text-lg font-serif">
-                                        {renderBody(body)}
+                                {!isExpanded && (
+                                    <div
+                                        className="mt-4 flex items-center gap-2 text-[10px] font-mono text-white/20 uppercase tracking-[0.2em] cursor-pointer hover:text-white/40 transition-colors"
+                                        onClick={() => setExpandedIdx(idx)}
+                                    >
+                                        <TerminalIcon className="w-3 h-3" />
+                                        Initialize Deep Analysis...
                                     </div>
-                                </div>
+                                )}
+                            </div>
+
+                            {/* Corner Tech Accents */}
+                            <div className="absolute top-0 right-0 w-8 h-8 pointer-events-none">
+                                <div className="absolute top-0 right-0 w-px h-4 bg-gradient-to-b from-white/20 to-transparent" />
+                                <div className="absolute top-0 right-0 h-px w-4 bg-gradient-to-l from-white/20 to-transparent" />
+                            </div>
+                            <div className="absolute bottom-0 left-0 w-8 h-8 pointer-events-none">
+                                <div className="absolute bottom-0 left-0 w-px h-4 bg-gradient-to-t from-white/20 to-transparent" />
+                                <div className="absolute bottom-0 left-0 h-px w-4 bg-gradient-to-r from-white/20 to-transparent" />
                             </div>
                         </GlassPanel>
-                    );
-                }
-
-                // ---- Standard Module Card ----
-                return (
-                    <GlassPanel
-                        key={idx}
-                        className={`relative overflow-hidden group ${config.borderColor} transition-all duration-500 cursor-pointer`}
-                        onClick={() => setExpandedIdx(isExpanded ? null : idx)}
-                    >
-                        {/* Background gradient */}
-                        <div className={`absolute inset-0 bg-gradient-to-br ${config.bgGradient} opacity-0 group-hover:opacity-50 transition-opacity duration-500`} />
-                        {/* Scanline */}
-                        <div className="absolute inset-0 pointer-events-none bg-scanline opacity-[0.02] z-10" />
-
-                        <div className="relative z-20 p-6">
-                            {/* Header */}
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="flex items-center gap-4">
-                                    <div className={`p-3 rounded-xl bg-white/5 border border-white/10 group-hover:scale-110 transition-transform ${config.accentColor}`}>
-                                        {config.icon}
-                                    </div>
-                                    <div>
-                                        <h3 className="text-sm font-bold text-white tracking-widest uppercase flex items-center gap-2">
-                                            {cleanTitle(title)}
-                                            <span className={`w-1.5 h-1.5 rounded-full ${config.accentColor.replace('text', 'bg')} animate-pulse`} />
-                                        </h3>
-                                        <span className="text-[10px] font-mono text-white/20 tracking-[0.3em] uppercase">{config.label}</span>
-                                    </div>
-                                </div>
-
-                                {/* Expand indicator */}
-                                <div className={`text-white/20 transition-transform duration-300 ${isExpanded ? 'rotate-90' : ''}`}>
-                                    <ChevronRightIcon className="w-4 h-4" />
-                                </div>
-                            </div>
-
-                            {/* Body */}
-                            <div className={`overflow-hidden transition-all duration-500 ${isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-32 opacity-90'}`}>
-                                <div className="prose prose-invert max-w-none">
-                                    {renderBody(body)}
-                                </div>
-                            </div>
-
-                            {/* "Read more" fade overlay when collapsed */}
-                            {!isExpanded && body.length > 200 && (
-                                <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/80 to-transparent z-30 flex items-end justify-center pb-2">
-                                    <span className="text-[10px] font-mono text-white/40 tracking-widest uppercase">Tap to expand</span>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Corner decorations */}
-                        <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-white/10" />
-                        <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-white/10" />
-                    </GlassPanel>
+                    </animated.div>
                 );
             })}
         </div>

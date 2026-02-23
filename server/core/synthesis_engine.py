@@ -2,7 +2,7 @@ import os
 import requests
 from core.logger import app_logger
 
-OPENROUTER_API = os.getenv("OPENROUTER_API")
+# Removed global API key to ensure runtime fetching
 
 # ----------------------------------------------------------------
 # Solfeggio Frequency Mapping (Life Path -> Hz)
@@ -38,17 +38,24 @@ Example formats: THE RADIANT ARCHITECT, NEURAL VOYAGER PRIME, THE SOVEREIGN ALCH
 Write ONLY the title — no explanation.
 
 ### [CORE_SYNTHESIS]
-(2 paragraphs) The user's "Core Operating System." Synthesize:
-- Sun Sign + Moon Sign + Ascendant (the Big Three) as their identity/emotion/mask trifecta.
-- Life Path number as their energetic trajectory.
-- The Sabian Symbol of their Sun degree as a psychic image of their life mission.
-- Their Sun's Decan-Tarot card as an archetypal lens.
-This is the "who you ARE at the deepest level" section. Make it feel like a revelation.
+(3-4 paragraphs) The user's "Core Operating System." Synthesize:
+- **The Big Three**: Sun (Identity), Moon (Emotion), Ascendant (Mask).
+- **Planetary Distribution**: Briefly mention the presence of outer planets (Uranus, Neptune, Pluto) if they form powerful aspects.
+- **Dynamic Aspects**: Analyze Conjunctions, Squares, and Trines as internal gears.
+- **Tarot/Sabian Overlays**: Use the Sun's Sabian Symbol and Decan card as the primary archetypal lens.
+This section should feel like we are peeling back the layers of their soul.
 
-### [THE_DECISION_ENGINE]
-(1-2 paragraphs) How they should make decisions. Combine:
-- Human Design Type + Authority (how they're designed to say Yes/No).
-- Life Path energy (what fuels their choices).
+### [CROSS_SYSTEM_HARMONICS]
+(2 paragraphs) Analyze the resonance between disparate systems:
+- How does their **Life Path** energy support or conflict with their **Human Design Type**?
+- How does their **Day Master** element (BaZi) interact with their **Sun Sign** element?
+- Example: "A Life Path 1 (Leadership) with a Projector aura (Waiting for the Invitation) creates a unique tension where leadership must be invited, not forced."
+
+### [THE_NEURAL_BLUEPRINT]
+(2 paragraphs) Practical application. Combine:
+- **10th House (Career)** + **Destiny Number** + **Human Design Authority**.
+- How should they navigate the world to achieve maximum alignment?
+- Provide a specific "Protocol for High Alignment."
 - BaZi Day Master element (what grounds their instincts).
 Give 2-3 concrete decision-making strategies they can use TODAY.
 
@@ -118,11 +125,23 @@ def build_structured_prompt(aggregated_data: dict) -> str:
     lp = num.get("lifePath", 5)
     solfeggio_hz = SOLFEGGIO_MAP.get(lp, 432)
 
-    sun = astro.get("sun", {})
-    moon = astro.get("moon", {})
-    asc = astro.get("ascendant", {})
+    planets = ["sun", "moon", "mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto", "ascendant"]
+    planet_lines = []
+    for p in planets:
+        p_data = astro.get(p, {})
+        if p_data:
+            line = f"{p.capitalize()}: {p_data.get('sign', '?')} at {p_data.get('degreeInSign', '?')}° | Sabian: \"{p_data.get('sabian', '?')}\" | Tarot: {p_data.get('decanTarot', '?')}"
+            planet_lines.append(line)
+    
+    planets_str = "\n".join(planet_lines)
+    
+    aspects = astro.get("aspects", [])
+    aspect_lines = [f"{a['p1']} {a['aspect']} {a['p2']} (Orb: {a['orb']}°)" for a in aspects]
+    aspects_str = "\n".join(aspect_lines) if aspect_lines else "None detected."
+
+    hd_data = aggregated_data.get("humanDesign", {})
     bazi = eastern.get("baZi", {})
-    gene_key = hd.get("primaryGeneKey", {})
+    gene_key = hd_data.get("primaryGeneKey", {})
 
     prompt = f"""
 === BIRTH PROFILE DATA ===
@@ -132,14 +151,14 @@ Life Path: {lp}
 Soul Urge: {num.get('soulUrge', '?')}
 Personality: {num.get('personality', '?')}
 Destiny: {num.get('destiny', '?')}
-Bridge Number: {num.get('bridge', '?')}
 Karmic Debts: {num.get('karmicDebts', 'None')}
 Solfeggio Resonance: {solfeggio_hz}Hz
 
-[ASTROLOGY - BIG THREE]
-Sun: {sun.get('sign', '?')} at {sun.get('degreeInSign', '?')}° | Sabian: "{sun.get('sabian', '?')}" | Tarot: {sun.get('decanTarot', '?')}
-Moon: {moon.get('sign', '?')} at {moon.get('degreeInSign', '?')}° | Sabian: "{moon.get('sabian', '?')}" | Tarot: {moon.get('decanTarot', '?')}
-Ascendant: {asc.get('sign', '?')} at {asc.get('degreeInSign', '?')}° | Sabian: "{asc.get('sabian', '?')}" | Tarot: {asc.get('decanTarot', '?')}
+[ASTROLOGY - PLANETARY PLACEMENTS]
+{planets_str}
+
+[DYNAMIC ASPECTS]
+{aspects_str}
 
 [KEY HOUSES]
 2nd House (Resources): {astro.get('secondHouse', '?')}°
@@ -151,23 +170,17 @@ Day Master Element: {bazi.get('dayMaster', '?')}
 Celtic Tree: {eastern.get('celticTree', '?')}
 
 [HUMAN DESIGN]
-Type: {hd.get('type', '?')}
-Authority: {hd.get('authority', '?')}
-Profile: {hd.get('profile', '?')}
+Type: {hd_data.get('type', '?')}
+Authority: {hd_data.get('authority', '?')}
+Profile: {hd_data.get('profile', '?')}
 Primary Gene Key: {gene_key.get('key', '?')} (Shadow → Gift → Siddhi)
 
 [PROGRESSED MOON / HERO'S ARC]
 Current Phase: {prog.get('phaseName', '?')}
 Hero's Arc: {prog.get('heroArc', '?')}
 Phase Progress: {prog.get('phaseProgress', '?')}%
-Phase Description: {prog.get('phaseDescription', '?')}
-Phase Action: {prog.get('phaseAction', '?')}
 Cycle Year: {prog.get('cycleYear', '?')} of 27.3
 Age: {prog.get('ageYears', '?')} years
-
-=== END DATA ===
-
-Synthesize the above into a complete Holistic Life Profile.
 """
     return prompt
 
@@ -183,36 +196,52 @@ def call_llm(prompt, system=SYSTEM_PROMPT):
     Returns:
         LLM response text.
     """
-    if not OPENROUTER_API:
+    api_key = os.getenv("OPENROUTER_API", "").strip()
+    if not api_key:
+        app_logger.error("Synthesis LLM call failed: OPENROUTER_API key missing.")
         return "Synthesis unavailable (API config missing)."
     
+    url = "https://openrouter.ai/api/v1/chat/completions"
+    sanitized_key = f"{api_key[:6]}...{api_key[-4:]}" if len(api_key) > 10 else "REDACTED"
+    
     headers = {
-        "Authorization": f"Bearer {OPENROUTER_API}",
+        "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
     }
     
-    payload = {
-        "model": "arcee-ai/trinity-large-preview:free",
-        "messages": [
-            {"role": "system", "content": system},
-            {"role": "user", "content": prompt}
-        ],
-        "temperature": 0.8
-    }
+    # * NOTE: We use a retry loop across several free models for robustness.
+    # Some models 404 on 'system' roles or specific headers, so we keep it minimal.
+    models = [
+        "arcee-ai/trinity-large-preview:free",
+        "nvidia/nemotron-3-nano-30b-a3b:free",
+        "stepfun/step-3.5-flash:free"
+    ]
     
-    try:
-        response = requests.post(
-            "https://openrouter.ai/api/v1/chat/completions",
-            headers=headers,
-            json=payload,
-            timeout=60  # ! Increased timeout for richer responses
-        )
-        response.raise_for_status()
-        data = response.json()
-        return data["choices"][0]["message"]["content"]
-    except Exception as e:
-        app_logger.error(f"Synthesis LLM error: {e}")
-        return f"The cosmic strings are tangled. (Error: {str(e)})"
+    last_error = ""
+    merged_prompt = f"{system}\n\nUSER DATA:\n{prompt}"
+    for model_id in models:
+        payload = {
+            "model": model_id,
+            "messages": [{"role": "user", "content": merged_prompt}],
+            "temperature": 0.8
+        }
+        
+        app_logger.info(f"Synthesis Attempt: {model_id} | Key: {sanitized_key}")
+        
+        try:
+            response = requests.post(url, headers=headers, json=payload, timeout=60)
+            response.raise_for_status()
+            data = response.json()
+            return data["choices"][0]["message"]["content"]
+        except Exception as e:
+            last_error = str(e)
+            error_msg = f"Synthesis attempt failed for {model_id}: {e}"
+            if hasattr(e, 'response') and e.response is not None:
+                error_msg += f" | Body: {e.response.text}"
+            app_logger.warning(error_msg)
+            continue
+            
+    return f"The cosmic strings are tangled. All models failed. (Last Error: {last_error})"
 
 def generate_full_profile(aggregated_data):
     """

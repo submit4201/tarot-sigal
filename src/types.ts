@@ -37,6 +37,14 @@ export interface Deck {
   description: string;
   price: number;
   cards: AnyCard[];
+  path?: string; // Folder name in /assets/cards/tarot/
+  mapping?: {
+    maj: string; // e.g. "maj_{00}" or "maj_{0}"
+    w: string;
+    c: string;
+    s: string;
+    p: string;
+  };
 }
 
 export interface DrawnCard {
@@ -210,6 +218,13 @@ export interface BirthProfileTeaser {
   isPremiumLocked: true;
 }
 
+export interface AstroAspect {
+  p1: string;
+  p2: string;
+  aspect: string;
+  orb: number;
+}
+
 export interface BirthProfileData {
   id: string;
   fullName: string;
@@ -220,7 +235,24 @@ export interface BirthProfileData {
   longitude: string;
   profileData: {
     numerology: any;
-    astrology: any;
+    astrology: {
+      sun: any;
+      moon: any;
+      mercury: any;
+      venus: any;
+      mars: any;
+      jupiter: any;
+      saturn: any;
+      uranus: any;
+      neptune: any;
+      pluto: any;
+      ascendant: any;
+      aspects: AstroAspect[];
+      houses: number[];
+      sixthHouse: number;
+      secondHouse: number;
+      tenthHouse: number;
+    };
     eastern: any;
     humanDesign: any;
     progressedMoon: any;
