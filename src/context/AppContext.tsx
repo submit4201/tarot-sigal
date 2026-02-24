@@ -1,10 +1,10 @@
 import React, { createContext, useContext, ReactNode, useEffect, useState, useCallback } from 'react';
 import { useAuth } from './AuthContext';
 import { db } from '../services/apiService';
+import { JournalEntry, SavedReading, DrawnCard, DailyDrawRecord, UserProfile, Page, AchievementID, Deck, DailyInsights, DrawnDivinationCard } from '../types';
 import decksData from '../data/decks.json';
 
 const decks = decksData as Deck[];
-import { JournalEntry, SavedReading, DrawnCard, DailyDrawRecord, UserProfile, Page, AchievementID, Deck, DailyInsights, DrawnDivinationCard } from '../types';
 
 interface AppContextType {
   // Profile management
@@ -120,16 +120,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const getDeckBackPath = useCallback((deckId?: string) => {
     const targetId = deckId || activeDeckId;
     const deckDef = (decks as any[]).find((d: any) => d.id === targetId) || decks[0];
-    const ASSET_BASE = '/assets/cards/tarot';
+    const ASSET_BASE = (import.meta as any).env.VITE_ASSETS_BASE_URL || '/assets/cards/tarot';
 
-    // If it's a themed deck (not the standard default_tarot), show a card front instead of a generic back
-    // This creates a "data leak" aesthetic as requested by the user.
-    if (deckDef && deckDef.id !== 'default_tarot') {
+    // If it's a themed deck (has a mapping), show a card front instead of a generic back
+    if (deckDef && deckDef.mapping) {
       // Use the "The Fool" (maj_0) as the representative face for the deck back
       return getCardImagePath('maj_0', deckDef.id);
     }
 
-    // Standard fallback for the default deck
+    // Standard fallback for decks without a mapping
     return `${ASSET_BASE}/back.png`;
   }, [activeDeckId, decks, getCardImagePath]);
 

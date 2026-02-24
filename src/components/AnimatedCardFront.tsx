@@ -76,14 +76,17 @@ export const AnimatedCardFront: React.FC<AnimatedCardFrontProps> = ({ deckId, cl
         []);
 
     useEffect(() => {
+        let timer: ReturnType<typeof setInterval> | undefined;
         const timeout = setTimeout(() => {
-            const timer = setInterval(() => {
+            timer = setInterval(() => {
                 setCurrentIndex(prev => (prev + 1) % cardIds.length);
             }, whimsicalConfig.interval);
-            return () => clearInterval(timer);
         }, whimsicalConfig.delay);
 
-        return () => clearTimeout(timeout);
+        return () => {
+            clearTimeout(timeout);
+            if (timer) clearInterval(timer);
+        };
     }, [cardIds.length, whimsicalConfig]);
 
     const activeCardId = cardIds[currentIndex];
