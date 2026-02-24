@@ -27,7 +27,7 @@ def find_comments_in_file(filepath):
     return comments
 
 def main():
-    root_dir = r"c:\Users\dickdick\Downloads\gridpunk-arcana"
+    root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
     dirs_to_ignore = ['.git', 'node_modules', '.log', '.test', '.todo', 'dist', '.vscode']
     extensions = ['.py', '.ts', '.tsx', '.js', '.jsx']
     

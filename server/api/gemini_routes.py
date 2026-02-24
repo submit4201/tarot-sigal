@@ -26,10 +26,8 @@ def generate_content(request: GeminiRequest, current_user: User = Depends(get_cu
         app_logger.error("OpenRouter API key is missing in environment.")
         raise HTTPException(status_code=500, detail="OpenRouter API is not configured on the server. Check .env.local")
         
-    # Sanitized log for debugging
-    sanitized_key = f"{api_key[:6]}...{api_key[-4:]}" if len(api_key) > 10 else "REDACTED"
     url = "https://openrouter.ai/api/v1/chat/completions"
-    app_logger.info(f"OpenRouter Request: {url} | Model: {request.model} | Key: {sanitized_key}")
+    app_logger.info(f"OpenRouter Request: {url} | Model: {request.model}")
         
     try:
         app_logger.info(f"Generating OpenRouter content for user: {current_user.id} with model: {request.model}")
@@ -67,7 +65,3 @@ def generate_content(request: GeminiRequest, current_user: User = Depends(get_cu
     except Exception as e:
         app_logger.error(f"OpenRouter API error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
-
-if __name__ == "__main__":
-
-    generate_content("Hello, how are you?")

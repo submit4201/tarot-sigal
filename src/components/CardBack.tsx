@@ -10,7 +10,7 @@ export const CardBack: React.FC<{ className?: string, deckId?: string, animated?
     // List of card IDs to cycle through for the animated preview
     const cycleIds = useMemo(() => [
         'maj_0', 'maj_1', 'maj_2', 'maj_6', 'maj_10', 'maj_13', 'maj_15', 'maj_21',
-        'w_1', 'c_1', 's_1', 'p_1', 's_10', 'w_k', 'c_q'
+        'w_1', 'c_1', 's_1', 'p_1', 's_10', 'w_14', 'c_13'
     ], []);
 
     useEffect(() => {

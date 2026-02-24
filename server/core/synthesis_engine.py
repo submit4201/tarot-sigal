@@ -202,7 +202,6 @@ def call_llm(prompt, system=SYSTEM_PROMPT):
         return "Synthesis unavailable (API config missing)."
     
     url = "https://openrouter.ai/api/v1/chat/completions"
-    sanitized_key = f"{api_key[:6]}...{api_key[-4:]}" if len(api_key) > 10 else "REDACTED"
     
     headers = {
         "Authorization": f"Bearer {api_key}",
@@ -226,7 +225,7 @@ def call_llm(prompt, system=SYSTEM_PROMPT):
             "temperature": 0.8
         }
         
-        app_logger.info(f"Synthesis Attempt: {model_id} | Key: {sanitized_key}")
+        app_logger.info(f"Synthesis Attempt: {model_id}")
         
         try:
             response = requests.post(url, headers=headers, json=payload, timeout=60)
