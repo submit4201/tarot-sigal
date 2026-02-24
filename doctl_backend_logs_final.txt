@@ -1,0 +1,25 @@
+backend 2026-02-22T08:58:06.794623644Z 02-22-2026 08:58:06 - GameMaster - INFO - Database engine initialized for postgresql
+backend 2026-02-22T08:58:09.463482631Z INFO:     Started server process [1]
+backend 2026-02-22T08:58:09.463506582Z INFO:     Waiting for application startup.
+backend 2026-02-22T08:58:09.463513131Z 02-22-2026 08:58:09 - GameMaster - INFO - Running auto migrations...
+backend 2026-02-22T08:58:11.349934474Z 02-22-2026 08:58:11 - GameMaster - INFO - Auto migrations completed.
+backend 2026-02-22T08:58:11.350017304Z 02-22-2026 08:58:11 - GameMaster - INFO - Gridpunk Arcana Backend started successfully.
+backend 2026-02-22T08:58:11.350387273Z INFO:     Application startup complete.
+backend 2026-02-22T08:58:11.350909561Z INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+backend 2026-02-22T09:59:09.433509426Z INFO:     155.254.22.56:0 - "GET /api/api/health HTTP/1.1" 404 Not Found
+backend 2026-02-22T10:59:44.016411893Z INFO:     2600:100f:a022:1542:54b2:127e:9f2c:69f9:0 - "POST /api/auth/register HTTP/1.1" 422 Unprocessable Content
+backend 2026-02-22T11:00:03.869626212Z 02-22-2026 11:00:03 - GameMaster - INFO - New user registered: testuserZ_final2@example.com
+backend 2026-02-22T11:00:03.871110127Z INFO:     2600:100f:a022:1542:54b2:127e:9f2c:69f9:0 - "POST /api/auth/register HTTP/1.1" 201 Created
+backend 2026-02-22T11:00:04.422413342Z 02-22-2026 11:00:04 - GameMaster - INFO - User logged in: testuserZ_final2@example.com
+backend 2026-02-22T11:00:04.423242969Z INFO:     2600:100f:a022:1542:54b2:127e:9f2c:69f9:0 - "POST /api/auth/login HTTP/1.1" 200 OK
+backend 2026-02-22T11:00:04.914734533Z INFO:     2600:100f:a022:1542:54b2:127e:9f2c:69f9:0 - "GET /api/auth/me HTTP/1.1" 200 OK
+backend 2026-02-22T11:00:05.207256626Z INFO:     2600:100f:a022:1542:54b2:127e:9f2c:69f9:0 - "GET /api/auth/me HTTP/1.1" 200 OK
+backend 2026-02-22T11:00:06.704465073Z INFO:     2600:100f:a022:1542:54b2:127e:9f2c:69f9:0 - "GET /api/daily-draws/ HTTP/1.1" 200 OK
+backend 2026-02-22T11:00:06.778597950Z INFO:     2600:100f:a022:1542:54b2:127e:9f2c:69f9:0 - "GET /api/journal/ HTTP/1.1" 200 OK
+backend 2026-02-22T11:00:06.780271003Z INFO:     2600:100f:a022:1542:54b2:127e:9f2c:69f9:0 - "GET /api/readings/ HTTP/1.1" 200 OK
+backend 2026-02-22T11:00:07.129774780Z INFO:     2600:100f:a022:1542:54b2:127e:9f2c:69f9:0 - "GET /api/journal/ HTTP/1.1" 200 OK
+backend 2026-02-22T11:00:13.054589049Z INFO:     2600:100f:a022:1542:54b2:127e:9f2c:69f9:0 - "GET /api/journal/ HTTP/1.1" 200 OK
+backend 2026-02-22T11:00:50.486241133Z INFO:     2600:100f:a022:1542:54b2:127e:9f2c:69f9:0 - "GET /api/birth-profile/ HTTP/1.1" 404 Not Found
+backend 2026-02-22T11:01:46.051760010Z 02-22-2026 11:01:46 - GameMaster - ERROR - Synthesis LLM error: 401 Client Error: Unauthorized for url: https://openrouter.ai/api/v1/chat/completions
+backend 2026-02-22T11:01:46.506674526Z 02-22-2026 11:01:46 - GameMaster - INFO - Birth profile updated for user: 6066a63b-74c1-462a-a5aa-f0784b280101 (Authorized: False)
+backend 2026-02-22T11:01:46.507659343Z INFO:     2600:100f:a022:1542:54b2:127e:9f2c:69f9:0 - "POST /api/birth-profile/ HTTP/1.1" 200 OK

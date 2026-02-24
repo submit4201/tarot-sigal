@@ -38,20 +38,17 @@ export const PickingView: React.FC<PickingViewProps> = ({
                     const total = fullDeckInPlay.length;
                     const offset = i - (total / 2);
 
-                    // Fan geometry - tighter for 78 cards
-                    // Spread them across roughly 120 degrees
-                    const rotate = offset * (120 / total);
-                    // Spread them across width
-                    const xTranslate = offset * (window.innerWidth < 1000 ? 8 : 12);
-                    // Arc height
-                    const yTranslate = Math.pow(Math.abs(offset), 1.5) * (window.innerWidth < 1000 ? 0.3 : 0.5);
+                    // Robust Fan geometry
+                    const rotate = offset * (140 / total);
+                    const xTranslate = offset * (total > 40 ? 4 : 10);
+                    const yTranslate = Math.abs(offset) * 1.5 + (Math.pow(offset, 2) * 0.05);
 
                     return (
                         <div
                             key={card.card.id + i}
                             onClick={() => onPickCard(card)}
                             onMouseEnter={() => onHover()}
-                            className="absolute top-1/2 left-1/2 w-20 h-32 md:w-28 md:h-44 origin-bottom -mt-16 -ml-10 md:-mt-22 md:-ml-14 cursor-pointer transition-all duration-300 hover:-translate-y-16 hover:scale-110 hover:z-[100] shadow-2xl group"
+                            className="absolute top-1/2 left-1/2 w-20 h-32 md:w-28 md:h-44 origin-bottom -mt-16 -ml-10 md:-mt-22 md:-ml-14 cursor-pointer transition-all duration-300 hover:-translate-y-24 hover:scale-110 hover:z-[1000] shadow-2xl group"
                             style={{
                                 zIndex: i,
                                 transform: `translate(calc(-50% + ${xTranslate}px), calc(-50% + ${yTranslate}px)) rotate(${rotate}deg)`

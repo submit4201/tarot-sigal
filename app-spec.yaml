@@ -63,6 +63,9 @@ envs:
 - key: OPENROUTER_MODEL
   scope: RUN_AND_BUILD_TIME
   value: arcee-ai/trinity-large-preview:free
+- key: VITE_ASSETS_BASE_URL
+  scope: RUN_AND_BUILD_TIME
+  value: https://tarot.sfo3.cdn.digitaloceanspaces.com
 ingress:
   rules:
   - component:

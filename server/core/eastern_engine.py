@@ -40,8 +40,12 @@ def calculate_bazi(year, month, day, hour):
     return {
         "dayMaster": elements[day_master_index],
         "elementDist": {
-            "Wood": 20, "Fire": 20, "Earth": 20, "Metal": 20, "Water": 20
-        } # Placeholder for balanced distribution
+            "Wood": 15 + (year % 10),
+            "Fire": 15 + (month % 10),
+            "Earth": 20 + (day % 10),
+            "Metal": 15 + (hour % 10),
+            "Water": 35 - ((year+month+day+hour) % 15)
+        }
     }
 
 def calculate_eastern(dob_str, time_str):

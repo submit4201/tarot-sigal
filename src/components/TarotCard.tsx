@@ -5,6 +5,7 @@ import { ELEMENT_COLORS, ELEMENT_HEX_COLORS } from '../constants';
 import { SunIcon } from './icons';
 import { SeededRandom, createNumericSeed } from '../services/tarotService';
 import { CardBack } from './CardBack';
+import { useApp } from '../context/AppContext';
 
 interface DivinationCardDisplayProps {
     drawnCard: DrawnDivinationCard | null;
@@ -93,9 +94,11 @@ const GenerativeCardArt: React.FC<{ card: TarotCard }> = ({ card }) => {
 const TarotCardDisplay: React.FC<{ drawnCard: DrawnDivinationCard | null, isRevealed: boolean, className?: string, style?: React.CSSProperties, onClick?: () => void }> = ({ drawnCard, isRevealed, className, style, onClick }) => {
     if (!drawnCard || !drawnCard.card) return null;
 
+    const { getCardImagePath } = useApp();
     const { card, isReversed } = drawnCard;
     const tarotCard = card as TarotCard;
     const elementColor = (ELEMENT_COLORS as any)[tarotCard.element || 'Air'] || 'text-white';
+    const cardImg = getCardImagePath(drawnCard.card.id);
 
     return (
         <div
@@ -111,28 +114,44 @@ const TarotCardDisplay: React.FC<{ drawnCard: DrawnDivinationCard | null, isReve
 
                 {/* Card Front */}
                 <div
-                    className="absolute inset-0 [backface-visibility:hidden] bg-[#05060a] rounded-2xl border border-white/10 p-6 flex flex-col [transform:rotateY(180deg)] overflow-hidden shadow-2xl"
+                    className="absolute inset-0 [backface-visibility:hidden] bg-[#05060a] rounded-2xl border border-white/10 flex flex-col [transform:rotateY(180deg)] overflow-hidden shadow-2xl"
                 >
-                    <div className="absolute inset-0 bg-grid opacity-15"></div>
-
-                    <div className="relative z-10 flex flex-col h-full">
-                        <header className="mb-4">
-                            <p className="text-[9px] font-mono font-bold uppercase tracking-[0.4em] text-text-muted mb-1">{tarotCard.arcana || 'Signal'} Phase</p>
-                            <h2 className={`text-2xl font-bold font-dm-sans tracking-tight leading-tight ${elementColor} neon-glow`}>{tarotCard.name || 'Unknown'}</h2>
-                        </header>
-
-                        <div className="flex-grow relative my-4 rounded-xl border border-white/5 bg-black/60 shadow-inner overflow-hidden">
+                    {/* Full-bleed background layer */}
+                    <div className="absolute inset-0 z-0 group">
+                        <div className="absolute inset-0 opacity-40 z-0">
                             <GenerativeCardArt card={tarotCard} />
                         </div>
+                        <img
+                            src={cardImg}
+                            alt={tarotCard.name}
+                            className={`w-full h-full object-cover relative z-10 transition-all duration-1000 group-hover:scale-110 ${isReversed ? 'rotate-180' : ''}`}
+                            onError={(e) => {
+                                (e.target as HTMLImageElement).style.opacity = '0';
+                            }}
+                        />
+                        {/* Vignette/Depth overlay to make text pop */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black/90 z-20 pointer-events-none"></div>
+                        {/* Scanning scanline effect */}
+                        <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%] pointer-events-none z-30 opacity-20"></div>
+                    </div>
 
-                        <footer className="mt-auto pt-4 border-t border-white/5 flex justify-between items-center">
+                    {/* Content overlay */}
+                    <div className="relative z-40 flex flex-col h-full p-6">
+                        <header className="mb-4">
+                            <p className="text-[9px] font-mono font-bold uppercase tracking-[0.4em] text-purple-400 mb-1 drop-shadow-md">{tarotCard.arcana || 'Signal'} Phase</p>
+                            <h2 className={`text-2xl font-bold font-dm-sans tracking-tight leading-tight ${elementColor} neon-glow drop-shadow-lg`}>{tarotCard.name || 'Unknown'}</h2>
+                        </header>
+
+                        <div className="flex-grow"></div>
+
+                        <footer className="mt-auto pt-4 border-t border-white/10 flex justify-between items-center backdrop-blur-md -mx-6 px-6 bg-black/20">
                             <div className="flex flex-col">
-                                <span className="text-[8px] font-mono uppercase tracking-widest text-text-muted mb-1">Polarity</span>
+                                <span className="text-[8px] font-mono uppercase tracking-widest text-white/40 mb-1">Polarity</span>
                                 <span className={`text-[10px] font-bold uppercase tracking-widest ${elementColor}`}>
                                     {isReversed ? 'INVERTED' : 'UPRIGHT'}
                                 </span>
                             </div>
-                            <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center bg-black/40">
+                            <div className="w-6 h-6 rounded-full border border-white/20 flex items-center justify-center bg-black/60 shadow-lg">
                                 <div className={`w-2 h-2 rounded-full ${isReversed ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.6)]' : 'bg-teal-400 shadow-[0_0_10px_rgba(45,212,191,0.6)]'}`}></div>
                             </div>
                         </footer>

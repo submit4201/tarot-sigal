@@ -1,0 +1,503 @@
+{
+    "deck_metadata": {
+        "title": "Gridpunk Arcana",
+        "theme_overarching": "The Cyber-Shamanic Matrix — A reality where the digital ether (the Grid) and the spiritual plane have seamlessly merged. Hackers act as modern shamans navigating neon-lit data streams, megacorps are the ruling pantheon, and AI constructs hold the secrets of archetypal consciousness. Magic is data; data is power.",
+        "physical_specs": {
+            "size": "Standard Tarot (2.75\" x 4.75\") to maintain traditional handling, but printed on high-density ultra-slick synthetic polymer.",
+            "edges": "Holographic Cyan-Magenta foil edges that glow under UV light.",
+            "style": "High-contrast neon over abyssal voids (Vantablack backgrounds). The imagery blends glitch-art, circuit board tracery, and sacred geometry. Holographic foil selectively highlights key ethereal symbols on the cards."
+        },
+        "suits": {
+            "Sparks": {
+                "replaces": "Wands (Fire)",
+                "theme": "Pure energy, passion, willpower, and the spark of creation. Symbolizes the rebellious street hackers, neural-interface runners, and bursts of untamed data.",
+                "visual_motif": "Neon orange and heavy red tones. Glowing electric arcs, fiber optic cables, and kinetic motion."
+            },
+            "Vials": {
+                "replaces": "Cups (Water)",
+                "theme": "Emotion, connection, biotech, and synthetic feelings. Symbolizes the bio-engineers, underground clinics, chemical enhancements, and the fluid nature of human empathy in a metal world.",
+                "visual_motif": "Deep cyan and bioluminescent blues. Glowing liquid serums, medical tubes, rainy neon reflections, and glass."
+            },
+            "Blades": {
+                "replaces": "Swords (Air)",
+                "theme": "Intellect, conflict, truth, and corporate warfare. Symbolizes the cutthroat logic of megacorporations, AI security systems (ICE), assassins, and the painful severance of truth.",
+                "visual_motif": "Harsh magenta and sterile white. Monomolecular edges, lasers, sharp geometric angles, and shattered glass."
+            },
+            "Chips": {
+                "replaces": "Pentacles (Earth)",
+                "theme": "Material wealth, hardware, crypto-credits, and physical bodies. Symbolizes terrestrial resources, server farms, cybernetic augmentations, and the tangible foundations of the Grid.",
+                "visual_motif": "Acid green and gold circuitry. Microchips, heavy chrome, brutalist architecture, and solid data drives."
+            }
+        }
+    },
+    "cards": [
+        {
+            "id": "maj_0",
+            "name": "The Glitch (The Fool)",
+            "suit": "Major",
+            "description": "A rogue AI spontaneously generating consciousness, stepping off the edge of known code into the infinite void. Represents blind leaps of faith, ultimate freedom, and new corrupted but beautiful beginnings."
+        },
+        {
+            "id": "maj_1",
+            "name": "The Architect (The Magician)",
+            "suit": "Major",
+            "description": "A master hacker manipulating holographic data streams with effortless precision. They hold tools of all four suits. Represents manifestation, extreme skill, and command over reality."
+        },
+        {
+            "id": "maj_2",
+            "name": "The Oracle (The High Priestess)",
+            "suit": "Major",
+            "description": "A blindfolded android connected to a massive quantum supercomputer, seeing the hidden currents of the web. Represents deep intuition, hidden data, and accessing the subconscious."
+        },
+        {
+            "id": "maj_3",
+            "name": "The Motherboard (The Empress)",
+            "suit": "Major",
+            "description": "A lush, bio-synthetic garden where technology nurtures organic life. A cyber-goddess weaving life from cables. Represents fertility, creation, abundance, and nurturing."
+        },
+        {
+            "id": "maj_4",
+            "name": "The Megacorp (The Emperor)",
+            "suit": "Major",
+            "description": "A faceless CEO looking over a sprawling dystopian skyline from an ivory high-rise. Represents law, utter control, authority, and unbreakable structure."
+        },
+        {
+            "id": "maj_5",
+            "name": "The Algorithm (The Hierophant)",
+            "suit": "Major",
+            "description": "A massive server pillar worshipped by drones and conformists, enforcing societal rules via code. Represents tradition, systems of belief, and corporate conformity."
+        },
+        {
+            "id": "maj_6",
+            "name": "The Sync (The Lovers)",
+            "suit": "Major",
+            "description": "Two figures sharing a deeply intimate neural hand-shake, their avatars merging in the augmented reality space. Represents choices, harmony, alignment of values, and deep connection."
+        },
+        {
+            "id": "maj_7",
+            "name": "The Overdrive (The Chariot)",
+            "suit": "Major",
+            "description": "A hyper-sleek hoverbike tearing through a neon-soaked tunnel, barely holding back explosive energy. Represents victory, intense focus, willpower, and asserting control over conflicting forces."
+        },
+        {
+            "id": "maj_8",
+            "name": "The Firewall (Strength)",
+            "suit": "Major",
+            "description": "A calm netrunner softly placing her hand on a raging, monstrous malware wolf, pacifying it without violence. Represents inner courage, compassion, and tame control over wild urges."
+        },
+        {
+            "id": "maj_9",
+            "name": "The Ghost (The Hermit)",
+            "suit": "Major",
+            "description": "A solitary figure in a dark server room, lit only by the monitor's glow, searching for a single line of hidden truth. Represents introspection, withdrawal, and soul-searching."
+        },
+        {
+            "id": "maj_10",
+            "name": "The RNG (Wheel of Fortune)",
+            "suit": "Major",
+            "description": "A glowing holographic roulette wheel composed of binary code, spinning uncontrollably as variables change. Represents karma, chaotic luck, cycles, and unpredictable shifts."
+        },
+        {
+            "id": "maj_11",
+            "name": "The Protocol (Justice)",
+            "suit": "Major",
+            "description": "A terrifyingly perfect AI judge holding a glowing scale and a laser sword, calculating truth without bias. Represents brutal fairness, consequence, karma, and the ultimate truth."
+        },
+        {
+            "id": "maj_12",
+            "name": "The Lag (The Hanged Man)",
+            "suit": "Major",
+            "description": "A suspended avatar frozen in mid-air frame-drop, gaining a serene omniscient view of the matrix around them. Represents suspended animation, letting go, and shifting perspective."
+        },
+        {
+            "id": "maj_13",
+            "name": "The Wipe (Death)",
+            "suit": "Major",
+            "description": "A dark cloaked figure pressing the ultimate 'Delete' key. Code crumbles into dust around them. Represents necessary endings, dramatic transformation, and wiping the hard drive clean."
+        },
+        {
+            "id": "maj_14",
+            "name": "The Bandwidth (Temperance)",
+            "suit": "Major",
+            "description": "A cyber-angel seamlessly balancing and mixing two opposing streams of raw data without a single dropped packet. Represents moderation, patience, synthesis, and finding the middle path."
+        },
+        {
+            "id": "maj_15",
+            "name": "The Malware (The Devil)",
+            "suit": "Major",
+            "description": "A seductive, twisted demon code trapping users in infinite loops of addiction, consumerism, and sensory overload. Represents bondage, toxic attachments, and giving away your power."
+        },
+        {
+            "id": "maj_16",
+            "name": "The Crash (The Tower)",
+            "suit": "Major",
+            "description": "A massive skyscraper's servers exploding, raining glass and sparks as the system faces a catastrophic failing. Represents sudden upheaval, broken foundations, and chaos."
+        },
+        {
+            "id": "maj_17",
+            "name": "The Satellite (The Star)",
+            "suit": "Major",
+            "description": "A low-orbit satellite beaming beautiful, pure signal down to a dying, thirsty wasteland. Represents hope, rejuvenation, and faith after the destructive crash."
+        },
+        {
+            "id": "maj_18",
+            "name": "The Darknet (The Moon)",
+            "suit": "Major",
+            "description": "A terrifying descent into the unsanctioned, unindexed depths of the web, surrounded by shadow constructs. Represents illusions, deep-seated fears, the subconscious, and deception."
+        },
+        {
+            "id": "maj_19",
+            "name": "The Core (The Sun)",
+            "suit": "Major",
+            "description": "A blindingly bright, perfectly optimized quantum core radiating endless, clean energy and joy. Represents absolute success, vitality, joy, and the shedding of all shadows."
+        },
+        {
+            "id": "maj_20",
+            "name": "The Reboot (Judgement)",
+            "suit": "Major",
+            "description": "A massive system-wide alert blowing a trumpet made of light; avatars rise from their offline state to hear the call. Represents a true calling, rebirth, absolution, and waking up."
+        },
+        {
+            "id": "maj_21",
+            "name": "The Grid (The World)",
+            "suit": "Major",
+            "description": "A breathtaking mapped view of the entire global network, operating in perfect, complete symbiosis. Represents successful completion, ultimate integration, and the culmination of a journey."
+        },
+        {
+            "id": "w_1",
+            "name": "Ace of Sparks",
+            "suit": "Sparks",
+            "description": "A glowing flare of pure kinetic data. A brilliant new idea or passionate beginning."
+        },
+        {
+            "id": "sparks_2",
+            "name": "Two of Sparks",
+            "suit": "Sparks",
+            "description": "A runner looking at two branching pathways in the network. Planning and standing at a crossroads."
+        },
+        {
+            "id": "sparks_3",
+            "name": "Three of Sparks",
+            "suit": "Sparks",
+            "description": "Connecting auxiliary power to expand the bandwidth. Broadening horizons and seeing plans take off."
+        },
+        {
+            "id": "sparks_4",
+            "name": "Four of Sparks",
+            "suit": "Sparks",
+            "description": "Four blazing pillars of neon creating a safe, joyous haven. Celebration and community."
+        },
+        {
+            "id": "sparks_5",
+            "name": "Five of Sparks",
+            "suit": "Sparks",
+            "description": "Five rival hackers engaging in a chaotic, flashy cyber-skirmish. Competition and minor conflict."
+        },
+        {
+            "id": "sparks_6",
+            "name": "Six of Sparks",
+            "suit": "Sparks",
+            "description": "A celebrated runner riding a neon light-bike through a cheering digital crowd. Public victory and recognition."
+        },
+        {
+            "id": "sparks_7",
+            "name": "Seven of Sparks",
+            "suit": "Sparks",
+            "description": "Holding the high ground while defending a server from multi-directional attacks. Perseverance and defense."
+        },
+        {
+            "id": "sparks_8",
+            "name": "Eight of Sparks",
+            "suit": "Sparks",
+            "description": "Data packets flying at lightspeed through a fiber-optic cable. Rapid movement, swift action, and incoming news."
+        },
+        {
+            "id": "sparks_9",
+            "name": "Nine of Sparks",
+            "suit": "Sparks",
+            "description": "A battered but unbowed runner guarding their last operational node. Resilience and near completion."
+        },
+        {
+            "id": "sparks_10",
+            "name": "Ten of Sparks",
+            "suit": "Sparks",
+            "description": "A runner crushed under the weight of too many unauthorized system overrides. Burden, stress, and over-commitment."
+        },
+        {
+            "id": "sparks_11",
+            "name": "Page of Sparks",
+            "suit": "Sparks",
+            "description": "A young script-kiddie excited to launch their first exploit. Enthusiasm, discovery, and a free spirit."
+        },
+        {
+            "id": "sparks_12",
+            "name": "Knight of Sparks",
+            "suit": "Sparks",
+            "description": "A reckless speed-demon executing actions before thinking. Action, adventure, and impulsiveness."
+        },
+        {
+            "id": "sparks_13",
+            "name": "Queen of Sparks",
+            "suit": "Sparks",
+            "description": "A charismatic rebel leader commanding loyalty and passion. Courage, independence, and determination."
+        },
+        {
+            "id": "sparks_14",
+            "name": "King of Sparks",
+            "suit": "Sparks",
+            "description": "The visionary founder of a decentralized resistance. Bold leadership, vision, and entrepreneurial spirit."
+        },
+        {
+            "id": "c_1",
+            "name": "Ace of Vials",
+            "suit": "Vials",
+            "description": "A pristine beaker overflowing with glowing synthetic serotonin. New feelings, deep spirituality, and compassion."
+        },
+        {
+            "id": "c_2",
+            "name": "Two of Vials",
+            "suit": "Vials",
+            "description": "Two neon-lit lovers sharing an emotional memory upload. Unified love, partnership, and mutual attraction."
+        },
+        {
+            "id": "c_3",
+            "name": "Three of Vials",
+            "suit": "Vials",
+            "description": "Three friends clinking glowing cyber-tonics in a neon bar. Celebration, friendship, and collaboration."
+        },
+        {
+            "id": "c_4",
+            "name": "Four of Vials",
+            "suit": "Vials",
+            "description": "A disillusioned user ignoring three new upgrades, staring blankly at a screen. Apathy, contemplation, and disconnectedness."
+        },
+        {
+            "id": "c_5",
+            "name": "Five of Vials",
+            "suit": "Vials",
+            "description": "Mourning three shattered vials of memory while two remain intact. Loss, grief, and ignoring what remains."
+        },
+        {
+            "id": "c_6",
+            "name": "Six of Vials",
+            "suit": "Vials",
+            "description": "A nostalgic dive into a low-resolution simulation of a childhood home. Innocence, nostalgia, and the past."
+        },
+        {
+            "id": "c_7",
+            "name": "Seven of Vials",
+            "suit": "Vials",
+            "description": "A UI screen displaying multiple highly alluring, deceptive virtual realities. Illusion, choices, and wishful thinking."
+        },
+        {
+            "id": "c_8",
+            "name": "Eight of Vials",
+            "suit": "Vials",
+            "description": "Walking away from a stack of discarded, glowing vials into a dark alley. Walking away, seeking deeper meaning, and abandonment."
+        },
+        {
+            "id": "c_9",
+            "name": "Nine of Vials",
+            "suit": "Vials",
+            "description": "A grinning patron sitting in absolute luxury, hooked into perfect sensory bliss. Contentment, wishes fulfilled, and emotional satisfaction."
+        },
+        {
+            "id": "c_10",
+            "name": "Ten of Vials",
+            "suit": "Vials",
+            "description": "A perfect, harmonious communal neural-link between a loving chosen family. True happiness, harmony, and alignment."
+        },
+        {
+            "id": "c_11",
+            "name": "Page of Vials",
+            "suit": "Vials",
+            "description": "A curious empath testing a sudden influx of emotional bandwidth. A surprising message, dreaminess, and creativity."
+        },
+        {
+            "id": "c_12",
+            "name": "Knight of Vials",
+            "suit": "Vials",
+            "description": "A romantic idealist bringing a deep, dramatic emotional narrative to the network. Romance, charm, and imagination."
+        },
+        {
+            "id": "c_13",
+            "name": "Queen of Vials",
+            "suit": "Vials",
+            "description": "A deeply compassionate soul-hacker who heals corrupted mental spaces. Compassion, calmness, and emotional security."
+        },
+        {
+            "id": "c_14",
+            "name": "King of Vials",
+            "suit": "Vials",
+            "description": "A master of emotional intelligence balancing intense feelings with digital calm. Emotional balance, diplomacy, and wisdom."
+        },
+        {
+            "id": "s_1",
+            "name": "Ace of Blades",
+            "suit": "Blades",
+            "description": "A shining monomolecular katana slicing cleanly through the code. Breakthroughs, sharp mental clarity, and new truth."
+        },
+        {
+            "id": "s_2",
+            "name": "Two of Blades",
+            "suit": "Blades",
+            "description": "A blindfolded figure holding two crossing laser blades, paralyzed by competing algorithms. Stalemate, denial, and difficult choices."
+        },
+        {
+            "id": "s_3",
+            "name": "Three of Blades",
+            "suit": "Blades",
+            "description": "Three sharp data-spikes piercing a digital heart. Heartbreak, betrayal, and painful truth."
+        },
+        {
+            "id": "s_4",
+            "name": "Four of Blades",
+            "suit": "Blades",
+            "description": "A digital avatar resting in a crypt-like stasis pod to heal. Rest, restoration, and contemplation."
+        },
+        {
+            "id": "s_5",
+            "name": "Five of Blades",
+            "suit": "Blades",
+            "description": "A corporate agent smirking as they steal data from defeated foes. Hollow victories, conflict, and betrayal."
+        },
+        {
+            "id": "s_6",
+            "name": "Six of Blades",
+            "suit": "Blades",
+            "description": "A hover-skiff moving away from a turbulent, glitchy area into calm data-streams. Transition, leaving baggage behind, and a rite of passage."
+        },
+        {
+            "id": "s_7",
+            "name": "Seven of Blades",
+            "suit": "Blades",
+            "description": "A sleek thief stealthily downloading files while the guards look away. Strategy, deception, and acting in secret."
+        },
+        {
+            "id": "s_8",
+            "name": "Eight of Blades",
+            "suit": "Blades",
+            "description": "A user trapped in a self-imposed prison of laser barriers they could simply turn off. Victim mentality, restriction, and feeling trapped."
+        },
+        {
+            "id": "s_9",
+            "name": "Nine of Blades",
+            "suit": "Blades",
+            "description": "A person waking up in terror from a nightmare simulation, gripped by anxiety. Nightmares, extreme worry, and despair."
+        },
+        {
+            "id": "s_10",
+            "name": "Ten of Blades",
+            "suit": "Blades",
+            "description": "A cyber-merc lying face down with ten blades plugged into their back. Rock bottom, total failure, and backstabbing."
+        },
+        {
+            "id": "s_11",
+            "name": "Page of Blades",
+            "suit": "Blades",
+            "description": "A sharp-minded analyst uncovering truth with cynical vigilance. Restless energy, curiosity, and new ideas."
+        },
+        {
+            "id": "s_12",
+            "name": "Knight of Blades",
+            "suit": "Blades",
+            "description": "An aggressive debater plunging headfirst into conflict with ruthless logic. Ambition, action-oriented, and harsh communication."
+        },
+        {
+            "id": "s_13",
+            "name": "Queen of Blades",
+            "suit": "Blades",
+            "description": "An ice-cold adjudicator analyzing situations without emotional bias. Complexity, clear boundaries, and independence."
+        },
+        {
+            "id": "s_14",
+            "name": "King of Blades",
+            "suit": "Blades",
+            "description": "The stoic director of ICE security, ruling with absolute intellect and undeniable authority. Mental clarity, truth, and authority."
+        },
+        {
+            "id": "p_1",
+            "name": "Ace of Chips",
+            "suit": "Chips",
+            "description": "A glowing golden microchip hovering in an open metallic hand. New financial opportunities, manifestation, and prosperity."
+        },
+        {
+            "id": "p_2",
+            "name": "Two of Chips",
+            "suit": "Chips",
+            "description": "Juggling two massive databanks in an infinite loop. Time management, balancing resources, and adaptability."
+        },
+        {
+            "id": "p_3",
+            "name": "Three of Chips",
+            "suit": "Chips",
+            "description": "Three engineers collaboratively building a colossal new hardware server. Teamwork, building solid foundations, and craftsmanship."
+        },
+        {
+            "id": "p_4",
+            "name": "Four of Chips",
+            "suit": "Chips",
+            "description": "A paranoid hoarder clinging to their physical drives, refusing to upload to the cloud. Scarcity mindset, possession, and ultimate control."
+        },
+        {
+            "id": "p_5",
+            "name": "Five of Chips",
+            "suit": "Chips",
+            "description": "Two augmented outcasts shivering outside a glowing corporate mega-tower. Financial loss, isolation, and poverty."
+        },
+        {
+            "id": "p_6",
+            "name": "Six of Chips",
+            "suit": "Chips",
+            "description": "A wealthy exec dropping crypto-credits into the accounts of the less fortunate. Giving, receiving, and wealth sharing."
+        },
+        {
+            "id": "p_7",
+            "name": "Seven of Chips",
+            "suit": "Chips",
+            "description": "A crypto-farmer pausing to look at a slowly growing wall of mining rigs. Assessing investments, patience, and long-term view."
+        },
+        {
+            "id": "p_8",
+            "name": "Eight of Chips",
+            "suit": "Chips",
+            "description": "A focused artisan soldering intricate cybernetics module by module. Apprenticeship, mastery, and dedicated repetition."
+        },
+        {
+            "id": "p_9",
+            "name": "Nine of Chips",
+            "suit": "Chips",
+            "description": "A successful merchant enjoying the opulent fruits of their digital empire alone. Independence, self-reliance, and extreme luxury."
+        },
+        {
+            "id": "p_10",
+            "name": "Ten of Chips",
+            "suit": "Chips",
+            "description": "A multi-generational dynasty passing down encrypted wealth codes. Legacy, ultimate financial security, and long-term success."
+        },
+        {
+            "id": "p_11",
+            "name": "Page of Chips",
+            "suit": "Chips",
+            "description": "A diligent student learning the fundamentals of the physical grid code. Practicality, new skills, and manifestation."
+        },
+        {
+            "id": "p_12",
+            "name": "Knight of Chips",
+            "suit": "Chips",
+            "description": "A slow, plodding delivery grunt ensuring the package always arrives intact. Hard work, productivity, and unwavering routine."
+        },
+        {
+            "id": "p_13",
+            "name": "Queen of Chips",
+            "suit": "Chips",
+            "description": "A practical, welcoming mother-figure who runs the top-tier hardware haven in the city. Sensuality, practicality, and providing."
+        },
+        {
+            "id": "p_14",
+            "name": "King of Chips",
+            "suit": "Chips",
+            "description": "The wealthy, secure tycoon sitting comfortably atop an empire of physical assets. Material success, business acumen, and reliability."
+        }
+    ]
+}

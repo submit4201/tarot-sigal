@@ -4,16 +4,14 @@ import os
 import requests
 
 from api.deps import get_current_user
+
 from models.database_models import User
 from core.logger import app_logger
 
 router = APIRouter()
 
 # API Keys
-OPENROUTER_API = os.getenv("OPENROUTER_API")
-# Fallback to the one the user defined at the bottom if the first one was grabbed wrongly
-if not OPENROUTER_API:
-   OPENROUTER_API = os.getenv("OPENROUTER_API", "")
+OPENROUTER_API = os.getenv("OPENROUTER_API", "").strip()
 
 class GeminiRequest(BaseModel):
     prompt: str
@@ -21,17 +19,21 @@ class GeminiRequest(BaseModel):
 
 @router.post("/generate")
 def generate_content(request: GeminiRequest, current_user: User = Depends(get_current_user)):
-    if not OPENROUTER_API:
-        app_logger.error("OpenRouter API key is missing.")
-        raise HTTPException(status_code=500, detail="OpenRouter API is not configured on the server.")
+    # Re-fetch at runtime to ensure dotenv has loaded
+    api_key = os.getenv("OPENROUTER_API", "").strip()
+    
+    if not api_key:
+        app_logger.error("OpenRouter API key is missing in environment.")
+        raise HTTPException(status_code=500, detail="OpenRouter API is not configured on the server. Check .env.local")
+        
+    url = "https://openrouter.ai/api/v1/chat/completions"
+    app_logger.info(f"OpenRouter Request: {url} | Model: {request.model}")
         
     try:
         app_logger.info(f"Generating OpenRouter content for user: {current_user.id} with model: {request.model}")
         
         headers = {
-            "Authorization": f"Bearer {OPENROUTER_API}",
-            "HTTP-Referer": "http://localhost:5173", # Update in prod
-            "X-Title": "Gridpunk Arcana",
+            "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json"
         }
         
@@ -44,7 +46,7 @@ def generate_content(request: GeminiRequest, current_user: User = Depends(get_cu
         }
         
         response = requests.post(
-            "https://openrouter.ai/api/v1/chat/completions",
+            url,
             headers=headers,
             json=payload,
             timeout=30
@@ -56,7 +58,10 @@ def generate_content(request: GeminiRequest, current_user: User = Depends(get_cu
         generated_text = data["choices"][0]["message"]["content"]
         
         return {"success": True, "text": generated_text, "model": request.model}
+    except requests.exceptions.HTTPError as e:
+        error_body = e.response.text
+        app_logger.error(f"OpenRouter API HTTP error: {e} | Body: {error_body}")
+        raise HTTPException(status_code=500, detail=f"OpenRouter Error: {error_body}")
     except Exception as e:
         app_logger.error(f"OpenRouter API error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
-

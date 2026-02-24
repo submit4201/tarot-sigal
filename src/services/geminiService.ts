@@ -33,8 +33,8 @@ export async function generateContentWithRetry(
   let currentDelay = initialDelay;
 
   const prompt = extractPrompt(params);
-  // Default to our openrouter model, but allow passing it via the original params if needed
-  const model = params.model || 'z-ai/glm-4.5-air:free';
+  // Default to a reliable free model if none provided
+  const model = params.model || 'arcee-ai/trinity-large-preview:free';
 
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {

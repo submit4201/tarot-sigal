@@ -1,0 +1,6 @@
+@echo off
+echo [GRIDPUNK] Cleaning up Python processes...
+taskkill /F /IM python.exe /T 2>nul
+echo [GRIDPUNK] Starting Backend Server...
+cd server
+uvicorn main:app --port 8000 --reload
