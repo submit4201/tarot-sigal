@@ -8,6 +8,7 @@ import { GlassPanel } from '../components/ui/GlassPanel';
 import { CyberButton } from '../components/ui/CyberButton';
 import { CyberInput } from '../components/ui/CyberInput';
 import { SpreadCanvas } from '../components/3d/SpreadCanvas';
+import PremiumModal from '../components/PremiumModal';
 
 /**
  * SavedReadingEntry — Displays a single saved reading with rich tiered data.
@@ -147,6 +148,7 @@ const JournalPage: React.FC = () => {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [analysisExpanded, setAnalysisExpanded] = useState(true);
     const [analysisError, setAnalysisError] = useState<string | null>(null);
+    const [isPremiumModalOpen, setIsPremiumModalOpen] = useState(false);
 
     // * Generate dynamic journal prompt on mount
     useEffect(() => {
@@ -197,7 +199,10 @@ const JournalPage: React.FC = () => {
      * Premium-gated feature.
      */
     const handleAnalyzePatterns = async () => {
-        if (!isPremium) return;
+        if (!isPremium) {
+            setIsPremiumModalOpen(true);
+            return;
+        }
         if (journalEntries.length === 0 && savedReadings.length === 0) {
             setAnalysisError('Insufficient data. Log more reflections or save readings first.');
             return;
@@ -278,19 +283,17 @@ Format your response in clean sections with headers. Use a mystical but grounded
                     </div>
                     <h1 className="text-6xl font-bold font-display text-white tracking-tighter neon-glow">Archive Logs</h1>
                 </div>
-                {/* ! AI Pattern Analysis button — Premium only */}
-                {isPremium && (
-                    <CyberButton
-                        variant="primary"
-                        onClick={handleAnalyzePatterns}
-                        disabled={isAnalyzing || (journalEntries.length === 0 && savedReadings.length === 0)}
-                        isLoading={isAnalyzing}
-                        icon={<SparklesIcon className="w-4 h-4" />}
-                        className="z-10"
-                    >
-                        {isAnalyzing ? 'Analyzing...' : 'Analyze_Patterns'}
-                    </CyberButton>
-                )}
+                {/* ! AI Pattern Analysis button — Premium gated */}
+                <CyberButton
+                    variant={isPremium ? "primary" : "ghost"}
+                    onClick={handleAnalyzePatterns}
+                    disabled={isAnalyzing || (journalEntries.length === 0 && savedReadings.length === 0)}
+                    isLoading={isAnalyzing}
+                    icon={isPremium ? <SparklesIcon className="w-4 h-4" /> : <LayersIcon className="w-4 h-4 text-purple-500" />}
+                    className="z-10"
+                >
+                    {isAnalyzing ? 'Analyzing...' : isPremium ? 'Analyze_Patterns' : 'Analyze_Patterns [LOCKED]'}
+                </CyberButton>
             </header>
 
             <div className="flex-grow overflow-y-auto space-y-8 pr-6 -mr-6 no-scrollbar z-10">
@@ -384,6 +387,8 @@ Format your response in clean sections with headers. Use a mystical but grounded
                     )}
                 </div>
             </div>
+
+            <PremiumModal isOpen={isPremiumModalOpen} onClose={() => setIsPremiumModalOpen(false)} onUpgrade={() => { setIsPremiumModalOpen(false); window.location.hash = '#profile'; }} />
         </div>
     );
 };

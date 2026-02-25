@@ -42,7 +42,11 @@ interface AppContextType {
   setPage: (page: Page) => void;
 
   isPremium: boolean;
-  setIsPremium: (val: boolean) => void; // Kept for interface compat, but acts as local override or stub
+  isFree: boolean;
+  isSeeker: boolean;
+  isOracle: boolean;
+  canPerformReading: (type: string) => boolean;
+  setIsPremium: (val: boolean) => void;
 
   // Deck management
   activeDeckId: string;
@@ -57,6 +61,7 @@ interface AppContextType {
   setXpNotification: (notification: { amount: number; reason?: string } | null) => void;
   levelUpData: number | null;
   setLevelUpData: (level: number | null) => void;
+  togglePremium: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -134,11 +139,19 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     return `${ASSET_BASE}/back.png`;
   }, [activeDeckId, decks, getCardImagePath]);
 
-  // Derived state
-  // @note Derive premium status from both the boolean flag AND the subscription tier
-  const isPremium = activeProfile?.isPremium ||
-    ['seeker', 'mystic', 'oracle'].includes(activeProfile?.subscriptionTier || '') ||
-    false;
+  // Subscription Tier Helpers (Derive from activeProfile)
+  const isFree = activeProfile?.subscriptionTier === 'free' || !activeProfile?.subscriptionTier;
+  const isSeeker = activeProfile?.subscriptionTier === 'seeker';
+  const isOracle = activeProfile?.subscriptionTier === 'oracle';
+  const isPremium = activeProfile?.isPremium || isSeeker || isOracle;
+
+  const canPerformReading = (type: string) => {
+    if (isPremium) return true;
+
+    // Free tier logic: limit to 3 readings of a specific type in history
+    const history = savedReadings.filter(r => r.spreadType === type);
+    return history.length < 3;
+  };
 
   // --- Data Loading ---
   useEffect(() => {
@@ -468,9 +481,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const incrementRuneCast = () => setRuneCastsToday(c => c + 1);
 
-  // Stub for now - logic moved to Appwrite subscriptions
   const setIsPremium = (val: boolean) => {
     if (activeProfile) updateActiveProfile({ isPremium: val });
+  };
+
+  const togglePremium = () => {
+    setIsPremium(!isPremium);
   };
 
 
@@ -506,6 +522,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     unlockAchievement,
 
     isPremium,
+    isFree,
+    isSeeker,
+    isOracle,
+    canPerformReading,
     setIsPremium,
 
     activeDeckId,
@@ -518,7 +538,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     xpNotification,
     setXpNotification,
     levelUpData,
-    setLevelUpData
+    setLevelUpData,
+    togglePremium
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

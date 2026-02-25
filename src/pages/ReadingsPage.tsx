@@ -21,6 +21,7 @@ import { ChargingView } from '../components/readings/ChargingView';
 import { PickingView } from '../components/readings/PickingView';
 import { RevealingView } from '../components/readings/RevealingView';
 import { IntegratedForecastView } from '../components/readings/IntegratedForecastView';
+import CyberpunkAd from '../components/CyberpunkAd';
 // * TTS Helper function
 const speakText = (text: string) => {
     window.speechSynthesis.cancel(); // Stop any current speech
@@ -31,7 +32,7 @@ const speakText = (text: string) => {
 };
 
 const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) => {
-    const { isPremium, addSavedReading, activeProfile, addXp, addStardust, decks } = useApp();
+    const { isPremium, addSavedReading, activeProfile, addXp, addStardust, decks, isOracle, isSeeker } = useApp();
 
     // * Reading Steps: focus-intent (Premium) -> select-spread -> select-deck -> charging -> picking-cards -> revealing -> summary
     const [readingStep, setReadingStep] = useState<'focus-intent' | 'select-spread' | 'select-deck' | 'charging' | 'picking-cards' | 'revealing' | 'summary'>('select-spread');
@@ -46,6 +47,8 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
     const [currentPickingIndex, setCurrentPickingIndex] = useState(0);
     const [isShuffling, setIsShuffling] = useState(false);
     const [animatingCardId, setAnimatingCardId] = useState<string | null>(null);
+    const [showAd, setShowAd] = useState(false);
+    const [pendingSummaryAction, setPendingSummaryAction] = useState<boolean>(false);
 
     // * Immersion State
     const [shuffleEnergy, setShuffleEnergy] = useState(0); // Used for visual intensity now
@@ -129,10 +132,19 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
     };
 
     const handleSelectSpread = (spread: SpreadType) => {
-        if (SPREAD_DETAILS[spread].isPremium && !isPremium) {
+        const detail = SPREAD_DETAILS[spread];
+        const userTier = activeProfile?.subscriptionTier || 'free';
+
+        // Define tier hierarchy
+        const tiers = ['free', 'seeker', 'oracle'];
+        const requiredTierIndex = tiers.indexOf(detail.minTier || 'free');
+        const userTierIndex = tiers.indexOf(userTier);
+
+        if (userTierIndex < requiredTierIndex && !isPremium) {
             setIsPremiumModalOpen(true);
             return;
         }
+
         setSelectedSpread(spread);
         setReadingStep('select-deck');
     };
@@ -246,6 +258,12 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
     };
 
     const handleGenerateSummary = async () => {
+        if (!isPremium && !pendingSummaryAction) {
+            setPendingSummaryAction(true);
+            setShowAd(true);
+            return;
+        }
+
         setIsGeneratingSummary(true);
         setError('');
         try {
@@ -471,7 +489,23 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
                 />
             )}
 
-            <PremiumModal isOpen={isPremiumModalOpen} onClose={() => setIsPremiumModalOpen(false)} onUpgrade={() => { setIsPremiumModalOpen(false); setPage('Profile'); }} />
+            {/* Premium Gating */}
+            <CyberpunkAd
+                isVisible={showAd}
+                onClose={() => {
+                    setShowAd(false);
+                    // After ad, handle the summary generation
+                    if (pendingSummaryAction) {
+                        setIsPremiumModalOpen(true); // User saw ad, now show paywall
+                        setPendingSummaryAction(false);
+                    }
+                }}
+            />
+            <PremiumModal
+                isOpen={isPremiumModalOpen}
+                onClose={() => setIsPremiumModalOpen(false)}
+                onUpgrade={() => { setIsPremiumModalOpen(false); setPage('Profile'); }}
+            />
         </div>
     );
 };

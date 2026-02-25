@@ -10,16 +10,20 @@ import DeepDivePhase from '../components/SigilFlow/DeepDivePhase';
 import ActionableAltar from '../components/SigilFlow/ActionableAltar';
 import { ChevronLeftIcon } from '../components/icons';
 import { SIGIL_READING_PROMPT } from '../constants/prompts';
+import CyberpunkAd from '../components/CyberpunkAd';
+import PremiumModal from '../components/PremiumModal';
 
 type Phase = 'initiation' | 'reveal' | 'core';
 
 const SigilPage: React.FC = () => {
-    const { activeProfile, addXp } = useApp();
+    const { activeProfile, addXp, canPerformReading, isPremium } = useApp();
     const [phase, setPhase] = useState<Phase>('initiation');
     const [focus, setFocus] = useState('');
     const [cards, setCards] = useState<DrawnDivinationCard[]>([]);
     const [readingData, setReadingData] = useState<SavedReading | null>(null);
     const [deepDiveIndex, setDeepDiveIndex] = useState<number | null>(null);
+    const [showAd, setShowAd] = useState(false);
+    const [showPaywall, setShowPaywall] = useState(false);
 
     const handleBack = () => {
         if (phase !== 'initiation') {
@@ -34,6 +38,11 @@ const SigilPage: React.FC = () => {
     };
 
     const handleInitiationComplete = async (userFocus: string, refinedQuestion: string) => {
+        if (!canPerformReading('sigil')) {
+            setShowPaywall(true);
+            return;
+        }
+
         setFocus(refinedQuestion || userFocus);
 
         // DRAW CARDS
@@ -43,10 +52,20 @@ const SigilPage: React.FC = () => {
             { card: drawTarotCard().card, isReversed: Math.random() > 0.8 }
         ];
         setCards(drawnCards);
-        setPhase('reveal');
+
+        if (!isPremium) {
+            setShowAd(true);
+        } else {
+            setPhase('reveal');
+        }
 
         // GENERATE READING IN BACKGROUND
         generateReading(drawnCards, refinedQuestion || userFocus);
+    };
+
+    const handleAdFinish = () => {
+        setShowAd(false);
+        setPhase('reveal');
     };
 
     const generateReading = async (drawnCards: DrawnDivinationCard[], question: string) => {
@@ -173,6 +192,13 @@ const SigilPage: React.FC = () => {
                     onClose={() => setDeepDiveIndex(null)}
                 />
             )}
+            {/* Premium Gating */}
+            <CyberpunkAd isVisible={showAd} onClose={handleAdFinish} />
+            <PremiumModal
+                isOpen={showPaywall}
+                onClose={() => setShowPaywall(false)}
+                onUpgrade={() => window.location.hash = '#profile'}
+            />
         </div>
     );
 };

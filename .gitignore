@@ -73,3 +73,4 @@ server/api/__pycache__/auth.cpython-314.pyc
 server/api/__pycache__/birth_profile.cpython-314.pyc
 server/models/__pycache__/database_models.cpython-314.pyc
 server/models/__pycache__/schemas.cpython-314.pyc
+gridpunk.db

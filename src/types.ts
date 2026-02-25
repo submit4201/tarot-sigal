@@ -88,7 +88,8 @@ export type SpreadType =
   | 'chakra-alignment'
   | 'lunar-cycle'
   | 'partnership'
-  | 'shadow-work';
+  | 'shadow-work'
+  | 'cybernetic-cross';
 
 export interface UserProfile {
   id: string;

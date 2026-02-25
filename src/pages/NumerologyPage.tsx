@@ -73,9 +73,22 @@ const NumerologyPage: React.FC = () => {
             </div>
 
             {/* Educational / Deep Dive Content Placeholder */}
-            <div className="w-full max-w-5xl glass-panel p-8 rounded-[2rem] border-white/5 bg-white/[0.02]">
+            <div className="w-full max-w-5xl glass-panel p-8 rounded-[2rem] border-white/5 bg-white/[0.02] relative group">
+                {!useApp().isPremium && (
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-md z-10 rounded-[2rem] flex flex-col items-center justify-center p-8 text-center border border-purple-500/20 shadow-[inset_0_0_50px_rgba(0,0,0,0.5)]">
+                        <LockIcon className="w-12 h-12 text-purple-400/50 mb-4 animate-pulse" />
+                        <h4 className="text-xl font-bold text-white mb-2">Matrix Decryption Locked</h4>
+                        <p className="text-sm text-text-muted max-w-sm mb-6">Upgrade to Seeker or Oracle tier to access deep numerical synthesis and temporal frequency decryption.</p>
+                        <button
+                            onClick={() => window.location.hash = '#pricing'}
+                            className="px-8 py-3 bg-purple-600/20 border border-purple-500/30 text-purple-400 rounded-xl hover:bg-purple-600 hover:text-white transition-all font-mono text-xs uppercase tracking-widest shadow-glow"
+                        >
+                            Establish_Connection
+                        </button>
+                    </div>
+                )}
                 <h3 className="text-xs font-mono text-white/30 uppercase tracking-[0.3em] mb-6 font-bold">Matrix_Decryption</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-text-muted leading-relaxed">
+                <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-text-muted leading-relaxed ${!useApp().isPremium ? 'opacity-20 blur-sm pointer-events-none' : ''}`}>
                     <div>
                         <strong className="text-white block mb-2">Life Path Number</strong>
                         Calculated from your full birth date, this represents your core purpose and the primary trajectory of your existence in this timeline.

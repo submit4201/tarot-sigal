@@ -184,7 +184,7 @@ export const ELEMENT_COLORS: { [key in Element]: string } = { Fire: 'text-[#FF7A
 export const ELEMENT_HEX_COLORS: { [key in Element]: string } = { Fire: '#FF7A1A', Earth: '#29C26A', Air: '#21C7F2', Water: '#6E7BFF' };
 export const ELEMENT_BORDERS: { [key in Element]: string } = { Fire: 'border-[#FF7A1A]', Earth: 'border-[#29C26A]', Air: 'border-[#21C7F2]', Water: 'border-[#6E7BFF]' };
 
-export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description: string; cardCount: number; isPremium: boolean; positions: string[]; positionMeanings: string[]; deck: DeckType[]; layout?: { x: number; y: number; rotation: number }[] } } = {
+export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description: string; cardCount: number; isPremium: boolean; minTier?: 'seeker' | 'mystic' | 'oracle'; positions: string[]; positionMeanings: string[]; deck: DeckType[]; layout?: { x: number; y: number; rotation: number }[] } } = {
   '3-card': {
     name: 'Three Card Spread',
     description: 'A quick overview of past, present, and future signals.',
@@ -233,13 +233,8 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     description: 'The standard high-resolution diagnostic.',
     cardCount: 11,
     isPremium: true,
-    positions: ['Heart', 'Challenge', 'Root', 'Past', 'Crown', 'Future', 'Self', 'Environment', 'Hopes/Fears', 'Outcome', 'Synthesis'], // 11th card is synthesis/summary often not drawn but computed, but here we have 11 positions? 
-    // Standard celtic cross has 10 cards. The user's definition has 11. 
-    // Wait, the definitions in lines 168 have 11 items. "Synthesis" might be a summary card or the computed one.
-    // If it's a real card, I'll place it. If not, I'll place it centrally or off to side.
-    // Standard 10 card cross positions:
-    // 1 (Center), 2 (Cross), 3 (Below), 4 (Left), 5 (Above), 6 (Right) -- The Cross
-    // 7, 8, 9, 10 -- The Staff (Right side)
+    minTier: 'seeker',
+    positions: ['Heart', 'Challenge', 'Root', 'Past', 'Crown', 'Future', 'Self', 'Environment', 'Hopes/Fears', 'Outcome', 'Synthesis'],
     positionMeanings: ['The central issue.', 'Crossing force.', 'Root cause.', 'Passing signals.', 'Goal state.', 'Upcoming data.', 'Internal attitude.', 'Environmental factors.', 'Psychological blocks.', 'Final result.', 'Overarching logic.'],
     deck: ['tarot'],
     layout: [
@@ -253,14 +248,29 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
       { x: 80, y: 65, rotation: 0 },   // 8 Environment
       { x: 80, y: 45, rotation: 0 },   // 9 Hopes
       { x: 80, y: 25, rotation: 0 },   // 10 Outcome
-      { x: 50, y: 50, rotation: 0 }    // 11 Synthesis (Maybe hidden behind or just central?) - Let's put it hidden or distinct? 
-      // Actually, standard celtic cross is 10 cards. The 11th "Synthesis" here likely refers to the AI summary, but the array has 11 positions.
-      // If the code draws 11 cards, I should place 11. Let's place 11th as a "summary card" overlay or side.
-      // But typically only 10 cards are drawn. I'll check if the 11th is actually used in logic.
-      // In handleSelectDeck -> setDrawnCards(new Array(...cardCount))
-      // So it DOES draw 11 cards.
-      // I'll place the 11th card centrally but larger/behind? Or just below the staff?
-      // Let's put it aside for now.
+      { x: 50, y: 50, rotation: 0 }    // 11 Synthesis
+    ]
+  },
+  'cybernetic-cross': {
+    name: 'Cybernetic Cross',
+    description: 'High-tier system analysis across all signal types.',
+    cardCount: 10,
+    isPremium: true,
+    minTier: 'oracle',
+    positions: ['Kernel', 'I/O Buffer', 'Uptime', 'Old Firmware', 'Target Build', 'Incoming Packet', 'System Logs', 'Network Load', 'Overflow', 'Process ID'],
+    positionMeanings: ['The core of the issue.', 'External pressures.', 'Long-term stability.', 'The past influence.', 'The desired outcome.', 'Immediate future.', 'Internal thoughts.', 'Current environment.', 'Weak points.', 'The final resulting signal.'],
+    deck: ['tarot', 'oracle', 'runes'],
+    layout: [
+      { x: 40, y: 50, rotation: 0 },
+      { x: 40, y: 50, rotation: 90 },
+      { x: 40, y: 80, rotation: 0 },
+      { x: 20, y: 50, rotation: 0 },
+      { x: 40, y: 20, rotation: 0 },
+      { x: 60, y: 50, rotation: 0 },
+      { x: 85, y: 85, rotation: 0 },
+      { x: 85, y: 65, rotation: 0 },
+      { x: 85, y: 45, rotation: 0 },
+      { x: 85, y: 25, rotation: 0 }
     ]
   },
   'partnership': {
@@ -268,17 +278,18 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     description: 'Analyze the bridge between two signals.',
     cardCount: 7,
     isPremium: true,
+    minTier: 'seeker',
     positions: ['Operator 1', 'Operator 2', 'Current Sync', 'Friction Point', 'Shared Drive', 'Potential', 'Future'],
     positionMeanings: ['Your state.', 'Theirs.', 'Present connection.', 'Conflict source.', 'Unified goal.', 'Untapped energy.', 'Long-term link.'],
     deck: ['tarot'],
     layout: [
-      { x: 20, y: 40, rotation: -10 }, // Op 1
-      { x: 80, y: 40, rotation: 10 },  // Op 2
-      { x: 50, y: 30, rotation: 0 },   // Sync
-      { x: 50, y: 50, rotation: 90 },  // Friction
-      { x: 50, y: 70, rotation: 0 },   // Drive
-      { x: 35, y: 85, rotation: -5 },  // Potential
-      { x: 65, y: 85, rotation: 5 }    // Future
+      { x: 20, y: 40, rotation: -10 },
+      { x: 80, y: 40, rotation: 10 },
+      { x: 50, y: 30, rotation: 0 },
+      { x: 50, y: 50, rotation: 90 },
+      { x: 50, y: 70, rotation: 0 },
+      { x: 35, y: 85, rotation: -5 },
+      { x: 65, y: 85, rotation: 5 }
     ]
   },
   'shadow-work': {
@@ -286,14 +297,15 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     description: 'Deep-layer diagnostic of the subconscious.',
     cardCount: 4,
     isPremium: true,
+    minTier: 'mystic',
     positions: ['The Mask', 'The Hidden', 'The Trigger', 'The Integration'],
     positionMeanings: ['What you show.', 'What you hide.', 'What causes glitches.', 'How to resolve.'],
     deck: ['tarot'],
     layout: [
-      { x: 50, y: 30, rotation: 0 }, // Mask (Top)
-      { x: 50, y: 70, rotation: 180 }, // Hidden (Bottom, Reversed visual?)
-      { x: 20, y: 50, rotation: -90 }, // Trigger (Left)
-      { x: 80, y: 50, rotation: 90 }   // Integration (Right)
+      { x: 50, y: 30, rotation: 0 },
+      { x: 50, y: 70, rotation: 180 },
+      { x: 20, y: 50, rotation: -90 },
+      { x: 80, y: 50, rotation: 90 }
     ]
   },
   'pentagram': {
@@ -301,15 +313,16 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     description: 'Balance your fundamental frequencies.',
     cardCount: 5,
     isPremium: true,
+    minTier: 'mystic',
     positions: ['Spirit', 'Fire', 'Water', 'Air', 'Earth'],
     positionMeanings: ['Core intent.', 'Action.', 'Emotion.', 'Logic.', 'Manifestation.'],
     deck: ['tarot'],
     layout: [
-      { x: 50, y: 20, rotation: 0 },   // Spirit (Top)
-      { x: 80, y: 40, rotation: 0 },   // Fire (Right Top)
-      { x: 70, y: 80, rotation: 0 },   // Water (Right Bottom)
-      { x: 30, y: 80, rotation: 0 },   // Air (Left Bottom)
-      { x: 20, y: 40, rotation: 0 }    // Earth (Left Top)
+      { x: 50, y: 20, rotation: 0 },
+      { x: 80, y: 40, rotation: 0 },
+      { x: 70, y: 80, rotation: 0 },
+      { x: 30, y: 80, rotation: 0 },
+      { x: 20, y: 40, rotation: 0 }
     ]
   },
   'lunar-cycle': {
@@ -317,6 +330,7 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     description: 'Temporal mapping based on lunar phases.',
     cardCount: 8,
     isPremium: true,
+    minTier: 'mystic',
     positions: ['New Moon', 'Waxing Crescent', 'First Quarter', 'Waxing Gibbous', 'Full Moon', 'Waning Gibbous', 'Third Quarter', 'Waning Crescent'],
     positionMeanings: ['Initiation.', 'Growth.', 'Action.', 'Refinement.', 'Manifestation.', 'Release.', 'Forgiveness.', 'Rest.'],
     deck: ['tarot'],
@@ -328,37 +342,29 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
       { x: 60, y: 20, rotation: 0 },
       { x: 75, y: 30, rotation: 0 },
       { x: 85, y: 50, rotation: 0 },
-      { x: 50, y: 50, rotation: 0 } // Placed 8 cards in arc?, wait, 8 positions. Let's do a circle.
-      // Correct circle:
-      // 4 5
-      // 3 6
-      // 2 7
-      // 1 8
-      // Let's just do a linear progression or circle.
-      // Circle:
-      // 1: Top (New Moon? No new moon is dark. Let's start left)
+      { x: 50, y: 50, rotation: 0 }
     ]
   },
-  // Placeholders for rest to match SpreadType union
   'year-ahead': {
     name: 'Year Ahead Chronology',
     description: 'A comprehensive forecast for the coming cycle.',
     cardCount: 12,
     isPremium: true,
+    minTier: 'oracle',
     positions: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     positionMeanings: ['Month 1 theme.', 'Month 2 theme.', 'Month 3 theme.', 'Month 4 theme.', 'Month 5 theme.', 'Month 6 theme.', 'Month 7 theme.', 'Month 8 theme.', 'Month 9 theme.', 'Month 10 theme.', 'Month 11 theme.', 'Month 12 theme.'],
     deck: ['tarot'],
     layout: [
-      { x: 50, y: 15, rotation: 0 }, // 1 (Top)
+      { x: 50, y: 15, rotation: 0 },
       { x: 67, y: 19, rotation: 30 },
       { x: 80, y: 32, rotation: 60 },
-      { x: 85, y: 50, rotation: 90 }, // 4 (Right)
+      { x: 85, y: 50, rotation: 90 },
       { x: 80, y: 68, rotation: 120 },
       { x: 67, y: 81, rotation: 150 },
-      { x: 50, y: 85, rotation: 180 }, // 7 (Bottom)
+      { x: 50, y: 85, rotation: 180 },
       { x: 33, y: 81, rotation: 210 },
       { x: 20, y: 68, rotation: 240 },
-      { x: 15, y: 50, rotation: 270 }, // 10 (Left)
+      { x: 15, y: 50, rotation: 270 },
       { x: 20, y: 32, rotation: 300 },
       { x: 33, y: 19, rotation: 330 }
     ]
@@ -368,17 +374,18 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     description: 'Diagnostic of your energetic centers.',
     cardCount: 7,
     isPremium: true,
+    minTier: 'mystic',
     positions: ['Root', 'Sacral', 'Solar Plexus', 'Heart', 'Throat', 'Third Eye', 'Crown'],
     positionMeanings: ['Survival and grounding.', 'Creativity and sexuality.', 'Willpower and ego.', 'Love and compassion.', 'Communication and truth.', 'Intuition and insight.', 'Divine connection.'],
     deck: ['tarot'],
     layout: [
-      { x: 50, y: 85, rotation: 0 }, // Root
-      { x: 50, y: 73, rotation: 0 }, // Sacral
-      { x: 50, y: 61, rotation: 0 }, // Solar P
-      { x: 50, y: 50, rotation: 0 }, // Heart
-      { x: 50, y: 39, rotation: 0 }, // Throat
-      { x: 50, y: 27, rotation: 0 }, // Third Eye
-      { x: 50, y: 15, rotation: 0 }  // Crown
+      { x: 50, y: 85, rotation: 0 },
+      { x: 50, y: 73, rotation: 0 },
+      { x: 50, y: 61, rotation: 0 },
+      { x: 50, y: 50, rotation: 0 },
+      { x: 50, y: 39, rotation: 0 },
+      { x: 50, y: 27, rotation: 0 },
+      { x: 50, y: 15, rotation: 0 }
     ]
   },
   'single-rune': {
@@ -412,15 +419,16 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     description: 'Elemental balance check using runes.',
     cardCount: 5,
     isPremium: true,
+    minTier: 'seeker',
     positions: ['The Self', 'The Challenge', 'The Path', 'The Sacrifice', 'The Gift'],
     positionMeanings: ['Your current state.', 'What opposes you.', 'The way forward.', 'What must be given up.', 'The outcome.'],
     deck: ['runes'],
     layout: [
-      { x: 50, y: 50, rotation: 0 }, // Center
-      { x: 20, y: 50, rotation: -90 }, // Left
-      { x: 80, y: 50, rotation: 90 },  // Right
-      { x: 50, y: 80, rotation: 0 },   // Bottom
-      { x: 50, y: 20, rotation: 0 }    // Top
+      { x: 50, y: 50, rotation: 0 },
+      { x: 20, y: 50, rotation: -90 },
+      { x: 80, y: 50, rotation: 90 },
+      { x: 50, y: 80, rotation: 0 },
+      { x: 50, y: 20, rotation: 0 }
     ]
   },
   'nine-rune-grid': {
@@ -428,6 +436,7 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     description: 'A deep weave of fate.',
     cardCount: 9,
     isPremium: true,
+    minTier: 'mystic',
     positions: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
     positionMeanings: ['Past hidden.', 'Past manifest.', 'Past active.', 'Present hidden.', 'Present manifest.', 'Present active.', 'Future hidden.', 'Future manifest.', 'Future active.'],
     deck: ['runes'],
@@ -442,6 +451,7 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     description: 'The entire Elder Futhark speaks.',
     cardCount: 24,
     isPremium: true,
+    minTier: 'oracle',
     positions: [],
     positionMeanings: [],
     deck: ['runes'],
@@ -457,6 +467,7 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     description: 'Diagnostic for two entities.',
     cardCount: 3,
     isPremium: true,
+    minTier: 'seeker',
     positions: ['You', 'Them', 'The Union'],
     positionMeanings: ['Your contribution.', 'Their contribution.', 'The combined energy.'],
     deck: ['tarot'],
@@ -471,6 +482,7 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     description: 'Analyze two distinct paths.',
     cardCount: 2,
     isPremium: true,
+    minTier: 'seeker',
     positions: ['Path A', 'Path B'],
     positionMeanings: ['Outcome of choice A.', 'Outcome of choice B.'],
     deck: ['tarot'],
@@ -484,15 +496,16 @@ export const SPREAD_DETAILS: { [key in SpreadType]: { name: string; description:
     description: 'Alchemical transformation process.',
     cardCount: 5,
     isPremium: true,
+    minTier: 'oracle',
     positions: ['Nigredo (Black)', 'Albedo (White)', 'Citrinitas (Yellow)', 'Rubedo (Red)', 'The Stone'],
     positionMeanings: ['Decomposition/Death.', 'Purification/Washing.', 'Transmutation/Awakening.', 'Completion/Wholeness.', 'The Ultimate Result.'],
     deck: ['tarot'],
     layout: [
-      { x: 20, y: 80, rotation: 0 }, // Nigredo
-      { x: 20, y: 20, rotation: 0 }, // Albedo
-      { x: 80, y: 20, rotation: 0 }, // Citrinitas
-      { x: 80, y: 80, rotation: 0 }, // Rubedo
-      { x: 50, y: 50, rotation: 0 }  // Stone
+      { x: 20, y: 80, rotation: 0 },
+      { x: 20, y: 20, rotation: 0 },
+      { x: 80, y: 20, rotation: 0 },
+      { x: 80, y: 80, rotation: 0 },
+      { x: 50, y: 50, rotation: 0 }
     ]
   },
   'binary-star': {
