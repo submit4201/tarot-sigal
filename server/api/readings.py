@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 
-from models.schemas import ReadingCreate, ReadingResponse
+from models.schemas import ReadingCreate, ReadingResponse, ReadingUpdate
 from models.database_models import Reading, User
 from core.database import get_db
 from api.deps import get_current_user
@@ -33,3 +33,14 @@ def delete_reading(reading_id: str, db: Session = Depends(get_db), current_user:
     db.commit()
     app_logger.info(f"Reading {reading_id} deleted by user: {current_user.id}")
     return None
+@router.patch("/{reading_id}", response_model=ReadingResponse)
+def update_reading(reading_id: str, reading_in: ReadingUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    reading = db.query(Reading).filter(Reading.id == reading_id, Reading.user_id == current_user.id).first()
+    if not reading:
+        raise HTTPException(status_code=404, detail="Reading not found.")
+    
+    reading.notes = reading_in.notes
+    db.commit()
+    db.refresh(reading)
+    app_logger.info(f"Reading {reading_id} updated for user: {current_user.id}")
+    return reading

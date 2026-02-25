@@ -7,6 +7,7 @@ import PremiumModal from '../components/PremiumModal';
 import { generateContentWithRetry } from '../services/geminiService';
 import { SparklesIcon, LayersIcon, ZapIcon } from '../components/icons';
 import { generateCosmicBlueprint } from '../services/cosmicService';
+import { TAROT_QUESTION_REFINER_PROMPT, TAROT_INTERPRETATION_PROMPT } from '../constants/prompts';
 import { useHaptic } from '../hooks/useHaptic';
 import { useTilt } from '../hooks/useTilt';
 import { formatReadingForExport } from '../utils/exportUtils';
@@ -232,10 +233,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
         if (!userQuestion.trim()) return;
         setIsRefiningQuestion(true);
         try {
-            const prompt = `Rewrite this Tarot question to be more empowering and focused on self-growth. Avoid yes/no.
-            User Input: "${userQuestion}"
-            Context: ${readingIntent} focus.
-            Output: Just the refined question text.`;
+            const prompt = TAROT_QUESTION_REFINER_PROMPT(userQuestion, readingIntent);
 
             const response = await generateContentWithRetry({ model: 'arcee-ai/trinity-large-preview:free', contents: prompt });
             setRefinedQuestion(response.text || userQuestion);
@@ -260,46 +258,12 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
             const userContext = isPremium ? `Raw User Question: ${userQuestion}. Intent: ${readingIntent}.` : '';
             const journalContext = isPremium && recentJournalContext ? `Recent Life Events/Journal Context: ${recentJournalContext}` : '';
 
-            const basePrompt = `Perform a high-fidelity, mystical-cyberpunk diagnostic synthesis for a Tarot Reading.
-        
-        System Context: 
-        Array Pattern: ${selectedSpread}
-        Cosmic Blueprint: Life Path ${cosmicBlueprint?.lifePath.number}
-        ${userContext}
-        ${journalContext}
+            const spreadName = SPREAD_DETAILS[selectedSpread!].name;
+            const cosmicInfo = cosmicBlueprint ? `Life Path ${cosmicBlueprint.lifePath.number} (${cosmicBlueprint.lifePath.theme})` : 'Unknown';
+            const userContextStr = isPremium ? `Raw User Question: ${userQuestion}. Intent: ${readingIntent}.` : '';
+            const journalContextStr = isPremium && recentJournalContext ? `Recent Life Events/Journal Context: ${recentJournalContext}` : '';
 
-        Data Streams:
-        ${nodesInfo}
-        
-        Task:
-        Act as a High-Level Cyber-Oracle. Your language MUST be deeply evocative, mystical, and authoritative. Avoid generic interpretations.
-        
-        1. **Refinement (Premium Only)**: If user context is provided, first refine the "Raw User Question" into a more empowering, open-ended, and growth-focused "Refined Question".
-        2. **Node Analysis**: For each card position, provide a ${isPremium ? 'deep, multi-layered esoteric analysis (2-3 paragraphs)' : 'concise but profound interpretation'}. Connect the card's archetype to the position's meaning and the user's specific context/journal entries where relevant.
-        2. **Master Synthesis**: Weave a cohesive narrative that connects all cards into a singular "Cosmic Story". What is the overarching theme? (${isPremium ? 'Holistic, highly detailed, 500+ words. MUST reference card interactions and how they relate to the user\'s current life thread.' : '200+ words'}).
-        3. **Tactical Directives**: Provide 3 specific, ritualistic or practical actions the user can take to align with this energy immediately.
-        4. **Shadow Signal**: Identify what is being avoided, repressed, or overlooked (The Shadow).
-        ${isPremium ? `
-        5. **Resonance Analysis**: Analyze how adjacent cards influence each other (elemental dignities, reinforcing/opposing energies).
-        6. **Elemental Audit**: Assess the balance of Fire/Water/Air/Earth in the spread.
-        7. **Numerological Threads**: Identify repeating numbers or sequences and their meaning.
-        8. **Spoken Narrative Script**: A DEEPLY IMMERSIVE, second-person narrative script designed to be read aloud (TTS).
-           - **Crucial**: It MUST explicitly reference the spread positions naturally (e.g., "In the foundation of your past, [Card] suggests...", "Crossing your path is [Card]...").
-           - Tone: Cinematic, Warm, Oracle-like, slightly cryptic but ultimately clear. 
-           - Length: 400-600 words.
-        9. **Deep Dive Protocols**: Provide a deep esoteric symbolism analysis for EACH card (astrology, kabbalah, numerology connection).
-        ` : ''}
-        
-        Tone Guidelines: Cyber-Shamanic, Mystical, Empathetic, but clinically precise. Use terms like 'frequency', 'alignment', 'archetype', 'void', 'manifestation', 'spectral resonance', 'quantum entanglement', 'soul-architecture'.
-        
-        Return strictly as JSON matching this structure:
-        {
-            "refinedQuestion": "The improved version of the user's raw question (only if userContext was provided)",
-            "nodeInterpretations": ["analysis for card 1", "analysis for card 2"],
-            "summary": "Master synthesis narrative.",
-            "practicalActions": ["action 1", "action 2", "action 3"],
-            "shadowMessage": "The underlying shadow warning."${isPremium ? `,\n            "cardRelationships": "Analysis of card interactions.",\n            "elementalDignity": "Elemental strengths/weaknesses.",\n            "numerologyThreads": "Numerological patterns.",\n            "spokenNarrative": "A script designed to be read aloud via TTS.",\n            "perCardDeepDives": ["deep dive for card 1", "deep dive for card 2"]` : ''}
-        } `;
+            const basePrompt = TAROT_INTERPRETATION_PROMPT(spreadName, cosmicInfo, userContextStr, journalContextStr, nodesInfo, isPremium);
 
             const response = await generateContentWithRetry({
                 model: 'z-ai/glm-4.5-air:free',

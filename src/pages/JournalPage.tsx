@@ -34,7 +34,7 @@ const SavedReadingEntry: React.FC<{ reading: SavedReading; onCardClick: (card: D
                     </div>
                     <h4 className="text-3xl font-bold font-display text-white group-hover:text-cosmic-light transition-colors tracking-tight">{reading.title}</h4>
                     <div className="flex gap-3 mt-4">
-                        <span className="text-[9px] font-mono font-bold text-cosmic-light bg-cosmic/10 px-3 py-1 rounded-xl border border-cosmic/20 uppercase">{reading.spreadType.replace(/-/g, '_')}</span>
+                        <span className="text-[9px] font-mono font-bold text-cosmic-light bg-cosmic/10 px-3 py-1 rounded-xl border border-cosmic/20 uppercase">{String(reading.spreadType || 'Unknown').replace(/-/g, '_')}</span>
                         <span className="text-[9px] font-mono font-bold text-hologram bg-hologram/10 px-3 py-1 rounded-xl border border-hologram/20 uppercase">{reading.deckType}</span>
                     </div>
                 </div>
@@ -171,15 +171,17 @@ const JournalPage: React.FC = () => {
     }, [savedReadings]);
 
     const filteredReadings = useMemo(() => {
+        const query = searchQuery.toLowerCase();
         return savedReadings.filter(r =>
-            r.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            r.userNotes.toLowerCase().includes(searchQuery.toLowerCase())
+            (r.title?.toLowerCase() || '').includes(query) ||
+            (r.userNotes?.toLowerCase() || '').includes(query)
         );
     }, [savedReadings, searchQuery]);
 
     const filteredJournalEntries = useMemo(() => {
         if (!searchQuery) return journalEntries;
-        return journalEntries.filter(e => e.text.toLowerCase().includes(searchQuery.toLowerCase()));
+        const query = searchQuery.toLowerCase();
+        return journalEntries.filter(e => (e.text?.toLowerCase() || '').includes(query));
     }, [journalEntries, searchQuery]);
 
     const handleAddJournalEntry = () => {
@@ -345,10 +347,20 @@ Format your response in clean sections with headers. Use a mystical but grounded
                     </div>
                 </GlassPanel>
 
+                {/* Search Bar */}
+                <div className="max-w-md">
+                    <CyberInput
+                        placeholder="Search archives (title, notes, reflections)..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        icon={<CompassIcon className="w-4 h-4 text-white/40" />}
+                    />
+                </div>
+
                 {/* Tabs */}
                 <div className="flex gap-6 border-b border-white/10 pb-4">
-                    <button onClick={() => setActiveTab('readings')} className={`text-sm font-mono uppercase tracking-widest font-bold pb-2 transition-all ${activeTab === 'readings' ? 'text-cosmic-light border-b-2 border-cosmic' : 'text-white/40 hover:text-white'}`}>Saved_Readings ({savedReadings.length})</button>
-                    <button onClick={() => setActiveTab('journal')} className={`text-sm font-mono uppercase tracking-widest font-bold pb-2 transition-all ${activeTab === 'journal' ? 'text-hologram border-b-2 border-hologram' : 'text-white/40 hover:text-white'}`}>Journal_Entries ({journalEntries.length})</button>
+                    <button onClick={() => setActiveTab('readings')} className={`text-sm font-mono uppercase tracking-widest font-bold pb-2 transition-all ${activeTab === 'readings' ? 'text-cosmic-light border-b-2 border-cosmic' : 'text-white/40 hover:text-white'}`}>Saved_Readings ({filteredReadings.length})</button>
+                    <button onClick={() => setActiveTab('journal')} className={`text-sm font-mono uppercase tracking-widest font-bold pb-2 transition-all ${activeTab === 'journal' ? 'text-hologram border-b-2 border-hologram' : 'text-white/40 hover:text-white'}`}>Journal_Entries ({filteredJournalEntries.length})</button>
                 </div>
 
                 {/* Content */}

@@ -26,7 +26,7 @@ class UserResponse(BaseModel):
     email: str
     given_name: Optional[str] = Field(None, alias="givenName")
     is_premium: bool = Field(False, alias="isPremium")
-    subscription_tier: str = Field("Seeker", alias="subscriptionTier")
+    subscription_tier: str = Field("free", alias="subscriptionTier")
     subscription_expiry: Optional[datetime] = Field(None, alias="subscriptionExpiry")
     stardust: int = 0
     level: int = 1
@@ -65,6 +65,9 @@ class ReadingCreate(BaseModel):
     ai_summary: Optional[str] = None
     notes: Optional[str] = None
 
+class ReadingUpdate(BaseModel):
+    notes: str
+
 class ReadingResponse(ReadingCreate):
     id: str
     user_id: str
@@ -92,6 +95,9 @@ class DailyDrawCreate(BaseModel):
     is_rev: bool = False
     date: str
     insights: Optional[str] = None
+
+class DailyDrawUpdate(BaseModel):
+    insights: str
 
 class DailyDrawResponse(DailyDrawCreate):
     id: str

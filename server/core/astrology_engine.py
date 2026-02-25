@@ -3,6 +3,20 @@ from datetime import datetime
 import math
 from core.sabian_symbols import get_sabian_symbol, get_decan_tarot
 
+ZODIAC_SIGNS = [
+    "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
+    "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"
+]
+
+def get_zodiac_sign(degree):
+    """Returns (SignName, SignIndex) for a given ecliptic degree."""
+    index = int(degree / 30) % 12
+    return ZODIAC_SIGNS[index], index
+
+def get_degree_in_sign(degree):
+    """Returns the degree within its current 30-degree sign."""
+    return round(degree % 30, 2)
+
 def calculate_aspects(planets):
     """
     Calculates major aspects (Conjunction, Square, Trine, Opposition, Sextile)

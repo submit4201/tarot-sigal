@@ -114,6 +114,12 @@ export const db = {
             body: JSON.stringify(reading)
         });
     },
+    updateReading: async (id: string, notes: string) => {
+        return apiFetch(`/readings/${id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ notes })
+        });
+    },
 
     // Journal
     getJournalEntries: async () => {
@@ -136,6 +142,12 @@ export const db = {
         return apiFetch('/daily-draws/', {
             method: 'POST',
             body: JSON.stringify(draw)
+        });
+    },
+    updateDailyDraw: async (id: string, insights: string) => {
+        return apiFetch(`/daily-draws/${id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ insights })
         });
     }
 };

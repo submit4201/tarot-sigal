@@ -15,7 +15,7 @@ class User(Base):
     hashed_password = Column(String(255), nullable=False)
     given_name = Column(String(50), nullable=True)
     is_premium = Column(Boolean, default=False)
-    subscription_tier = Column(String(50), default="Seeker")
+    subscription_tier = Column(String(50), default="free")
     subscription_expiry = Column(DateTime(timezone=True), nullable=True)
     stripe_customer_id = Column(String(100), nullable=True)
     stardust = Column(Integer, default=0)

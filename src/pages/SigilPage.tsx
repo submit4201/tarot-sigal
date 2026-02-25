@@ -9,6 +9,7 @@ import CoreReadingPhase from '../components/SigilFlow/CoreReadingPhase';
 import DeepDivePhase from '../components/SigilFlow/DeepDivePhase';
 import ActionableAltar from '../components/SigilFlow/ActionableAltar';
 import { ChevronLeftIcon } from '../components/icons';
+import { SIGIL_READING_PROMPT } from '../constants/prompts';
 
 type Phase = 'initiation' | 'reveal' | 'core';
 
@@ -50,29 +51,7 @@ const SigilPage: React.FC = () => {
 
     const generateReading = async (drawnCards: DrawnDivinationCard[], question: string) => {
         try {
-            const prompt = `
-            You are a master of the Gridpunk Sigil Ritual. The user has provided a raw focus for their reading.
-            Your task: 
-            1. First, refine the user's focus: "${question}" into a "Refined Sigil Intent" that is more empowering, open-ended, and suitable for a mystical cyberpunk divination.
-            2. Perform a 3-card Past/Present/Future Sigil Reading for ${activeProfile?.givenName} based on this refined intent.
-            
-            Cards: 
-            1. Past: ${drawnCards[0].card.name} (${drawnCards[0].isReversed ? 'Rev' : 'Up'})
-            2. Present: ${drawnCards[1].card.name} (${drawnCards[1].isReversed ? 'Rev' : 'Up'})
-            3. Future: ${drawnCards[2].card.name} (${drawnCards[2].isReversed ? 'Rev' : 'Up'})
-
-            Return JSON strictly matching this structure:
-            {
-              "refinedFocus": "The improved, empowered version of the user's question",
-              "aiSummary": "High-level synthesis of the 3-card resonance",
-              "practicalActions": ["Three actionable steps based on the reading"],
-              "shadowMessage": "A warning or hidden truth found in the spread",
-              "reflectionQuestion": "A deep question for the seeker to ponder",
-              "keywordAnalyses": ["Keyword analysis for card 1", "Keyword analysis for card 2", "Keyword analysis for card 3"],
-              "symbolicInterpretations": ["Symbolic interpretation for card 1", "Symbolic interpretation for card 2", "Symbolic interpretation for card 3"],
-              "esotericInterpretations": ["Esoteric interpretation for card 1", "Esoteric interpretation for card 2", "Esoteric interpretation for card 3"]
-            }
-            `;
+            const prompt = SIGIL_READING_PROMPT(activeProfile?.givenName || 'Seeker', question, drawnCards);
 
             const result = await generateContentWithRetry({
                 model: 'arcee-ai/trinity-large-preview:free',

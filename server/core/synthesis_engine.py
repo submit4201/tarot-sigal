@@ -206,7 +206,9 @@ def call_llm(prompt, system=SYSTEM_PROMPT):
     
     headers = {
         "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://gridpunk-arcana.com", # Required by some models on OpenRouter
+        "X-Title": "Gridpunk Arcana"
     }
     
     # * NOTE: We use a retry loop across several free models for robustness.

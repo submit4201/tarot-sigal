@@ -431,8 +431,11 @@ const BirthProfilePage: React.FC = () => {
                         </GlassPanel>
 
                         <GlassPanel className="p-4 flex flex-col items-center justify-center text-center group border-white/5 hover:border-teal-500/30 transition-all bg-white/[0.02] relative">
-                            <div className="text-xl font-black text-white leading-tight uppercase group-hover:scale-110 transition-transform truncate w-full">{easternData?.baZi?.dayMaster}</div>
-                            <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-white/30 mb-2">Day Master</h4>
+                            <div className="text-xl font-black text-white leading-tight uppercase group-hover:scale-110 transition-transform truncate w-full flex items-center justify-center gap-2">
+                                <div className="w-1 h-1 rounded-full bg-teal-500 animate-pulse"></div>
+                                {easternData?.baZi?.dayMaster}
+                            </div>
+                            <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-white/30 mb-2">Neural Core (BaZi)</h4>
                             {easternData?.baZi?.elementDist && (
                                 <div className="flex gap-0.5 w-full h-1 mt-1 opacity-40 group-hover:opacity-100 transition-opacity">
                                     {Object.entries(easternData.baZi.elementDist).map(([el, val]: any) => (

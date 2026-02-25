@@ -26,7 +26,7 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
         email=user_in.email,
         hashed_password=get_password_hash(user_in.password),
         given_name=user_in.given_name,
-        subscription_tier="Seeker"
+        subscription_tier="free"
     )
     db.add(user)
     db.commit()

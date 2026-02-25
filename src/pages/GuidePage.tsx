@@ -7,6 +7,7 @@ import PremiumModal from '../components/PremiumModal';
 import { BookOpenIcon, SparklesIcon, CompassIcon } from '../components/icons';
 import { generateContentWithRetry } from '../services/geminiService';
 import { generateCosmicBlueprint } from '../services/cosmicService';
+import { GUIDE_INTERPRETATION_PROMPT } from '../constants/prompts';
 import DivinationCardDisplay from '../components/TarotCard';
 
 /**
@@ -65,27 +66,7 @@ const GuidePage: React.FC<{ setPage: (page: string) => void }> = ({ setPage }) =
           - Stated Life Focus: ${activeProfile.readingFocus}
         `;
 
-        const prompt = `You are a master Tarot reader creating a personalized guide entry for a seeker. Your task is to interpret a single Tarot card through the unique lens of their Cosmic Blueprint and personal preferences.
-
-        **Seeker's Profile:**
-        ${blueprintSummary}
-
-        **Card to Interpret:**
-        - Card: ${selectedCard.name}
-        - Arcana: ${selectedCard.arcana}
-        - Keywords: ${selectedCard.keywords.join(', ')}
-        - Core Upright Meaning: ${selectedCard.meaning}
-        - Core Reversed Meaning: ${selectedCard.reversedMeaning}
-
-        **Instructions:**
-        Craft a deep and personalized interpretation of this card specifically for this person. The entire response must be written in a **${activeProfile.readingStyle}** tone and framed around their life focus of **'${activeProfile.readingFocus}'**.
-        1.  **Introduction:** Start by introducing the universal energy of the ${selectedCard.name} card, immediately connecting it to their focus on **'${activeProfile.readingFocus}'**.
-        2.  **Life Path Resonance:** Explain how the card's theme directly interacts with their life's journey, as defined by their **Life Path number (${cosmicBlueprint.lifePath.number})**. How does this card's lesson manifest in their core challenges and opportunities within their stated focus area?
-        3.  **Destiny Number Application:** Describe how they can actively use the energy of this card to achieve their life's purpose, as outlined by their **Destiny number (${cosmicBlueprint.destiny.number})**.
-        4.  **Soul Urge Connection:** Analyze how this card's message speaks to their deepest desires and motivations, linked to their **Soul Urge number (${cosmicBlueprint.soulUrge.number})**.
-        5.  **Personalized Affirmation:** Conclude with a powerful, personalized affirmation that combines the card's wisdom with one of their key blueprint numbers, relevant to their focus.
-
-        **Tone & Focus:** The writing must be consistently **${activeProfile.readingStyle}**. All examples and advice should be tailored to **'${activeProfile.readingFocus}'**. Address the user directly.`;
+        const prompt = GUIDE_INTERPRETATION_PROMPT(selectedCard, blueprintSummary, activeProfile.readingStyle, activeProfile.readingFocus, cosmicBlueprint);
 
         try {
             const response = await generateContentWithRetry({
