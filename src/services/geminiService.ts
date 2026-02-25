@@ -48,7 +48,7 @@ export async function generateContentWithRetry(
   initialDelay = 2000
 ): Promise<{ text: string }> {
   const prompt = extractPrompt(params);
-  const primaryModel = params.model || 'meta-llama/llama-3.3-70b-instruct:free';
+  const primaryModel = params.model || 'openrouter/free';
 
   /**
    * Inner helper — attempt a single model with exponential backoff.

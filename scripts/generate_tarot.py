@@ -421,7 +421,7 @@ class PromptRewriter:
                 "seed": 42,
             }
             response = requests.post(
-                self.TEXT_API, json=payload, timeout=30
+                self.TEXT_API, json=payload, timeout=15
             )
 
             if response.status_code == 200:
@@ -500,7 +500,7 @@ class ImageGenerator:
         self.failed = 0
         self.bad_prompt_count = 0
 
-    def generate(self, prompt: str, output_path: Path, label: str = "") -> bool:
+    def generate(self, prompt: str, output_path: Path, label: str = "") -> bool | str:
         """
         Generate a single image from a prompt.
 
@@ -510,7 +510,8 @@ class ImageGenerator:
             label:       Human-readable label for logging (e.g. card name).
 
         Returns:
-            True if the image was generated/skipped successfully, False on failure.
+            True if the image was generated/skipped successfully, False on failure,
+            or "BAD_PROMPT" if the API returned a content-policy placeholder image.
         """
         # Skip if already exists
         if output_path.exists():
@@ -551,7 +552,10 @@ class ImageGenerator:
 
                     # Validate image dimensions — bad-prompt responses are
                     # 1024x1024 placeholders instead of the requested size.
-                    if not self._validate_image(output_path):
+                    # _validate_image returns True (valid), False (confirmed bad),
+                    # or None (couldn't validate — treat as suspicious and skip).
+                    validation = self._validate_image(output_path)
+                    if validation is False:
                         output_path.unlink(missing_ok=True)
                         log.warning(
                             f"  🚫 Bad-prompt detected for '{label}' — "
@@ -559,6 +563,10 @@ class ImageGenerator:
                         )
                         self.bad_prompt_count += 1
                         return "BAD_PROMPT"
+                    elif validation is None:
+                        log.warning(
+                            f"  ⚠️  Could not validate '{label}' — keeping image but flagging"
+                        )
 
                     log.info(f"  ✅ Saved '{label}' → {output_path.name}")
                     self.generated += 1
@@ -613,7 +621,8 @@ class ImageGenerator:
             path: Path to the saved image file.
 
         Returns:
-            True if image is valid (not a placeholder), False if bad.
+            True if image is valid (not a placeholder), False if confirmed bad,
+            None if the image could not be opened/validated.
         """
         try:
             from PIL import Image
@@ -627,7 +636,7 @@ class ImageGenerator:
             return True
         except Exception as e:
             log.warning(f"  ⚠️  Could not validate image {path.name}: {e}")
-            return False
+            return None
 
     def print_summary(self, total: int):
         """
@@ -698,14 +707,20 @@ def scan_bad_images(directory: Path):
     log.info(f"Bad images:   {len(bad_files)}")
 
     if bad_files:
-        log.info("Deleting bad-prompt images...")
-        for path, w, h in bad_files:
-            path.unlink()
-            log.info(f"  🗑  Deleted {path.name} ({w}x{h})")
-        log.info(
-            f"✅ Deleted {len(bad_files)} bad image(s). "
-            f"Re-run without --scan to regenerate them."
-        )
+        try:
+            answer = input(f"Delete {len(bad_files)} bad image(s)? [y/N] ").strip().lower()
+        except (EOFError, KeyboardInterrupt):
+            answer = ""
+        if answer == "y":
+            for path, w, h in bad_files:
+                path.unlink()
+                log.info(f"  🗑  Deleted {path.name} ({w}x{h})")
+            log.info(
+                f"✅ Deleted {len(bad_files)} bad image(s). "
+                f"Re-run without --scan to regenerate them."
+            )
+        else:
+            log.info("Deletion cancelled — no files were removed.")
     else:
         log.info("✅ All images look good — no bad-prompt placeholders found.")
 
@@ -875,10 +890,12 @@ def run(args: argparse.Namespace):
         result = generator.generate(prompt, file_path, label=label)
 
         # --- Bad-prompt auto-retry with LLM rewriting ---
+        # Each attempt rewrites from the *original* prompt to avoid cumulative
+        # drift from the card's artistic intent.
         if result == "BAD_PROMPT" and rewriter:
-            current_prompt = prompt
+            original_prompt = prompt
             for rewrite_attempt in range(1, PromptRewriter.MAX_REWRITE_ATTEMPTS + 1):
-                current_prompt = rewriter.rewrite(current_prompt, rewrite_attempt)
+                current_prompt = rewriter.rewrite(original_prompt, rewrite_attempt)
                 log.info(
                     f"  🔁 Retry {rewrite_attempt}/{PromptRewriter.MAX_REWRITE_ATTEMPTS} "
                     f"for '{label}' with rewritten prompt"
