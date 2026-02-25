@@ -25,8 +25,15 @@ class UserResponse(BaseModel):
     id: str
     email: str
     given_name: Optional[str] = Field(None, alias="givenName")
+    current_name: Optional[str] = Field(None, alias="currentName")
+    mothers_maiden_name: Optional[str] = Field(None, alias="mothersMaidenName")
+    birth_date: Optional[str] = Field(None, alias="birthDate")
+    birth_time: Optional[str] = Field(None, alias="birthTime")
+    birth_place: Optional[str] = Field(None, alias="birthPlace")
+    reading_style: Optional[str] = Field("mystical", alias="readingStyle")
+    reading_focus: Optional[str] = Field("general", alias="readingFocus")
     is_premium: bool = Field(False, alias="isPremium")
-    subscription_tier: str = Field("Seeker", alias="subscriptionTier")
+    subscription_tier: str = Field("free", alias="subscriptionTier")
     subscription_expiry: Optional[datetime] = Field(None, alias="subscriptionExpiry")
     stardust: int = 0
     level: int = 1
@@ -41,6 +48,13 @@ class UserResponse(BaseModel):
 
 class ProfileUpdate(BaseModel):
     given_name: Optional[str] = Field(None, alias="givenName")
+    current_name: Optional[str] = Field(None, alias="currentName")
+    mothers_maiden_name: Optional[str] = Field(None, alias="mothersMaidenName")
+    birth_date: Optional[str] = Field(None, alias="birthDate")
+    birth_time: Optional[str] = Field(None, alias="birthTime")
+    birth_place: Optional[str] = Field(None, alias="birthPlace")
+    reading_style: Optional[str] = Field(None, alias="readingStyle")
+    reading_focus: Optional[str] = Field(None, alias="readingFocus")
     is_premium: Optional[bool] = Field(None, alias="isPremium")
     subscription_tier: Optional[str] = Field(None, alias="subscriptionTier")
     stardust: Optional[int] = None
@@ -59,11 +73,24 @@ class CheckoutSessionRequest(BaseModel):
 
 # --- Reading Schemas ---
 class ReadingCreate(BaseModel):
+    """Schema for creating a new reading with all divination fields."""
     spread: Optional[str] = None
     question: Optional[str] = None
     cards: Optional[str] = None
+    positions: Optional[str] = None          # JSON string of position labels
+    deck_type: Optional[str] = None          # e.g., 'tarot', 'runes', 'oracle'
+    deck_id: Optional[str] = None            # e.g., 'default_tarot', 'ancient_runes'
     ai_summary: Optional[str] = None
     notes: Optional[str] = None
+    # Premium analysis fields
+    card_relationships: Optional[str] = None
+    elemental_dignity: Optional[str] = None
+    numerology_threads: Optional[str] = None
+    practical_actions: Optional[str] = None  # JSON string of action items
+    shadow_message: Optional[str] = None
+
+class ReadingUpdate(BaseModel):
+    notes: str
 
 class ReadingResponse(ReadingCreate):
     id: str
@@ -92,6 +119,9 @@ class DailyDrawCreate(BaseModel):
     is_rev: bool = False
     date: str
     insights: Optional[str] = None
+
+class DailyDrawUpdate(BaseModel):
+    insights: str
 
 class DailyDrawResponse(DailyDrawCreate):
     id: str
@@ -127,11 +157,13 @@ class BirthProfileBase(BaseModel):
     longitude: Optional[str] = None
 
 class BirthProfileCreate(BirthProfileBase):
-    pass
+    label: Optional[str] = Field("Me", description="Profile label, e.g. 'Me', 'Sarah', 'Alex'")
 
 class BirthProfileResponse(BirthProfileBase):
     id: str
     user_id: str
+    label: str = "Me"
+    is_primary: bool = Field(True, alias="isPrimary")
     profile_data: Union[dict, Json[dict], None] = Field(None, alias="profileData")
     llm_narrative: Optional[str] = Field(None, alias="llmNarrative")
     created_at: datetime

@@ -3,6 +3,7 @@ import { useAuth } from './AuthContext';
 import { db } from '../services/apiService';
 import { JournalEntry, SavedReading, DrawnCard, DailyDrawRecord, UserProfile, Page, AchievementID, Deck, DailyInsights, DrawnDivinationCard } from '../types';
 import decksData from '../data/decks.json';
+import { getLocalDateString } from '../utils/dateUtils';
 
 const decks = decksData as Deck[];
 
@@ -31,6 +32,7 @@ interface AppContextType {
   dailyDrawHistory: DailyDrawRecord[];
   addDailyDrawToHistory: (draw: DrawnCard) => Promise<void>;
   updateDailyDrawInsights: (date: string, insights: DailyInsights) => Promise<void>;
+  updateDailyDrawReflection: (date: string, reflection: string) => Promise<void>;
 
   // Computed / Ephemeral
   runeCastsToday: number;
@@ -133,7 +135,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   }, [activeDeckId, decks, getCardImagePath]);
 
   // Derived state
-  const isPremium = activeProfile?.isPremium || false;
+  // @note Derive premium status from both the boolean flag AND the subscription tier
+  const isPremium = activeProfile?.isPremium ||
+    ['seeker', 'mystic', 'oracle'].includes(activeProfile?.subscriptionTier || '') ||
+    false;
 
   // --- Data Loading ---
   useEffect(() => {
@@ -151,8 +156,18 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         const profile = await db.getProfile();
         if (profile) {
           // Add default fields since API doesn't fully represent Appwrite's old structure yet
+          // @note Coalesce nullable string fields to empty strings so React controlled inputs
+          //       never receive null (prevents uncontrolled→controlled warnings and blank fields)
           const fullProfile = {
             ...profile,
+            givenName: profile.givenName || '',
+            currentName: profile.currentName || '',
+            mothersMaidenName: profile.mothersMaidenName || '',
+            birthDate: profile.birthDate || '',
+            birthTime: profile.birthTime || '',
+            birthPlace: profile.birthPlace || '',
+            readingStyle: profile.readingStyle || 'mystical',
+            readingFocus: profile.readingFocus || 'general',
             level: profile.level || 1,
             xp: profile.xp || 0,
             ownedDeckIds: profile.ownedDeckIds || ['default_tarot', 'ancient_runes'],
@@ -185,7 +200,20 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
           const parsedReadings = extractArray(readings).map(r => ({
             ...r,
-            cards: safeParse(r.cards)
+            cards: safeParse(r.cards),
+            positions: safeParse(r.positions) || [],
+            spreadType: r.spreadType || r.spread || 'single',
+            deckType: r.deckType || r.deck_type || 'tarot',
+            deckId: r.deckId || r.deck_id || 'default_tarot',
+            title: r.title || r.question || '',
+            aiSummary: r.aiSummary || r.ai_summary || '',
+            userNotes: r.notes || r.userNotes || '',
+            // Premium fields
+            cardRelationships: r.cardRelationships || r.card_relationships || undefined,
+            elementalDignity: r.elementalDignity || r.elemental_dignity || undefined,
+            numerologyThreads: r.numerologyThreads || r.numerology_threads || undefined,
+            practicalActions: safeParse(r.practicalActions || r.practical_actions) || undefined,
+            shadowMessage: r.shadowMessage || r.shadow_message || undefined,
           }));
 
           const parsedJournal = extractArray(journal).map(j => ({
@@ -196,7 +224,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
           setSavedReadings(parsedReadings as unknown as SavedReading[]);
           setJournalEntries(parsedJournal as unknown as JournalEntry[]);
-          setDailyDrawHistory(extractArray(draws) as unknown as DailyDrawRecord[]);
+
+          const parsedDraws = extractArray(draws).map(d => ({
+            ...d,
+            insights: safeParse(d.insights)
+          }));
+          setDailyDrawHistory(parsedDraws as unknown as DailyDrawRecord[]);
         } else {
           // No profile yet - OnboardingPage will handle creation
           setActiveProfile(null);
@@ -219,6 +252,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       if (profile) {
         const fullProfile = {
           ...profile,
+          givenName: profile.givenName || '',
+          currentName: profile.currentName || '',
+          mothersMaidenName: profile.mothersMaidenName || '',
+          birthDate: profile.birthDate || '',
+          birthTime: profile.birthTime || '',
+          birthPlace: profile.birthPlace || '',
+          readingStyle: profile.readingStyle || 'mystical',
+          readingFocus: profile.readingFocus || 'general',
           level: profile.level || 1,
           xp: profile.xp || 0,
           ownedDeckIds: profile.ownedDeckIds || ['default_tarot', 'ancient_runes'],
@@ -245,6 +286,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const profile = await db.getProfile();
     setActiveProfile({
       ...profile,
+      givenName: profile.givenName || '',
+      currentName: profile.currentName || '',
+      mothersMaidenName: profile.mothersMaidenName || '',
+      birthDate: profile.birthDate || '',
+      birthTime: profile.birthTime || '',
+      birthPlace: profile.birthPlace || '',
+      readingStyle: profile.readingStyle || 'mystical',
+      readingFocus: profile.readingFocus || 'general',
       level: profile.level || 1,
       xp: profile.xp || 0,
       ownedDeckIds: profile.ownedDeckIds || ['default_tarot', 'ancient_runes'],
@@ -281,9 +330,18 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const dbReading = {
       spread: reading.spreadType,
       question: reading.title,
-      cards: JSON.stringify(reading.cards), // Array of strings converted back inside
+      cards: JSON.stringify(reading.cards),
+      positions: JSON.stringify(reading.positions || []),
+      deck_type: reading.deckType,
+      deck_id: reading.deckId,
       ai_summary: reading.aiSummary,
       notes: reading.userNotes,
+      // Premium fields (only sent if present)
+      ...(reading.cardRelationships && { card_relationships: reading.cardRelationships }),
+      ...(reading.elementalDignity && { elemental_dignity: reading.elementalDignity }),
+      ...(reading.numerologyThreads && { numerology_threads: reading.numerologyThreads }),
+      ...(reading.practicalActions && { practical_actions: JSON.stringify(reading.practicalActions) }),
+      ...(reading.shadowMessage && { shadow_message: reading.shadowMessage }),
     };
 
     const res = await db.saveReading(dbReading);
@@ -298,14 +356,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   };
 
   const updateSavedReadingNotes = async (readingId: string, notes: string) => {
-    // TODO: Implement update on DB
+    // Optimistic update
     setSavedReadings(prev => prev.map(r => r.id === readingId ? { ...r, userNotes: notes } : r));
+    await db.updateReading(readingId, notes);
   };
 
 
   const addDailyDrawToHistory = async (draw: DrawnCard) => {
     if (!user || !activeProfile) return;
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = getLocalDateString();
 
     const dbRecord = {
       date: todayStr,
@@ -313,15 +372,41 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       is_rev: draw.isReversed
     };
 
-    await db.addDailyDraw(dbRecord);
+    const res = await db.addDailyDraw(dbRecord);
 
-    const newRecord: DailyDrawRecord = { date: todayStr, card: draw.card.name, isRev: draw.isReversed };
+    const newRecord: DailyDrawRecord = { id: res.id, date: todayStr, card: draw.card.name, isRev: draw.isReversed };
     setDailyDrawHistory(prev => [newRecord, ...prev]);
   };
 
   const updateDailyDrawInsights = async (date: string, insights: DailyInsights) => {
-    // TODO: Update specific daily draw record in DB
+    // Determine the ID from history
+    const record = dailyDrawHistory.find(r => r.date === date);
+    if (!record || !record.id) {
+      // Fallback to update by date if we implement it, but for now we expect ID
+      setDailyDrawHistory(prev => prev.map(r => r.date === date ? { ...r, insights } : r));
+      return;
+    }
+
     setDailyDrawHistory(prev => prev.map(r => r.date === date ? { ...r, insights } : r));
+    await db.updateDailyDraw(record.id, JSON.stringify(insights));
+  };
+
+  const updateDailyDrawReflection = async (date: string, reflection: string) => {
+    const record = dailyDrawHistory.find(r => r.date === date);
+    if (!record || !record.id) {
+      setDailyDrawHistory(prev => prev.map(r => r.date === date ? { ...r, userReflection: reflection } : r));
+      return;
+    }
+
+    setDailyDrawHistory(prev => prev.map(r => r.date === date ? { ...r, userReflection: reflection } : r));
+    // Since we don't have a separate field in DB for now, we could put it in insights or just ignore for now. 
+    // Actually our backend DailyDraw model HAS 'insights' as Text. 
+    // Let's store userReflection inside the insights JSON for simplicity or update the DB schema.
+    // User said "Persistence of notes/saved items". 
+    // I will merge it into the insights JSON blob in the database.
+    const currentInsights = record.insights || {} as DailyInsights;
+    const updatedInsights = { ...currentInsights, userReflection: reflection };
+    await db.updateDailyDraw(record.id, JSON.stringify(updatedInsights));
   };
 
   // --- Gamification Logic (XP/Stardust) ---
@@ -406,6 +491,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     dailyDrawHistory,
     addDailyDrawToHistory,
     updateDailyDrawInsights,
+    updateDailyDrawReflection,
 
     runeCastsToday,
     incrementRuneCast,

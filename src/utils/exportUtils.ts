@@ -18,7 +18,7 @@ export const formatReadingForExport = (
     const deckName = SHOP_DECKS.find(d => d.id === reading.deckId)?.name || "Unknown Deck";
     const dateStr = new Date(reading.date).toLocaleDateString() + " " + new Date(reading.date).toLocaleTimeString();
 
-    let output = `--- GRIDPUNK ARCANA LOG ---\n`;
+    let output = `--- SIGAL LOG ---\n`;
     output += `Timestamp: ${dateStr}\n`;
     output += `Protocol: ${spreadName}\n`;
     output += `Conduit: ${deckName}\n`;

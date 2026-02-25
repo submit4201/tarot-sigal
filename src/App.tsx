@@ -11,7 +11,7 @@ import GuidePage from './pages/GuidePage';
 import ShopPage from './pages/ShopPage';
 import PricingPage from './pages/PricingPage';
 import ErrorBoundary from './components/ErrorBoundary';
-import { HomeIcon, CardsIcon, JournalIcon, BarChartIcon, UserIcon, CompassIcon, ShoppingCartIcon, SparklesIcon, ZapIcon } from './components/icons';
+import { HomeIcon, CardsIcon, JournalIcon, BarChartIcon, UserIcon, CompassIcon, ShoppingCartIcon, SparklesIcon, ZapIcon, DnaIcon } from './components/icons';
 import { AppProvider, useApp } from './context/AppContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { checkAndUnlockAchievements } from './services/achievementService';
@@ -53,6 +53,8 @@ const navItems = [
   { name: 'Daily', icon: HomeIcon, page: 'Daily' as Page },
   { name: 'Readings', icon: CardsIcon, page: 'Readings' as Page },
   { name: 'Journal', icon: JournalIcon, page: 'Journal' as Page },
+  { name: 'Numerology', icon: DnaIcon, page: 'Numerology' as Page },
+  { name: 'Sigil Sync', icon: ZapIcon, page: 'Sigil' as Page },
   { name: 'Guide', icon: CompassIcon, page: 'Guide' as Page },
   { name: 'Shop', icon: ShoppingCartIcon, page: 'Shop' as Page },
   { name: 'Progress', icon: BarChartIcon, page: 'Progress' as Page },
@@ -71,7 +73,7 @@ const Sidebar: React.FC<{ activePage: Page; setPage: (page: Page) => void; activ
       <div className="mb-10 relative z-10">
         <h1 className="text-xl font-bold font-dm-sans text-white tracking-tighter flex items-center gap-2">
           <span className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
-          GRIDPUNK ARCANA
+          SIGAL
         </h1>
         <div className="mt-4 p-4 glass-panel rounded-xl border-purple-500/20">
           <p className="text-[10px] font-mono text-purple-400 uppercase tracking-[0.2em] mb-2">OPERATOR_STATUS</p>
@@ -120,18 +122,20 @@ const Sidebar: React.FC<{ activePage: Page; setPage: (page: Page) => void; activ
 };
 
 const BottomNav: React.FC<{ activePage: Page; setPage: (page: Page) => void }> = ({ activePage, setPage }) => (
-  <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0d0e14]/90 backdrop-blur-2xl border-t border-white/5 flex justify-around p-2 z-50">
-    {navItems.slice(0, 5).map(item => (
-      <button
-        key={item.name}
-        onClick={() => setPage(item.page)}
-        className={`flex flex-col items-center gap-1 p-3 rounded-xl transition-all ${activePage === item.page ? 'text-purple-400 bg-purple-500/10' : 'text-white/40'
-          }`}
-      >
-        <item.icon className="w-5 h-5" />
-        <span className="text-[9px] font-bold uppercase tracking-tighter">{item.name}</span>
-      </button>
-    ))}
+  <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0d0e14]/95 backdrop-blur-2xl border-t border-white/ client-5 flex justify-between p-2 z-50 overflow-x-auto no-scrollbar">
+    <div className="flex min-w-full justify-around gap-1">
+      {navItems.map(item => (
+        <button
+          key={item.name}
+          onClick={() => setPage(item.page)}
+          className={`flex flex-col items-center justify-center gap-1 p-2 min-w-[64px] rounded-xl transition-all ${activePage === item.page ? 'text-purple-400 bg-purple-500/10' : 'text-white/40'
+            }`}
+        >
+          <item.icon className="w-5 h-5" />
+          <span className="text-[8px] font-bold uppercase tracking-tighter whitespace-nowrap">{item.name}</span>
+        </button>
+      ))}
+    </div>
   </nav>
 );
 

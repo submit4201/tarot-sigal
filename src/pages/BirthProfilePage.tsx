@@ -65,49 +65,107 @@ const BirthProfilePage: React.FC = () => {
     const { activeProfile } = useApp();
     const [loading, setLoading] = useState(false);
     const [isInitialFetch, setIsInitialFetch] = useState(true);
+    const [profiles, setProfiles] = useState<any[]>([]);
+    const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
     const [profile, setProfile] = useState<BirthProfileData | BirthProfileTeaser | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [showAddForm, setShowAddForm] = useState(false);
 
     // Form states
     const [fullName, setFullName] = useState(activeProfile?.givenName || '');
     const [birthDate, setBirthDate] = useState<string>('');
     const [birthTime, setBirthTime] = useState<string>('');
     const [birthLocation, setBirthLocation] = useState<string>('');
+    const [profileLabel, setProfileLabel] = useState<string>('');
 
     useEffect(() => {
-        fetchProfile();
+        fetchProfiles();
     }, []);
 
-    const fetchProfile = async () => {
+    /** Fetch all birth profiles for the current user */
+    const fetchProfiles = async () => {
         try {
-            const data = await birthProfileService.get();
-            setProfile(data);
+            const data = await birthProfileService.list();
+            const list = Array.isArray(data) ? data : [];
+            setProfiles(list);
+            // Auto-select the primary profile, or the first one
+            if (list.length > 0) {
+                const primary = list.find((p: any) => p.isPrimary || p.is_primary) || list[0];
+                setSelectedProfileId(primary.id);
+                setProfile(primary);
+            }
         } catch (err: any) {
             if (!err.message?.includes('404') && !err.toString().includes('not found')) {
-                console.error("Failed to fetch birth profile", err);
+                console.error("Failed to fetch birth profiles", err);
             }
         } finally {
             setIsInitialFetch(false);
         }
     };
 
+    /** Switch to a different profile */
+    const handleSelectProfile = (id: string) => {
+        setSelectedProfileId(id);
+        const found = profiles.find((p: any) => p.id === id);
+        if (found) setProfile(found);
+    };
+
+    /** Create a new birth profile (own or friend) */
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
 
         try {
-            const data = await birthProfileService.update({
+            const newProfile = await birthProfileService.create({
                 fullName,
                 birthDate,
                 birthTime,
-                birthLocation
+                birthLocation,
+                label: profileLabel || (profiles.length === 0 ? 'Me' : fullName.split(' ')[0]),
             });
-            setProfile(data);
+            // Refresh list after creation
+            const updatedList = await birthProfileService.list();
+            const list = Array.isArray(updatedList) ? updatedList : [];
+            setProfiles(list);
+
+            // Auto-select the newly created profile instead of the primary
+            const newId = newProfile?.id;
+            if (newId) {
+                const found = list.find((p: any) => p.id === newId);
+                if (found) {
+                    setSelectedProfileId(newId);
+                    setProfile(found);
+                }
+            } else if (list.length > 0) {
+                // Fallback: select the most recently created profile
+                const latest = list[list.length - 1];
+                setSelectedProfileId(latest.id);
+                setProfile(latest);
+            }
+
+            setShowAddForm(false);
+            // Reset form
+            setFullName('');
+            setBirthDate('');
+            setBirthTime('');
+            setBirthLocation('');
+            setProfileLabel('');
         } catch (err: any) {
             setError(err.message);
         } finally {
             setLoading(false);
+        }
+    };
+
+    /** Delete a non-primary profile */
+    const handleDelete = async (profileId: string) => {
+        if (!confirm('Delete this birth profile? This cannot be undone.')) return;
+        try {
+            await birthProfileService.delete(profileId);
+            await fetchProfiles();
+        } catch (err: any) {
+            setError(err.message);
         }
     };
 
@@ -122,16 +180,26 @@ const BirthProfilePage: React.FC = () => {
         );
     }
 
-    if (!profile) {
+    if (!profile || showAddForm) {
         return (
             <div className="max-w-4xl mx-auto p-4 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
                 <div className="text-center space-y-4">
                     <h1 className="text-5xl font-black text-white mb-2 tracking-tighter uppercase italic">
-                        The Birth Profile
+                        {showAddForm ? 'Add a Friend\'s Chart' : 'The Birth Profile'}
                     </h1>
                     <p className="text-purple-400 font-mono text-sm uppercase tracking-widest max-w-xl mx-auto">
-                        Your origin data is the encrypted seed of your entire holism. Provide your credentials to begin synthesis.
+                        {showAddForm
+                            ? 'Add a friend\'s birth data to generate their cosmic blueprint.'
+                            : 'Your origin data is the encrypted seed of your entire holism. Provide your credentials to begin synthesis.'}
                     </p>
+                    {showAddForm && (
+                        <button
+                            onClick={() => setShowAddForm(false)}
+                            className="text-xs font-mono text-white/40 hover:text-white/70 uppercase tracking-widest transition-colors"
+                        >
+                            ← Back to profiles
+                        </button>
+                    )}
                 </div>
 
                 <GlassPanel className="p-8 md:p-12 relative overflow-hidden group">
@@ -140,11 +208,19 @@ const BirthProfilePage: React.FC = () => {
 
                     <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
                         <div className="space-y-6">
+                            {showAddForm && (
+                                <CyberInput
+                                    label="Profile Label"
+                                    value={profileLabel}
+                                    onChange={(e) => setProfileLabel(e.target.value)}
+                                    placeholder="e.g., Sarah, Alex, Mom..."
+                                />
+                            )}
                             <CyberInput
                                 label="Full Legal Birth Name"
                                 value={fullName}
                                 onChange={(e) => setFullName(e.target.value)}
-                                placeholder="Your full name at birth"
+                                placeholder="Full name at birth"
                                 required
                             />
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -190,7 +266,7 @@ const BirthProfilePage: React.FC = () => {
                                     <SparklesIcon className="w-5 h-5 animate-spin" />
                                     ENCRYPTING_ORIGIN...
                                 </span>
-                            ) : 'GENERATE HOLISTIC PROFILE'}
+                            ) : showAddForm ? 'ADD FRIEND\'S PROFILE' : 'GENERATE HOLISTIC PROFILE'}
                         </CyberButton>
 
                         <div className="pt-4 flex items-center gap-3 text-white/40 text-[10px] font-mono uppercase tracking-[0.2em] justify-center">
@@ -249,6 +325,43 @@ const BirthProfilePage: React.FC = () => {
 
     return (
         <div className="h-full overflow-y-auto p-4 md:p-8 space-y-12 pb-24">
+            {/* Profile Switcher Tabs */}
+            {profiles.length > 0 && (
+                <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-white/5 mb-4">
+                    {profiles.map((p: any) => (
+                        <button
+                            key={p.id}
+                            onClick={() => handleSelectProfile(p.id)}
+                            className={`relative flex items-center gap-2 px-4 py-2 rounded-t-lg font-mono text-xs uppercase tracking-widest transition-all whitespace-nowrap group ${selectedProfileId === p.id
+                                ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30 border-b-transparent'
+                                : 'text-white/40 hover:text-white/70 hover:bg-white/5 border border-transparent'
+                                }`}
+                        >
+                            {(p.isPrimary || p.is_primary) && (
+                                <span className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse" />
+                            )}
+                            <span>{p.label || p.fullName?.split(' ')[0] || 'Profile'}</span>
+                            {/* Delete button for non-primary profiles */}
+                            {!(p.isPrimary || p.is_primary) && selectedProfileId === p.id && (
+                                <span
+                                    onClick={(e) => { e.stopPropagation(); handleDelete(p.id); }}
+                                    className="ml-2 text-red-400/50 hover:text-red-400 cursor-pointer transition-colors text-[10px]"
+                                    title="Delete this profile"
+                                >
+                                    ✕
+                                </span>
+                            )}
+                        </button>
+                    ))}
+                    <button
+                        onClick={() => setShowAddForm(true)}
+                        className="flex items-center gap-1 px-4 py-2 text-white/20 hover:text-purple-400 font-mono text-xs uppercase tracking-widest transition-all hover:bg-purple-500/10 rounded-t-lg border border-transparent"
+                    >
+                        <SparklesIcon className="w-3 h-3" />
+                        <span>Add Friend</span>
+                    </button>
+                </div>
+            )}
             <header className="relative border-b border-white/5 pb-8">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                     <div className="flex-1">
@@ -431,8 +544,11 @@ const BirthProfilePage: React.FC = () => {
                         </GlassPanel>
 
                         <GlassPanel className="p-4 flex flex-col items-center justify-center text-center group border-white/5 hover:border-teal-500/30 transition-all bg-white/[0.02] relative">
-                            <div className="text-xl font-black text-white leading-tight uppercase group-hover:scale-110 transition-transform truncate w-full">{easternData?.baZi?.dayMaster}</div>
-                            <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-white/30 mb-2">Day Master</h4>
+                            <div className="text-xl font-black text-white leading-tight uppercase group-hover:scale-110 transition-transform truncate w-full flex items-center justify-center gap-2">
+                                <div className="w-1 h-1 rounded-full bg-teal-500 animate-pulse"></div>
+                                {easternData?.baZi?.dayMaster}
+                            </div>
+                            <h4 className="text-[8px] font-mono uppercase tracking-[0.2em] text-white/30 mb-2">Neural Core (BaZi)</h4>
                             {easternData?.baZi?.elementDist && (
                                 <div className="flex gap-0.5 w-full h-1 mt-1 opacity-40 group-hover:opacity-100 transition-opacity">
                                     {Object.entries(easternData.baZi.elementDist).map(([el, val]: any) => (

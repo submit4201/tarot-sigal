@@ -26,7 +26,7 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
         email=user_in.email,
         hashed_password=get_password_hash(user_in.password),
         given_name=user_in.given_name,
-        subscription_tier="Seeker"
+        subscription_tier="free"
     )
     db.add(user)
     db.commit()
@@ -61,7 +61,10 @@ def update_current_user(
     current_user: User = Depends(get_current_user)
 ):
     update_data = profile_in.model_dump(exclude_unset=True)
+    app_logger.info(f"[DEBUG] ProfileUpdate raw model: {profile_in}")
+    app_logger.info(f"[DEBUG] model_dump(exclude_unset=True) => {update_data}")
     for field, value in update_data.items():
+        app_logger.info(f"[DEBUG] Setting {field} = {repr(value)}")
         setattr(current_user, field, value)
     
     db.commit()

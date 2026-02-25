@@ -147,10 +147,12 @@ export interface DailyInsights {
 }
 
 export interface DailyDrawRecord {
+  id?: string;
   date: string; // YYYY-MM-DD
   card: string; // Was cardName
   isRev: boolean; // Was isReversed
   insights?: DailyInsights;
+  userReflection?: string;
 }
 
 export interface SavedReading {

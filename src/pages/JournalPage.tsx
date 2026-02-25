@@ -34,7 +34,7 @@ const SavedReadingEntry: React.FC<{ reading: SavedReading; onCardClick: (card: D
                     </div>
                     <h4 className="text-3xl font-bold font-display text-white group-hover:text-cosmic-light transition-colors tracking-tight">{reading.title}</h4>
                     <div className="flex gap-3 mt-4">
-                        <span className="text-[9px] font-mono font-bold text-cosmic-light bg-cosmic/10 px-3 py-1 rounded-xl border border-cosmic/20 uppercase">{reading.spreadType.replace(/-/g, '_')}</span>
+                        <span className="text-[9px] font-mono font-bold text-cosmic-light bg-cosmic/10 px-3 py-1 rounded-xl border border-cosmic/20 uppercase">{String(reading.spreadType || 'Unknown').replace(/-/g, '_')}</span>
                         <span className="text-[9px] font-mono font-bold text-hologram bg-hologram/10 px-3 py-1 rounded-xl border border-hologram/20 uppercase">{reading.deckType}</span>
                     </div>
                 </div>
@@ -88,7 +88,7 @@ const SavedReadingEntry: React.FC<{ reading: SavedReading; onCardClick: (card: D
                 <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-6">
                     {reading.cards.map((c, i) => (
                         <div key={i} className="text-center group/card flex flex-col gap-3">
-                            <p className="text-[8px] font-mono text-white/40 truncate uppercase opacity-40 group-hover/card:opacity-100">{reading.positions[i]}</p>
+                            <p className="text-[8px] font-mono text-white/40 truncate uppercase opacity-40 group-hover/card:opacity-100">{reading.positions?.[i] || `Position ${i + 1}`}</p>
                             <DivinationCardDisplay drawnCard={c} isRevealed={true} onClick={() => onCardClick(c)} className="!w-full !h-auto aspect-[2/3] mx-auto cursor-pointer hover:scale-105 transition-all shadow-xl" />
                             {c.interpretation && (
                                 <p className="text-[9px] text-white/50 leading-relaxed line-clamp-3 group-hover/card:line-clamp-none transition-all">{c.interpretation}</p>
@@ -171,15 +171,17 @@ const JournalPage: React.FC = () => {
     }, [savedReadings]);
 
     const filteredReadings = useMemo(() => {
+        const query = searchQuery.toLowerCase();
         return savedReadings.filter(r =>
-            r.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            r.userNotes.toLowerCase().includes(searchQuery.toLowerCase())
+            (r.title?.toLowerCase() || '').includes(query) ||
+            (r.userNotes?.toLowerCase() || '').includes(query)
         );
     }, [savedReadings, searchQuery]);
 
     const filteredJournalEntries = useMemo(() => {
         if (!searchQuery) return journalEntries;
-        return journalEntries.filter(e => e.text.toLowerCase().includes(searchQuery.toLowerCase()));
+        const query = searchQuery.toLowerCase();
+        return journalEntries.filter(e => (e.text?.toLowerCase() || '').includes(query));
     }, [journalEntries, searchQuery]);
 
     const handleAddJournalEntry = () => {
@@ -216,7 +218,7 @@ const JournalPage: React.FC = () => {
             return `[Reading ${i + 1} — ${r.title} (${r.spreadType}) on ${new Date(r.date).toLocaleDateString()}]:\n  Cards: ${cardNames}\n  Summary: ${r.aiSummary || 'N/A'}\n  Shadow: ${r.shadowMessage || 'N/A'}\n  User Notes: ${r.userNotes || 'N/A'}`;
         }).join('\n\n');
 
-        const prompt = `You are a mystical AI pattern analyst for a cyber-divination app called Gridpunk Arcana. The user has been logging journal reflections and saving tarot/oracle readings. Your task: analyze ALL of the data below and surface deep, meaningful patterns.
+        const prompt = `You are a mystical AI pattern analyst for a cyber-divination app called Sigal. The user has been logging journal reflections and saving tarot/oracle readings. Your task: analyze ALL of the data below and surface deep, meaningful patterns.
 
 ## Journal Reflections:
 ${recentJournals || '(No journal entries yet)'}
@@ -345,10 +347,20 @@ Format your response in clean sections with headers. Use a mystical but grounded
                     </div>
                 </GlassPanel>
 
+                {/* Search Bar */}
+                <div className="max-w-md">
+                    <CyberInput
+                        placeholder="Search archives (title, notes, reflections)..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        icon={<CompassIcon className="w-4 h-4 text-white/40" />}
+                    />
+                </div>
+
                 {/* Tabs */}
                 <div className="flex gap-6 border-b border-white/10 pb-4">
-                    <button onClick={() => setActiveTab('readings')} className={`text-sm font-mono uppercase tracking-widest font-bold pb-2 transition-all ${activeTab === 'readings' ? 'text-cosmic-light border-b-2 border-cosmic' : 'text-white/40 hover:text-white'}`}>Saved_Readings ({savedReadings.length})</button>
-                    <button onClick={() => setActiveTab('journal')} className={`text-sm font-mono uppercase tracking-widest font-bold pb-2 transition-all ${activeTab === 'journal' ? 'text-hologram border-b-2 border-hologram' : 'text-white/40 hover:text-white'}`}>Journal_Entries ({journalEntries.length})</button>
+                    <button onClick={() => setActiveTab('readings')} className={`text-sm font-mono uppercase tracking-widest font-bold pb-2 transition-all ${activeTab === 'readings' ? 'text-cosmic-light border-b-2 border-cosmic' : 'text-white/40 hover:text-white'}`}>Saved_Readings ({filteredReadings.length})</button>
+                    <button onClick={() => setActiveTab('journal')} className={`text-sm font-mono uppercase tracking-widest font-bold pb-2 transition-all ${activeTab === 'journal' ? 'text-hologram border-b-2 border-hologram' : 'text-white/40 hover:text-white'}`}>Journal_Entries ({filteredJournalEntries.length})</button>
                 </div>
 
                 {/* Content */}

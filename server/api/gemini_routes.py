@@ -34,7 +34,9 @@ def generate_content(request: GeminiRequest, current_user: User = Depends(get_cu
         
         headers = {
             "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "HTTP-Referer": "https://gridpunk-arcana.com",
+            "X-Title": "Gridpunk Arcana"
         }
         
         payload = {

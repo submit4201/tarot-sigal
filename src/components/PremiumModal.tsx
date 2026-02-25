@@ -20,7 +20,7 @@ const PremiumModal: React.FC<PremiumModalProps> = ({ isOpen, onClose, onUpgrade 
       >
         <h2 className="text-2xl font-bold font-dm-sans text-[#FF7A1A]">Unlock Premium</h2>
         <p className="text-text-muted mt-2">
-          This feature is exclusive to Gridpunk Arcana Premium members.
+          This feature is exclusive to Sigal Premium members.
         </p>
         <p className="text-text-primary mt-4">
           Upgrade now to access the Celtic Cross spread, advanced AI insights, and more.

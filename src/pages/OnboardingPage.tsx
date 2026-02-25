@@ -166,7 +166,7 @@ const OnboardingPage: React.FC<OnboardingPageProps> = ({ initialAuthMode = 'sign
         </GlassPanel>
 
         <p className="fixed bottom-6 text-[10px] font-mono text-white/20 uppercase tracking-[0.3em]">
-          Gridpunk Arcana v3.0 :: Secure Connection
+          Sigal v3.0 :: Secure Connection
         </p>
       </div>
     );

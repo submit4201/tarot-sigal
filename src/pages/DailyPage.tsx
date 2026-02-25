@@ -4,11 +4,13 @@ import { useApp } from '../context/AppContext';
 import { getDailySeed, calculateDailyNumber, drawDailyCard, calculateMonthlyNumber } from '../services/tarotService';
 import { DrawnCard, DailyInsights } from '../types';
 import DivinationCardDisplay from '../components/TarotCard';
-import { SunIcon, BookOpenIcon, SparklesIcon, ZapIcon, DnaIcon, CompassIcon } from '../components/icons';
+import { SunIcon, BookOpenIcon, SparklesIcon, ZapIcon, DnaIcon, CompassIcon, LayersIcon } from '../components/icons';
 import { generateContentWithRetry } from '../services/geminiService'; // Import the retry service
+import { DAILY_INSIGHT_PROMPT } from '../constants/prompts';
 import { generateCosmicBlueprint } from '../services/cosmicService';
 import CosmicBlueprintDisplay from '../components/CosmicBlueprintDisplay';
 import { TAROT_DECK } from '../constants';
+import { getLocalDateString, getTimeUntilMidnight } from '../utils/dateUtils';
 
 import { db } from '../services/apiService';
 
@@ -28,8 +30,36 @@ const TelemetryModule: React.FC<{ icon: React.ReactNode; title: string; children
     );
 };
 
+/**
+ * @description Countdown timer displaying time until the next daily card flip.
+ * Updates every second and resets at local midnight.
+ */
+const CountdownTimer: React.FC<{ hasChosen: boolean }> = ({ hasChosen }) => {
+    const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnight());
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTimeLeft(getTimeUntilMidnight());
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const pad = (n: number) => n.toString().padStart(2, '0');
+
+    return (
+        <div className="glass-panel px-6 py-3 rounded-2xl border-white/5 flex flex-col items-end group hover:border-teal-500/30 transition-all">
+            <span className="text-[9px] font-mono text-text-muted uppercase tracking-widest mb-1 group-hover:text-teal-400 transition-colors">
+                {hasChosen ? 'Next_Sync_In' : 'Session_Window'}
+            </span>
+            <span className="text-xs font-bold font-mono tracking-tight tabular-nums" style={{ color: hasChosen ? '#2dd4bf' : '#a78bfa' }}>
+                {pad(timeLeft.hours)}:{pad(timeLeft.minutes)}:{pad(timeLeft.seconds)}
+            </span>
+        </div>
+    );
+};
+
 const DailyPage: React.FC = () => {
-    const { addDailyDrawToHistory, dailyDrawHistory, activeProfile, addXp, updateDailyDrawInsights, isPremium } = useApp();
+    const { addDailyDrawToHistory, dailyDrawHistory, activeProfile, addXp, updateDailyDrawInsights, updateDailyDrawReflection, isPremium } = useApp();
     const [chosenCard, setChosenCard] = useState<DrawnCard | null>(null);
     const [hasChosen, setHasChosen] = useState(false);
     const [dailyInsights, setDailyInsights] = useState<DailyInsights | null>(null);
@@ -41,7 +71,8 @@ const DailyPage: React.FC = () => {
     if (!activeProfile) return <div className="p-8 font-mono animate-pulse text-purple-400 uppercase tracking-widest">Initialising_Link...</div>;
 
     const today = new Date();
-    const todayStr = today.toISOString().split('T')[0];
+    // @note Uses local timezone date string so daily card resets at local midnight, not UTC
+    const todayStr = getLocalDateString(today);
     const dailySeed = useMemo(() => getDailySeed(activeProfile, today), [activeProfile, todayStr]);
     const dailyNumber = useMemo(() => calculateDailyNumber(today), [todayStr]);
 
@@ -109,33 +140,12 @@ const DailyPage: React.FC = () => {
             const sign = activeProfile.astrologicalSign !== 'None' ? activeProfile.astrologicalSign : 'the Seeker';
             const journalContext = isPremium && recentJournalContext ? `Recent Life Data: ${recentJournalContext}` : '';
 
-            // BATCH TEXT PROMPT - Enhanced for Mysticism & Depth
-            const batchPrompt = `Generate a high-frequency, mystical-cyberpunk daily diagnostic for ${sign}.
-        Tarot Signal: "${card.card?.name}" (${card.isReversed ? 'Inverted Polarity' : 'Standard Polarity'}).
-        Life Path Frequency: ${activeProfile.birthDate ? 'Calculated' : 'Unknown'}. Focus: ${activeProfile.readingFocus}.
-        Cosmic Alignment: Life Path ${cosmicBlueprint?.lifePath.number}
-        ${journalContext}
-        
-         Directives:
-        1. **Horoscope**: A deeply evocative, mystical, yet practically precise horoscope for today (3-4 paragraphs). Use Cyber-Shamanic terminology (resonance, alignment, archetypes, void, manifestation).
-        2. **Tarot Reading**:
-           - **Core Message**: A deep, soul-level truth. Not generic.
-           - **Mystical Insight**: Esoteric connections (astrology, kabbalah, alchemy).
-           - **Tactical Directive**: A specific, ritualistic or practical action to align with this energy.
-           - **Reflection**: A koan-like question to haunt the user's thoughts.
-        3. **Synthesis**: A final transmission combining all signals into a cohesive guidance.
-        
-        Return strictly as JSON matching this schema:
-        {
-          "horoscope": "string",
-          "cardReading": {
-            "coreMessage": "string",
-            "mysticalInsight": "string",
-            "todaysAction": "string",
-            "reflectionQuestion": "string"
-          },
-          "combinedGuidance": "string"
-        }`;
+            const cosmicInfo = activeProfile.birthDate ? `Calculated. Focus: ${activeProfile.readingFocus}. Cosmic Alignment: Life Path ${cosmicBlueprint?.lifePath.number}` : 'Unknown';
+
+            // BATCH TEXT PROMPT - Consolidated in constants/prompts.ts
+            const batchPrompt = DAILY_INSIGHT_PROMPT(sign, journalContext, cosmicInfo)
+                .replace('{cardName}', card.card?.name || 'Unknown Card')
+                .replace('{polarity}', card.isReversed ? 'Inverted Polarity' : 'Standard Polarity');
 
             setGenerationStatus('Establishing uplink...');
 
@@ -196,6 +206,7 @@ const DailyPage: React.FC = () => {
                 </div>
 
                 <div className="flex gap-4">
+                    <CountdownTimer hasChosen={hasChosen} />
                     <div className="glass-panel px-6 py-3 rounded-2xl border-white/5 flex flex-col items-end group hover:border-purple-500/30 transition-all">
                         <span className="text-[9px] font-mono text-text-muted uppercase tracking-widest mb-1 group-hover:text-purple-400 transition-colors">Session_Fingerprint</span>
                         <span className="text-xs font-bold text-purple-400 font-mono tracking-tight">0x{frequencyFingerprint}</span>
@@ -275,15 +286,56 @@ const DailyPage: React.FC = () => {
                                                 <p className="text-sm leading-relaxed text-text-muted">{dailyInsights.cardReading.todaysAction}</p>
                                             </div>
                                         </div>
+
+                                        {/* Reflection Question Section */}
+                                        <div className="p-8 bg-purple-500/5 rounded-[2.5rem] border border-purple-500/20 shadow-glow mx-auto max-w-2xl text-center">
+                                            <h4 className="text-[10px] font-mono text-purple-300 uppercase mb-4 font-bold tracking-[0.4em]">Daily_Koan</h4>
+                                            <p className="text-xl text-white font-medium italic leading-relaxed">
+                                                {dailyInsights.cardReading.reflectionQuestion}
+                                            </p>
+                                        </div>
+
+                                        {/* Personal Reflection Area */}
+                                        <div className="pt-6">
+                                            <h4 className="text-[10px] font-mono text-text-muted uppercase mb-4 font-bold tracking-widest">Personal_Reflection_Log</h4>
+                                            <textarea
+                                                className="w-full h-32 bg-white/5 border border-white/10 rounded-3xl p-6 text-white text-sm focus:outline-none focus:border-purple-500/50 transition-all resize-none font-dm-sans"
+                                                placeholder="Decrypt your internal signals here..."
+                                                defaultValue={dailyDrawHistory.find(r => r.date === todayStr)?.userReflection || ''}
+                                                onBlur={(e) => updateDailyDrawReflection(todayStr, e.target.value)}
+                                            ></textarea>
+                                            <p className="text-[9px] font-mono text-text-muted mt-2 text-right uppercase tracking-widest">Auto_Syncing_Enabled</p>
+                                        </div>
                                     </div>
                                 </TelemetryModule>
                                 <div className="lg:col-span-4 glass-panel rounded-[2.5rem] border-white/5 bg-black/40 overflow-hidden relative group h-full shadow-2xl min-h-[300px]">
-                                    {dailyInsights.visionSigil ? <img src={dailyInsights.visionSigil} alt="Vision Sigil" className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-1000 group-hover:scale-110 transition-transform duration-[4s]" /> : <div className="flex flex-col items-center justify-center h-full gap-4"><SparklesIcon className="w-10 h-10 text-white/10 animate-spin-slow" /><span className="text-[10px] font-mono text-white/20 uppercase tracking-[0.4em]">Rendering_Sigil...</span></div>}
+                                    {dailyInsights.visionSigil ? (
+                                        <img src={dailyInsights.visionSigil} alt="Vision Sigil" className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-1000 group-hover:scale-110 transition-transform duration-[4s]" />
+                                    ) : (
+                                        <div className="flex flex-col items-center justify-center h-full gap-4 relative">
+                                            <div className="absolute inset-0 bg-gradient-to-t from-purple-500/10 to-transparent"></div>
+                                            <div className="w-24 h-24 border border-white/10 rounded-full flex items-center justify-center animate-pulse">
+                                                <div className="w-16 h-16 border border-white/5 rounded-full animate-ping"></div>
+                                            </div>
+                                            <SparklesIcon className="w-10 h-10 text-white/20" />
+                                            <span className="text-[10px] font-mono text-white/30 uppercase tracking-[0.4em] z-10">Neural_Static_Active</span>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         )}
                         {dailyInsights?.combinedGuidance && (
-                            <TelemetryModule icon={<CompassIcon className="w-4 h-4" />} title="Integrated_Synthesis" delay={300} className="border-l-purple-500/40 bg-purple-500/[0.02]">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                                <TelemetryModule icon={<CompassIcon className="w-4 h-4" />} title="Pattern_Recognition" delay={300} className="border-l-purple-500/40 bg-purple-500/[0.02]">
+                                    <div className="text-sm leading-relaxed text-text-muted">{dailyInsights.patternRecognition}</div>
+                                </TelemetryModule>
+                                <TelemetryModule icon={<LayersIcon className="w-4 h-4" />} title="Numerology_Weight" delay={400} className="border-l-teal-500/40 bg-teal-500/[0.02]">
+                                    <div className="text-sm leading-relaxed text-text-muted">{dailyInsights.numerologyInsight}</div>
+                                </TelemetryModule>
+                            </div>
+                        )}
+                        {dailyInsights?.combinedGuidance && (
+                            <TelemetryModule icon={<CompassIcon className="w-4 h-4" />} title="Integrated_Synthesis" delay={500} className="border-l-purple-500/40 bg-purple-500/[0.02]">
                                 <div className="text-lg leading-relaxed text-text-muted">{dailyInsights.combinedGuidance}</div>
                             </TelemetryModule>
                         )}

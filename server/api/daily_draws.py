@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 
-from models.schemas import DailyDrawCreate, DailyDrawResponse
+from models.schemas import DailyDrawCreate, DailyDrawResponse, DailyDrawUpdate
 from models.database_models import DailyDraw, User
 from core.database import get_db
 from api.deps import get_current_user
@@ -23,3 +23,14 @@ def create_daily_draw(draw_in: DailyDrawCreate, db: Session = Depends(get_db), c
 def get_daily_draws(db: Session = Depends(get_db), current_user: User = Depends(get_current_user), skip: int = 0, limit: int = 30):
     draws = db.query(DailyDraw).filter(DailyDraw.user_id == current_user.id).order_by(DailyDraw.date.desc()).offset(skip).limit(limit).all()
     return draws
+@router.patch("/{draw_id}", response_model=DailyDrawResponse)
+def update_daily_draw(draw_id: str, draw_in: DailyDrawUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    draw = db.query(DailyDraw).filter(DailyDraw.id == draw_id, DailyDraw.user_id == current_user.id).first()
+    if not draw:
+        raise HTTPException(status_code=404, detail="Daily draw not found.")
+    
+    draw.insights = draw_in.insights
+    db.commit()
+    db.refresh(draw)
+    app_logger.info(f"Daily draw {draw_id} updated for user: {current_user.id}")
+    return draw
