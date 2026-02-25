@@ -73,7 +73,7 @@ const Sidebar: React.FC<{ activePage: Page; setPage: (page: Page) => void; activ
       <div className="mb-10 relative z-10">
         <h1 className="text-xl font-bold font-dm-sans text-white tracking-tighter flex items-center gap-2">
           <span className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
-          GRIDPUNK ARCANA
+          SIGAL
         </h1>
         <div className="mt-4 p-4 glass-panel rounded-xl border-purple-500/20">
           <p className="text-[10px] font-mono text-purple-400 uppercase tracking-[0.2em] mb-2">OPERATOR_STATUS</p>

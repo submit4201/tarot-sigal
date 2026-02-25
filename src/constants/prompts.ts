@@ -37,12 +37,12 @@ Context: ${intent} focus.
 Output: Just the refined question text.`;
 
 export const TAROT_INTERPRETATION_PROMPT = (
-    spread: string,
-    cosmicInfo: string,
-    userContext: string,
-    journalContext: string,
-    nodesInfo: string,
-    isPremium: boolean
+  spread: string,
+  cosmicInfo: string,
+  userContext: string,
+  journalContext: string,
+  nodesInfo: string,
+  isPremium: boolean
 ) => `
 Perform a high-fidelity, mystical-cyberpunk diagnostic synthesis for a Tarot Reading.
 
@@ -114,7 +114,7 @@ Craft a deep and personalized interpretation of this card specifically for this 
 **Tone & Focus:** The writing must be consistently **${style}**. All examples and advice should be tailored to **'${focus}'**. Address the user directly.`;
 
 export const SIGIL_READING_PROMPT = (name: string, question: string, cards: any[]) => `
-            You are a master of the Gridpunk Sigil Ritual. The user has provided a raw focus for their reading.
+            You are a master of the Sigal Sigil Ritual. The user has provided a raw focus for their reading.
             Your task: 
             1. First, refine the user's focus: "${question}" into a "Refined Sigil Intent" that is more empowering, open-ended, and suitable for a mystical cyberpunk divination.
             2. Perform a 3-card Past/Present/Future Sigil Reading for ${name} based on this refined intent.

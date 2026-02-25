@@ -2,6 +2,7 @@ import React, { createContext, useContext, ReactNode, useEffect, useState, useCa
 import { useAuth } from './AuthContext';
 import { db } from '../services/apiService';
 import decksData from '../data/decks.json';
+import { getLocalDateString } from '../utils/dateUtils';
 
 const decks = decksData as Deck[];
 import { JournalEntry, SavedReading, DrawnCard, DailyDrawRecord, UserProfile, Page, AchievementID, Deck, DailyInsights, DrawnDivinationCard } from '../types';
@@ -156,8 +157,18 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         const profile = await db.getProfile();
         if (profile) {
           // Add default fields since API doesn't fully represent Appwrite's old structure yet
+          // @note Coalesce nullable string fields to empty strings so React controlled inputs
+          //       never receive null (prevents uncontrolled→controlled warnings and blank fields)
           const fullProfile = {
             ...profile,
+            givenName: profile.givenName || '',
+            currentName: profile.currentName || '',
+            mothersMaidenName: profile.mothersMaidenName || '',
+            birthDate: profile.birthDate || '',
+            birthTime: profile.birthTime || '',
+            birthPlace: profile.birthPlace || '',
+            readingStyle: profile.readingStyle || 'mystical',
+            readingFocus: profile.readingFocus || 'general',
             level: profile.level || 1,
             xp: profile.xp || 0,
             ownedDeckIds: profile.ownedDeckIds || ['default_tarot', 'ancient_runes'],
@@ -242,6 +253,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       if (profile) {
         const fullProfile = {
           ...profile,
+          givenName: profile.givenName || '',
+          currentName: profile.currentName || '',
+          mothersMaidenName: profile.mothersMaidenName || '',
+          birthDate: profile.birthDate || '',
+          birthTime: profile.birthTime || '',
+          birthPlace: profile.birthPlace || '',
+          readingStyle: profile.readingStyle || 'mystical',
+          readingFocus: profile.readingFocus || 'general',
           level: profile.level || 1,
           xp: profile.xp || 0,
           ownedDeckIds: profile.ownedDeckIds || ['default_tarot', 'ancient_runes'],
@@ -268,6 +287,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const profile = await db.getProfile();
     setActiveProfile({
       ...profile,
+      givenName: profile.givenName || '',
+      currentName: profile.currentName || '',
+      mothersMaidenName: profile.mothersMaidenName || '',
+      birthDate: profile.birthDate || '',
+      birthTime: profile.birthTime || '',
+      birthPlace: profile.birthPlace || '',
+      readingStyle: profile.readingStyle || 'mystical',
+      readingFocus: profile.readingFocus || 'general',
       level: profile.level || 1,
       xp: profile.xp || 0,
       ownedDeckIds: profile.ownedDeckIds || ['default_tarot', 'ancient_runes'],
@@ -338,7 +365,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const addDailyDrawToHistory = async (draw: DrawnCard) => {
     if (!user || !activeProfile) return;
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = getLocalDateString();
 
     const dbRecord = {
       date: todayStr,

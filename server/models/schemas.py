@@ -25,6 +25,13 @@ class UserResponse(BaseModel):
     id: str
     email: str
     given_name: Optional[str] = Field(None, alias="givenName")
+    current_name: Optional[str] = Field(None, alias="currentName")
+    mothers_maiden_name: Optional[str] = Field(None, alias="mothersMaidenName")
+    birth_date: Optional[str] = Field(None, alias="birthDate")
+    birth_time: Optional[str] = Field(None, alias="birthTime")
+    birth_place: Optional[str] = Field(None, alias="birthPlace")
+    reading_style: Optional[str] = Field("mystical", alias="readingStyle")
+    reading_focus: Optional[str] = Field("general", alias="readingFocus")
     is_premium: bool = Field(False, alias="isPremium")
     subscription_tier: str = Field("free", alias="subscriptionTier")
     subscription_expiry: Optional[datetime] = Field(None, alias="subscriptionExpiry")
@@ -41,6 +48,13 @@ class UserResponse(BaseModel):
 
 class ProfileUpdate(BaseModel):
     given_name: Optional[str] = Field(None, alias="givenName")
+    current_name: Optional[str] = Field(None, alias="currentName")
+    mothers_maiden_name: Optional[str] = Field(None, alias="mothersMaidenName")
+    birth_date: Optional[str] = Field(None, alias="birthDate")
+    birth_time: Optional[str] = Field(None, alias="birthTime")
+    birth_place: Optional[str] = Field(None, alias="birthPlace")
+    reading_style: Optional[str] = Field(None, alias="readingStyle")
+    reading_focus: Optional[str] = Field(None, alias="readingFocus")
     is_premium: Optional[bool] = Field(None, alias="isPremium")
     subscription_tier: Optional[str] = Field(None, alias="subscriptionTier")
     stardust: Optional[int] = None
@@ -143,11 +157,13 @@ class BirthProfileBase(BaseModel):
     longitude: Optional[str] = None
 
 class BirthProfileCreate(BirthProfileBase):
-    pass
+    label: Optional[str] = Field("Me", description="Profile label, e.g. 'Me', 'Sarah', 'Alex'")
 
 class BirthProfileResponse(BirthProfileBase):
     id: str
     user_id: str
+    label: str = "Me"
+    is_primary: bool = Field(True, alias="isPrimary")
     profile_data: Union[dict, Json[dict], None] = Field(None, alias="profileData")
     llm_narrative: Optional[str] = Field(None, alias="llmNarrative")
     created_at: datetime

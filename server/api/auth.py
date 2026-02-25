@@ -61,7 +61,10 @@ def update_current_user(
     current_user: User = Depends(get_current_user)
 ):
     update_data = profile_in.model_dump(exclude_unset=True)
+    app_logger.info(f"[DEBUG] ProfileUpdate raw model: {profile_in}")
+    app_logger.info(f"[DEBUG] model_dump(exclude_unset=True) => {update_data}")
     for field, value in update_data.items():
+        app_logger.info(f"[DEBUG] Setting {field} = {repr(value)}")
         setattr(current_user, field, value)
     
     db.commit()

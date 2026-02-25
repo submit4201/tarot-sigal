@@ -10,6 +10,7 @@ import { DAILY_INSIGHT_PROMPT } from '../constants/prompts';
 import { generateCosmicBlueprint } from '../services/cosmicService';
 import CosmicBlueprintDisplay from '../components/CosmicBlueprintDisplay';
 import { TAROT_DECK } from '../constants';
+import { getLocalDateString, getTimeUntilMidnight } from '../utils/dateUtils';
 
 import { db } from '../services/apiService';
 
@@ -29,6 +30,34 @@ const TelemetryModule: React.FC<{ icon: React.ReactNode; title: string; children
     );
 };
 
+/**
+ * @description Countdown timer displaying time until the next daily card flip.
+ * Updates every second and resets at local midnight.
+ */
+const CountdownTimer: React.FC<{ hasChosen: boolean }> = ({ hasChosen }) => {
+    const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnight());
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTimeLeft(getTimeUntilMidnight());
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const pad = (n: number) => n.toString().padStart(2, '0');
+
+    return (
+        <div className="glass-panel px-6 py-3 rounded-2xl border-white/5 flex flex-col items-end group hover:border-teal-500/30 transition-all">
+            <span className="text-[9px] font-mono text-text-muted uppercase tracking-widest mb-1 group-hover:text-teal-400 transition-colors">
+                {hasChosen ? 'Next_Sync_In' : 'Session_Window'}
+            </span>
+            <span className="text-xs font-bold font-mono tracking-tight tabular-nums" style={{ color: hasChosen ? '#2dd4bf' : '#a78bfa' }}>
+                {pad(timeLeft.hours)}:{pad(timeLeft.minutes)}:{pad(timeLeft.seconds)}
+            </span>
+        </div>
+    );
+};
+
 const DailyPage: React.FC = () => {
     const { addDailyDrawToHistory, dailyDrawHistory, activeProfile, addXp, updateDailyDrawInsights, updateDailyDrawReflection, isPremium } = useApp();
     const [chosenCard, setChosenCard] = useState<DrawnCard | null>(null);
@@ -42,7 +71,8 @@ const DailyPage: React.FC = () => {
     if (!activeProfile) return <div className="p-8 font-mono animate-pulse text-purple-400 uppercase tracking-widest">Initialising_Link...</div>;
 
     const today = new Date();
-    const todayStr = today.toISOString().split('T')[0];
+    // @note Uses local timezone date string so daily card resets at local midnight, not UTC
+    const todayStr = getLocalDateString(today);
     const dailySeed = useMemo(() => getDailySeed(activeProfile, today), [activeProfile, todayStr]);
     const dailyNumber = useMemo(() => calculateDailyNumber(today), [todayStr]);
 
@@ -176,6 +206,7 @@ const DailyPage: React.FC = () => {
                 </div>
 
                 <div className="flex gap-4">
+                    <CountdownTimer hasChosen={hasChosen} />
                     <div className="glass-panel px-6 py-3 rounded-2xl border-white/5 flex flex-col items-end group hover:border-purple-500/30 transition-all">
                         <span className="text-[9px] font-mono text-text-muted uppercase tracking-widest mb-1 group-hover:text-purple-400 transition-colors">Session_Fingerprint</span>
                         <span className="text-xs font-bold text-purple-400 font-mono tracking-tight">0x{frequencyFingerprint}</span>

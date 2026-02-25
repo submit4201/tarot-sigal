@@ -4,140 +4,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GRIDPUNK ARCANA | Decode the Grid</title>
+    <title>SIGAL | Divine Intelligence, Digitally Channeled</title>
+    <meta name="description"
+        content="Sigal fuses ancient esoteric traditions with AI — delivering deep tarot insights, cosmic birth profiles, and gamified spiritual progression.">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=DM+Sans:opsz,wght@9..40,400;500;700&family=JetBrains+Mono:wght@400;700&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <div class="grid-bg"></div>
+    <!-- Ambient Layers -->
+    <canvas id="particles-canvas"></canvas>
 
-    <nav>
+    <!-- Navigation -->
+    <nav id="main-nav">
         <div class="container flex justify-between items-center">
             <div class="flex items-center gap-2">
-                <div style="width: 8px; height: 8px; background: #a855f7; border-radius: 50%;"></div>
-                <span class="font-mono" style="letter-spacing: -0.05em; font-weight: 700;">GRIDPUNK_ARCANA</span>
+                <div class="nav-dot"></div>
+                <span class="brand-text">SIGAL</span>
             </div>
-            <div class="flex gap-4">
-                <a href="#features" class="btn btn-secondary"
-                    style="border: none; background: transparent;">Features</a>
-                <a href="#pricing" class="btn btn-secondary" style="border: none; background: transparent;">Pricing</a>
+            <div class="flex gap-4 items-center">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#how-it-works" class="nav-link">How It Works</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
                 <a href="https://sigil.app.cultofthefork.tech" class="btn btn-primary">Enter App</a>
             </div>
         </div>
     </nav>
 
+    <!-- Hero Section -->
     <header class="hero">
         <div class="container text-center">
-            <div class="font-mono text-accent" style="letter-spacing: 0.2em; font-size: 0.8rem; margin-bottom: 24px;">
-                SYSTEM_ONLINE_V2.5</div>
-            <h1 style="font-size: clamp(3rem, 8vw, 6rem); margin-bottom: 24px;">
-                Decode the Grid.<br>
-                <span class="text-gradient">Unlock Your Destiny.</span>
+            <div class="reveal hero-badge font-mono">
+                <span class="badge-dot"></span>
+                NOW IN OPEN ACCESS
+            </div>
+            <h1 class="reveal hero-title">
+                Your Cards Know<br>
+                <span class="text-gradient">What You Don't.</span>
             </h1>
-            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 48px;">
-                A cyberpunk tarot experience powered by AI connectivity.
-                Perform high-fidelity readings, analyze your path, and sync with the digital ether.
+            <p class="reveal hero-subtitle">
+                AI-powered tarot that actually understands you. Get readings that connect the dots between your stars,
+                your cards, and your life — then watch your patterns unfold over time.
             </p>
-            <div class="flex justify-center gap-4">
-                <a href="https://sigil.app.cultofthefork.tech" class="btn btn-primary">Initialize Access</a>
-                <a href="#demo" class="btn btn-secondary">View Demo</a>
+            <div class="reveal flex justify-center gap-4">
+                <a href="https://sigil.app.cultofthefork.tech" class="btn btn-primary btn-lg btn-glow">Start Free — No
+                    Card Needed</a>
+                <a href="#features" class="btn btn-secondary btn-lg">See How It Works ↓</a>
+            </div>
+
+            <!-- Floating Card Preview -->
+            <div class="reveal hero-card-container">
+                <div class="hero-card">
+                    <div class="hero-card-inner">
+                        <div class="hero-card-icon">🔮</div>
+                        <div class="hero-card-title">THE FOOL</div>
+                        <div class="hero-card-subtitle">0 — NEW BEGINNINGS</div>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
 
+    <!-- Features Section -->
     <section id="features" class="features">
         <div class="container">
-            <h2 class="text-center" style="font-size: 3rem; margin-bottom: 16px;">Core Modules</h2>
-            <p class="text-center" style="color: var(--text-muted);">Advanced tools for the modern mystic.</p>
+            <h2 class="reveal section-title">Everything You Need to Go Deeper</h2>
+            <p class="reveal section-subtitle">More than a tarot app — it's a spiritual operating system.</p>
 
             <div class="feature-grid">
-                <div class="glass-panel feature-card">
-                    <div class="font-mono text-accent" style="margin-bottom: 16px;">01_DIVINATION</div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 12px;">AI-Enhanced Readings</h3>
-                    <p style="color: var(--text-muted);">
-                        Experience Tarot like never before. Our AI interprets card combinations, elemental dignities,
-                        and numerological patterns in real-time.
-                    </p>
+                <div class="reveal glass-panel feature-card">
+                    <div class="feature-icon">🔮</div>
+                    <div class="feature-tag font-mono">01_DIVINATION</div>
+                    <h3 class="feature-title">Readings That Hit Different</h3>
+                    <p class="feature-desc">Not generic fortune-cookie answers. Our AI analyzes card relationships,
+                        elemental tensions, and your question's context to deliver insights that actually land.</p>
                 </div>
-                <div class="glass-panel feature-card">
-                    <div class="font-mono text-accent" style="margin-bottom: 16px;">02_ARCHIVE</div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 12px;">Digital Grimoire</h3>
-                    <p style="color: var(--text-muted);">
-                        Every draw is logged. Track your journey with a searchable journal that automatically links to
-                        your readings and insights.
-                    </p>
+                <div class="reveal glass-panel feature-card">
+                    <div class="feature-icon">📖</div>
+                    <div class="feature-tag font-mono">02_GRIMOIRE</div>
+                    <h3 class="feature-title">Your Spiritual Paper Trail</h3>
+                    <p class="feature-desc">Every reading saved. Every reflection connected. Watch themes emerge across
+                        weeks and months that you'd never catch on your own.</p>
                 </div>
-                <div class="glass-panel feature-card">
-                    <div class="font-mono text-accent" style="margin-bottom: 16px;">03_PROGRESS</div>
-                    <h3 style="font-size: 1.5rem; margin-bottom: 12px;">RPG Mechanics</h3>
-                    <p style="color: var(--text-muted);">
-                        Earn Stardust and XP as you practice. Level up your profile to unlock new features, decks, and
-                        customization options.
-                    </p>
+                <div class="reveal glass-panel feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-tag font-mono">03_PROGRESSION</div>
+                    <h3 class="feature-title">Level Up for Real</h3>
+                    <p class="feature-desc">Earn Stardust and XP with every reading. Unlock rare decks, custom sigils,
+                        and exclusive content as your practice deepens. Consistency is rewarded.</p>
+                </div>
+                <div class="reveal glass-panel feature-card">
+                    <div class="feature-icon">✨</div>
+                    <div class="feature-tag font-mono">04_BIRTH_CHART</div>
+                    <h3 class="feature-title">Your Cosmic Blueprint</h3>
+                    <p class="feature-desc">A full natal chart with Sabian Symbols, planetary transits, and an
+                        AI-narrated Hero's Arc written in your stars. Not a horoscope — a map.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="demo" class="demo">
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works">
         <div class="container">
-            <h2 class="text-center" style="font-size: 3rem; margin-bottom: 16px;">See It In Action</h2>
-            <p class="text-center" style="color: var(--text-muted); margin-bottom: 48px;">Watch how Gridpunk Arcana transforms your divination practice.</p>
-            
-            <div class="glass-panel" style="padding: 0; overflow: hidden; max-width: 900px; margin: 0 auto;">
-                <div style="padding: 120px; background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%); display: flex; align-items: center; justify-content: center; color: var(--text-muted);">
-                    <div style="text-align: center;">
-                        <div class="font-mono" style="font-size: 3rem; margin-bottom: 16px;">🎴</div>
-                        <p class="font-mono">Demo video or GIF placeholder</p>
-                        <p style="font-size: 0.8rem; margin-top: 8px;">Coming soon: Interactive demo</p>
+            <h2 class="reveal section-title">From Download to Divination in 60 Seconds</h2>
+            <p class="reveal section-subtitle">No signup walls. No learning curve. Just pull.</p>
+
+            <div class="steps-grid">
+                <div class="reveal step-card">
+                    <div class="step-number">01</div>
+                    <h3 class="step-title">Drop Your Birth Data</h3>
+                    <p class="step-desc">Date, time, location. That's it. We handle the rest — your chart, your
+                        placements, your arc.</p>
+                </div>
+                <div class="reveal step-card">
+                    <div class="step-number">02</div>
+                    <h3 class="step-title">Pull Your Spread</h3>
+                    <p class="step-desc">Pick your question, choose a spread, and draw. The AI reads your cards before
+                        you finish flipping them.</p>
+                </div>
+                <div class="reveal step-card">
+                    <div class="step-number">03</div>
+                    <h3 class="step-title">Get the Real Answer</h3>
+                    <p class="step-desc">No vague platitudes. Detailed narrative breakdowns, shadow work prompts, and
+                        advice you can actually act on today.</p>
+                </div>
+                <div class="reveal step-card">
+                    <div class="step-number">04</div>
+                    <h3 class="step-title">Watch Patterns Emerge</h3>
+                    <p class="step-desc">Journal, reflect, earn XP. The AI connects your readings over time and shows
+                        you what you keep missing.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Showcase Section -->
+    <section class="showcase">
+        <div class="container">
+            <div class="reveal glass-panel showcase-panel">
+                <div class="showcase-glow"></div>
+                <div class="showcase-content">
+                    <h2 class="showcase-title">Cards That Feel <span class="text-gradient">Alive</span></h2>
+                    <p class="showcase-text">
+                        Interactive cards that react to your touch. Each draw is a tactile ritual — the Arcana doesn't
+                        just speak to you, it responds to your energy. This isn't a card database. It's a living deck.
+                    </p>
+                    <ul class="showcase-features">
+                        <li><span class="check-cosmic">⚡</span> Daily Neural Alignment</li>
+                        <li><span class="check-cosmic">⚡</span> AI Pattern Recognition</li>
+                        <li><span class="check-cosmic">⚡</span> Gamified Sync Rate</li>
+                        <li><span class="check-cosmic">⚡</span> Shadow Work Analysis</li>
+                    </ul>
+                </div>
+                <div class="showcase-cards">
+                    <div class="mini-card">
+                        <div class="mini-card-icon">🂡</div>
+                        <div class="mini-card-name">THE MAGICIAN</div>
+                    </div>
+                    <div class="mini-card">
+                        <div class="mini-card-icon">🂢</div>
+                        <div class="mini-card-name">HIGH PRIESTESS</div>
+                    </div>
+                    <div class="mini-card">
+                        <div class="mini-card-icon">🂣</div>
+                        <div class="mini-card-name">THE EMPRESS</div>
+                    </div>
+                    <div class="mini-card">
+                        <div class="mini-card-icon">🂤</div>
+                        <div class="mini-card-name">THE EMPEROR</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Pricing Section -->
     <section id="pricing" class="pricing">
         <div class="container">
-            <h2 class="text-center" style="font-size: 3rem; margin-bottom: 16px;">Access Tiers</h2>
-            <p class="text-center" style="color: var(--text-muted);">Choose your connection bandwidth.</p>
+            <h2 class="reveal section-title">Pick Your Path</h2>
+            <p class="reveal section-subtitle">Start free. Upgrade when you're hooked.</p>
 
             <div class="pricing-grid">
                 <!-- Free Tier -->
-                <div class="glass-panel pricing-card">
-                    <div class="font-mono text-accent" style="font-size: 0.8rem;">INITIATE</div>
+                <div class="reveal glass-panel pricing-card">
+                    <div class="font-mono text-accent pricing-tag">FREE FOREVER</div>
                     <div class="pricing-price">$0</div>
-                    <p style="color: var(--text-muted); margin-bottom: 24px;">For casual observers.</p>
-                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-secondary" style="width: 100%;">Get
-                        Started</a>
-
+                    <p class="pricing-desc">Enough to know this is real.</p>
+                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-secondary btn-glow-subtle"
+                        style="width: 100%;">Try It Free</a>
                     <ul class="feature-list">
                         <li class="active"><span class="check-icon">✓</span> Daily Card Draw</li>
                         <li class="active"><span class="check-icon">✓</span> Basic 3-Card Spreads</li>
                         <li class="active"><span class="check-icon">✓</span> Limited Teaser Insights</li>
                         <li>Standard Decks Only</li>
-                        <li>Ads Supported</li>
                     </ul>
                 </div>
 
                 <!-- Seeker Tier -->
-                <div class="glass-panel pricing-card featured">
-                    <div
-                        style="position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); background: var(--primary); color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;">
-                        RECOMMENDED</div>
-                    <div class="font-mono text-accent" style="font-size: 0.8rem;">SEEKER</div>
+                <div class="reveal glass-panel pricing-card featured">
+                    <div class="featured-badge">RECOMMENDED</div>
+                    <div class="font-mono text-accent pricing-tag">MOST POPULAR</div>
                     <div class="pricing-price">$8.99<span>/mo</span></div>
-                    <p style="color: var(--text-muted); margin-bottom: 24px;">For serious practitioners.</p>
-                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-primary"
-                        style="width: 100%;">Connect</a>
-
+                    <p class="pricing-desc">For people who are done with surface-level.</p>
+                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-primary btn-glow"
+                        style="width: 100%;">Unlock Full Access</a>
                     <ul class="feature-list">
                         <li class="active"><span class="check-icon">✓</span> Unlimited Readings</li>
                         <li class="active"><span class="check-icon">✓</span> Full AI Analysis</li>
@@ -148,13 +226,12 @@
                 </div>
 
                 <!-- Oracle Tier -->
-                <div class="glass-panel pricing-card">
-                    <div class="font-mono text-accent" style="font-size: 0.8rem;">ORACLE</div>
+                <div class="reveal glass-panel pricing-card">
+                    <div class="font-mono text-accent pricing-tag">ORACLE</div>
                     <div class="pricing-price">$14.99<span>/mo</span></div>
-                    <p style="color: var(--text-muted); margin-bottom: 24px;">For the fully awakened.</p>
-                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-secondary"
-                        style="width: 100%;">Ascend</a>
-
+                    <p class="pricing-desc">For when you want zero limits.</p>
+                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-secondary btn-glow-subtle"
+                        style="width: 100%;">Go All In</a>
                     <ul class="feature-list">
                         <li class="active"><span class="check-icon">✓</span> <strong>Everything in Seeker</strong></li>
                         <li class="active"><span class="check-icon">✓</span> Live Oracle AI Support</li>
@@ -167,70 +244,87 @@
         </div>
     </section>
 
-    <section class="stardust-packs" style="padding: 120px 0;">
+    <!-- Stardust Packs -->
+    <section class="stardust-packs">
         <div class="container">
-            <h2 class="text-center" style="font-size: 3rem; margin-bottom: 16px;">Stardust Packs</h2>
-            <p class="text-center" style="color: var(--text-muted); margin-bottom: 48px;">One-time purchases for instant Stardust to unlock decks and features.</p>
+            <h2 class="reveal section-title">Need More Stardust?</h2>
+            <p class="reveal section-subtitle">One-time boosts. No subscriptions. Instant unlock.</p>
 
-            <div class="pricing-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); max-width: 1000px; margin: 0 auto;">
-                <!-- Spark Pack -->
-                <div class="glass-panel" style="padding: 32px; text-align: center; border: 1px solid rgba(168, 85, 247, 0.1);">
-                    <div class="font-mono text-accent" style="font-size: 0.8rem; margin-bottom: 8px;">SPARK</div>
-                    <div class="pricing-price" style="font-size: 2.5rem;">$0.99</div>
-                    <div style="color: var(--text-muted); margin-bottom: 24px; font-size: 1.5rem; font-weight: 700;">250 ✨</div>
-                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-secondary" style="width: 100%; padding: 12px;">Get Started</a>
+            <div class="stardust-grid">
+                <div class="reveal glass-panel stardust-card">
+                    <div class="font-mono text-accent stardust-tag">SPARK</div>
+                    <div class="stardust-price">$0.99</div>
+                    <div class="stardust-amount">250 ✨</div>
+                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-secondary stardust-btn">Get
+                        Started</a>
                 </div>
-
-                <!-- Ember Pack -->
-                <div class="glass-panel" style="padding: 32px; text-align: center; border: 1px solid rgba(168, 85, 247, 0.2);">
-                    <div class="font-mono text-accent" style="font-size: 0.8rem; margin-bottom: 8px;">EMBER</div>
-                    <div class="pricing-price" style="font-size: 2.5rem;">$2.99</div>
-                    <div style="color: var(--text-muted); margin-bottom: 24px; font-size: 1.5rem; font-weight: 700;">1,000 ✨</div>
-                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-secondary" style="width: 100%; padding: 12px;">Get Started</a>
+                <div class="reveal glass-panel stardust-card">
+                    <div class="font-mono text-accent stardust-tag">EMBER</div>
+                    <div class="stardust-price">$2.99</div>
+                    <div class="stardust-amount">1,000 ✨</div>
+                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-secondary stardust-btn">Get
+                        Started</a>
                 </div>
-
-                <!-- Supernova Pack -->
-                <div class="glass-panel" style="padding: 32px; text-align: center; border: 1px solid rgba(168, 85, 247, 0.3);">
-                    <div class="font-mono text-accent" style="font-size: 0.8rem; margin-bottom: 8px;">SUPERNOVA</div>
-                    <div class="pricing-price" style="font-size: 2.5rem;">$4.99</div>
-                    <div style="color: var(--text-muted); margin-bottom: 24px; font-size: 1.5rem; font-weight: 700;">2,500 ✨</div>
-                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-primary" style="width: 100%; padding: 12px;">Popular</a>
+                <div class="reveal glass-panel stardust-card stardust-popular">
+                    <div class="font-mono text-accent stardust-tag">SUPERNOVA</div>
+                    <div class="stardust-price">$4.99</div>
+                    <div class="stardust-amount">2,500 ✨</div>
+                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-primary stardust-btn">Popular</a>
                 </div>
-
-                <!-- Cosmic Rift Pack -->
-                <div class="glass-panel" style="padding: 32px; text-align: center; border: 1px solid rgba(168, 85, 247, 0.4);">
-                    <div class="font-mono text-accent" style="font-size: 0.8rem; margin-bottom: 8px;">COSMIC_RIFT</div>
-                    <div class="pricing-price" style="font-size: 2.5rem;">$9.99</div>
-                    <div style="color: var(--text-muted); margin-bottom: 24px; font-size: 1.5rem; font-weight: 700;">7,500 ✨</div>
-                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-primary" style="width: 100%; padding: 12px;">Best Value</a>
+                <div class="reveal glass-panel stardust-card">
+                    <div class="font-mono text-accent stardust-tag">COSMIC_RIFT</div>
+                    <div class="stardust-price">$9.99</div>
+                    <div class="stardust-amount">7,500 ✨</div>
+                    <a href="https://sigil.app.cultofthefork.tech" class="btn btn-primary stardust-btn">Best Value</a>
                 </div>
             </div>
 
-            <p class="text-center" style="color: var(--text-muted); margin-top: 32px; font-size: 0.9rem;">
+            <p class="reveal text-center stardust-note">
                 💎 <strong>Premium subscribers</strong> get <strong>2x Stardust</strong> on all purchases!
             </p>
         </div>
     </section>
 
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <div class="container text-center">
+            <div class="cta-glow"></div>
+            <h2 class="reveal cta-title">
+                The Cards Are <span class="text-gradient">Already Waiting</span>.
+            </h2>
+            <p class="reveal cta-desc">
+                Thousands of seekers pull daily. Your first reading is free, takes 30 seconds, and might change how you
+                see everything.
+            </p>
+            <div class="reveal">
+                <a href="https://sigil.app.cultofthefork.tech" class="btn btn-primary btn-xl btn-glow">Pull Your First
+                    Card — Free</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
-        <div class="container flex" style="flex-direction: column; gap: 32px; padding-top: 80px; padding-bottom: 80px;">
+        <div class="container footer-inner">
             <div class="flex items-center gap-2">
-                <div style="width: 8px; height: 8px; background: var(--primary); border-radius: 50%;"></div>
-                <span class="font-mono" style="letter-spacing: -0.05em; font-weight: 700;">GRIDPUNK_ARCANA</span>
+                <div class="nav-dot"></div>
+                <span class="brand-text brand-text-sm">SIGAL</span>
             </div>
-            
-            <div class="flex gap-8" style="flex-wrap: wrap; justify-content: center; font-size: 0.9rem;">
-                <a href="https://sigil.app.cultofthefork.tech" style="color: var(--text-muted); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Enter App</a>
-                <a href="#features" style="color: var(--text-muted); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Features</a>
-                <a href="#pricing" style="color: var(--text-muted); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">Pricing</a>
-                <a href="https://github.com/submit4201/tarot-sigal" style="color: var(--text-muted); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-muted)'">GitHub</a>
+
+            <div class="footer-links">
+                <a href="https://sigil.app.cultofthefork.tech">Enter App</a>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="https://github.com/submit4201/tarot-sigal">GitHub</a>
             </div>
-            
-            <div class="copyright" style="color: var(--text-muted); font-size: 0.8rem;">
-                &copy; 2026 Cult of the Fork. All rights reserved.
+
+            <div class="copyright">
+                &copy; 2026 Sigal. All rights reserved.
             </div>
         </div>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 
 </html>

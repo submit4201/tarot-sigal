@@ -27,12 +27,36 @@ app = FastAPI(
 )
 
 # CORS middleware to allow React frontend connection
+# @note allow_origins=["*"] with allow_credentials=True is INVALID per the
+#       CORS spec — browsers silently reject it. We must use explicit origins.
+cors_origins_env = os.environ.get("CORS_ORIGINS", "")
+cors_origins = [o.strip() for o in cors_origins_env.split(",") if o.strip()] if cors_origins_env else []
+
+# Default origins for local development
+default_origins = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:8000",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:8000",
+]
+
+# Auto-include the production frontend URL if set
+vite_app_url = os.environ.get("VITE_APP_URL", "")
+if vite_app_url:
+    cors_origins.append(vite_app_url.rstrip("/"))
+
+# Merge defaults with any env-provided origins (deduplicated)
+all_origins = list(dict.fromkeys(default_origins + cors_origins))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # In production, restrict this to the DigitalOcean frontend URL
+    allow_origins=all_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["Content-Disposition"],
 )
 
 @app.on_event("startup")

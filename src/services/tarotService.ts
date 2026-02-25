@@ -1,6 +1,7 @@
 
 import { TAROT_DECK, NUMEROLOGY_MEANINGS, RUNE_DECK } from '../constants';
 import { DrawnCard, TarotCard, SpreadType, DivinationCard, DrawnDivinationCard, Rune, UserProfile } from '../types';
+import { getLocalDateString } from '../utils/dateUtils';
 
 // Improved Seeded Random using bitwise unsigned logic to prevent JS sign-bit issues
 export class SeededRandom {
@@ -56,7 +57,7 @@ export const reduceNumber = (num: number): number => {
 };
 
 export const getDailySeed = (profile: UserProfile, date: Date): number => {
-  const dateISO = date.toISOString().split('T')[0];
+  const dateISO = getLocalDateString(date);
   // Add an application-level salt to further jitter the hash
   const seedString = `ARCANA_v2.5|${profile.givenName}|${profile.birthDate}|${dateISO}`;
   return createNumericSeed(seedString);

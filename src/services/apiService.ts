@@ -153,13 +153,36 @@ export const db = {
 };
 
 export const birthProfile = {
-    get: async () => {
+    /** List all profiles for the current user */
+    list: async () => {
         return apiFetch('/birth-profile/');
     },
-    update: async (data: any) => {
+    /** Get a single profile by ID */
+    getById: async (profileId: string) => {
+        return apiFetch(`/birth-profile/${profileId}`);
+    },
+    /** Create a new birth profile */
+    create: async (data: any) => {
         return apiFetch('/birth-profile/', {
             method: 'POST',
             body: JSON.stringify(data)
         });
-    }
+    },
+    /** Update an existing birth profile */
+    update: async (profileId: string, data: any) => {
+        return apiFetch(`/birth-profile/${profileId}`, {
+            method: 'PUT',
+            body: JSON.stringify(data)
+        });
+    },
+    /** Delete a birth profile (cannot delete primary) */
+    delete: async (profileId: string) => {
+        return apiFetch(`/birth-profile/${profileId}`, {
+            method: 'DELETE'
+        });
+    },
+    // Backward compatibility alias
+    get: async () => {
+        return apiFetch('/birth-profile/');
+    },
 };
