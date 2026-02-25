@@ -237,7 +237,7 @@ Format your response in clean sections with headers. Use a mystical but grounded
 
         try {
             const response = await generateContentWithRetry({
-                model: 'arcee-ai/trinity-large-preview:free',
+                model: 'openrouter/free',
                 contents: prompt,
             });
             const text = response.text ?? '';

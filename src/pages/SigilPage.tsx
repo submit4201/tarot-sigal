@@ -54,7 +54,7 @@ const SigilPage: React.FC = () => {
             const prompt = SIGIL_READING_PROMPT(activeProfile?.givenName || 'Seeker', question, drawnCards);
 
             const result = await generateContentWithRetry({
-                model: 'arcee-ai/trinity-large-preview:free',
+                model: 'openrouter/free',
                 contents: [{ role: 'user', parts: [{ text: prompt }] }]
             });
 

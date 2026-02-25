@@ -7,11 +7,15 @@ Reads deck theme JSON files (major + minor arcana) and produces high-quality
 card images with contextual prompts built from deck metadata, suit visuals,
 and per-card descriptions.
 
+Includes bad-prompt detection and LLM-powered prompt rewriting to handle
+content policy rejections automatically.
+
 Usage:
     python scripts/generate_tarot.py --dry-run
     python scripts/generate_tarot.py --card maj_00
     python scripts/generate_tarot.py --deck src/data/new/my_deck.json
     python scripts/generate_tarot.py --backofcard
+    python scripts/generate_tarot.py --scan
 
 @note: Requires IMAGE_API and IMAGE_MODEL in .env.local
 """
@@ -344,6 +348,104 @@ class PromptBuilder:
 
 
 # ---------------------------------------------------------------------------
+# PromptRewriter
+# ---------------------------------------------------------------------------
+class PromptRewriter:
+    """
+    Rewrites prompts that trigger content-policy rejections.
+
+    Uses the free Pollinations text API to sanitize prompts while
+    preserving artistic intent. Each retry attempt escalates the
+    level of abstraction.
+
+    @note The Pollinations text API requires no API key.
+    """
+
+    TEXT_API = "https://text.pollinations.ai/"
+    MAX_REWRITE_ATTEMPTS = 3
+
+    # System prompts escalate from light to heavy sanitization
+    _SYSTEM_PROMPTS = [
+        # Attempt 1 — light reword
+        (
+            "You are an image-prompt editor. The user's prompt was rejected by "
+            "an AI image generator's content policy. Rephrase it to be safe "
+            "while keeping the same artistic concept. Remove references to "
+            "violence, trauma, self-harm, abuse, rage, blood, death imagery, "
+            "and religious judgment. Replace with metaphorical or abstract "
+            "artistic language. Return ONLY the rewritten prompt, nothing else."
+        ),
+        # Attempt 2 — heavier abstraction
+        (
+            "You are an image-prompt editor. The user's prompt was TWICE "
+            "rejected by an AI image generator. Heavily abstract the concept. "
+            "Replace ALL psychological, emotional, or dark themes with purely "
+            "visual/artistic descriptions: colors, compositions, lighting, "
+            "textures. Keep it as a beautiful tarot card description. "
+            "Return ONLY the rewritten prompt, nothing else."
+        ),
+        # Attempt 3 — minimal safe prompt
+        (
+            "You are an image-prompt editor. The user's prompt keeps getting "
+            "rejected. Create a MINIMAL, completely safe artistic description "
+            "for a tarot card. Focus only on: a figure, colors, lighting, "
+            "and composition. No emotions, no psychology, no metaphors about "
+            "pain or darkness. Make it a beautiful, serene illustration. "
+            "Return ONLY the rewritten prompt, nothing else."
+        ),
+    ]
+
+    def rewrite(self, original_prompt: str, attempt: int = 1) -> str:
+        """
+        Rewrite a prompt that was rejected by the image API.
+
+        Args:
+            original_prompt: The prompt that was rejected.
+            attempt:         Which rewrite attempt (1-3), controls escalation.
+
+        Returns:
+            The rewritten prompt string, or the original if rewriting fails.
+        """
+        idx = min(attempt - 1, len(self._SYSTEM_PROMPTS) - 1)
+        system_msg = self._SYSTEM_PROMPTS[idx]
+
+        log.info(f"  🔄 Rewriting prompt (attempt {attempt}/{self.MAX_REWRITE_ATTEMPTS})...")
+
+        try:
+            payload = {
+                "messages": [
+                    {"role": "system", "content": system_msg},
+                    {"role": "user", "content": original_prompt},
+                ],
+                "model": "openai",
+                "seed": 42,
+            }
+            response = requests.post(
+                self.TEXT_API, json=payload, timeout=30
+            )
+
+            if response.status_code == 200:
+                rewritten = response.text.strip()
+                # Remove wrapping quotes if the LLM added them
+                if rewritten.startswith('"') and rewritten.endswith('"'):
+                    rewritten = rewritten[1:-1]
+                log.info(f"  ✏️  Rewritten prompt ({len(rewritten)} chars)")
+                log.debug(f"     Original:  {original_prompt[:120]}...")
+                log.debug(f"     Rewritten: {rewritten[:120]}...")
+                return rewritten
+            else:
+                log.warning(
+                    f"  ⚠️  Rewrite API returned {response.status_code}, "
+                    f"using original prompt"
+                )
+                return original_prompt
+
+        except requests.exceptions.RequestException as e:
+            log.warning(f"  ⚠️  Rewrite API error: {e}, using original prompt")
+            return original_prompt
+
+
+# ---------------------------------------------------------------------------
 # ImageGenerator
 # ---------------------------------------------------------------------------
 class ImageGenerator:
@@ -396,6 +498,7 @@ class ImageGenerator:
         self.generated = 0
         self.skipped = 0
         self.failed = 0
+        self.bad_prompt_count = 0
 
     def generate(self, prompt: str, output_path: Path, label: str = "") -> bool:
         """
@@ -445,6 +548,18 @@ class ImageGenerator:
                     output_path.parent.mkdir(parents=True, exist_ok=True)
                     with open(output_path, "wb") as f:
                         f.write(response.content)
+
+                    # Validate image dimensions — bad-prompt responses are
+                    # 1024x1024 placeholders instead of the requested size.
+                    if not self._validate_image(output_path):
+                        output_path.unlink(missing_ok=True)
+                        log.warning(
+                            f"  🚫 Bad-prompt detected for '{label}' — "
+                            f"image dimensions don't match {self.width}x{self.height}"
+                        )
+                        self.bad_prompt_count += 1
+                        return "BAD_PROMPT"
+
                     log.info(f"  ✅ Saved '{label}' → {output_path.name}")
                     self.generated += 1
                     time.sleep(self.RATE_LIMIT_DELAY)
@@ -485,6 +600,35 @@ class ImageGenerator:
         self.failed += 1
         return False
 
+    def _validate_image(self, path: Path) -> bool:
+        """
+        Validate that a saved image is NOT a bad-prompt placeholder.
+
+        The Pollinations API returns a 1024x1024 "Bad Prompt Buddy"
+        placeholder image when it rejects a prompt for content policy
+        violations. This check catches those by looking for the
+        characteristic square dimensions.
+
+        Args:
+            path: Path to the saved image file.
+
+        Returns:
+            True if image is valid (not a placeholder), False if bad.
+        """
+        try:
+            from PIL import Image
+            with Image.open(path) as img:
+                w, h = img.size
+            if (w, h) == BAD_PROMPT_SIZE:
+                log.debug(
+                    f"     Image is {w}x{h} — matches bad-prompt signature"
+                )
+                return False
+            return True
+        except Exception as e:
+            log.warning(f"  ⚠️  Could not validate image {path.name}: {e}")
+            return False
+
     def print_summary(self, total: int):
         """
         Print a final generation summary report.
@@ -494,13 +638,76 @@ class ImageGenerator:
         """
         log.info("=" * 60)
         log.info("GENERATION SUMMARY")
-        log.info(f"  Total scheduled : {total}")
-        log.info(f"  Generated       : {self.generated}")
-        log.info(f"  Skipped (exist) : {self.skipped}")
-        log.info(f"  Failed          : {self.failed}")
+        log.info(f"  Total scheduled  : {total}")
+        log.info(f"  Generated        : {self.generated}")
+        log.info(f"  Skipped (exist)  : {self.skipped}")
+        log.info(f"  Bad-prompt fixes : {self.bad_prompt_count}")
+        log.info(f"  Failed           : {self.failed}")
         mode_label = "DRY-RUN" if self.dry_run else "LIVE"
-        log.info(f"  Mode            : {mode_label}")
+        log.info(f"  Mode             : {mode_label}")
         log.info("=" * 60)
+
+
+# ---------------------------------------------------------------------------
+# Scan Utility
+# ---------------------------------------------------------------------------
+BAD_PROMPT_SIZE = (1024, 1024)  # Pollinations bad-prompt placeholder dims
+
+
+def scan_bad_images(directory: Path):
+    """
+    Scan a directory for bad-prompt placeholder images and delete them.
+
+    The Pollinations API returns a 1024×1024 square "Bad Prompt Buddy"
+    placeholder when a prompt is rejected for content-policy violations.
+    Normal tarot card images are always rectangular (e.g. 512×768,
+    768×1408), so a square 1024×1024 image is a reliable bad-prompt
+    indicator.
+
+    Args:
+        directory: Path to the directory to scan.
+    """
+    from PIL import Image
+
+    png_files = sorted(directory.glob("*.png"))
+    if not png_files:
+        log.info(f"No PNG files found in {directory}")
+        return
+
+    log.info(f"Scanning {len(png_files)} images in {directory}...")
+    log.info(f"Bad-prompt signature: {BAD_PROMPT_SIZE[0]}x{BAD_PROMPT_SIZE[1]}")
+    log.info("-" * 60)
+
+    bad_files = []
+    good_count = 0
+
+    for img_path in png_files:
+        try:
+            with Image.open(img_path) as img:
+                w, h = img.size
+            if (w, h) == BAD_PROMPT_SIZE:
+                bad_files.append((img_path, w, h))
+                log.warning(f"  🚫 {img_path.name}: {w}x{h} (BAD PROMPT)")
+            else:
+                good_count += 1
+        except Exception as e:
+            log.warning(f"  ⚠️  Could not open {img_path.name}: {e}")
+
+    log.info("-" * 60)
+    log.info(f"Good images:  {good_count}")
+    log.info(f"Bad images:   {len(bad_files)}")
+
+    if bad_files:
+        log.info("Deleting bad-prompt images...")
+        for path, w, h in bad_files:
+            path.unlink()
+            log.info(f"  🗑  Deleted {path.name} ({w}x{h})")
+        log.info(
+            f"✅ Deleted {len(bad_files)} bad image(s). "
+            f"Re-run without --scan to regenerate them."
+        )
+    else:
+        log.info("✅ All images look good — no bad-prompt placeholders found.")
 
 
 # ---------------------------------------------------------------------------
@@ -578,6 +785,16 @@ def build_cli() -> argparse.ArgumentParser:
         action="store_true",
         help="Also generate (or only generate) the back-of-card image",
     )
+    parser.add_argument(
+        "--scan",
+        action="store_true",
+        help="Scan output directory for bad-prompt images and delete them",
+    )
+    parser.add_argument(
+        "--no-rewrite",
+        action="store_true",
+        help="Disable automatic prompt rewriting on bad-prompt detection",
+    )
 
     return parser
 
@@ -638,6 +855,14 @@ def run(args: argparse.Namespace):
     log.info(f"{'DRY-RUN ' if args.dry_run else ''}Generating {total} image(s) with model '{args.model}'")
     log.info("-" * 60)
 
+    # --- Scan mode: find and delete bad images ---
+    if args.scan:
+        scan_bad_images(out_dir)
+        return
+
+    # --- Prompt rewriter (for bad-prompt recovery) ---
+    rewriter = None if args.no_rewrite else PromptRewriter()
+
     # --- Generate card images ---
     for idx, card in enumerate(cards, start=1):
         progress = f"[{idx}/{total}]"
@@ -647,7 +872,34 @@ def run(args: argparse.Namespace):
         prompt = builder.build(card)
         file_path = out_dir / f"{card['id']}.png"
 
-        generator.generate(prompt, file_path, label=label)
+        result = generator.generate(prompt, file_path, label=label)
+
+        # --- Bad-prompt auto-retry with LLM rewriting ---
+        if result == "BAD_PROMPT" and rewriter:
+            current_prompt = prompt
+            for rewrite_attempt in range(1, PromptRewriter.MAX_REWRITE_ATTEMPTS + 1):
+                current_prompt = rewriter.rewrite(current_prompt, rewrite_attempt)
+                log.info(
+                    f"  🔁 Retry {rewrite_attempt}/{PromptRewriter.MAX_REWRITE_ATTEMPTS} "
+                    f"for '{label}' with rewritten prompt"
+                )
+                retry_result = generator.generate(
+                    current_prompt, file_path, label=f"{label} [rewrite {rewrite_attempt}]"
+                )
+                if retry_result is True:
+                    log.info(f"  🎉 Rewrite succeeded for '{label}' on attempt {rewrite_attempt}")
+                    break
+                elif retry_result == "BAD_PROMPT":
+                    log.warning(
+                        f"  🚫 Rewrite {rewrite_attempt} still rejected for '{label}'"
+                    )
+                else:
+                    # Network/other failure
+                    break
+            else:
+                log.error(
+                    f"  ❌ All rewrite attempts exhausted for '{label}'"
+                )
 
     # --- Back-of-card ---
     if args.backofcard:

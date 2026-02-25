@@ -29,7 +29,7 @@ export async function createCheckoutSession(
 /**
  * Call Gemini API through FastAPI proxy
  */
-export async function callGeminiProxy(prompt: string, model: string = 'arcee-ai/trinity-large-preview:free') {
+export async function callGeminiProxy(prompt: string, model: string = 'openrouter/free') {
   try {
     const result = await apiFetch('/gemini/generate', {
       method: 'POST',
