@@ -23,6 +23,7 @@ import CancelPage from './pages/CancelPage';
 import BirthProfilePage from './pages/BirthProfilePage';
 import LevelUpModal from './components/LevelUpModal';
 import XpNotification from './components/XpNotification';
+import CyberpunkAd from './components/ui/CyberpunkAd';
 
 // * Valid page names for hash routing
 const VALID_PAGES: Page[] = ['Daily', 'Readings', 'Journal', 'Guide', 'Shop', 'Pricing', 'Progress', 'Profile', 'Onboarding', 'Numerology', 'Sigil', 'Success', 'Cancel', 'BirthProfile'];
@@ -62,7 +63,7 @@ const navItems = [
   { name: 'Profile', icon: UserIcon, page: 'Profile' as Page },
 ];
 
-const Sidebar: React.FC<{ activePage: Page; setPage: (page: Page) => void; activeProfile: any; }> = ({ activePage, setPage, activeProfile }) => {
+const Sidebar: React.FC<{ activePage: Page; setPage: (page: Page) => void; activeProfile: any; isPremium: boolean; }> = ({ activePage, setPage, activeProfile, isPremium }) => {
   const xpForNextLevel = Math.round(500 * Math.pow(1.5, activeProfile.level - 1));
   const xpPercentage = (activeProfile.xp / xpForNextLevel) * 100;
 
@@ -111,6 +112,12 @@ const Sidebar: React.FC<{ activePage: Page; setPage: (page: Page) => void; activ
         ))}
       </div>
 
+      {!isPremium && (
+        <div className="mb-6 relative z-10 px-2">
+          <CyberpunkAd variant="sidebar" />
+        </div>
+      )}
+
       <div className="mt-auto pt-6 border-t border-white/5 relative z-10">
         <div className="flex items-center gap-3 text-white/20 text-[10px] font-mono">
           <ZapIcon className="w-3 h-3 text-teal-500 animate-pulse" />
@@ -121,20 +128,30 @@ const Sidebar: React.FC<{ activePage: Page; setPage: (page: Page) => void; activ
   );
 };
 
-const BottomNav: React.FC<{ activePage: Page; setPage: (page: Page) => void }> = ({ activePage, setPage }) => (
-  <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0d0e14]/95 backdrop-blur-2xl border-t border-white/ client-5 flex justify-between p-2 z-50 overflow-x-auto no-scrollbar">
-    <div className="flex min-w-full justify-around gap-1">
-      {navItems.map(item => (
-        <button
-          key={item.name}
-          onClick={() => setPage(item.page)}
-          className={`flex flex-col items-center justify-center gap-1 p-2 min-w-[64px] rounded-xl transition-all ${activePage === item.page ? 'text-purple-400 bg-purple-500/10' : 'text-white/40'
-            }`}
-        >
-          <item.icon className="w-5 h-5" />
-          <span className="text-[8px] font-bold uppercase tracking-tighter whitespace-nowrap">{item.name}</span>
-        </button>
-      ))}
+const BottomNav: React.FC<{ activePage: Page; setPage: (page: Page) => void; activeProfile: any; isPremium: boolean; }> = ({ activePage, setPage, activeProfile, isPremium }) => (
+  <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#0d0e14]/95 backdrop-blur-2xl border-t border-white/5 z-50 overflow-x-auto no-scrollbar">
+    <div className="flex flex-col">
+      {/* Small mobile ad would go here if we had a banner variant, for now Sidebar variant is too big. 
+          Actually, I'll use the 'sidebar' variant but styled for mobile banner.
+      */}
+      {!isPremium && (
+        <div className="px-2 py-1">
+          <CyberpunkAd variant="sidebar" />
+        </div>
+      )}
+      <div className="flex min-w-full justify-around gap-1 p-2">
+        {navItems.map(item => (
+          <button
+            key={item.name}
+            onClick={() => setPage(item.page)}
+            className={`flex flex-col items-center justify-center gap-1 p-2 min-w-[64px] rounded-xl transition-all ${activePage === item.page ? 'text-purple-400 bg-purple-500/10' : 'text-white/40'
+              }`}
+          >
+            <item.icon className="w-5 h-5" />
+            <span className="text-[8px] font-bold uppercase tracking-tighter whitespace-nowrap">{item.name}</span>
+          </button>
+        ))}
+      </div>
     </div>
   </nav>
 );
@@ -158,6 +175,7 @@ const pageComponents: { [key in Page]: React.ComponentType<any> } = {
 
 const AppContent: React.FC = () => {
   const {
+    isPremium,
     activeProfile,
     activePage,
     setPage,
@@ -281,6 +299,7 @@ const AppContent: React.FC = () => {
         activePage={activePage}
         setPage={setPage}
         activeProfile={activeProfile}
+        isPremium={isPremium}
       />
       <main className="flex-1 overflow-hidden pb-20 md:pb-0 relative">
         <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none"></div>
@@ -301,7 +320,7 @@ const AppContent: React.FC = () => {
           );
         })}
       </main>
-      <BottomNav activePage={activePage} setPage={setPage} />
+      <BottomNav activePage={activePage} setPage={setPage} activeProfile={activeProfile} isPremium={isPremium} />
 
       {/* Gamification Overlays */}
       {levelUpData && (

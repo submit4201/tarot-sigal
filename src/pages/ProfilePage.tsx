@@ -10,7 +10,7 @@ import { SHOP_DECKS } from '../constants';
 import { verifySubscription } from '../services/stripeService';
 
 const ProfilePage: React.FC = () => {
-  const { isPremium, activeProfile, updateActiveProfile, setPage, refetchProfile } = useApp();
+  const { isPremium, activeProfile, updateActiveProfile, setPage, refetchProfile, togglePremium } = useApp();
   const { logout, user } = useAuth();
 
   const [isSaving, setIsSaving] = useState(false);
@@ -343,6 +343,20 @@ const ProfilePage: React.FC = () => {
                   {syncMessage}
                 </p>
               )}
+
+              <div className="mt-8 pt-8 border-t border-white/5">
+                <p className="text-[10px] font-mono text-white/20 uppercase tracking-widest mb-4">Development_Tools</p>
+                <button
+                  onClick={() => {
+                    togglePremium();
+                    setSyncMessage('Status toggled. Restart system or refresh to fully reflect local states.');
+                    setTimeout(() => setSyncMessage(''), 3000);
+                  }}
+                  className="w-full px-8 py-3 rounded-xl border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition-colors font-mono text-xs uppercase tracking-widest"
+                >
+                  {isPremium ? "Simulate_Free_Tier" : "Simulate_Premium_Access"}
+                </button>
+              </div>
             </section>
           </div>
         </div>

@@ -12,7 +12,8 @@ import CosmicBlueprintDisplay from '../components/CosmicBlueprintDisplay';
 import { TAROT_DECK } from '../constants';
 import { getLocalDateString, getTimeUntilMidnight } from '../utils/dateUtils';
 
-import { db } from '../services/apiService';
+import CyberpunkAd from '../components/CyberpunkAd';
+import PremiumModal from '../components/PremiumModal';
 
 const TelemetryModule: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode; delay: number; className?: string }> = ({ icon, title, children, delay, className }) => {
     return (
@@ -67,6 +68,9 @@ const DailyPage: React.FC = () => {
     const [generationStatus, setGenerationStatus] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [isShuffling, setIsShuffling] = useState(false);
+    const [isAdVisible, setIsAdVisible] = useState(false);
+    const [isPaywallVisible, setIsPaywallVisible] = useState(false);
+    const [pendingInsightsCard, setPendingInsightsCard] = useState<DrawnCard | null>(null);
 
     if (!activeProfile) return <div className="p-8 font-mono animate-pulse text-purple-400 uppercase tracking-widest">Initialising_Link...</div>;
 
@@ -113,32 +117,37 @@ const DailyPage: React.FC = () => {
         window.location.hash = '#numerology';
     };
 
-    const [recentJournalContext, setRecentJournalContext] = useState<string>('');
-
     const cosmicBlueprint = useMemo(() => activeProfile ? generateCosmicBlueprint(activeProfile) : null, [activeProfile]);
 
-    useEffect(() => {
-        const fetchContext = async () => {
-            try {
-                const entries = await db.getJournalEntries();
-                if (entries && entries.length > 0) {
-                    const context = entries.slice(-3).map((e: any) => e.content).join(' | ');
-                    setRecentJournalContext(context);
-                }
-            } catch (e) {
-                console.error("Failed to fetch journal context for daily:", e);
-            }
-        };
-        fetchContext();
-    }, []);
+    const handleAdFinish = () => {
+        setIsAdVisible(false);
+        if (pendingInsightsCard) {
+            setIsPaywallVisible(true); // Show paywall after ad
+        }
+    };
 
     const generateInsights = async (card: DrawnCard) => {
         if (isGenerating || dailyInsights) return;
+
+        if (!isPremium && !pendingInsightsCard) {
+            setPendingInsightsCard(card);
+            setIsAdVisible(true);
+            return;
+        }
+
+        if (!isPremium && pendingInsightsCard) {
+            // If we're here, it means the ad was shown, and now we need to show the paywall.
+            // This path should ideally be handled by the modal flow, but as a fallback:
+            setIsPaywallVisible(true);
+            return;
+        }
+
         setIsGenerating(true);
         setError(null);
         try {
             const sign = activeProfile.astrologicalSign !== 'None' ? activeProfile.astrologicalSign : 'the Seeker';
-            const journalContext = isPremium && recentJournalContext ? `Recent Life Data: ${recentJournalContext}` : '';
+            // journalContext is now handled by DailyGuidance internally or passed via props
+            const journalContext = ''; // Placeholder, actual context will be passed to DailyGuidance
 
             const cosmicInfo = activeProfile.birthDate ? `Calculated. Focus: ${activeProfile.readingFocus}. Cosmic Alignment: Life Path ${cosmicBlueprint?.lifePath.number}` : 'Unknown';
 
@@ -179,6 +188,7 @@ const DailyPage: React.FC = () => {
             setDailyInsights(newInsights);
             updateDailyDrawInsights(todayStr, newInsights);
             addXp(10);
+            setPendingInsightsCard(null); // Clear pending card after successful generation
         } catch (e: any) {
             setError("Link Unstable. Quota exhausted or signal lost. Please wait and refresh.");
             console.error(e);
@@ -345,6 +355,27 @@ const DailyPage: React.FC = () => {
                     Signal Interruption: {error}
                 </div>}
             </div>
+
+            {/* Premium Gating */}
+            <CyberpunkAd isVisible={isAdVisible} onClose={() => {
+                setIsAdVisible(false);
+                // Assuming handleGenerateSummary is meant to be handleAdFinish or similar logic
+                // If the ad is closed, and there was a pending card, we might want to show the paywall
+                if (pendingInsightsCard) {
+                    setIsPaywallVisible(true);
+                }
+            }} />
+            <PremiumModal
+                isOpen={isPaywallVisible}
+                onClose={() => {
+                    setIsPaywallVisible(false);
+                    // If user closes paywall, and there was a pending card,
+                    // we might want to clear it or re-evaluate.
+                    // For now, let's just clear it.
+                    setPendingInsightsCard(null);
+                }}
+                onUpgrade={() => window.location.hash = '#profile'}
+            />
         </div>
     );
 };

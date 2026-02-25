@@ -1,3 +1,4 @@
+import time
 from sqlalchemy import text, inspect
 from core.database import engine, DATABASE_URL
 from core.logger import app_logger
@@ -8,41 +9,44 @@ def _is_sqlite() -> bool:
     return DATABASE_URL.startswith("sqlite")
 
 
-def _add_columns(table: str, columns: list[tuple[str, str]]):
+def _sync_table_columns(inspector, table: str, columns: list[tuple[str, str]]):
     """
-    Idempotently add columns to a table.
-    
-    @note Each column addition runs in its own transaction so a failure
-          (e.g., column already exists) doesn't roll back the others.
+    Idempotently add missing columns to a table using schema inspection.
     """
-    for col_name, col_type in columns:
-        try:
-            with engine.begin() as conn:
-                conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {col_name} {col_type}"))
-                app_logger.info(f"Added column {col_name} to {table} table.")
-        except Exception:
-            # Column already exists — expected on subsequent startups
-            pass
+    try:
+        if not inspector.has_table(table):
+            # Table doesn't exist yet, create_all will handle it
+            return
+
+        existing_cols = {c['name'].lower() for c in inspector.get_columns(table)}
+        missing = [c for c in columns if c[0].lower() not in existing_cols]
+
+        if not missing:
+            return
+
+        app_logger.info(f"Adding {len(missing)} missing columns to {table} table...")
+        for col_name, col_type in missing:
+            try:
+                # Use a new connection per column to ensure partial success if one fails
+                with engine.begin() as conn:
+                    conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {col_name} {col_type}"))
+                    app_logger.info(f"  + Added column {col_name} ({col_type})")
+            except Exception as e:
+                app_logger.warning(f"  ! Failed to add {col_name} to {table}: {e}")
+    except Exception as e:
+        app_logger.error(f"Error inspecting/syncing table {table}: {e}")
 
 
 def _drop_unique_constraint_on_user_id():
     """
     Drop the UNIQUE constraint on birth_profiles.user_id.
-    
-    @note SQLite does not support ALTER TABLE ... DROP CONSTRAINT, so we must
-          recreate the table for SQLite. PostgreSQL uses standard DDL.
-          This migration is idempotent: it checks if the unique constraint
-          still exists before proceeding.
     """
     try:
         inspector = inspect(engine)
         
-        # Check if birth_profiles table exists at all
         if not inspector.has_table("birth_profiles"):
-            app_logger.info("birth_profiles table does not exist yet, skipping constraint migration.")
             return
         
-        # Check if a unique constraint on user_id still exists
         unique_constraints = inspector.get_unique_constraints("birth_profiles")
         indexes = inspector.get_indexes("birth_profiles")
         
@@ -55,7 +59,6 @@ def _drop_unique_constraint_on_user_id():
                 constraint_name = uc.get("name")
                 break
         
-        # Also check unique indexes (SQLite creates these automatically)
         if not has_unique:
             for idx in indexes:
                 if idx.get("unique") and idx.get("column_names") == ["user_id"]:
@@ -64,7 +67,6 @@ def _drop_unique_constraint_on_user_id():
                     break
         
         if not has_unique:
-            app_logger.info("birth_profiles.user_id UNIQUE constraint already removed.")
             return
         
         app_logger.info(f"Dropping UNIQUE constraint on birth_profiles.user_id (name: {constraint_name})...")
@@ -79,11 +81,7 @@ def _drop_unique_constraint_on_user_id():
 
 
 def _drop_unique_constraint_sqlite():
-    """
-    SQLite-specific: rebuild the table without the UNIQUE constraint.
-    
-    @note SQLite does not support ALTER TABLE DROP CONSTRAINT.
-    """
+    """SQLite-specific: rebuild the table without the UNIQUE constraint."""
     with engine.begin() as conn:
         conn.execute(text("""
             CREATE TABLE IF NOT EXISTS birth_profiles_new (
@@ -120,15 +118,10 @@ def _drop_unique_constraint_sqlite():
 
 
 def _drop_unique_constraint_postgres(constraint_name: str | None):
-    """
-    PostgreSQL-specific: use standard ALTER TABLE to drop the constraint.
-    
-    @note This is safe and does not drop/recreate the table.
-    """
+    """PostgreSQL-specific: use standard ALTER TABLE to drop the constraint."""
     with engine.begin() as conn:
         if constraint_name:
             conn.execute(text(f'ALTER TABLE birth_profiles DROP CONSTRAINT IF EXISTS "{constraint_name}"'))
-        # Also try dropping any unique index
         conn.execute(text("DROP INDEX IF EXISTS ix_birth_profiles_user_id"))
         conn.execute(text("CREATE INDEX IF NOT EXISTS ix_birth_profiles_user_id ON birth_profiles(user_id)"))
         
@@ -137,15 +130,16 @@ def _drop_unique_constraint_postgres(constraint_name: str | None):
 
 def run_auto_migrations():
     """
-    Run all pending auto-migrations on startup.
-    
-    @note This is NOT a replacement for a proper migration tool like Alembic.
-          It handles simple column additions for schema evolution.
+    Run all pending auto-migrations on startup with optimization.
     """
-    app_logger.info("Running auto migrations...")
+    app_logger.info("Starting optimized auto-migrations...")
+    start_time = time.time()
+    
     try:
+        inspector = inspect(engine)
+
         # --- Users table ---
-        _add_columns("users", [
+        _sync_table_columns(inspector, "users", [
             ("is_premium", "BOOLEAN DEFAULT FALSE"),
             ("subscription_tier", "VARCHAR(50) DEFAULT 'Seeker'"),
             ("subscription_expiry", "TIMESTAMP"),
@@ -155,7 +149,6 @@ def run_auto_migrations():
             ("xp", "INTEGER DEFAULT 0"),
             ("owned_deck_ids", "TEXT DEFAULT '[\"default_tarot\", \"ancient_runes\"]'"),
             ("unlocked_achievements", "TEXT DEFAULT '[]'"),
-            # Profile detail fields (Part 1 fix)
             ("current_name", "VARCHAR(100)"),
             ("mothers_maiden_name", "VARCHAR(100)"),
             ("birth_date", "VARCHAR(20)"),
@@ -166,7 +159,7 @@ def run_auto_migrations():
         ])
 
         # --- Readings table ---
-        _add_columns("readings", [
+        _sync_table_columns(inspector, "readings", [
             ("positions", "TEXT"),
             ("deck_type", "VARCHAR(50)"),
             ("deck_id", "VARCHAR(100)"),
@@ -177,18 +170,23 @@ def run_auto_migrations():
             ("shadow_message", "TEXT"),
         ])
             
-        # --- Birth Profiles table (multi-profile support) ---
-        _add_columns("birth_profiles", [
+        # --- Birth Profiles table ---
+        _sync_table_columns(inspector, "birth_profiles", [
             ("label", "VARCHAR(100) DEFAULT 'Me'"),
             ("is_primary", "BOOLEAN DEFAULT TRUE"),
         ])
         
         # --- Drop UNIQUE constraint on birth_profiles.user_id ---
-        # Required to allow multiple profiles per user
         _drop_unique_constraint_on_user_id()
             
-        app_logger.info("Auto migrations completed.")
+        duration = time.time() - start_time
+        app_logger.info(f"Auto migrations completed in {duration:.2f}s.")
     except Exception as e:
-        app_logger.error(f"Error running auto migrations: {e}")
+        app_logger.error(f"Critical failure in auto migrations: {e}")
+
+
+if __name__ == "__main__":
+    # Allow running migrations standalone for verification
+    run_auto_migrations()
 
 
