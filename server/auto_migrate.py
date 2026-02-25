@@ -1,3 +1,4 @@
+import re
 from sqlalchemy import text, inspect
 from core.database import engine, DATABASE_URL
 from core.logger import app_logger
@@ -75,7 +76,11 @@ def _drop_unique_constraint_on_user_id():
             _drop_unique_constraint_postgres(constraint_name)
             
     except Exception as e:
-        app_logger.error(f"Error dropping UNIQUE constraint on birth_profiles.user_id: {e}")
+        app_logger.error(
+            f"CRITICAL: Failed to drop UNIQUE constraint on birth_profiles.user_id: {e}. "
+            "Multiple profiles per user may not work correctly until this is resolved."
+        )
+        raise
 
 
 def _drop_unique_constraint_sqlite():
@@ -84,6 +89,7 @@ def _drop_unique_constraint_sqlite():
     
     @note SQLite does not support ALTER TABLE DROP CONSTRAINT.
     """
+    assert _is_sqlite(), "This function must only be called for SQLite databases"
     with engine.begin() as conn:
         conn.execute(text("""
             CREATE TABLE IF NOT EXISTS birth_profiles_new (
@@ -127,10 +133,36 @@ def _drop_unique_constraint_postgres(constraint_name: str | None):
     """
     with engine.begin() as conn:
         if constraint_name:
+            # Validate constraint_name contains only safe identifier characters
+            # to prevent SQL injection via f-string interpolation.
+            if not re.match(r'^[A-Za-z_][A-Za-z0-9_$]*$', constraint_name):
+                raise ValueError(f"Unsafe constraint name detected: {constraint_name!r}")
             conn.execute(text(f'ALTER TABLE birth_profiles DROP CONSTRAINT IF EXISTS "{constraint_name}"'))
-        # Also try dropping any unique index
-        conn.execute(text("DROP INDEX IF EXISTS ix_birth_profiles_user_id"))
-        conn.execute(text("CREATE INDEX IF NOT EXISTS ix_birth_profiles_user_id ON birth_profiles(user_id)"))
+        # Check whether the non-unique index already exists before recreating it
+        # to avoid unnecessary DROP/CREATE cycles on repeated migration runs.
+        # Use pg_index.indisunique for a reliable uniqueness check instead of
+        # parsing indexdef text, which can vary in formatting.
+        result = conn.execute(
+            text(
+                "SELECT i.indisunique "
+                "FROM pg_indexes idx "
+                "JOIN pg_class c ON c.relname = idx.indexname "
+                "JOIN pg_index i ON i.indexrelid = c.oid "
+                "WHERE idx.schemaname = current_schema() "
+                "  AND idx.tablename = 'birth_profiles' "
+                "  AND idx.indexname = 'ix_birth_profiles_user_id'"
+            )
+        ).fetchone()
+
+        needs_non_unique_index = True
+        if result:
+            # result[0] is indisunique — if False, the index is already non-unique
+            if not result[0]:
+                needs_non_unique_index = False
+
+        if needs_non_unique_index:
+            conn.execute(text("DROP INDEX IF EXISTS ix_birth_profiles_user_id"))
+            conn.execute(text("CREATE INDEX IF NOT EXISTS ix_birth_profiles_user_id ON birth_profiles(user_id)"))
         
     app_logger.info("Successfully removed UNIQUE constraint (PostgreSQL ALTER TABLE)")
 
