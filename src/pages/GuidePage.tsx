@@ -70,7 +70,7 @@ const GuidePage: React.FC<{ setPage: (page: string) => void }> = ({ setPage }) =
 
         try {
             const response = await generateContentWithRetry({
-                model: 'arcee-ai/trinity-large-preview:free',
+                model: 'openrouter/free',
                 contents: prompt,
             });
             setInterpretation(response.text || "Interpretation unavailable.");

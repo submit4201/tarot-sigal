@@ -235,7 +235,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
         try {
             const prompt = TAROT_QUESTION_REFINER_PROMPT(userQuestion, readingIntent);
 
-            const response = await generateContentWithRetry({ model: 'arcee-ai/trinity-large-preview:free', contents: prompt });
+            const response = await generateContentWithRetry({ model: 'openrouter/free', contents: prompt });
             setRefinedQuestion(response.text || userQuestion);
         } catch (e) {
             console.error(e);
@@ -266,7 +266,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
             const basePrompt = TAROT_INTERPRETATION_PROMPT(spreadName, cosmicInfo, userContextStr, journalContextStr, nodesInfo, isPremium);
 
             const response = await generateContentWithRetry({
-                model: 'z-ai/glm-4.5-air:free',
+                model: 'openrouter/free',
                 contents: basePrompt
             });
 
