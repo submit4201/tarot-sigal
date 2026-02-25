@@ -38,15 +38,32 @@ class User(Base):
 
 
 class Reading(Base):
+    """
+    Stores a user's divination readings.
+
+    @note positions and practical_actions are stored as JSON strings.
+    @note deck_type and deck_id identify which divination system/deck was used.
+    @note Premium fields (card_relationships, elemental_dignity, numerology_threads,
+          shadow_message) are only populated for premium-tier users.
+    """
     __tablename__ = "readings"
 
     id = Column(String(36), primary_key=True, default=generate_uuid, index=True)
     user_id = Column(String(36), ForeignKey("users.id"), index=True, nullable=False)
     spread = Column(String(100), nullable=True)
     question = Column(Text, nullable=True)
-    cards = Column(Text, nullable=True)     # Store JSON string of selected cards
+    cards = Column(Text, nullable=True)        # JSON string of drawn cards
+    positions = Column(Text, nullable=True)     # JSON string of position labels
+    deck_type = Column(String(50), nullable=True)   # e.g., 'tarot', 'runes', 'oracle'
+    deck_id = Column(String(100), nullable=True)    # e.g., 'default_tarot', 'ancient_runes'
     ai_summary = Column(Text, nullable=True)
     notes = Column(Text, nullable=True)
+    # Premium analysis fields
+    card_relationships = Column(Text, nullable=True)
+    elemental_dignity = Column(Text, nullable=True)
+    numerology_threads = Column(Text, nullable=True)
+    practical_actions = Column(Text, nullable=True)  # JSON string of action items
+    shadow_message = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User", back_populates="readings")

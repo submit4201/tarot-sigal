@@ -88,7 +88,7 @@ const SavedReadingEntry: React.FC<{ reading: SavedReading; onCardClick: (card: D
                 <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-6">
                     {reading.cards.map((c, i) => (
                         <div key={i} className="text-center group/card flex flex-col gap-3">
-                            <p className="text-[8px] font-mono text-white/40 truncate uppercase opacity-40 group-hover/card:opacity-100">{reading.positions[i]}</p>
+                            <p className="text-[8px] font-mono text-white/40 truncate uppercase opacity-40 group-hover/card:opacity-100">{reading.positions?.[i] || `Position ${i + 1}`}</p>
                             <DivinationCardDisplay drawnCard={c} isRevealed={true} onClick={() => onCardClick(c)} className="!w-full !h-auto aspect-[2/3] mx-auto cursor-pointer hover:scale-105 transition-all shadow-xl" />
                             {c.interpretation && (
                                 <p className="text-[9px] text-white/50 leading-relaxed line-clamp-3 group-hover/card:line-clamp-none transition-all">{c.interpretation}</p>
@@ -218,7 +218,7 @@ const JournalPage: React.FC = () => {
             return `[Reading ${i + 1} — ${r.title} (${r.spreadType}) on ${new Date(r.date).toLocaleDateString()}]:\n  Cards: ${cardNames}\n  Summary: ${r.aiSummary || 'N/A'}\n  Shadow: ${r.shadowMessage || 'N/A'}\n  User Notes: ${r.userNotes || 'N/A'}`;
         }).join('\n\n');
 
-        const prompt = `You are a mystical AI pattern analyst for a cyber-divination app called Gridpunk Arcana. The user has been logging journal reflections and saving tarot/oracle readings. Your task: analyze ALL of the data below and surface deep, meaningful patterns.
+        const prompt = `You are a mystical AI pattern analyst for a cyber-divination app called Sigal. The user has been logging journal reflections and saving tarot/oracle readings. Your task: analyze ALL of the data below and surface deep, meaningful patterns.
 
 ## Journal Reflections:
 ${recentJournals || '(No journal entries yet)'}

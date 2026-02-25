@@ -59,11 +59,21 @@ class CheckoutSessionRequest(BaseModel):
 
 # --- Reading Schemas ---
 class ReadingCreate(BaseModel):
+    """Schema for creating a new reading with all divination fields."""
     spread: Optional[str] = None
     question: Optional[str] = None
     cards: Optional[str] = None
+    positions: Optional[str] = None          # JSON string of position labels
+    deck_type: Optional[str] = None          # e.g., 'tarot', 'runes', 'oracle'
+    deck_id: Optional[str] = None            # e.g., 'default_tarot', 'ancient_runes'
     ai_summary: Optional[str] = None
     notes: Optional[str] = None
+    # Premium analysis fields
+    card_relationships: Optional[str] = None
+    elemental_dignity: Optional[str] = None
+    numerology_threads: Optional[str] = None
+    practical_actions: Optional[str] = None  # JSON string of action items
+    shadow_message: Optional[str] = None
 
 class ReadingUpdate(BaseModel):
     notes: str

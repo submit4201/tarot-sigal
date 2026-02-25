@@ -135,7 +135,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   }, [activeDeckId, decks, getCardImagePath]);
 
   // Derived state
-  const isPremium = activeProfile?.isPremium || false;
+  // @note Derive premium status from both the boolean flag AND the subscription tier
+  const isPremium = activeProfile?.isPremium ||
+    ['seeker', 'mystic', 'oracle'].includes(activeProfile?.subscriptionTier || '') ||
+    false;
 
   // --- Data Loading ---
   useEffect(() => {
@@ -188,7 +191,19 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
           const parsedReadings = extractArray(readings).map(r => ({
             ...r,
             cards: safeParse(r.cards),
-            userNotes: r.notes || r.userNotes || ''
+            positions: safeParse(r.positions) || [],
+            spreadType: r.spreadType || r.spread || 'single',
+            deckType: r.deckType || r.deck_type || 'tarot',
+            deckId: r.deckId || r.deck_id || 'default_tarot',
+            title: r.title || r.question || '',
+            aiSummary: r.aiSummary || r.ai_summary || '',
+            userNotes: r.notes || r.userNotes || '',
+            // Premium fields
+            cardRelationships: r.cardRelationships || r.card_relationships || undefined,
+            elementalDignity: r.elementalDignity || r.elemental_dignity || undefined,
+            numerologyThreads: r.numerologyThreads || r.numerology_threads || undefined,
+            practicalActions: safeParse(r.practicalActions || r.practical_actions) || undefined,
+            shadowMessage: r.shadowMessage || r.shadow_message || undefined,
           }));
 
           const parsedJournal = extractArray(journal).map(j => ({
@@ -289,9 +304,18 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const dbReading = {
       spread: reading.spreadType,
       question: reading.title,
-      cards: JSON.stringify(reading.cards), // Array of strings converted back inside
+      cards: JSON.stringify(reading.cards),
+      positions: JSON.stringify(reading.positions || []),
+      deck_type: reading.deckType,
+      deck_id: reading.deckId,
       ai_summary: reading.aiSummary,
       notes: reading.userNotes,
+      // Premium fields (only sent if present)
+      ...(reading.cardRelationships && { card_relationships: reading.cardRelationships }),
+      ...(reading.elementalDignity && { elemental_dignity: reading.elementalDignity }),
+      ...(reading.numerologyThreads && { numerology_threads: reading.numerologyThreads }),
+      ...(reading.practicalActions && { practical_actions: JSON.stringify(reading.practicalActions) }),
+      ...(reading.shadowMessage && { shadow_message: reading.shadowMessage }),
     };
 
     const res = await db.saveReading(dbReading);
