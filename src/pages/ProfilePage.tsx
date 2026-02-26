@@ -8,6 +8,7 @@ import CosmicBlueprintDisplay from '../components/CosmicBlueprintDisplay';
 import { SparklesIcon, SlidersIcon, UserIcon, LayersIcon } from '../components/icons';
 import { SHOP_DECKS } from '../constants';
 import { verifySubscription } from '../services/stripeService';
+import CyberpunkAd from '@/components/ui/CyberpunkAd';
 
 const ProfilePage: React.FC = () => {
   const { isPremium, activeProfile, updateActiveProfile, setPage, refetchProfile, togglePremium } = useApp();
@@ -349,16 +350,20 @@ const ProfilePage: React.FC = () => {
                 <button
                   onClick={() => {
                     togglePremium();
-                    setSyncMessage('Status toggled. Restart system or refresh to fully reflect local states.');
+                    setSyncMessage('Tier cycled. Status updated in local state.');
                     setTimeout(() => setSyncMessage(''), 3000);
                   }}
-                  className="w-full px-8 py-3 rounded-xl border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition-colors font-mono text-xs uppercase tracking-widest"
+                  className="w-full px-8 py-3 rounded-xl border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition-colors font-mono text-[10px] uppercase tracking-widest"
                 >
-                  {isPremium ? "Simulate_Free_Tier" : "Simulate_Premium_Access"}
+                  Cycle_Subscription_Tier
                 </button>
               </div>
             </section>
           </div>
+        </div>
+
+        <div className="mt-20">
+          <CyberpunkAd variant="banner" isPremium={isPremium} />
         </div>
       </div>
     </div>

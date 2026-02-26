@@ -12,7 +12,7 @@ import CosmicBlueprintDisplay from '../components/CosmicBlueprintDisplay';
 import { TAROT_DECK } from '../constants';
 import { getLocalDateString, getTimeUntilMidnight } from '../utils/dateUtils';
 
-import CyberpunkAd from '../components/CyberpunkAd';
+import CyberpunkAd from '@/components/ui/CyberpunkAd';
 import PremiumModal from '../components/PremiumModal';
 
 const TelemetryModule: React.FC<{ icon: React.ReactNode; title: string; children: React.ReactNode; delay: number; className?: string }> = ({ icon, title, children, delay, className }) => {
@@ -122,7 +122,9 @@ const DailyPage: React.FC = () => {
     const handleAdFinish = () => {
         setIsAdVisible(false);
         if (pendingInsightsCard) {
-            setIsPaywallVisible(true); // Show paywall after ad
+            // Trigger generation automatically after ad
+            generateInsights(pendingInsightsCard);
+            setPendingInsightsCard(null);
         }
     };
 
@@ -357,14 +359,12 @@ const DailyPage: React.FC = () => {
             </div>
 
             {/* Premium Gating */}
-            <CyberpunkAd isVisible={isAdVisible} onClose={() => {
-                setIsAdVisible(false);
-                // Assuming handleGenerateSummary is meant to be handleAdFinish or similar logic
-                // If the ad is closed, and there was a pending card, we might want to show the paywall
-                if (pendingInsightsCard) {
-                    setIsPaywallVisible(true);
-                }
-            }} />
+            <CyberpunkAd
+                variant="modal"
+                isVisible={isAdVisible}
+                onClose={handleAdFinish}
+                isPremium={isPremium}
+            />
             <PremiumModal
                 isOpen={isPaywallVisible}
                 onClose={() => {

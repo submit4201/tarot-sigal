@@ -487,7 +487,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   };
 
   const togglePremium = () => {
-    setIsPremium(!isPremium);
+    const tiers: UserProfile['subscriptionTier'][] = ['free', 'seeker', 'oracle'];
+    const currentTier = activeProfile?.subscriptionTier || 'free';
+    const nextTier = tiers[(tiers.indexOf(currentTier) + 1) % tiers.length];
+
+    updateActiveProfile({
+      subscriptionTier: nextTier,
+      isPremium: nextTier !== 'free'
+    });
   };
 
 

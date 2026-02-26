@@ -3,13 +3,14 @@ import { useApp } from '../context/AppContext';
 import { SparklesIcon, ZapIcon } from '../components/icons';
 import { createCheckoutSession } from '../services/stripeService';
 import { AnimatedCardFront } from '../components/AnimatedCardFront';
+import CyberpunkAd from '@/components/ui/CyberpunkAd';
 
 /**
  * ShopPage — Restructured premium marketplace.
  * Stardust CTAs at top/bottom, decks look like "Daily Cards" with fluid previews.
  */
 const ShopPage: React.FC = () => {
-    const { activeProfile, purchaseDeck, setPage, decks, activeDeckId, setActiveDeck } = useApp();
+    const { activeProfile, purchaseDeck, setPage, decks, activeDeckId, setActiveDeck, isPremium } = useApp();
     const [isPurchasing, setIsPurchasing] = useState(false);
 
     const handleStardustPurchase = async (packTier: string) => {
@@ -164,6 +165,10 @@ const ShopPage: React.FC = () => {
                     <div className="h-[1px] flex-grow bg-gradient-to-r from-white/10 to-transparent"></div>
                 </header>
                 <StardustSurgeBar />
+            </section>
+
+            <section className="mt-8">
+                <CyberpunkAd variant="banner" isPremium={isPremium} />
             </section>
 
             <footer className="mt-20 text-center glass-panel p-10 rounded-[2rem] border-white/5 bg-white/[0.01]">

@@ -21,7 +21,7 @@ import { ChargingView } from '../components/readings/ChargingView';
 import { PickingView } from '../components/readings/PickingView';
 import { RevealingView } from '../components/readings/RevealingView';
 import { IntegratedForecastView } from '../components/readings/IntegratedForecastView';
-import CyberpunkAd from '../components/CyberpunkAd';
+import CyberpunkAd from '@/components/ui/CyberpunkAd';
 // * TTS Helper function
 const speakText = (text: string) => {
     window.speechSynthesis.cancel(); // Stop any current speech
@@ -32,7 +32,7 @@ const speakText = (text: string) => {
 };
 
 const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) => {
-    const { isPremium, addSavedReading, activeProfile, addXp, addStardust, decks, isOracle, isSeeker } = useApp();
+    const { isPremium, addSavedReading, activeProfile, addXp, addStardust, decks, isOracle, isSeeker, canPerformReading } = useApp();
 
     // * Reading Steps: focus-intent (Premium) -> select-spread -> select-deck -> charging -> picking-cards -> revealing -> summary
     const [readingStep, setReadingStep] = useState<'focus-intent' | 'select-spread' | 'select-deck' | 'charging' | 'picking-cards' | 'revealing' | 'summary'>('select-spread');
@@ -48,6 +48,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
     const [isShuffling, setIsShuffling] = useState(false);
     const [animatingCardId, setAnimatingCardId] = useState<string | null>(null);
     const [showAd, setShowAd] = useState(false);
+    const [hasShownAdThisReading, setHasShownAdThisReading] = useState(false);
     const [pendingSummaryAction, setPendingSummaryAction] = useState<boolean>(false);
 
     // * Immersion State
@@ -114,6 +115,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
             setReadingStep('select-spread');
         }
         // Reset state
+        setHasShownAdThisReading(false);
         setSelectedSpread(null);
         setSelectedDeck(null);
         setDrawnCards([]);
@@ -135,12 +137,19 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
         const detail = SPREAD_DETAILS[spread];
         const userTier = activeProfile?.subscriptionTier || 'free';
 
-        // Define tier hierarchy
+        // 1. Check Reading Limit for Free Tier
+        if (!canPerformReading('tarot')) {
+            setIsPremiumModalOpen(true);
+            return;
+        }
+
+        // 2. Check Plan-Specific Gating for Spreads
         const tiers = ['free', 'seeker', 'oracle'];
         const requiredTierIndex = tiers.indexOf(detail.minTier || 'free');
         const userTierIndex = tiers.indexOf(userTier);
 
-        if (userTierIndex < requiredTierIndex && !isPremium) {
+        // If user is below required tier AND doesn't have the master 'isPremium' override
+        if (userTierIndex < requiredTierIndex && !activeProfile?.isPremium) {
             setIsPremiumModalOpen(true);
             return;
         }
@@ -258,12 +267,14 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
     };
 
     const handleGenerateSummary = async () => {
-        if (!isPremium && !pendingSummaryAction) {
+        if (!isPremium && !pendingSummaryAction && !hasShownAdThisReading) {
             setPendingSummaryAction(true);
             setShowAd(true);
+            setHasShownAdThisReading(true);
             return;
         }
 
+        setPendingSummaryAction(false);
         setIsGeneratingSummary(true);
         setError('');
         try {
@@ -491,15 +502,15 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
 
             {/* Premium Gating */}
             <CyberpunkAd
+                variant="modal"
                 isVisible={showAd}
                 onClose={() => {
                     setShowAd(false);
-                    // After ad, handle the summary generation
                     if (pendingSummaryAction) {
-                        setIsPremiumModalOpen(true); // User saw ad, now show paywall
-                        setPendingSummaryAction(false);
+                        handleGenerateSummary();
                     }
                 }}
+                isPremium={isPremium}
             />
             <PremiumModal
                 isOpen={isPremiumModalOpen}
