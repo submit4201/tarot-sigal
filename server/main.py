@@ -59,12 +59,33 @@ app.add_middleware(
     expose_headers=["Content-Disposition"],
 )
 
+import asyncio
+
 @app.on_event("startup")
 async def startup_event():
-    # Create all tables in the database (if they don't exist)
-    Base.metadata.create_all(bind=engine)
-    run_auto_migrations()
-    app_logger.info("Gridpunk Arcana Backend started successfully.")
+    """
+    Handle application startup events.
+    Backgrounds database migrations to avoid blocking port binding and health checks.
+    """
+    if os.environ.get("RUN_AUTO_MIGRATIONS", "true").lower() == "true":
+        # Run database initialization in a background thread to prevent blocking
+        # the FastAPI event loop during startup (avoids 504/timeout on cloud providers).
+        asyncio.create_task(asyncio.to_thread(run_auto_migrations_safe))
+    
+    app_logger.info("Gridpunk Arcana Backend startup initiated.")
+
+
+def run_auto_migrations_safe():
+    """
+    Synchronous helper to run all database initialization scripts.
+    """
+    try:
+        app_logger.info("Background database initialization started...")
+        Base.metadata.create_all(bind=engine)
+        run_auto_migrations()
+        app_logger.info("Background database initialization completed successfully.")
+    except Exception as e:
+        app_logger.error(f"Critical failure during background initialization: {e}")
 
 @app.get("/api")
 @app.get("/api/")

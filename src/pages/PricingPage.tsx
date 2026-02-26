@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { SparklesIcon, ZapIcon, CrownIcon } from '../components/icons';
 import { createCheckoutSession } from '../services/stripeService';
+import CyberpunkAd from '@/components/ui/CyberpunkAd';
 
 interface PricingTier {
   name: string;
@@ -66,14 +67,14 @@ const tiers: PricingTier[] = [
 ];
 
 const PricingPage: React.FC = () => {
-  const { activeProfile, setPage } = useApp();
+  const { activeProfile, setPage, isPremium } = useApp();
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSubscribe = async (tier: PricingTier) => {
     if (tier.tier === 'free') {
       return;
     }
-    
+
     setIsProcessing(true);
     try {
       await createCheckoutSession('subscription', tier.tier);
@@ -104,22 +105,21 @@ const PricingPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto w-full">
         {tiers.map((tier) => {
           const isCurrent = currentTier === tier.tier;
-          
+
           return (
             <div
               key={tier.tier}
-              className={`glass-panel p-8 rounded-[2.5rem] border-white/5 bg-white/[0.01] shadow-2xl flex flex-col relative overflow-hidden transition-all duration-300 ${
-                tier.highlighted
-                  ? 'border-purple-500/40 bg-purple-500/[0.03] transform scale-105'
-                  : 'hover:border-purple-500/20'
-              }`}
+              className={`glass-panel p-8 rounded-[2.5rem] border-white/5 bg-white/[0.01] shadow-2xl flex flex-col relative overflow-hidden transition-all duration-300 ${tier.highlighted
+                ? 'border-purple-500/40 bg-purple-500/[0.03] transform scale-105'
+                : 'hover:border-purple-500/20'
+                }`}
             >
               {tier.highlighted && (
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-purple-500 text-white px-4 py-1 rounded-full text-[10px] font-mono uppercase tracking-widest font-bold">
                   Recommended
                 </div>
               )}
-              
+
               <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/20 to-transparent"></div>
 
               <div className="mb-6">
@@ -131,12 +131,12 @@ const PricingPage: React.FC = () => {
                     {tier.name}
                   </span>
                 </div>
-                
+
                 <div className="flex items-baseline gap-2 mb-2">
                   <span className="text-5xl font-bold text-white tracking-tight">{tier.price}</span>
                   <span className="text-sm text-white/30 font-mono">/{tier.period}</span>
                 </div>
-                
+
                 <p className="text-sm text-white/40">{tier.description}</p>
               </div>
 
@@ -152,13 +152,12 @@ const PricingPage: React.FC = () => {
               <button
                 onClick={() => handleSubscribe(tier)}
                 disabled={isCurrent || isProcessing}
-                className={`w-full py-4 rounded-2xl font-bold font-mono text-[10px] uppercase tracking-widest transition-all ${
-                  isCurrent || isProcessing
-                    ? 'bg-white/5 border border-white/10 text-white/30 cursor-not-allowed'
-                    : tier.highlighted
+                className={`w-full py-4 rounded-2xl font-bold font-mono text-[10px] uppercase tracking-widest transition-all ${isCurrent || isProcessing
+                  ? 'bg-white/5 border border-white/10 text-white/30 cursor-not-allowed'
+                  : tier.highlighted
                     ? 'bg-purple-600 border border-purple-500 text-white hover:bg-purple-500 shadow-[0_0_20px_rgba(147,51,234,0.3)]'
                     : 'bg-purple-600/20 border border-purple-500/30 text-purple-400 hover:bg-purple-600 hover:text-white'
-                }`}
+                  }`}
               >
                 {isProcessing ? 'Processing...' : isCurrent ? 'Current Plan' : tier.cta}
               </button>
@@ -180,6 +179,10 @@ const PricingPage: React.FC = () => {
             View Stardust Packs
           </button>
         </div>
+      </div>
+
+      <div className="mt-20">
+        <CyberpunkAd variant="banner" isPremium={isPremium} />
       </div>
     </div>
   );

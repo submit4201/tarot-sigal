@@ -7,7 +7,7 @@ import CosmicBlueprintDisplay from '../components/CosmicBlueprintDisplay';
 import { generateCosmicBlueprint } from '../services/cosmicService';
 
 const NumerologyPage: React.FC = () => {
-    const { activeProfile } = useApp();
+    const { activeProfile, isPremium, isSeeker, isOracle } = useApp();
     const today = new Date();
 
     // Check for hash change to handle "back" navigation if needed, though App.tsx handles main nav.
@@ -74,7 +74,7 @@ const NumerologyPage: React.FC = () => {
 
             {/* Educational / Deep Dive Content Placeholder */}
             <div className="w-full max-w-5xl glass-panel p-8 rounded-[2rem] border-white/5 bg-white/[0.02] relative group">
-                {!useApp().isPremium && (
+                {!isPremium && (
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md z-10 rounded-[2rem] flex flex-col items-center justify-center p-8 text-center border border-purple-500/20 shadow-[inset_0_0_50px_rgba(0,0,0,0.5)]">
                         <LockIcon className="w-12 h-12 text-purple-400/50 mb-4 animate-pulse" />
                         <h4 className="text-xl font-bold text-white mb-2">Matrix Decryption Locked</h4>
@@ -88,7 +88,7 @@ const NumerologyPage: React.FC = () => {
                     </div>
                 )}
                 <h3 className="text-xs font-mono text-white/30 uppercase tracking-[0.3em] mb-6 font-bold">Matrix_Decryption</h3>
-                <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-text-muted leading-relaxed ${!useApp().isPremium ? 'opacity-20 blur-sm pointer-events-none' : ''}`}>
+                <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-text-muted leading-relaxed ${!isPremium ? 'opacity-20 blur-sm pointer-events-none' : ''}`}>
                     <div>
                         <strong className="text-white block mb-2">Life Path Number</strong>
                         Calculated from your full birth date, this represents your core purpose and the primary trajectory of your existence in this timeline.
