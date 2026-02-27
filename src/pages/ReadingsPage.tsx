@@ -256,7 +256,10 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
         try {
             const prompt = TAROT_QUESTION_REFINER_PROMPT(userQuestion, readingIntent);
 
-            const response = await generateContentWithRetry({ model: 'openrouter/free', contents: prompt });
+            const response = await generateContentWithRetry({
+                usePuter: true,
+                contents: prompt
+            });
             setRefinedQuestion(response.text || userQuestion);
         } catch (e) {
             console.error(e);
@@ -295,7 +298,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
             const basePrompt = TAROT_INTERPRETATION_PROMPT(spreadName, cosmicInfo, userContextStr, journalContextStr, nodesInfo, isPremium);
 
             const response = await generateContentWithRetry({
-                model: 'puter-chat', 
+                model: 'puter-chat',
                 contents: basePrompt,
                 usePuter: true,
                 onStream: (chunk: string) => {

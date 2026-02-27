@@ -18,19 +18,24 @@ const FREE_MODEL_FALLBACKS = [
  */
 function extractPrompt(params: any): string {
   if (typeof params === 'string') return params;
+  if (params.prompt) return params.prompt;
 
-  if (params.contents && Array.isArray(params.contents)) {
-    for (const content of params.contents) {
-      if (content.parts && Array.isArray(content.parts)) {
-        for (const part of content.parts) {
-          if (part.text) return part.text;
+  if (params.contents) {
+    if (typeof params.contents === 'string') return params.contents;
+
+    if (Array.isArray(params.contents)) {
+      for (const content of params.contents) {
+        if (content.parts && Array.isArray(content.parts)) {
+          for (const part of content.parts) {
+            if (part.text) return part.text;
+          }
         }
+        // Support Puter-style messages array if passed as contents
+        if (content.content) return content.content;
       }
     }
   }
 
-  // Fallbacks
-  if (params.prompt) return params.prompt;
   return JSON.stringify(params);
 }
 
@@ -49,22 +54,29 @@ export async function generateContentWithRetry(
   initialDelay = 2000
 ): Promise<{ text: string }> {
   const prompt = extractPrompt(params);
-  const primaryModel = params.model || 'openrouter/free';
+  // Default to puter-chat for all frontend requests now to save OpenRouter credits
+  const primaryModel = params.model || 'puter-chat';
 
-  // --- Puter.js Integration for Tarot/Birthcharts ---
-  // If the model is 'puter-chat', we route to Puter.js directly
+  // --- Puter.js Integration for Tarot/Birthcharts/General Chat ---
+  // We now route to Puter.js by default unless a specific model is requested 
+  // that isn't 'puter-chat' and usePuter isn't set.
   if (primaryModel === 'puter-chat' || params.usePuter) {
     try {
       // Puter expects message format
       const messages = [{ role: 'user', content: prompt }];
-      
+
       const responseText = await generateWithPuter(messages, params.onStream);
       return { text: responseText };
     } catch (e: any) {
       console.warn("Puter generation failed, falling back to standard retry flow:", e);
-      // Fall through to standard logic if Puter fails
+      // Fall through to standard logic (OpenRouter) if Puter fails
     }
   }
+
+  // Ensure we don't send 'puter-chat' to the backend proxy
+  const backendModel = (primaryModel === 'puter-chat') ? 'openrouter/free' : primaryModel;
+
+  const OpenRouterModel = params.model || 'openrouter/free';
 
   /**
    * Inner helper — attempt a single model with exponential backoff.
@@ -110,16 +122,16 @@ export async function generateContentWithRetry(
     throw new Error(`All ${maxAttempts} attempts exhausted for ${model}`);
   }
 
-  // --- 1. Try the primary model ---
+  // --- 1. Try the primary backend model ---
   try {
-    return await tryModel(primaryModel, retries + 1, initialDelay);
+    return await tryModel(backendModel, retries + 1, initialDelay);
   } catch (primaryError: any) {
-    console.warn(`Primary model [${primaryModel}] failed:`, primaryError.message);
+    console.warn(`Primary model [${backendModel}] failed:`, primaryError.message);
   }
 
   // --- 2. Try each fallback model (single attempt each) ---
   for (const fallback of FREE_MODEL_FALLBACKS) {
-    if (fallback === primaryModel) continue; // skip if already tried
+    if (fallback === backendModel) continue; // skip if already tried
     try {
       console.warn(`Falling back to model: ${fallback}`);
       return await tryModel(fallback, 1, 0);

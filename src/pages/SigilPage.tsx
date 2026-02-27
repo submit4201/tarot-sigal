@@ -73,7 +73,7 @@ const SigilPage: React.FC = () => {
             const prompt = SIGIL_READING_PROMPT(activeProfile?.givenName || 'Seeker', question, drawnCards);
 
             const result = await generateContentWithRetry({
-                model: 'openrouter/free',
+                usePuter: true,
                 contents: [{ role: 'user', parts: [{ text: prompt }] }]
             });
 

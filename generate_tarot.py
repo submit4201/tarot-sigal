@@ -608,20 +608,34 @@ class ImageProvider:
 
 
 def create_image_generator(provider_name: str = None, **kwargs) -> ImageProvider:
-    """Factory function to create the appropriate image provider."""
+    """Factory function to create the appropriate image provider, supports chaining."""
     if provider_name is None:
-        env_provider = os.getenv("IMAGE_PROVIDER")
-        if env_provider:
-            provider_name = env_provider.lower()
-        else:
-            provider_name = "replicate" if os.getenv("REPLICATE_API_KEY") else "pollinations"
+        provider_name = os.getenv("IMAGE_PROVIDER", "huggingface,pollinations,openrouter,replicate")
+
+    # Support multiple providers separated by comma
+    providers_list = [p.strip().lower() for p in provider_name.split(",") if p.strip()]
     
-    if provider_name == "replicate":
+    if len(providers_list) > 1:
+        log.info(f"🛠️  Initializing Failover Chain: {' -> '.join(providers_list)}")
+        instantiated_providers = []
+        for p in providers_list:
+            instantiated_providers.append(create_image_generator(p, **kwargs))
+        return FailoverImageProvider(instantiated_providers, dry_run=kwargs.get("dry_run", False))
+
+    # Single provider logic
+    p = providers_list[0]
+    if p == "replicate":
         kwargs.pop("api_key", None)
         return ReplicateImageGenerator(api_key=os.getenv("REPLICATE_API_KEY"), **kwargs)
-    elif provider_name == "openrouter":
+    elif p == "openrouter":
         kwargs.pop("api_key", None)
         return OpenRouterImageGenerator(api_key=os.getenv("OPENROUTER_API"), **kwargs)
+    elif p == "huggingface":
+        kwargs.pop("api_key", None)
+        return HuggingFaceGenerator(api_key=os.getenv("HUGGINGFACE_API_KEY"), **kwargs)
+    elif p == "freepik":
+        kwargs.pop("api_key", None)
+        return FreepikGenerator(api_key=os.getenv("FREEPIK_API_KEY"), **kwargs)
     else:  # Default to Pollinations
         kwargs.pop("api_key", None)
         return ImageGenerator(api_key=os.getenv("IMAGE_API"), **kwargs)
@@ -997,6 +1011,192 @@ class OpenRouterImageGenerator(ImageProvider):
         self.failed += 1
         return False
 
+
+
+# ---------------------------------------------------------------------------
+# HuggingFaceGenerator
+# ---------------------------------------------------------------------------
+class HuggingFaceGenerator(ImageProvider):
+    """Image generation via Hugging Face Inference API."""
+    
+    API_URL = "https://api-inference.huggingface.co/models/"
+    MAX_RETRIES = 5
+    
+    def __init__(self, model: str = "black-forest-labs/FLUX.1-schnell", width: int = 512, height: int = 768, seed: int = 42, dry_run: bool = False, api_key: str = None):
+        super().__init__(model, width, height, seed, dry_run)
+        self.api_key = api_key or os.getenv("HUGGINGFACE_API_KEY")
+        if not self.api_key:
+            log.warning("⚠️  HUGGINGFACE_API_KEY not set. Images may fail if model is gated.")
+
+    async def generate_async(self, prompt: str, output_path: Path, label: str = "", session=None, worker_id: int = None, force_model: str = None) -> bool | str:
+        if output_path.exists():
+            log.info(f"  ⏭  Skipping '{label}' — already exists at {output_path.name}")
+            self.skipped += 1
+            return True
+        
+        if self.dry_run:
+            log.info(f"  🔍 [DRY-RUN] [HF] '{label}'")
+            self.generated += 1
+            return True
+
+        model_id = force_model or self.model
+        url = f"{self.API_URL}{model_id}"
+        
+        headers = {"Authorization": f"Bearer {self.api_key}"} if self.api_key else {}
+        payload = {
+            "inputs": prompt,
+            "parameters": {
+                "width": self.width,
+                "height": self.height,
+                "seed": self.seed,
+            }
+        }
+
+        for attempt in range(1, self.MAX_RETRIES + 1):
+            if _global_rate_limiter:
+                await _global_rate_limiter.acquire()
+
+            try:
+                async with session.post(url, json=payload, headers=headers, timeout=120) as resp:
+                    if resp.status == 200:
+                        image_data = await resp.read()
+                        output_path.parent.mkdir(parents=True, exist_ok=True)
+                        with open(output_path, "wb") as f:
+                            f.write(image_data)
+                        log.info(f"  ✅ [HF] Saved '{label}' -> {output_path.name}")
+                        self.generated += 1
+                        return True
+                    elif resp.status == 503: # Loading
+                        try:
+                            data = await resp.json()
+                            wait_time = data.get("estimated_time", 10)
+                        except:
+                            wait_time = 10
+                        log.info(f"  ⏳ [HF] Model loading, waiting {wait_time:.1f}s...")
+                        await asyncio.sleep(min(wait_time, 20))
+                    elif resp.status == 429: # Rate limit
+                        log.warning(f"  ⚠️  [HF] Rate limit exceeded (attempt {attempt})")
+                        await asyncio.sleep(10 * attempt)
+                    else:
+                        log.warning(f"  ❌ [HF] Error {resp.status} for '{label}'")
+                        if attempt == self.MAX_RETRIES:
+                            self.failed += 1
+                            return False
+            except Exception as e:
+                log.warning(f"  ❌ [HF] Request error: {e}")
+                if attempt == self.MAX_RETRIES:
+                    self.failed += 1
+                    return False
+        
+        return False
+
+    def generate(self, prompt: str, output_path: Path, label: str = "") -> bool | str:
+        log.error("  ❌ [HF] Use async mode for Hugging Face")
+        return False
+
+
+# ---------------------------------------------------------------------------
+# FreepikGenerator
+# ---------------------------------------------------------------------------
+class FreepikGenerator(ImageProvider):
+    """Image generation via Freepik Mystic API."""
+    
+    API_URL = "https://api.freepik.com/v1/ai/text-to-image"
+    
+    def __init__(self, model: str = "mystic", width: int = 512, height: int = 768, seed: int = 42, dry_run: bool = False, api_key: str = None):
+        super().__init__(model, width, height, seed, dry_run)
+        self.api_key = api_key or os.getenv("FREEPIK_API_KEY")
+
+    async def generate_async(self, prompt: str, output_path: Path, label: str = "", session=None, worker_id: int = None, force_model: str = None) -> bool | str:
+        if output_path.exists():
+            log.info(f"  ⏭  Skipping '{label}' — already exists at {output_path.name}")
+            self.skipped += 1
+            return True
+        
+        if self.dry_run:
+            log.info(f"  🔍 [DRY-RUN] [Freepik] '{label}'")
+            self.generated += 1
+            return True
+
+        if not self.api_key:
+            log.error("  ❌ [Freepik] FREEPIK_API_KEY not set")
+            return False
+
+        headers = {
+            "x-freepik-api-key": self.api_key,
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "prompt": prompt,
+            "model": self.model,
+            "width": self.width,
+            "height": self.height,
+            "seed": self.seed,
+        }
+
+        try:
+            async with session.post(self.API_URL, json=payload, headers=headers) as resp:
+                if resp.status == 200:
+                    data = await resp.json()
+                    images = data.get("data", [])
+                    if images and "url" in images[0]:
+                        img_url = images[0]["url"]
+                        async with session.get(img_url) as img_resp:
+                            if img_resp.status == 200:
+                                output_path.parent.mkdir(parents=True, exist_ok=True)
+                                with open(output_path, "wb") as f:
+                                    f.write(await img_resp.read())
+                                log.info(f"  ✅ [Freepik] Saved '{label}' -> {output_path.name}")
+                                self.generated += 1
+                                return True
+                log.warning(f"  ❌ [Freepik] Error {resp.status} for '{label}'")
+                return False
+        except Exception as e:
+            log.warning(f"  ❌ [Freepik] Request error: {e}")
+            return False
+
+    def generate(self, prompt: str, output_path: Path, label: str = "") -> bool | str:
+        log.error("  ❌ [Freepik] Use async mode for Freepik")
+        return False
+
+
+# ---------------------------------------------------------------------------
+# FailoverImageProvider
+# ---------------------------------------------------------------------------
+class FailoverImageProvider(ImageProvider):
+    """A composite provider that chains multiple generators with failover logic."""
+    
+    def __init__(self, providers: list[ImageProvider], dry_run: bool = False):
+        super().__init__("failover", dry_run=dry_run)
+        self.providers = providers
+        
+    async def generate_async(self, prompt: str, output_path: Path, label: str = "", session=None, worker_id: int = None, force_model: str = None) -> bool | str:
+        for i, provider in enumerate(self.providers):
+            log.info(f"  🔗 [Failover] Attempting with {provider.__class__.__name__} ({i+1}/{len(self.providers)})")
+            
+            provider.dry_run = self.dry_run
+            
+            result = await provider.generate_async(prompt, output_path, label, session, worker_id, force_model)
+            
+            if result is True:
+                self.generated += 1
+                return True
+            elif result == "BAD_PROMPT":
+                log.warning(f"  🚫 [Failover] {provider.__class__.__name__} rejected prompt for '{label}'")
+                continue
+            else:
+                log.warning(f"  ⚠️  [Failover] {provider.__class__.__name__} failed for '{label}'")
+        
+        log.error(f"  💀 [Failover] All providers failed for '{label}'")
+        self.failed += 1
+        return False
+
+    def print_summary(self, total: int):
+        super().print_summary(total)
+        log.info("  Provider Breakdowns:")
+        for p in self.providers:
+            log.info(f"    - {p.__class__.__name__}: {p.generated} gen, {p.failed} fail")
 
 
 class ImageGenerator(ImageProvider):

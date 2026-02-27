@@ -242,7 +242,7 @@ Format your response in clean sections with headers. Use a mystical but grounded
 
         try {
             const response = await generateContentWithRetry({
-                model: 'openrouter/free',
+                usePuter: true,
                 contents: prompt,
             });
             const text = response.text ?? '';

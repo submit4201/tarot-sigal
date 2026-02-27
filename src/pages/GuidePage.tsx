@@ -70,7 +70,7 @@ const GuidePage: React.FC<{ setPage: (page: string) => void }> = ({ setPage }) =
 
         try {
             const response = await generateContentWithRetry({
-                model: 'openrouter/free',
+                usePuter: true,
                 contents: prompt,
             });
             setInterpretation(response.text || "Interpretation unavailable.");

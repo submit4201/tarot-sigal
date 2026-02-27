@@ -162,6 +162,7 @@ const DailyPage: React.FC = () => {
 
             // Step 1: Generate Text (Critical)
             const textRes = await generateContentWithRetry({
+                usePuter: true,
                 contents: batchPrompt
             });
 
