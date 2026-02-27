@@ -40,7 +40,7 @@ from dotenv import load_dotenv
 # ---------------------------------------------------------------------------
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent
-ENV_PATH = PROJECT_ROOT / ".env.local"
+ENV_PATH = PROJECT_ROOT / ".env"
 DEFAULT_DECK_PATH = PROJECT_ROOT / "src" / "data" / "new" / "new_deck_example.json"
 DEFAULT_REG_PATH = PROJECT_ROOT / "src" / "data" / "tarot_deck_reg.json"
 LOG_DIR = PROJECT_ROOT / ".log" / "generator"
@@ -492,13 +492,36 @@ class ImageGenerator:
         self.height = height
         self.seed = seed
         self.dry_run = dry_run
-        self.api_key = api_key
+        self.api_keys = self._normalize_api_keys(api_key)
+        self._api_key_index = 0
 
         # Stats
         self.generated = 0
         self.skipped = 0
         self.failed = 0
         self.bad_prompt_count = 0
+
+    @staticmethod
+    def _normalize_api_keys(api_key: str | None) -> list[str]:
+        """
+        Normalize API key input into a list.
+
+        Supports comma-separated keys in IMAGE_API.
+        """
+        if not api_key:
+            return []
+        if isinstance(api_key, str):
+            keys = [k.strip() for k in api_key.split(",") if k.strip()]
+            return keys if keys else []
+        return []
+
+    def _get_api_key(self) -> str | None:
+        """Return the next API key (round-robin) if available."""
+        if not self.api_keys:
+            return None
+        key = self.api_keys[self._api_key_index % len(self.api_keys)]
+        self._api_key_index += 1
+        return key
 
     def generate(self, prompt: str, output_path: Path, label: str = "") -> bool | str:
         """
@@ -536,8 +559,9 @@ class ImageGenerator:
         )
 
         headers = {}
-        if self.api_key:
-            headers["Authorization"] = f"Bearer {self.api_key}"
+        api_key = self._get_api_key()
+        if api_key:
+            headers["Authorization"] = f"Bearer {api_key}"
 
         # Retry loop with exponential backoff
         for attempt in range(1, self.MAX_RETRIES + 1):

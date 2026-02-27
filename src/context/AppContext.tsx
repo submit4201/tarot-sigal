@@ -44,7 +44,9 @@ interface AppContextType {
   isPremium: boolean;
   isFree: boolean;
   isSeeker: boolean;
+  isMystic: boolean;
   isOracle: boolean;
+  hasRequiredTier: (requirement?: string) => boolean;
   canPerformReading: (type: string) => boolean;
   setIsPremium: (val: boolean) => void;
 
@@ -139,11 +141,24 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     return `${ASSET_BASE}/back.png`;
   }, [activeDeckId, decks, getCardImagePath]);
 
-  // Subscription Tier Helpers (Derive from activeProfile)
   const isFree = activeProfile?.subscriptionTier === 'free' || !activeProfile?.subscriptionTier;
   const isSeeker = activeProfile?.subscriptionTier === 'seeker';
+  const isMystic = activeProfile?.subscriptionTier === 'mystic';
   const isOracle = activeProfile?.subscriptionTier === 'oracle';
-  const isPremium = activeProfile?.isPremium || isSeeker || isOracle;
+  const isPremium = activeProfile?.isPremium || isSeeker || isMystic || isOracle;
+
+  const tierValues = {
+    'free': 0,
+    'seeker': 1,
+    'mystic': 2,
+    'oracle': 3
+  };
+
+  const hasRequiredTier = (requirement?: string) => {
+    if (!requirement || requirement === 'free') return true;
+    const userTier = activeProfile?.subscriptionTier || 'free';
+    return tierValues[userTier as keyof typeof tierValues] >= tierValues[requirement as keyof typeof tierValues];
+  };
 
   const canPerformReading = (type: string) => {
     if (isPremium) return true;
@@ -455,10 +470,18 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const purchaseDeck = async (deck: Deck) => {
     if (!activeProfile) return;
-    if (activeProfile.stardust < deck.price) {
-      alert('Not enough Stardust');
+
+    // Check Tier Requirement
+    if (deck.tierRequirement && !hasRequiredTier(deck.tierRequirement)) {
+      alert(`Access Signal Denied. This deck requires ${deck.tierRequirement.toUpperCase()} level clearance.`);
       return;
     }
+
+    if (activeProfile.stardust < deck.price) {
+      alert('Insufficient Energy. Acquire more Stardust to proceed.');
+      return;
+    }
+
     await updateActiveProfile({
       stardust: activeProfile.stardust - deck.price,
       ownedDeckIds: [...activeProfile.ownedDeckIds, deck.id]
@@ -531,7 +554,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     isPremium,
     isFree,
     isSeeker,
+    isMystic,
     isOracle,
+    hasRequiredTier,
     canPerformReading,
     setIsPremium,
 

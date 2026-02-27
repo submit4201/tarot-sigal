@@ -1,4 +1,5 @@
 import { apiFetch } from './apiService';
+import { generateWithPuter } from './puterService';
 
 /**
  * Ordered list of free models to try if the primary model fails.
@@ -49,6 +50,21 @@ export async function generateContentWithRetry(
 ): Promise<{ text: string }> {
   const prompt = extractPrompt(params);
   const primaryModel = params.model || 'openrouter/free';
+
+  // --- Puter.js Integration for Tarot/Birthcharts ---
+  // If the model is 'puter-chat', we route to Puter.js directly
+  if (primaryModel === 'puter-chat' || params.usePuter) {
+    try {
+      // Puter expects message format
+      const messages = [{ role: 'user', content: prompt }];
+      
+      const responseText = await generateWithPuter(messages, params.onStream);
+      return { text: responseText };
+    } catch (e: any) {
+      console.warn("Puter generation failed, falling back to standard retry flow:", e);
+      // Fall through to standard logic if Puter fails
+    }
+  }
 
   /**
    * Inner helper — attempt a single model with exponential backoff.

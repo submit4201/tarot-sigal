@@ -38,6 +38,7 @@ export interface Deck {
   price: number;
   cards: AnyCard[];
   path?: string; // Folder name in /assets/cards/tarot/
+  tierRequirement?: 'free' | 'seeker' | 'mystic' | 'oracle';
   mapping?: {
     maj: string; // e.g. "maj_{00}" or "maj_{0}"
     w: string;

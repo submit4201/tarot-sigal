@@ -301,7 +301,7 @@ const AppContent: React.FC = () => {
         activeProfile={activeProfile}
         isPremium={isPremium}
       />
-      <main className="flex-1 overflow-hidden pb-20 md:pb-0 relative">
+      <main className="flex-1 overflow-y-auto pb-20 md:pb-0 relative">
         <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none"></div>
         {/* ! Render-all/hide pattern: each visited page stays mounted,
              inactive pages are hidden via CSS to preserve local state

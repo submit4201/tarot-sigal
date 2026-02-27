@@ -10,7 +10,7 @@ import CyberpunkAd from '@/components/ui/CyberpunkAd';
  * Stardust CTAs at top/bottom, decks look like "Daily Cards" with fluid previews.
  */
 const ShopPage: React.FC = () => {
-    const { activeProfile, purchaseDeck, setPage, decks, activeDeckId, setActiveDeck, isPremium } = useApp();
+    const { activeProfile, purchaseDeck, setPage, decks, activeDeckId, setActiveDeck, isPremium, hasRequiredTier } = useApp();
     const [isPurchasing, setIsPurchasing] = useState(false);
 
     const handleStardustPurchase = async (packTier: string) => {
@@ -108,7 +108,8 @@ const ShopPage: React.FC = () => {
                     {decks.map(deck => {
                         const isOwned = ownedDeckIds.includes(deck.id) || deck.price === 0;
                         const isActive = activeDeckId === deck.id;
-                        const canAfford = stardust >= (deck.price || 0);
+                        const tierMet = hasRequiredTier(deck.tierRequirement);
+                        const canAfford = stardust >= (deck.price || 0) && tierMet;
 
                         return (
                             <div key={deck.id} className="flex flex-col group items-center">
@@ -122,6 +123,14 @@ const ShopPage: React.FC = () => {
                                     {isActive && (
                                         <div className="absolute top-4 right-4 z-50">
                                             <div className="bg-teal-400 text-black px-3 py-1 rounded-full font-mono text-[7px] uppercase font-bold tracking-widest shadow-glow">Active</div>
+                                        </div>
+                                    )}
+
+                                    {!isOwned && deck.tierRequirement && deck.tierRequirement !== 'free' && (
+                                        <div className="absolute top-4 left-4 z-50">
+                                            <div className={`px-3 py-1 rounded-full font-mono text-[7px] uppercase font-bold tracking-widest shadow-glow border ${tierMet ? 'bg-white/10 text-white/60 border-white/20' : 'bg-red-500/20 text-red-400 border-red-500/40'}`}>
+                                                {deck.tierRequirement} Required
+                                            </div>
                                         </div>
                                     )}
                                 </div>
@@ -145,10 +154,16 @@ const ShopPage: React.FC = () => {
                                             disabled={!canAfford}
                                             className={`w-full py-3 rounded-xl font-bold font-mono text-[9px] uppercase tracking-[0.2em] transition-all border flex items-center justify-center gap-2 ${canAfford
                                                 ? 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500 hover:text-black shadow-glow'
-                                                : 'bg-white/5 border-white/10 text-white/20 cursor-not-allowed'}`}
+                                                : !tierMet
+                                                    ? 'bg-red-500/5 border-red-500/20 text-red-400/40 cursor-not-allowed'
+                                                    : 'bg-white/5 border-white/10 text-white/20 cursor-not-allowed'}`}
                                         >
                                             <SparklesIcon className="w-3 h-3" />
-                                            {canAfford ? `ACQUIRE (${deck.price})` : `LOW_ENERGY (${deck.price})`}
+                                            {canAfford
+                                                ? `ACQUIRE (${deck.price})`
+                                                : !tierMet
+                                                    ? `${deck.tierRequirement?.toUpperCase()}_LOCKED`
+                                                    : `LOW_ENERGY (${deck.price})`}
                                         </button>
                                     )}
                                 </div>

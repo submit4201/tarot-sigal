@@ -295,12 +295,20 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
             const basePrompt = TAROT_INTERPRETATION_PROMPT(spreadName, cosmicInfo, userContextStr, journalContextStr, nodesInfo, isPremium);
 
             const response = await generateContentWithRetry({
-                model: 'openrouter/free',
-                contents: basePrompt
+                model: 'puter-chat', 
+                contents: basePrompt,
+                usePuter: true,
+                onStream: (chunk: string) => {
+                    // Stream raw data to the summary field.
+                    // Since the response is JSON, this looks like "matrix code" being downloaded
+                    // before it gets parsed into the final clean UI. Fits the cyberpunk theme.
+                    setAiSummary(prev => prev + chunk);
+                }
             });
 
             const data = (() => {
                 try {
+                    // Response is already full text now, but we need to parse the JSON
                     let text = response.text || '{}';
                     text = text.replace(/```json/g, '').replace(/```/g, '').trim();
                     return JSON.parse(text);
@@ -392,7 +400,7 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
     };
 
     return (
-        <div className="w-full h-full relative overflow-hidden">
+        <div className="w-full h-full relative overflow-y-auto">
             {!isPremium && !['summary', 'revealing'].includes(readingStep) && (
                 <div className="absolute top-8 right-8 z-50">
                     <button onClick={() => setIsPremiumModalOpen(true)} className="flex items-center gap-2 px-6 py-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-400 hover:bg-amber-500 hover:text-white transition-all shadow-glow">
