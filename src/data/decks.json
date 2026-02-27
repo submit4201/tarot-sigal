@@ -5,6 +5,7 @@
         "description": "A whimsical, nature-entwined deck where the shadows whisper and the flora giggles.",
         "path": "The_Giggling_Glade_Deck",
         "price": 0,
+        "tierRequirement": "free",
         "mapping": {
             "maj": "maj_{00}",
             "w": "sun_{00}",
@@ -18,7 +19,8 @@
         "name": "Gridpunk Arcana",
         "description": "The original high-fidelity holographic deck used by elite deck-runners.",
         "path": "Gridpunk_Arcana_Deck",
-        "price": 50,
+        "price": 100,
+        "tierRequirement": "seeker",
         "mapping": {
             "maj": "maj_{0}",
             "w": "sparks_{0}",
@@ -29,10 +31,11 @@
     },
     {
         "id": "syndicate-cipher",
-        "name": "The Syndicate’s Cipher",
+        "name": "The Syndicate's Cipher",
         "description": "A deck forged in the backrooms of the megacorps, used for high-stakes corporate espionage.",
         "path": "The_Syndicates_Cipher_Deck",
-        "price": 150,
+        "price": 250,
+        "tierRequirement": "seeker",
         "mapping": {
             "maj": "maj_{00}",
             "w": "pie_{00}",
@@ -46,7 +49,8 @@
         "name": "The Brutalist Bitstream",
         "description": "Industrial, raw, and binary. This deck values logic and hard truths above all.",
         "path": "The_Brutalist_Bitstream_Deck",
-        "price": 120,
+        "price": 250,
+        "tierRequirement": "seeker",
         "mapping": {
             "maj": "maj_{00}",
             "w": "vol_{00}",
@@ -60,7 +64,8 @@
         "name": "The Mana-Bloom Mythos",
         "description": "Organic signals amplified by mana-pulse. A bridge between magic and machinery.",
         "path": "The_Mana-Bloom_Mythos_Deck",
-        "price": 200,
+        "price": 250,
+        "tierRequirement": "seeker",
         "mapping": {
             "maj": "maj_{00}",
             "w": "lif_{00}",
@@ -74,13 +79,89 @@
         "name": "The Eternal Grove",
         "description": "Roots that span the network and leaves that carry data. Ancient wisdom in the silicon age.",
         "path": "The_Eternal_Grove_Deck",
-        "price": 180,
+        "price": 250,
+        "tierRequirement": "seeker",
         "mapping": {
             "maj": "maj_{00}",
             "w": "sun_{00}",
             "c": "ves_{00}",
             "s": "bri_{00}",
             "p": "roo_{00}"
+        }
+    },
+    {
+        "id": "psyche-arcana",
+        "name": "Psyche Arcana",
+        "description": "A psychological exploration of the collective unconscious through cyberpunk archetypes.",
+        "path": "Psyche_Arcana_Deck",
+        "price": 250,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "sel_{00}",
+            "c": "hea_{00}",
+            "s": "min_{00}",
+            "p": "sha_{00}"
+        }
+    },
+    {
+        "id": "the-luminous-arcana",
+        "name": "The Luminous Arcana",
+        "description": "Radiant energy constructs and ethereal light patterns distilled into predictive imagery.",
+        "path": "The_Luminous_Arcana_Deck",
+        "price": 250,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "wan_{00}",
+            "c": "cup_{00}",
+            "s": "swo_{00}",
+            "p": "pen_{00}"
+        }
+    },
+    {
+        "id": "the-shadows-mirror",
+        "name": "The Shadow's Mirror",
+        "description": "A deck that reflects the darkest corners of the soul, revealing what the light hides.",
+        "path": "The_Shadow's_Mirror_Deck",
+        "price": 1000,
+        "tierRequirement": "oracle",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "mas_{00}",
+            "c": "mir_{00}",
+            "s": "tri_{00}",
+            "p": "wou_{00}"
+        }
+    },
+    {
+        "id": "the-void-arcana",
+        "name": "The Void Arcana",
+        "description": "Glimpses into the nothingness between signals. For those who seek truth in the silence.",
+        "path": "The_Void_Arcana_Deck",
+        "price": 1000,
+        "tierRequirement": "oracle",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "wan_{00}",
+            "c": "cup_{00}",
+            "s": "swo_{00}",
+            "p": "pen_{00}"
+        }
+    },
+    {
+        "id": "the-wonder-years",
+        "name": "The Wonder Years",
+        "description": "Vibrant, nostalgic imagery of a future that never was, seen through youthful eyes.",
+        "path": "The_Wonder_Years_Deck",
+        "price": 250,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "adv_{00}",
+            "c": "dre_{00}",
+            "s": "sec_{00}",
+            "p": "tre_{00}"
         }
     }
 ]

@@ -295,12 +295,20 @@ const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
             const basePrompt = TAROT_INTERPRETATION_PROMPT(spreadName, cosmicInfo, userContextStr, journalContextStr, nodesInfo, isPremium);
 
             const response = await generateContentWithRetry({
-                model: 'openrouter/free',
-                contents: basePrompt
+                model: 'puter-chat', 
+                contents: basePrompt,
+                usePuter: true,
+                onStream: (chunk: string) => {
+                    // Stream raw data to the summary field.
+                    // Since the response is JSON, this looks like "matrix code" being downloaded
+                    // before it gets parsed into the final clean UI. Fits the cyberpunk theme.
+                    setAiSummary(prev => prev + chunk);
+                }
             });
 
             const data = (() => {
                 try {
+                    // Response is already full text now, but we need to parse the JSON
                     let text = response.text || '{}';
                     text = text.replace(/```json/g, '').replace(/```/g, '').trim();
                     return JSON.parse(text);

@@ -140,8 +140,11 @@ def create_birth_profile(
     # Check authorization for narrative depth
     is_authorized = _is_authorized(current_user)
 
+    # * NOTE: We now defer narrative generation to the frontend (Puter.js) to save costs/use free streaming.
+    # We only generate a teaser or empty string here.
     if is_authorized:
-        narrative = generate_full_profile(aggregated_data)
+        # narrative = generate_full_profile(aggregated_data)
+        narrative = "" # Let frontend generate it
         teaser_data = None
     else:
         teaser_obj = generate_teaser_profile(aggregated_data)
@@ -211,8 +214,9 @@ def update_birth_profile(
     aggregated_data = _compute_profile(profile_in, lat, lon)
     is_authorized = _is_authorized(current_user)
 
+    # * NOTE: Defer full generation to frontend Puter.js
     if is_authorized:
-        narrative = generate_full_profile(aggregated_data)
+        narrative = "" 
         teaser_data = None
     else:
         teaser_obj = generate_teaser_profile(aggregated_data)
