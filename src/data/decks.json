@@ -163,5 +163,248 @@
             "s": "sec_{00}",
             "p": "tre_{00}"
         }
+    },
+    {
+        "id": "clockwork-cathedral-tarot",
+        "name": "Clockwork Cathedral Tarot",
+        "description": "The exquisite Clockwork Cathedral Tarot deck, featuring unique thematic imagery.",
+        "path": "Clockwork_Cathedral_Tarot",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{00}"
+        }
+    },
+    {
+        "id": "emerald-dream-druidry",
+        "name": "Emerald Dream Druidry",
+        "description": "The exquisite Emerald Dream Druidry deck, featuring unique thematic imagery.",
+        "path": "Emerald_Dream_Druidry",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{00}"
+        }
+    },
+    {
+        "id": "eternal-grove",
+        "name": "Eternal Grove",
+        "description": "The exquisite Eternal Grove deck, featuring unique thematic imagery.",
+        "path": "Eternal_Grove_Deck",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "bri_{00}",
+            "c": "roo_{00}",
+            "s": "sun_{00}",
+            "p": "ves_{00}"
+        }
+    },
+    {
+        "id": "hollow-moon-arcana",
+        "name": "Hollow Moon Arcana",
+        "description": "The exquisite Hollow Moon Arcana deck, featuring unique thematic imagery.",
+        "path": "Hollow_Moon_Arcana_Deck",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "emb_{00}",
+            "c": "nig_{00}",
+            "s": "roo_{00}",
+            "p": "tho_{00}"
+        }
+    },
+    {
+        "id": "library-forgotten-books-tarot",
+        "name": "Library Forgotten Books Tarot",
+        "description": "The exquisite Library Forgotten Books Tarot deck, featuring unique thematic imagery.",
+        "path": "Library_Forgotten_Books_Tarot",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{00}"
+        }
+    },
+    {
+        "id": "midnight-transit-tarot",
+        "name": "Midnight Transit Tarot",
+        "description": "The exquisite Midnight Transit Tarot deck, featuring unique thematic imagery.",
+        "path": "Midnight_Transit_Tarot",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{00}"
+        }
+    },
+    {
+        "id": "mise-en-place-culinary-arcanum",
+        "name": "Mise En Place Culinary Arcanum",
+        "description": "The exquisite Mise En Place Culinary Arcanum deck, featuring unique thematic imagery.",
+        "path": "Mise_En_Place_Culinary_Arcanum",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{00}"
+        }
+    },
+    {
+        "id": "negative-space-oracle",
+        "name": "Negative Space Oracle",
+        "description": "The exquisite Negative Space Oracle deck, featuring unique thematic imagery.",
+        "path": "Negative_Space_Oracle",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{00}"
+        }
+    },
+    {
+        "id": "neon-cathedral-tarot",
+        "name": "Neon Cathedral Tarot",
+        "description": "The exquisite Neon Cathedral Tarot deck, featuring unique thematic imagery.",
+        "path": "Neon_Cathedral_Tarot_Deck",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {}
+    },
+    {
+        "id": "neon-yakuza-tarot",
+        "name": "Neon Yakuza Tarot",
+        "description": "The exquisite Neon Yakuza Tarot deck, featuring unique thematic imagery.",
+        "path": "Neon_Yakuza_Tarot",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "wan_{00}"
+        }
+    },
+    {
+        "id": "phoenix-resurrections-tarot",
+        "name": "Phoenix Resurrections Tarot",
+        "description": "The exquisite Phoenix Resurrections Tarot deck, featuring unique thematic imagery.",
+        "path": "Phoenix_Resurrections_Tarot_Deck",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}"
+        }
+    },
+    {
+        "id": "the-blood-arcana",
+        "name": "The Blood Arcana",
+        "description": "The exquisite The Blood Arcana deck, featuring unique thematic imagery.",
+        "path": "The_Blood_Arcana_Deck",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{00}"
+        }
+    },
+    {
+        "id": "the-flash-ink-arcana",
+        "name": "The Flash Ink Arcana",
+        "description": "The exquisite The Flash Ink Arcana deck, featuring unique thematic imagery.",
+        "path": "The_Flash_Ink_Arcana_Deck",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{00}"
+        }
+    },
+    {
+        "id": "the-mycelium-arcana",
+        "name": "The Mycelium Arcana",
+        "description": "The exquisite The Mycelium Arcana deck, featuring unique thematic imagery.",
+        "path": "The_Mycelium_Arcana_Deck",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "fru_{00}",
+            "c": "hyp_{00}",
+            "s": "roo_{00}",
+            "p": "spo_{00}"
+        }
+    },
+    {
+        "id": "the-negative-space-oracle",
+        "name": "The Negative Space Oracle",
+        "description": "The exquisite The Negative Space Oracle deck, featuring unique thematic imagery.",
+        "path": "The_Negative_Space_Oracle_Deck",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{00}"
+        }
+    },
+    {
+        "id": "the-velvet-telephone-arcana",
+        "name": "The Velvet Telephone Arcana",
+        "description": "The exquisite The Velvet Telephone Arcana deck, featuring unique thematic imagery.",
+        "path": "The_Velvet_Telephone_Arcana_Deck",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{00}"
+        }
+    },
+    {
+        "id": "the-wonder-circus",
+        "name": "The Wonder Circus",
+        "description": "The exquisite The Wonder Circus deck, featuring unique thematic imagery.",
+        "path": "The_Wonder_Circus_Deck",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "rib_{00}",
+            "s": "sta_{00}",
+            "p": "tic_{00}"
+        }
     }
 ]

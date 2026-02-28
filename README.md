@@ -2,22 +2,45 @@
 
 <div align="center">
   <img src="/public/favicon.svg" width="120" height="auto" alt="Gridpunk Icon" />
-  <h1>Gridpunk Arcana</h1>
-  <p>A Cyber-Shamanic Tarot & Numerology Experience</p>
+  <h1>Gridpunk Arcana (Sigil)</h1>
+  <p>A Cyber-Shamanic Tarot & Astrology Experience</p>
   <p><i>"The ether is always listening."</i></p>
 </div>
 
 ---
 
-## 🔮 Overview
+## 🚀 Quick Start
 
-**Gridpunk Arcana** is a next-generation divination platform that merges ancient esoteric wisdom with cyberpunk aesthetics. It provides a highly immersive, interactive experience for Tarot readings, Numerology analysis, and Daily Insights.
+```bash
+# Install dependencies
+npm install
+pip install -r server/requirements.txt
 
-Developed with **React**, **TypeScript**, and **Google Gemini AI**, it features real-time 3D card physics, haptic feedback, and procedural "cyber-mystical" interpretations.
+# Run development
+npm run dev              # Frontend (Vite + React)
+cd server && python main.py    # Backend (FastAPI)
 
----
+# Generate tarot card images
+python generate_tarot.py --batch --sequential
+```
 
-## ✨ Key Features
+## 📁 Project Structure
+
+```
+gridpunk-arcana/
+├── src/              # React frontend application
+├── server/           # FastAPI backend (readings, profiles, journal)
+├── functions/        # Serverless functions (Stripe, Gemini)
+├── public/           # Static assets (cards, images)
+├── tarot_gen/        # Tarot card generation module
+├── scripts/          # Utility scripts
+├── docs/             # 📚 All documentation
+├── config/           # ⚙️ Configuration files
+├── deploy/           # 🚀 Deployment scripts
+└── .env              # Environment variables
+```
+
+## 🔮 Key Features
 
 ### Immersive Tarot Readings
 - **Fan-Out Selection**: Choose cards from a full 78-card arc using a physics-based fan interface.
@@ -44,40 +67,58 @@ Developed with **React**, **TypeScript**, and **Google Gemini AI**, it features 
 ## 📂 Project Structure
 
 - **`/src`**: React Frontend Source Code.
-  - **`/components`**, **`/pages`**, **`/services`**, **`/hooks`**, **`/context`**, **`/types`**, **`/utils`**
-- **`/server`**: Python FastAPI Backend Source Code.
-  - **`/api`**, **`/core`**, **`/models`**
-- **`/scripts`**: Automation and maintenance scripts (e.g. `audit_todos.py`).
-- **`.log/`**: Structured runtime and testing logs.
-- **`.test/`**: Pytest directory mirroring the project structure.
-- **`.todo/`**: Auto-generated task lists from comment parsing.
-- **`/public`**: Static assets.
+
+## 📚 Documentation
+
+- **[Best Practices](docs/BEST_PRACTICES.md)** - Development guidelines & architecture
+- **[Deployment Guide](docs/DEPLOYMENT.md)** - Production deployment instructions
+- **[Tarot Deck Catalog](docs/TAROT_DECK_CATALOG.md)** - Available deck themes
+- **[Project Structure](docs/PROJECT_STRUCTURE.md)** - Detailed file organization
+- **[Tarot Generation](tarot_gen/README.md)** - Card generation system
+- **[Rules & Standards](docs/RULES.md)** - Code standards and expectations
 
 ---
 
-## 📜 Standards & Rules
+## 🛠 Tech Stack
 
-Before contributing, ALL developers must read and adhere to the strict project rules and best practices.
-- **[Project Rules & Expectations](RULES.md)**: Hard constraints on languages, logging, testing, and commenting.
-- **[Codebase Best Practices](BEST_PRACTICES.md)**: Architectural and structural guidelines for maintainability.
+**Frontend:** React, TypeScript, Vite, Tailwind CSS  
+**Backend:** Python, FastAPI, SQLite  
+**AI:** Google Gemini, OpenRouter  
+**Infrastructure:** Appwrite, DigitalOcean Spaces  
+**Payments:** Stripe
 
 ---
 
-## 🚀 Getting Started
+## 🔑 Environment Setup
 
-1. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
+Create `.env` file with:
+```env
+# Frontend
+VITE_GEMINI_API_KEY=your_key
+VITE_APPWRITE_ENDPOINT=your_endpoint
+VITE_APPWRITE_PROJECT_ID=your_project
 
-2. **Environment Setup**:
-   - Create a `.env.local` file in the root directory.
-   - Add your Gemini API key:
-     ```env
-     VITE_GEMINI_API_KEY=your_api_key_here
-     ```
+# Backend
+DATABASE_URL=sqlite:///./gridpunk.db
+JWT_SECRET_KEY=your_secret
 
-3. **Run Development Server**:
+# Payments
+STRIPE_SECRET_KEY=your_key
+STRIPE_WEBHOOK_SECRET=your_secret
+
+# Image Generation
+IMAGE_PROVIDER=pollinations,aihorde
+POLLINATIONS_API_KEY=your_key
+AI_HORDE_API_KEY=your_key
+```
+
+---
+
+## 📄 License
+
+Proprietary | **Gridpunk Studios** | All Rights Reserved
+
+
    ```bash
    npm run dev
    ```
