@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+﻿import React, { useMemo, useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
 import { UserProfile } from '../types';
@@ -10,7 +10,7 @@ import { SparklesIcon, SlidersIcon, UserIcon, LayersIcon, ZapIcon } from '../com
 import { SHOP_DECKS } from '../constants';
 import { verifySubscription } from '../services/stripeService';
 import { generateWithPuter } from '../services/puterService';
-import CyberpunkAd from '@/components/ui/CyberpunkAd';
+import CyberpunkAd from '../components/ui/CyberpunkAd';
 
 const ProfilePage: React.FC = () => {
   const { isPremium, activeProfile, updateActiveProfile, setPage, refetchProfile, togglePremium } = useApp();
@@ -67,28 +67,28 @@ const ProfilePage: React.FC = () => {
 
   const [isSyncing, setIsSyncing] = useState(false);
   const [syncMessage, setSyncMessage] = useState('');
-  
+
   // * Narrative Generation State
   const [isGeneratingNarrative, setIsGeneratingNarrative] = useState(false);
   const [streamingNarrative, setStreamingNarrative] = useState('');
 
   const handleGenerateNarrative = async () => {
-      if (!displayProfile || !cosmicBlueprint) return;
-      setIsGeneratingNarrative(true);
-      setStreamingNarrative('');
-      
-      try {
-          // Construct a prompt from the blueprint data
-          const blueprintSummary = JSON.stringify({
-              lifePath: cosmicBlueprint.lifePath,
-              destiny: cosmicBlueprint.destiny,
-              soulUrge: cosmicBlueprint.soulUrge,
-              personality: cosmicBlueprint.personality,
-              pinnacles: cosmicBlueprint.pinnacles.map(p => p.theme),
-              challenges: cosmicBlueprint.challenges.map(c => c.theme)
-          }, null, 2);
+    if (!displayProfile || !cosmicBlueprint) return;
+    setIsGeneratingNarrative(true);
+    setStreamingNarrative('');
 
-          const prompt = `
+    try {
+      // Construct a prompt from the blueprint data
+      const blueprintSummary = JSON.stringify({
+        lifePath: cosmicBlueprint.lifePath,
+        destiny: cosmicBlueprint.destiny,
+        soulUrge: cosmicBlueprint.soulUrge,
+        personality: cosmicBlueprint.personality,
+        pinnacles: cosmicBlueprint.pinnacles.map(p => p.theme),
+        challenges: cosmicBlueprint.challenges.map(c => c.theme)
+      }, null, 2);
+
+      const prompt = `
           You are a MASTER SYNTHESIST of Western and Eastern Esotericism.
           Generate a detailed "Life Narrative" based on this Numerology Blueprint:
           ${blueprintSummary}
@@ -121,20 +121,20 @@ const ProfilePage: React.FC = () => {
           Keep it cyberpunk, mystical, and direct. Use 2nd person ("You").
           `;
 
-          const messages = [{ role: 'user', content: prompt }];
-          const fullText = await generateWithPuter(messages, (chunk) => {
-              setStreamingNarrative(prev => prev + chunk);
-          });
-          
-          // Save the generated narrative to the profile
-          const updated = { ...displayProfile, llm_narrative: fullText };
-          await updateActiveProfile(updated);
-          
-      } catch (e) {
-          console.error("Narrative generation failed", e);
-      } finally {
-          setIsGeneratingNarrative(false);
-      }
+      const messages = [{ role: 'user', content: prompt }];
+      const fullText = await generateWithPuter(messages, (chunk) => {
+        setStreamingNarrative(prev => prev + chunk);
+      });
+
+      // Save the generated narrative to the profile
+      const updated = { ...displayProfile, llm_narrative: fullText };
+      await updateActiveProfile(updated);
+
+    } catch (e) {
+      console.error("Narrative generation failed", e);
+    } finally {
+      setIsGeneratingNarrative(false);
+    }
   };
 
   const handleSyncSubscription = async () => {
@@ -177,7 +177,7 @@ const ProfilePage: React.FC = () => {
   }
 
   return (
-    <div className="w-full h-full p-6 md:p-14 flex flex-col bg-grid animate-fade-in overflow-y-auto scroll-smooth">
+    <div className="w-full h-full p-6 md:p-14 flex flex-col animate-fade-in overflow-y-auto scroll-smooth">
       <header className="mb-12 flex-shrink-0 flex flex-col md:flex-row justify-between items-end gap-6">
         <div className="max-w-2xl">
           <div className="flex items-center gap-3 mb-3">
@@ -348,37 +348,37 @@ const ProfilePage: React.FC = () => {
 
             {/* Narrative Section - Puter.js Integration */}
             {(displayProfile.llm_narrative || isGeneratingNarrative) ? (
-                <section className="glass-panel p-10 rounded-[2.5rem] border-indigo-500/20 bg-indigo-900/[0.05] shadow-2xl relative overflow-hidden">
-                     <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
-                     <div className="flex items-center justify-between mb-8">
-                        <div className="flex items-center gap-3">
-                             <ZapIcon className="w-5 h-5 text-indigo-400" />
-                             <span className="text-[10px] font-mono text-indigo-400 uppercase tracking-[0.4em] font-bold">Life_Narrative_Synthesis</span>
-                        </div>
-                        {isGeneratingNarrative && <span className="text-xs font-mono text-indigo-400 animate-pulse">TRANSMITTING...</span>}
-                     </div>
-                     
-                     <NarrativeSection content={isGeneratingNarrative ? streamingNarrative : (displayProfile.llm_narrative || "")} profileData={{ numerology: cosmicBlueprint }} />
-                </section>
+              <section className="glass-panel p-10 rounded-[2.5rem] border-indigo-500/20 bg-indigo-900/[0.05] shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent"></div>
+                <div className="flex items-center justify-between mb-8">
+                  <div className="flex items-center gap-3">
+                    <ZapIcon className="w-5 h-5 text-indigo-400" />
+                    <span className="text-[10px] font-mono text-indigo-400 uppercase tracking-[0.4em] font-bold">Life_Narrative_Synthesis</span>
+                  </div>
+                  {isGeneratingNarrative && <span className="text-xs font-mono text-indigo-400 animate-pulse">TRANSMITTING...</span>}
+                </div>
+
+                <NarrativeSection content={isGeneratingNarrative ? streamingNarrative : (displayProfile.llm_narrative || "")} profileData={{ numerology: cosmicBlueprint }} />
+              </section>
             ) : (
-                <section className="glass-panel p-10 rounded-[2.5rem] border-white/5 bg-white/[0.01] shadow-2xl text-center space-y-6">
-                    <div className="w-16 h-16 rounded-full bg-white/5 mx-auto flex items-center justify-center">
-                        <ZapIcon className="w-8 h-8 text-white/20" />
-                    </div>
-                    <div>
-                        <h3 className="text-xl font-bold text-white mb-2">Generate Life Narrative</h3>
-                        <p className="text-white/40 text-sm max-w-md mx-auto">
-                            Invoke the Puter.js AI to synthesize your full cosmic profile into a detailed cyberpunk narrative.
-                        </p>
-                    </div>
-                    <button 
-                        onClick={handleGenerateNarrative}
-                        disabled={isGeneratingNarrative}
-                        className="px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold font-mono text-xs uppercase tracking-widest transition-all shadow-glow disabled:opacity-50"
-                    >
-                        {isGeneratingNarrative ? "Synthesizing..." : "Initialize_Synthesis"}
-                    </button>
-                </section>
+              <section className="glass-panel p-10 rounded-[2.5rem] border-white/5 bg-white/[0.01] shadow-2xl text-center space-y-6">
+                <div className="w-16 h-16 rounded-full bg-white/5 mx-auto flex items-center justify-center">
+                  <ZapIcon className="w-8 h-8 text-white/20" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-2">Generate Life Narrative</h3>
+                  <p className="text-white/40 text-sm max-w-md mx-auto">
+                    Invoke the Puter.js AI to synthesize your full cosmic profile into a detailed cyberpunk narrative.
+                  </p>
+                </div>
+                <button
+                  onClick={handleGenerateNarrative}
+                  disabled={isGeneratingNarrative}
+                  className="px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold font-mono text-xs uppercase tracking-widest transition-all shadow-glow disabled:opacity-50"
+                >
+                  {isGeneratingNarrative ? "Synthesizing..." : "Initialize_Synthesis"}
+                </button>
+              </section>
             )}
 
             <section className="glass-panel p-10 rounded-[2.5rem] border-white/5 bg-white/[0.01] shadow-2xl">

@@ -11,7 +11,11 @@ env_path = BASE_DIR / ".env.local"
 load_dotenv(dotenv_path=env_path)
 
 # Security configuration
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "gridpunk-arcana-jwt-secret-key-change-in-production-123!")
+SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+if not SECRET_KEY:
+    # In development, you might want to load from .env.local, but for production,
+    # this MUST be provided by the environment.
+    raise RuntimeError("JWT_SECRET_KEY environment variable is not set")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 days for convenience
 

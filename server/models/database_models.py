@@ -22,6 +22,7 @@ class User(Base):
     reading_style = Column(String(50), default="mystical")
     reading_focus = Column(String(50), default="general")
     is_premium = Column(Boolean, default=False)
+    is_admin = Column(Boolean, default=False)
     subscription_tier = Column(String(50), default="free")
     subscription_expiry = Column(DateTime(timezone=True), nullable=True)
     stripe_customer_id = Column(String(100), nullable=True)
@@ -113,6 +114,13 @@ class JournalEntry(Base):
 
 
 class DailyDraw(Base):
+    """
+    Stores a user's daily tarot draw.
+
+    @note `insights` holds the full AI-generated DailyInsights JSON blob (horoscope, cardReading, etc.).
+    @note `user_reflection` is a first-class column for the user's freeform personal journal entry
+          tied to this draw. Previously it was incorrectly piggybacked inside the `insights` blob.
+    """
     __tablename__ = "daily_draws"
 
     id = Column(String(36), primary_key=True, default=generate_uuid, index=True)
@@ -120,7 +128,8 @@ class DailyDraw(Base):
     card = Column(String(50), nullable=True)
     is_rev = Column(Boolean, default=False)
     date = Column(String(20), index=True, nullable=False) # e.g., 'YYYY-MM-DD'
-    insights = Column(Text, nullable=True)
+    insights = Column(Text, nullable=True)               # JSON: AI-generated DailyInsights blob
+    user_reflection = Column(Text, nullable=True)        # User's personal journal entry for this draw
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User", back_populates="daily_draws")

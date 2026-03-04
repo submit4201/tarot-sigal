@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+﻿import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { SpreadType, DrawnDivinationCard, Page, Deck, AnyCard } from '../types';
 import { SPREAD_DETAILS, SHOP_DECKS, TAROT_DECK } from '../constants';
@@ -12,6 +12,7 @@ import { useHaptic } from '../hooks/useHaptic';
 import { useTilt } from '../hooks/useTilt';
 import { formatReadingForExport } from '../utils/exportUtils';
 import { db } from '../services/apiService';
+import { googleTtsSpeak, cancelSpeech } from '../services/googleTtsService';
 
 // * Extracted Components
 import { IntentFocusView } from '../components/readings/IntentFocusView';
@@ -21,14 +22,20 @@ import { ChargingView } from '../components/readings/ChargingView';
 import { PickingView } from '../components/readings/PickingView';
 import { RevealingView } from '../components/readings/RevealingView';
 import { IntegratedForecastView } from '../components/readings/IntegratedForecastView';
-import CyberpunkAd from '@/components/ui/CyberpunkAd';
-// * TTS Helper function
-const speakText = (text: string) => {
-    window.speechSynthesis.cancel(); // Stop any current speech
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.9; // Slightly slower for mystical feel
-    utterance.pitch = 0.9; // Slightly deeper
-    window.speechSynthesis.speak(utterance);
+import CyberpunkAd from '../components/ui/CyberpunkAd';
+/**
+ * Speaks the provided text using Google Cloud TTS for Oracle-tier users,
+ * or the native browser speechSynthesis for all others.
+ * @note `isOracle` is passed as a parameter here because this helper is defined
+ *       outside the component scope and cannot close over hook state.
+ */
+const speakText = (text: string, premium = false) => {
+    cancelSpeech();
+    googleTtsSpeak({
+        text,
+        premium,
+        onError: (err) => console.warn('[TTS] Playback error:', err.message),
+    });
 };
 
 const ReadingsPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) => {

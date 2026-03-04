@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { SparklesIcon, ZapIcon } from '../components/icons';
+import { ZapIcon } from '../components/icons';
 import { createCheckoutSession } from '../services/stripeService';
-import { AnimatedCardFront } from '../components/AnimatedCardFront';
-import CyberpunkAd from '@/components/ui/CyberpunkAd';
+import CyberpunkAd from '../components/ui/CyberpunkAd';
+import { DeckShowcase } from '../components/shop/DeckShowcase';
+import { DeckPreviewModal } from '../components/shop/DeckPreviewModal';
 
 /**
  * ShopPage — Restructured premium marketplace.
- * Stardust CTAs at top/bottom, decks look like "Daily Cards" with fluid previews.
+ * Features an immersive 3D DeckShowcase carousel and Stardust purchasing CTAs.
  */
 const ShopPage: React.FC = () => {
-    const { activeProfile, purchaseDeck, setPage, decks, activeDeckId, setActiveDeck, isPremium, hasRequiredTier } = useApp();
+    const { activeProfile, purchaseDeck, decks, activeDeckId, setActiveDeck, isPremium, hasRequiredTier } = useApp();
     const [isPurchasing, setIsPurchasing] = useState(false);
+    const [previewDeckId, setPreviewDeckId] = useState<string | null>(null);
 
     const handleStardustPurchase = async (packTier: string) => {
         setIsPurchasing(true);
@@ -38,7 +40,7 @@ const ShopPage: React.FC = () => {
     ];
 
     const StardustSurgeBar = () => (
-        <div className="flex flex-nowrap md:grid md:grid-cols-4 gap-4 overflow-x-auto pb-4 md:pb-0 no-scrollbar">
+        <div className="flex flex-nowrap md:grid md:grid-cols-4 gap-4 overflow-x-auto pb-4 md:pb-0 no-scrollbar relative z-20">
             {stardustPacks.map(pack => {
                 const isAmber = pack.color === 'amber';
                 return (
@@ -68,17 +70,18 @@ const ShopPage: React.FC = () => {
     );
 
     return (
-        <div className="w-full h-full p-6 md:px-14 md:py-10 flex flex-col bg-grid animate-fade-in overflow-y-auto scroll-smooth gap-16">
+        <div className="relative w-full h-full p-6 md:px-14 md:py-10 flex flex-col animate-fade-in overflow-y-auto scroll-smooth gap-12">
+
             {/* Header section with Balance */}
-            <header className="flex flex-col md:flex-row justify-between items-end gap-6 relative z-10">
+            <header className="flex flex-col md:flex-row justify-between items-end gap-6 relative z-10 pt-4">
                 <div className="max-w-2xl text-left">
                     <div className="flex items-center gap-3 mb-2">
                         <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></div>
-                        <span className="text-[10px] font-mono text-teal-400 uppercase tracking-[0.5em] font-bold">Nexus_Exchange_v5.0 // FLUID_SYNC_ACTIVE</span>
+                        <span className="text-[10px] font-mono text-teal-400 uppercase tracking-[0.5em] font-bold">Nexus_Exchange_v6.0 // IMMERSIVE_MODE</span>
                     </div>
                     <h1 className="text-5xl md:text-6xl font-bold font-dm-sans text-white tracking-tighter neon-glow">Marketplace</h1>
                 </div>
-                <div className="glass-panel px-8 py-5 rounded-2xl border-purple-500/30 flex items-center gap-4 bg-purple-500/5 shadow-glow">
+                <div className="flex items-center gap-4 relative z-20">
                     <div className="text-right">
                         <p className="text-[9px] font-mono text-white/30 uppercase tracking-[0.3em] font-bold mb-1">Energy_Balance</p>
                         <p className="text-3xl font-bold text-teal-400 flex items-center justify-end gap-2 font-dm-sans">
@@ -89,8 +92,22 @@ const ShopPage: React.FC = () => {
                 </div>
             </header>
 
-            {/* Top CTA Row */}
-            <section className="space-y-4">
+            {/* Immersive Deck Marketplace */}
+            <section className="-mx-6 md:-mx-14 relative z-0 mt-4 md:mt-2">
+                <DeckShowcase
+                    decks={decks}
+                    ownedDeckIds={ownedDeckIds}
+                    activeDeckId={activeDeckId || decks[0]?.id}
+                    stardust={stardust}
+                    hasRequiredTier={hasRequiredTier}
+                    onPurchase={purchaseDeck}
+                    onSetActive={setActiveDeck}
+                    onPreviewDraw={(id) => setPreviewDeckId(id)}
+                />
+            </section>
+
+            {/* Bottom CTA Row (Stardust) */}
+            <section className="space-y-4 mt-12 relative z-20">
                 <header className="flex items-center gap-4">
                     <h2 className="text-[10px] font-mono text-white/40 uppercase tracking-[0.4em] font-bold">Surge_Energy</h2>
                     <div className="h-[1px] flex-grow bg-gradient-to-r from-white/10 to-transparent"></div>
@@ -98,99 +115,23 @@ const ShopPage: React.FC = () => {
                 <StardustSurgeBar />
             </section>
 
-            {/* Deck Marketplace Row */}
-            <section className="space-y-8">
-                <header className="flex items-center gap-4">
-                    <h2 className="text-[10px] font-mono text-white/40 uppercase tracking-[0.4em] font-bold">Signal_Conduits</h2>
-                    <div className="h-[1px] flex-grow bg-gradient-to-r from-white/10 to-transparent"></div>
-                </header>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
-                    {decks.map(deck => {
-                        const isOwned = ownedDeckIds.includes(deck.id) || deck.price === 0;
-                        const isActive = activeDeckId === deck.id;
-                        const tierMet = hasRequiredTier(deck.tierRequirement);
-                        const canAfford = stardust >= (deck.price || 0) && tierMet;
-
-                        return (
-                            <div key={deck.id} className="flex flex-col group items-center">
-                                {/* The "Daily Card" Container */}
-                                <div className={`relative w-full max-w-[280px] transition-all duration-700 ${isActive ? 'scale-105' : 'hover:scale-[1.02]'}`}>
-                                    <AnimatedCardFront
-                                        deckId={deck.id}
-                                        className={`${isActive ? 'ring-4 ring-teal-400/30' : 'group-hover:ring-2 group-hover:ring-purple-500/30'}`}
-                                    />
-
-                                    {isActive && (
-                                        <div className="absolute top-4 right-4 z-50">
-                                            <div className="bg-teal-400 text-black px-3 py-1 rounded-full font-mono text-[7px] uppercase font-bold tracking-widest shadow-glow">Active</div>
-                                        </div>
-                                    )}
-
-                                    {!isOwned && deck.tierRequirement && deck.tierRequirement !== 'free' && (
-                                        <div className="absolute top-4 left-4 z-50">
-                                            <div className={`px-3 py-1 rounded-full font-mono text-[7px] uppercase font-bold tracking-widest shadow-glow border ${tierMet ? 'bg-white/10 text-white/60 border-white/20' : 'bg-red-500/20 text-red-400 border-red-500/40'}`}>
-                                                {deck.tierRequirement} Required
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Actions below the card */}
-                                <div className="w-full max-w-[280px] mt-6 flex flex-col items-center">
-                                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-purple-400 transition-colors">{deck.name}</h3>
-                                    {isOwned ? (
-                                        <button
-                                            onClick={() => setActiveDeck(deck.id)}
-                                            disabled={isActive}
-                                            className={`w-full py-3 rounded-xl font-bold font-mono text-[9px] uppercase tracking-[0.2em] transition-all border ${isActive
-                                                ? 'bg-white/5 text-white/20 border-white/5 cursor-default'
-                                                : 'bg-teal-500/10 border-teal-500/30 text-teal-400 hover:bg-teal-500 hover:text-black shadow-glow'}`}
-                                        >
-                                            {isActive ? 'SIGNAL_LOCKED' : 'ESTABLISH_LINK'}
-                                        </button>
-                                    ) : (
-                                        <button
-                                            onClick={() => purchaseDeck(deck)}
-                                            disabled={!canAfford}
-                                            className={`w-full py-3 rounded-xl font-bold font-mono text-[9px] uppercase tracking-[0.2em] transition-all border flex items-center justify-center gap-2 ${canAfford
-                                                ? 'bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500 hover:text-black shadow-glow'
-                                                : !tierMet
-                                                    ? 'bg-red-500/5 border-red-500/20 text-red-400/40 cursor-not-allowed'
-                                                    : 'bg-white/5 border-white/10 text-white/20 cursor-not-allowed'}`}
-                                        >
-                                            <SparklesIcon className="w-3 h-3" />
-                                            {canAfford
-                                                ? `ACQUIRE (${deck.price})`
-                                                : !tierMet
-                                                    ? `${deck.tierRequirement?.toUpperCase()}_LOCKED`
-                                                    : `LOW_ENERGY (${deck.price})`}
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            </section>
-
-            {/* Bottom CTA Row */}
-            <section className="space-y-4 pt-10">
-                <header className="flex items-center gap-4">
-                    <h2 className="text-[10px] font-mono text-white/40 uppercase tracking-[0.4em] font-bold">Surge_Repeat</h2>
-                    <div className="h-[1px] flex-grow bg-gradient-to-r from-white/10 to-transparent"></div>
-                </header>
-                <StardustSurgeBar />
-            </section>
-
-            <section className="mt-8">
+            <section className="mt-8 relative z-20">
                 <CyberpunkAd variant="banner" isPremium={isPremium} />
             </section>
 
-            <footer className="mt-20 text-center glass-panel p-10 rounded-[2rem] border-white/5 bg-white/[0.01]">
+            <footer className="mt-10 text-center p-10 relative z-20 mb-20">
                 <p className="text-[10px] text-white/20 font-mono uppercase tracking-[0.3em] flex items-center justify-center gap-2">
-                    <ZapIcon className="w-3 h-3" /> Data_Transmission_Secured // Nexus_Core_v5.0
+                    <ZapIcon className="w-3 h-3" /> Data_Transmission_Secured // Nexus_Core_v6.0
                 </p>
             </footer>
+
+            {/* Sample Pack Preview Modal */}
+            <DeckPreviewModal
+                isOpen={!!previewDeckId}
+                onClose={() => setPreviewDeckId(null)}
+                deckId={previewDeckId}
+                decks={decks}
+            />
         </div>
     );
 };

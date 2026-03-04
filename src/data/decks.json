@@ -406,5 +406,108 @@
             "s": "sta_{00}",
             "p": "tic_{00}"
         }
+    },
+    {
+        "id": "1wildflower-apothecarist-tarot-prompts-deduped",
+        "name": "1wildflower Apothecarist Tarot Prompts Deduped",
+        "description": "The exquisite 1wildflower Apothecarist Tarot Prompts Deduped deck, featuring unique thematic imagery.",
+        "path": "1wildflower_Apothecarist_Tarot_Prompts_Deduped",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{00}"
+        }
+    },
+    {
+        "id": "attachment-theory",
+        "name": "Attachment Theory",
+        "description": "The exquisite Attachment Theory deck, featuring unique thematic imagery.",
+        "path": "Attachment_Theory_Deck",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{00}"
+        }
+    },
+    {
+        "id": "quantum-entanglement-tarot",
+        "name": "Quantum Entanglement Tarot",
+        "description": "The exquisite Quantum Entanglement Tarot deck, featuring unique thematic imagery.",
+        "path": "Quantum_Entanglement_Tarot",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{00}"
+        }
+    },
+    {
+        "id": "quantum-entanglement-tarot copy",
+        "name": "Quantum Entanglement Tarot copy",
+        "description": "The exquisite Quantum Entanglement Tarot copy deck, featuring unique thematic imagery.",
+        "path": "Quantum_Entanglement_Tarot copy",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{00}"
+        }
+    },
+    {
+        "id": "redacted-truth-arcana",
+        "name": "Redacted Truth Arcana",
+        "description": "The exquisite Redacted Truth Arcana deck, featuring unique thematic imagery.",
+        "path": "Redacted_Truth_Arcana",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{00}"
+        }
+    },
+    {
+        "id": "street-art-revolution-tarot",
+        "name": "Street Art Revolution Tarot",
+        "description": "The exquisite Street Art Revolution Tarot deck, featuring unique thematic imagery.",
+        "path": "Street_Art_Revolution_Tarot",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "wan_{00}"
+        }
+    },
+    {
+        "id": "the-golden-hearth-tarot-prompts-deduped",
+        "name": "The Golden Hearth Tarot Prompts Deduped",
+        "description": "The exquisite The Golden Hearth Tarot Prompts Deduped deck, featuring unique thematic imagery.",
+        "path": "The_Golden_Hearth_Tarot_Prompts_Deduped",
+        "price": 300,
+        "tierRequirement": "seeker",
+        "mapping": {
+            "maj": "maj_{00}",
+            "w": "cup_{00}",
+            "c": "pen_{00}",
+            "s": "swo_{00}",
+            "p": "wan_{0}"
+        }
     }
 ]

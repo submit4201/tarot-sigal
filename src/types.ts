@@ -1,7 +1,7 @@
 export type Element = 'Fire' | 'Earth' | 'Air' | 'Water';
 export type Arcana = 'Major' | 'Wands' | 'Cups' | 'Swords' | 'Pentacles';
 export type DeckType = 'tarot' | 'runes' | 'oracle' | 'angel';
-export type Page = 'Daily' | 'Readings' | 'Journal' | 'Progress' | 'Profile' | 'Onboarding' | 'Guide' | 'Shop' | 'Pricing' | 'Numerology' | 'Sigil' | 'Success' | 'Cancel' | 'BirthProfile';
+export type Page = 'Daily' | 'Readings' | 'Journal' | 'Progress' | 'Profile' | 'Onboarding' | 'Guide' | 'Shop' | 'Pricing' | 'Numerology' | 'Sigil' | 'Success' | 'Cancel' | 'BirthProfile' | 'Admin' | 'Grimoire';
 export type AstrologicalSign = 'Aries' | 'Taurus' | 'Gemini' | 'Cancer' | 'Leo' | 'Virgo' | 'Libra' | 'Scorpio' | 'Sagittarius' | 'Capricorn' | 'Aquarius' | 'Pisces' | 'None';
 
 export interface DivinationCard {
@@ -112,6 +112,7 @@ export interface UserProfile {
   isPremium: boolean;
   subscriptionTier: 'free' | 'seeker' | 'mystic' | 'oracle';
   subscriptionExpiry: string; // ISO Date
+  llm_narrative?: string;
 }
 
 export type AchievementID =
@@ -135,6 +136,8 @@ export type AchievementID =
 export interface CardReadingOutput {
   coreMessage: string;
   mysticalInsight: string;
+  theLight: string;
+  theShadow: string;
   todaysAction: string;
   reflectionQuestion: string;
 }

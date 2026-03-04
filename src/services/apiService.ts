@@ -3,10 +3,10 @@
  * Replaces the previous Appwrite service.
  */
 
-const API_BASE = import.meta.env.VITE_APP_URL || 'http://localhost:8000/api';
+const API_BASE = import.meta.env.VITE_APP_URL || '/api';
 
 // --- Auth Utilities ---
-function getToken() {
+export function getToken() {
     return localStorage.getItem('jwt_token');
 }
 
@@ -85,6 +85,20 @@ export const auth = {
             removeToken();
             return null;
         }
+    },
+
+    forgotPassword: async (email: string) => {
+        return apiFetch('/auth/forgot-password', {
+            method: 'POST',
+            body: JSON.stringify({ email })
+        });
+    },
+
+    resetPassword: async (token: string, new_password: string) => {
+        return apiFetch('/auth/reset-password', {
+            method: 'POST',
+            body: JSON.stringify({ token, new_password })
+        });
     }
 };
 

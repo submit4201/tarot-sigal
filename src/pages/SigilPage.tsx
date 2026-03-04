@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { DrawnDivinationCard, SavedReading } from '../types';
 import { drawTarotCard } from '../services/tarotService';
@@ -10,7 +10,7 @@ import DeepDivePhase from '../components/SigilFlow/DeepDivePhase';
 import ActionableAltar from '../components/SigilFlow/ActionableAltar';
 import { ChevronLeftIcon } from '../components/icons';
 import { SIGIL_READING_PROMPT } from '../constants/prompts';
-import CyberpunkAd from '@/components/ui/CyberpunkAd';
+import CyberpunkAd from '../components/ui/CyberpunkAd';
 import PremiumModal from '../components/PremiumModal';
 
 type Phase = 'initiation' | 'reveal' | 'core';

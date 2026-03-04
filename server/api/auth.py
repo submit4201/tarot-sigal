@@ -2,8 +2,9 @@ from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+import uuid
 
-from models.schemas import UserCreate, UserResponse, Token, ProfileUpdate
+from models.schemas import UserCreate, UserResponse, Token, ProfileUpdate, ForgotPasswordRequest, ResetPasswordRequest
 from models.database_models import User
 from core.database import get_db
 from core.security import get_password_hash, verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
@@ -11,6 +12,46 @@ from api.deps import get_current_user
 from core.logger import app_logger
 
 router = APIRouter()
+
+# --- Fake Token Store for Development ---
+# In production, use Redis or a DB table for reset tokens.
+RESET_TOKENS = {}
+
+@router.post("/forgot-password")
+def forgot_password(req: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == req.email).first()
+    if not user:
+        # Prevent email enumeration by returning a success message anyway
+        return {"msg": "If your email is registered, you will receive a reset link."}
+    
+    # Generate a dummy token
+    token = str(uuid.uuid4())
+    RESET_TOKENS[token] = user.email
+    
+    app_logger.info(f"========== PASSWORD RESET TOKEN ==========")
+    app_logger.info(f"Email: {user.email}")
+    app_logger.info(f"Token: {token}")
+    app_logger.info(f"==========================================")
+    
+    return {"msg": "If your email is registered, you will receive a reset link.", "dev_token": token}
+
+@router.post("/reset-password")
+def reset_password(req: ResetPasswordRequest, db: Session = Depends(get_db)):
+    email = RESET_TOKENS.get(req.token)
+    if not email:
+        raise HTTPException(status_code=400, detail="Invalid or expired reset token.")
+    
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+        
+    user.hashed_password = get_password_hash(req.new_password)
+    db.commit()
+    
+    # Invalidate token
+    del RESET_TOKENS[req.token]
+    
+    return {"msg": "Password updated successfully."}
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def register(user_in: UserCreate, db: Session = Depends(get_db)):

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+﻿import React, { useState, useEffect, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { JournalIcon, CompassIcon, SparklesIcon, LayersIcon, ZapIcon } from '../components/icons';
 import { SavedReading, DrawnDivinationCard, DeckType, JournalEntry } from '../types';
@@ -273,7 +273,7 @@ Format your response in clean sections with headers. Use a mystical but grounded
                     />
                 </div>
             )}
-            <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none"></div>
+            <div className="absolute inset-0 opacity-5 pointer-events-none"></div>
 
             <header className="mb-10 flex-shrink-0 flex flex-col md:flex-row justify-between items-end gap-10">
                 <div className="max-w-2xl z-10">

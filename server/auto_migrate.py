@@ -174,6 +174,7 @@ def run_auto_migrations():
         # --- Users table ---
         _sync_table_columns(inspector, "users", [
             ("is_premium", "BOOLEAN DEFAULT FALSE"),
+            ("is_admin", "BOOLEAN DEFAULT FALSE"),
             ("subscription_tier", "VARCHAR(50) DEFAULT 'Seeker'"),
             ("subscription_expiry", "TIMESTAMP"),
             ("stripe_customer_id", "VARCHAR(100)"),

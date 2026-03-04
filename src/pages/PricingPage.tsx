@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { SparklesIcon, ZapIcon, CrownIcon } from '../components/icons';
 import { createCheckoutSession } from '../services/stripeService';
-import CyberpunkAd from '@/components/ui/CyberpunkAd';
+import CyberpunkAd from '../components/ui/CyberpunkAd';
 
 interface PricingTier {
   name: string;
@@ -88,7 +88,7 @@ const PricingPage: React.FC = () => {
   const currentTier = activeProfile?.subscriptionTier || 'free';
 
   return (
-    <div className="w-full h-full p-6 md:p-14 flex flex-col bg-grid animate-fade-in overflow-y-auto scroll-smooth">
+    <div className="w-full h-full p-6 md:p-14 flex flex-col animate-fade-in overflow-y-auto scroll-smooth">
       <header className="mb-12 flex-shrink-0 text-center">
         <div className="flex items-center justify-center gap-3 mb-3">
           <div className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>

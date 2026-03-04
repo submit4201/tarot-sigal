@@ -21,6 +21,13 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str = Field(..., max_length=72)
 
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str = Field(..., min_length=8, max_length=72)
+
 class UserResponse(BaseModel):
     id: str
     email: str
@@ -33,6 +40,7 @@ class UserResponse(BaseModel):
     reading_style: Optional[str] = Field("mystical", alias="readingStyle")
     reading_focus: Optional[str] = Field("general", alias="readingFocus")
     is_premium: bool = Field(False, alias="isPremium")
+    is_admin: bool = Field(False, alias="isAdmin")
     subscription_tier: str = Field("free", alias="subscriptionTier")
     subscription_expiry: Optional[datetime] = Field(None, alias="subscriptionExpiry")
     stardust: int = 0
@@ -115,13 +123,32 @@ class JournalEntryResponse(JournalEntryCreate):
 
 # --- Daily Draw Schemas ---
 class DailyDrawCreate(BaseModel):
+    """
+    Schema for creating a new daily draw.
+
+    @note `insights` holds the full AI-generated JSON blob.
+    @note `user_reflection` is the user's personal journal entry for this draw;
+          it is a first-class column, NOT embedded inside insights.
+    """
     card: Optional[str] = None
     is_rev: bool = False
     date: str
     insights: Optional[str] = None
+    user_reflection: Optional[str] = Field(None, alias="userReflection")
+
+    class Config:
+        populate_by_name = True
 
 class DailyDrawUpdate(BaseModel):
-    insights: str
+    """
+    Schema for updating an existing daily draw.
+    Either insights (AI blob) or user_reflection can be updated independently.
+    """
+    insights: Optional[str] = None
+    user_reflection: Optional[str] = Field(None, alias="userReflection")
+
+    class Config:
+        populate_by_name = True
 
 class DailyDrawResponse(DailyDrawCreate):
     id: str
@@ -130,6 +157,7 @@ class DailyDrawResponse(DailyDrawCreate):
 
     class Config:
         from_attributes = True
+        populate_by_name = True
 
 # --- Purchase Schemas ---
 class PurchaseCreate(BaseModel):

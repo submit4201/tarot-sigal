@@ -6,7 +6,7 @@
 - `functions/` - Serverless functions (Stripe, Gemini proxy)
 - `public/` - Static assets (cards, images)
 
-## Tarot Generation System
+## Tarot Generation System # this is now a private git
 - `tarot_gen/` - Complete tarot card generation module
   - `cli.py` - Command-line interface
   - `generator.py` - Card generation orchestrator
@@ -20,7 +20,7 @@
 - `vite.config.ts` - Vite build configuration
 - `tsconfig.json` - TypeScript configuration
 
-## Scripts & Tools
+## Scripts & Tools # this is now private
 - `generate_tarot.py` - Launch tarot generation
 - `scripts/` - Utility scripts for DB, assets, etc.
 
@@ -35,3 +35,4 @@
 - `DEPLOYMENT.md` - Deployment instructions
 - `TAROT_DECK_CATALOG.md` - Deck documentation
 - `tarot_gen/README.md` - Tarot generation docs
+

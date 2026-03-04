@@ -14,7 +14,7 @@ from models.database_models import Base
 from auto_migrate import run_auto_migrations
 
 # API Routers
-from api import auth, readings, journal, daily_draws, purchases, stripe_routes, gemini_routes, birth_profile
+from api import auth, readings, journal, daily_draws, purchases, stripe_routes, gemini_routes, birth_profile, admin, oracle_routes
 
 # API Routers
 
@@ -108,3 +108,5 @@ app.include_router(purchases.router, prefix="/api/purchases", tags=["Purchases"]
 app.include_router(stripe_routes.router, prefix="/api/stripe", tags=["Stripe"])
 app.include_router(gemini_routes.router, prefix="/api/gemini", tags=["Gemini AI"])
 app.include_router(birth_profile.router, prefix="/api/birth-profile", tags=["Birth Profile"])
+app.include_router(admin.router, prefix="/api/admin", tags=["Admin"])
+app.include_router(oracle_routes.router, prefix="/api/oracle", tags=["Oracle AI"])

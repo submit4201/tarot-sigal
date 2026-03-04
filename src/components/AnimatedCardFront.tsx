@@ -9,6 +9,7 @@ import { CardBack } from './CardBack';
 interface AnimatedCardFrontProps {
     deckId: string;
     className?: string;
+    randomSeed?: number;
 }
 
 const GenerativeCardArt: React.FC<{ card: TarotCard }> = ({ card }) => {
@@ -58,9 +59,16 @@ const GenerativeCardArt: React.FC<{ card: TarotCard }> = ({ card }) => {
     );
 };
 
-export const AnimatedCardFront: React.FC<AnimatedCardFrontProps> = ({ deckId, className }) => {
+export const AnimatedCardFront: React.FC<AnimatedCardFrontProps> = ({ deckId, className, randomSeed }) => {
     const { getCardImagePath } = useApp();
-    const [currentIndex, setCurrentIndex] = useState(0);
+
+    // List of major arcana IDs to cycle through
+    const cardIds = useMemo(() =>
+        TAROT_DECK.filter(c => c.arcana === 'Major').map(c => c.id),
+        []);
+
+    const startIndex = randomSeed !== undefined ? randomSeed % cardIds.length : 0;
+    const [currentIndex, setCurrentIndex] = useState(startIndex);
     const [isHovered, setIsHovered] = useState(false);
 
     // Whimsical randomization: unique interval and delay for each instance
@@ -69,11 +77,6 @@ export const AnimatedCardFront: React.FC<AnimatedCardFrontProps> = ({ deckId, cl
         delay: Math.random() * 2500,           // Desynchronize starts
         rotateOffset: (Math.random() - 0.5) * 4 // Slight random tilt
     }), []);
-
-    // List of major arcana IDs to cycle through
-    const cardIds = useMemo(() =>
-        TAROT_DECK.filter(c => c.arcana === 'Major').map(c => c.id),
-        []);
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -89,9 +92,8 @@ export const AnimatedCardFront: React.FC<AnimatedCardFrontProps> = ({ deckId, cl
     const activeCardId = cardIds[currentIndex];
 
     // Spring for flipping animation
-    const { transform, opacity } = useSpring({
-        opacity: isHovered ? 1 : 0,
-        transform: `perspective(1000px) rotateY(${isHovered ? 180 : 0}deg)`,
+    const { flip } = useSpring({
+        flip: isHovered ? 180 : 0,
         config: { mass: 5, tension: 500, friction: 80 },
     });
 
@@ -103,23 +105,22 @@ export const AnimatedCardFront: React.FC<AnimatedCardFrontProps> = ({ deckId, cl
     });
 
     return (
-        <div
+        <animated.div
             className={`relative w-full aspect-[2/3] cursor-pointer group ${className}`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            style={{ transform: `rotate(${whimsicalConfig.rotateOffset}deg)` }}
+            style={{
+                transform: flip.to(f => `rotate(${whimsicalConfig.rotateOffset}deg) perspective(1000px) rotateY(${f}deg)`),
+                transformStyle: 'preserve-3d'
+            }}
         >
             {/* FRONT SIDE (Cycling Images) */}
-            <animated.div
-                style={{
-                    opacity: opacity.to(o => 1 - o),
-                    transform,
-                    rotateY: '0deg',
-                }}
-                className="absolute inset-0 z-10 w-full h-full rounded-2xl overflow-hidden bg-[#05060a] border border-white/10 shadow-2xl backface-hidden"
+            <div
+                className="absolute inset-0 z-10 w-full h-full rounded-2xl overflow-hidden bg-[#05060a] border border-white/10 shadow-2xl [backface-visibility:hidden]"
             >
                 {transitions((style, item) => {
-                    const card = TAROT_DECK.find(c => c.id === item)!;
+                    const card = TAROT_DECK.find(c => c.id === item);
+                    if (!card) return null;
                     const img = getCardImagePath(item, deckId);
                     const elementColor = (ELEMENT_COLORS as any)[card.element || 'Air'] || 'text-white';
 
@@ -134,7 +135,11 @@ export const AnimatedCardFront: React.FC<AnimatedCardFrontProps> = ({ deckId, cl
                             <img
                                 src={img}
                                 alt={card.name}
-                                className="w-full h-full object-cover transition-transform duration-[6s] group-hover:scale-110"
+                                className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 mix-blend-screen group-hover:scale-110"
+                                onError={(e) => {
+                                    // Hide broken image
+                                    (e.target as HTMLImageElement).style.opacity = '0';
+                                }}
                             />
 
                             <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/90 pointer-events-none"></div>
@@ -156,16 +161,11 @@ export const AnimatedCardFront: React.FC<AnimatedCardFrontProps> = ({ deckId, cl
                         </animated.div>
                     );
                 })}
-            </animated.div>
+            </div>
 
             {/* BACK SIDE (Deck Identity) */}
-            <animated.div
-                style={{
-                    opacity,
-                    transform,
-                    rotateY: '180deg',
-                }}
-                className="absolute inset-0 z-0 w-full h-full rounded-2xl overflow-hidden bg-black border border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.2)] backface-hidden"
+            <div
+                className="absolute inset-0 z-0 w-full h-full rounded-2xl overflow-hidden bg-black border border-purple-500/30 shadow-[0_0_30px_rgba(168,85,247,0.2)] [backface-visibility:hidden] [transform:rotateY(180deg)]"
             >
                 <CardBack deckId={deckId} animated className="scale-110" />
                 <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] pointer-events-none"></div>
@@ -176,8 +176,8 @@ export const AnimatedCardFront: React.FC<AnimatedCardFrontProps> = ({ deckId, cl
                     <p className="text-[9px] font-mono text-purple-400 uppercase tracking-[0.4em] font-bold">Conduit_Pattern</p>
                     <p className="text-[8px] text-white/40 font-mono mt-2 uppercase tracking-widest">Verify_Identity_Sequence</p>
                 </div>
-            </animated.div>
-        </div>
+            </div>
+        </animated.div>
     );
 };
 

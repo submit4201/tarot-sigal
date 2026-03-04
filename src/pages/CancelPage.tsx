@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+﻿import React, { useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { ShoppingCartIcon, HomeIcon } from '../components/icons';
 
@@ -14,7 +14,7 @@ const CancelPage: React.FC<{ setPage: (page: any) => void }> = ({ setPage }) => 
     }, []);
 
     return (
-        <div className="w-full h-full p-6 md:p-14 flex flex-col items-center justify-center bg-grid animate-fade-in">
+        <div className="w-full h-full p-6 md:p-14 flex flex-col items-center justify-center animate-fade-in">
             <div className="glass-panel p-10 md:p-16 rounded-[2.5rem] border-amber-500/40 bg-amber-500/[0.03] shadow-[0_0_50px_rgba(245,158,11,0.15)] flex flex-col items-center text-center max-w-2xl relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-amber-500/50 to-transparent"></div>
 

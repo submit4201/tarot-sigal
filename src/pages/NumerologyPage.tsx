@@ -1,4 +1,4 @@
-
+﻿
 import React, { useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { calculateDailyNumber, calculateMonthlyNumber, calculateYearlyNumber, reduceNumber } from '../services/tarotService';
@@ -25,7 +25,7 @@ const NumerologyPage: React.FC = () => {
     };
 
     return (
-        <div className="w-full h-full p-4 md:p-10 overflow-y-auto bg-grid relative flex flex-col items-center animate-fade-in scroll-smooth">
+        <div className="w-full h-full p-4 md:p-10 overflow-y-auto relative flex flex-col items-center animate-fade-in scroll-smooth">
             <header className="w-full max-w-5xl flex items-center gap-6 mb-12 relative z-20">
                 <button onClick={handleBack} className="p-3 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 hover:border-purple-500/50 transition-all group">
                     <ChevronLeftIcon className="w-6 h-6 text-white/50 group-hover:text-purple-400" />

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { GlassPanel } from '../components/ui/GlassPanel';
 import { CyberButton } from '../components/ui/CyberButton';
 import { CyberInput } from '../components/ui/CyberInput';
 import { useAuth } from '../context/AuthContext';
 import { useApp } from '../context/AppContext';
-import CosmicCompass from '../components/CosmicCompass';
 import PowerPlaceMap from '../components/PowerPlaceMap';
 import AudioResonance from '../components/AudioResonance';
 import NarrativeSection from '../components/profile/NarrativeSection';
+import InteractiveNatalChart from '../components/profile/InteractiveNatalChart';
+import StoryModeOverlay from '../components/profile/StoryModeOverlay';
 import { BirthProfileData, BirthProfileTeaser } from '../types';
 import { birthProfile as birthProfileService } from '../services/apiService';
 import {
@@ -16,7 +17,6 @@ import {
     TerminalIcon,
     ShieldIcon,
     LockIcon,
-    ZapIcon,
     ShieldAlertIcon
 } from '../components/icons';
 
@@ -27,38 +27,8 @@ const SOLFEGGIO_MAP: Record<number, number> = {
     11: 528, 22: 432, 33: 963
 };
 
-// Helper to get house for a degree
-const getHouseForDegree = (degree: number | undefined, houses: number[]): number => {
-    if (degree === undefined || !houses || houses.length === 0) return 1;
-    // Iterate through houses to find which one contains the degree
-    for (let i = 0; i < 11; i++) {
-        const cusp = houses[i];
-        const nextCusp = houses[i + 1];
-        if (cusp < nextCusp) {
-            if (degree >= cusp && degree < nextCusp) return i + 1;
-        } else {
-            // Cusp wraps around 360/0
-            if (degree >= cusp || degree < nextCusp) return i + 1;
-        }
-    }
-    return 12;
-};
 
-// Sign data for elements and modalities
-const SIGN_DATA: Record<string, { element: string, modality: string }> = {
-    'Aries': { element: 'Fire', modality: 'Cardinal' },
-    'Taurus': { element: 'Earth', modality: 'Fixed' },
-    'Gemini': { element: 'Air', modality: 'Mutable' },
-    'Cancer': { element: 'Water', modality: 'Cardinal' },
-    'Leo': { element: 'Fire', modality: 'Fixed' },
-    'Virgo': { element: 'Earth', modality: 'Mutable' },
-    'Libra': { element: 'Air', modality: 'Cardinal' },
-    'Scorpio': { element: 'Water', modality: 'Fixed' },
-    'Sagittarius': { element: 'Fire', modality: 'Mutable' },
-    'Capricorn': { element: 'Earth', modality: 'Cardinal' },
-    'Aquarius': { element: 'Air', modality: 'Fixed' },
-    'Pisces': { element: 'Water', modality: 'Mutable' }
-};
+
 
 const BirthProfilePage: React.FC = () => {
     const { user } = useAuth();
@@ -70,6 +40,7 @@ const BirthProfilePage: React.FC = () => {
     const [profile, setProfile] = useState<BirthProfileData | BirthProfileTeaser | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [showAddForm, setShowAddForm] = useState(false);
+    const [storyModePlanet, setStoryModePlanet] = useState<any | null>(null);
 
     // Form states
     const [fullName, setFullName] = useState(activeProfile?.givenName || '');
@@ -288,40 +259,7 @@ const BirthProfilePage: React.FC = () => {
     const hdData = pData?.humanDesign;
     const progData = pData?.progressedMoon;
 
-    const getEnhancedBigThree = () => {
-        if (!astroData) return [];
-        const houseList = astroData.houses || [];
 
-        return [
-            {
-                label: 'SUN',
-                sign: astroData.sun?.sign,
-                degree: astroData.sun?.degreeInSign,
-                sabian: astroData.sun?.sabian,
-                tarot: astroData.sun?.decanTarot,
-                color: 'amber',
-                house: getHouseForDegree(astroData.sun?.degree, houseList)
-            },
-            {
-                label: 'MOON',
-                sign: astroData.moon?.sign,
-                degree: astroData.moon?.degreeInSign,
-                sabian: astroData.moon?.sabian,
-                tarot: astroData.moon?.decanTarot,
-                color: 'cyan',
-                house: getHouseForDegree(astroData.moon?.degree, houseList)
-            },
-            {
-                label: 'RISING',
-                sign: astroData.ascendant?.sign,
-                degree: astroData.ascendant?.degreeInSign,
-                sabian: astroData.ascendant?.sabian,
-                tarot: astroData.ascendant?.decanTarot,
-                color: 'purple',
-                house: 1
-            },
-        ];
-    };
 
     return (
         <div className="h-full overflow-y-auto p-4 md:p-8 space-y-12 pb-24">
@@ -480,26 +418,36 @@ const BirthProfilePage: React.FC = () => {
 
             {!isTeaser && fullData && pData && (
                 <>
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-7xl mx-auto">
-                        <div className="lg:col-span-6 space-y-4">
-                            <h2 className="text-xl font-bold text-white flex items-center gap-3">
-                                <span className="w-8 h-px bg-purple-500"></span>
-                                COSMIC_COMPASS [v2.0]
+                    {/* Cosmic Compass Full Width */}
+                    <div className="max-w-4xl mx-auto w-full space-y-4 mb-16">
+                        <div className="flex items-center gap-4">
+                            <h2 className="text-2xl font-black text-white uppercase italic tracking-tighter">
+                                Neural Chart [v2.0]
                             </h2>
-                            <GlassPanel className="aspect-square flex items-center justify-center overflow-hidden p-8 border-white/5 group hover:border-purple-500/20 transition-all relative">
-                                <CosmicCompass data={pData} />
-                            </GlassPanel>
+                            <div className="h-px flex-1 bg-gradient-to-r from-purple-500/50 to-transparent" />
                         </div>
+                        <GlassPanel className="aspect-square w-full max-w-2xl mx-auto flex items-center justify-center overflow-hidden p-2 md:p-8 border-purple-500/20 bg-black/40 relative shadow-[0_0_50px_rgba(168,85,247,0.05)] group hover:shadow-[0_0_80px_rgba(168,85,247,0.1)] transition-all duration-700">
+                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(168,85,247,0.1)_0%,transparent_70%)] pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
+                            {astroData && <InteractiveNatalChart
+                                data={pData}
+                                onPlanetClick={(planet) => setStoryModePlanet(planet)}
+                            />}
+                        </GlassPanel>
+                        <div className="text-center font-mono text-[10px] text-white/30 uppercase tracking-[0.2em] animate-pulse">
+                            Tap planetary nodes for an immersive sequence decryption
+                        </div>
+                    </div>
 
-                        <div className="lg:col-span-6 space-y-4">
-                            <h2 className="text-xl font-bold text-white flex items-center gap-3">
-                                <span className="w-8 h-px bg-teal-500"></span>
+                    <div className="max-w-7xl mx-auto mb-16 space-y-4">
+                        <div className="flex items-center gap-4">
+                            <h2 className="text-border text-2xl font-black text-white uppercase italic tracking-tighter">
                                 SIGNAL_HOTSPOTS [v2.4]
                             </h2>
-                            <GlassPanel className="aspect-square relative overflow-hidden border-white/5 group hover:border-teal-500/20 transition-all">
-                                <PowerPlaceMap data={pData.astrology} />
-                            </GlassPanel>
+                            <div className="h-px flex-1 bg-gradient-to-r from-teal-500/50 to-transparent" />
                         </div>
+                        <GlassPanel className="h-[400px] w-full relative overflow-hidden border-teal-500/20 group hover:border-teal-500/40 transition-all shadow-[0_0_30px_rgba(20,184,166,0.05)] hover:shadow-[0_0_50px_rgba(20,184,166,0.1)]">
+                            <PowerPlaceMap data={pData.astrology} />
+                        </GlassPanel>
                     </div>
 
                     {/* Bento Dashboard */}
@@ -659,6 +607,23 @@ const BirthProfilePage: React.FC = () => {
             <div className="text-[8px] font-mono text-white/20 text-center pt-8 uppercase tracking-[0.5em]">
                 Synthesis_Protocol_v2.5.1_ALIGNED
             </div>
+
+            {/* Story Mode Overlay */}
+            {storyModePlanet && (
+                <StoryModeOverlay
+                    isOpen={!!storyModePlanet}
+                    onClose={() => setStoryModePlanet(null)}
+                    title={`${storyModePlanet.label} in ${storyModePlanet.sign}`}
+                    subtitle={`House ${storyModePlanet.house || '?'}`}
+                    glyph={storyModePlanet.short}
+                    color={storyModePlanet.color}
+                    narrative={
+                        // We can pull the Sabian text from the astroData based on the planet key
+                        (astroData as any)[storyModePlanet.key]?.sabian ||
+                        "The cosmic currents whisper secrets of this placement. A neural pathway opens, revealing the archetype of your soul's architecture."
+                    }
+                />
+            )}
         </div>
     );
 };

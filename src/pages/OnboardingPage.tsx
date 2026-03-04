@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
 import { UserProfile } from '../types';
@@ -30,11 +30,13 @@ const OnboardingPage: React.FC<OnboardingPageProps> = ({ initialAuthMode = 'sign
   const { login, signup, user, isLoading: authLoading } = useAuth(); // Auth Context
 
   // Auth state
-  const [authMode, setAuthMode] = useState<'login' | 'signup'>(initialAuthMode);
+  const [authMode, setAuthMode] = useState<'login' | 'signup' | 'forgot_password' | 'reset_password'>(initialAuthMode as any);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState(''); // For signup
+  const [resetToken, setResetToken] = useState(''); // For resetting password
   const [authError, setAuthError] = useState<string | null>(null);
+  const [authSuccess, setAuthSuccess] = useState<string | null>(null);
 
   // Profile Wizard state
   const [step, setStep] = useState(1);
@@ -45,11 +47,27 @@ const OnboardingPage: React.FC<OnboardingPageProps> = ({ initialAuthMode = 'sign
   const handleAuthSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthError(null);
+    setAuthSuccess(null);
     try {
       if (authMode === 'login') {
         await login(email, password);
-      } else {
+      } else if (authMode === 'signup') {
         await signup(email, password, fullName);
+      } else if (authMode === 'forgot_password') {
+        const { auth: apiAuth } = await import('../services/apiService');
+        const res = await apiAuth.forgotPassword(email);
+        setAuthSuccess(res.msg || 'Reset requested.');
+        // In dev, we might get dev_token back to make testing easy
+        if (res.dev_token) {
+          setResetToken(res.dev_token);
+        }
+        setAuthMode('reset_password');
+      } else if (authMode === 'reset_password') {
+        const { auth: apiAuth } = await import('../services/apiService');
+        const res = await apiAuth.resetPassword(resetToken, password);
+        setAuthSuccess(res.msg || 'Password reset successful!');
+        setAuthMode('login');
+        setPassword('');
       }
     } catch (err: any) {
       setAuthError(err.message || 'Authentication failed');
@@ -95,7 +113,7 @@ const OnboardingPage: React.FC<OnboardingPageProps> = ({ initialAuthMode = 'sign
     return (
       <div className="w-screen h-screen bg-void text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
         {/* Background Effects */}
-        <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none"></div>
+        <div className="absolute inset-0 opacity-5 pointer-events-none"></div>
         <div className="noise-bg"></div>
 
         <GlassPanel className="w-full max-w-md p-8 relative overflow-hidden animate-fade-in-up">
@@ -109,12 +127,18 @@ const OnboardingPage: React.FC<OnboardingPageProps> = ({ initialAuthMode = 'sign
           )}
 
           <h2 className="text-4xl font-bold font-display text-white mb-8 tracking-tighter text-center neon-glow mt-4">
-            {authMode === 'login' ? 'JACK IN' : 'INITIATE'}
+            {authMode === 'login' ? 'JACK IN' : authMode === 'signup' ? 'INITIATE' : authMode === 'forgot_password' ? 'FORGOT PASSWORD' : 'RESET PASSWORD'}
           </h2>
 
           {authError && (
             <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-4 rounded-xl text-sm mb-6 font-mono">
               //! ERROR: {authError}
+            </div>
+          )}
+
+          {authSuccess && (
+            <div className="bg-green-500/10 border border-green-500/50 text-green-400 p-4 rounded-xl text-sm mb-6 font-mono">
+              // OK: {authSuccess}
             </div>
           )}
 
@@ -129,21 +153,35 @@ const OnboardingPage: React.FC<OnboardingPageProps> = ({ initialAuthMode = 'sign
               />
             )}
 
-            <CyberInput
-              label="Email_Address"
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              required
-            />
+            {(authMode === 'login' || authMode === 'signup' || authMode === 'forgot_password') && (
+              <CyberInput
+                label="Email_Address"
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+              />
+            )}
 
-            <CyberInput
-              label="Passcode_Sequence"
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required
-            />
+            {authMode === 'reset_password' && (
+              <CyberInput
+                label="Reset_Token"
+                type="text"
+                value={resetToken}
+                onChange={e => setResetToken(e.target.value)}
+                required
+              />
+            )}
+
+            {(authMode === 'login' || authMode === 'signup' || authMode === 'reset_password') && (
+              <CyberInput
+                label={authMode === 'reset_password' ? 'New_Passcode_Sequence' : 'Passcode_Sequence'}
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+              />
+            )}
 
             <CyberButton
               type="submit"
@@ -151,17 +189,36 @@ const OnboardingPage: React.FC<OnboardingPageProps> = ({ initialAuthMode = 'sign
               className="w-full"
               variant="primary"
             >
-              {authMode === 'login' ? 'Establish Link' : 'Create Identity'}
+              {authMode === 'login' ? 'Establish Link' : authMode === 'signup' ? 'Create Identity' : authMode === 'forgot_password' ? 'Request Override' : 'Update Passcode'}
             </CyberButton>
           </form>
 
-          <div className="mt-8 text-center bg-white/5 p-4 rounded-xl">
+          <div className="mt-8 text-center bg-white/5 p-4 rounded-xl flex flex-col gap-2">
             <button
-              onClick={() => { setAuthMode(authMode === 'login' ? 'signup' : 'login'); setAuthError(null); }}
+              onClick={() => { setAuthMode(authMode === 'login' ? 'signup' : 'login'); setAuthError(null); setAuthSuccess(null); }}
               className="text-xs font-mono text-cosmic-light hover:text-cosmic-glow transition-colors uppercase tracking-widest hover:underline underline-offset-4"
+              type="button"
             >
               {authMode === 'login' ? "[ NO_CREDENTIALS? INITIALIZE_NEW_USER ]" : "[ EXISTING_USER? ACCESS_LINK ]"}
             </button>
+            {(authMode === 'login' || authMode === 'signup') && (
+              <button
+                onClick={() => { setAuthMode('forgot_password'); setAuthError(null); setAuthSuccess(null); }}
+                className="text-xs font-mono text-white/40 hover:text-white transition-colors uppercase tracking-widest hover:underline underline-offset-4"
+                type="button"
+              >
+                [ FORGOT PASSCODE? INITIATE OVERRIDE ]
+              </button>
+            )}
+            {(authMode === 'forgot_password' || authMode === 'reset_password') && (
+              <button
+                onClick={() => { setAuthMode('login'); setAuthError(null); setAuthSuccess(null); }}
+                className="text-xs font-mono text-white/40 hover:text-white transition-colors uppercase tracking-widest hover:underline underline-offset-4"
+                type="button"
+              >
+                [ RETURN TO LOGIN ]
+              </button>
+            )}
           </div>
         </GlassPanel>
 
@@ -312,7 +369,7 @@ const OnboardingPage: React.FC<OnboardingPageProps> = ({ initialAuthMode = 'sign
   return (
     <div className="w-screen h-screen bg-void text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
       {/* Background Effects */}
-      <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none"></div>
+      <div className="absolute inset-0 opacity-5 pointer-events-none"></div>
       <div className="noise-bg"></div>
 
       <GlassPanel className="w-full max-w-2xl p-8 relative overflow-hidden shadow-2xl shadow-cosmic/10">

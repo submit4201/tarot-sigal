@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+﻿import React, { useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { UserIcon, BarChartIcon, SparklesIcon } from '../components/icons';
 import { Page, Arcana } from '../types';
@@ -127,7 +127,7 @@ const ProgressPage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) 
 
 
   return (
-    <div className="w-full h-full p-4 md:p-8 overflow-y-auto bg-grid">
+    <div className="w-full h-full p-4 md:p-8 overflow-y-auto">
       <header className="mb-8">
         <h1 className="text-4xl font-bold font-dm-sans text-white">Progression Nexus</h1>
         <p className="text-text-muted">Telemetric tracking of your mystic evolution.</p>

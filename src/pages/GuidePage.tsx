@@ -1,10 +1,10 @@
-
+﻿
 import React, { useState, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { TAROT_DECK } from '../constants';
-import { TarotCard } from '../types';
+import { TarotCard, Page } from '../types';
 import PremiumModal from '../components/PremiumModal';
-import { BookOpenIcon, SparklesIcon, CompassIcon } from '../components/icons';
+import { SparklesIcon, CompassIcon } from '../components/icons';
 import { generateContentWithRetry } from '../services/geminiService';
 import { generateCosmicBlueprint } from '../services/cosmicService';
 import { GUIDE_INTERPRETATION_PROMPT } from '../constants/prompts';
@@ -27,7 +27,7 @@ const GuideCard: React.FC<{ card: TarotCard; onSelect: () => void; isSelected: b
  * GuidePage — Premium AI-powered personalized tarot guide.
  * ! Rethemed to match cyberpunk glass-panel design system.
  */
-const GuidePage: React.FC<{ setPage: (page: string) => void }> = ({ setPage }) => {
+const GuidePage: React.FC<{ setPage: (page: Page) => void }> = ({ setPage }) => {
     const { isPremium, activeProfile } = useApp();
     const [selectedCard, setSelectedCard] = useState<TarotCard | null>(null);
     const [isPremiumModalOpen, setIsPremiumModalOpen] = useState(false);
@@ -84,7 +84,7 @@ const GuidePage: React.FC<{ setPage: (page: string) => void }> = ({ setPage }) =
 
     if (!isPremium) {
         return (
-            <div className="w-full h-full p-6 md:p-14 flex flex-col items-center justify-center text-center bg-grid animate-fade-in">
+            <div className="w-full h-full p-6 md:p-14 flex flex-col items-center justify-center text-center animate-fade-in">
                 <div className="w-24 h-24 rounded-[2.5rem] bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-8 shadow-glow">
                     <CompassIcon className="w-12 h-12 text-purple-400" />
                 </div>
@@ -98,7 +98,7 @@ const GuidePage: React.FC<{ setPage: (page: string) => void }> = ({ setPage }) =
     }
 
     return (
-        <div className="w-full h-full p-6 md:p-14 flex flex-col lg:flex-row gap-10 bg-grid animate-fade-in overflow-hidden">
+        <div className="w-full h-full p-6 md:p-14 flex flex-col lg:flex-row gap-10 animate-fade-in overflow-hidden">
             <div className="lg:w-1/3 flex-shrink-0 flex flex-col">
                 <header className="mb-6">
                     <div className="flex items-center gap-3 mb-3">

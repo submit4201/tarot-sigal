@@ -1,5 +1,6 @@
 import { apiFetch } from './apiService';
 import { generateWithPuter } from './puterService';
+import { generateWithLMStudio } from './lmstudioService';
 
 /**
  * Ordered list of free models to try if the primary model fails.
@@ -57,9 +58,15 @@ export async function generateContentWithRetry(
   // Default to puter-chat for all frontend requests now to save OpenRouter credits
   const primaryModel = params.model || 'puter-chat';
 
-  // --- Puter.js Integration for Tarot/Birthcharts/General Chat ---
-  // We now route to Puter.js by default unless a specific model is requested 
-  // that isn't 'puter-chat' and usePuter isn't set.
+  // --- 1. LM Studio (local, private, no rate limits) ---
+  try {
+    const lmsText = await generateWithLMStudio(prompt);
+    return { text: lmsText };
+  } catch (lmsErr: any) {
+    console.warn('[Oracle] LM Studio unavailable, cascading to Puter:', lmsErr.message);
+  }
+
+  // --- 2. Puter.js / specific-model path ---
   if (primaryModel === 'puter-chat' || params.usePuter) {
     try {
       // Puter expects message format
@@ -76,7 +83,6 @@ export async function generateContentWithRetry(
   // Ensure we don't send 'puter-chat' to the backend proxy
   const backendModel = (primaryModel === 'puter-chat') ? 'openrouter/free' : primaryModel;
 
-  const OpenRouterModel = params.model || 'openrouter/free';
 
   /**
    * Inner helper — attempt a single model with exponential backoff.

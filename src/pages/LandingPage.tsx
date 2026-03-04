@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+﻿import React, { useEffect, useRef } from 'react';
 import { GlassPanel } from '../components/ui/GlassPanel';
 import { CyberButton } from '../components/ui/CyberButton';
 import { SparklesIcon, ZapIcon, CardsIcon } from '../components/icons';
@@ -145,7 +145,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onInitiate }) => {
         <div className="w-screen min-h-screen bg-void text-white overflow-y-auto overflow-x-hidden relative font-sans">
             {/* ============ AMBIENT LAYERS ============ */}
             <FloatingParticles />
-            <div className="fixed inset-0 bg-grid opacity-5 pointer-events-none z-0"></div>
+            <div className="fixed inset-0 opacity-5 pointer-events-none z-0"></div>
             <div className="fixed inset-0 bg-gradient-to-b from-cosmic/20 via-void to-void pointer-events-none z-0"></div>
 
             {/* ============ NAVIGATION ============ */}

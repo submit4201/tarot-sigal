@@ -185,9 +185,47 @@ Age: {prog.get('ageYears', '?')} years
     return prompt
 
 
+def _call_lmstudio(prompt: str, system: str) -> str | None:
+    """
+    Attempt to generate a response via LM Studio's local OpenAI-compatible API.
+
+    @param prompt  User data prompt.
+    @param system  System instruction string.
+    @returns       Response text, or None if LM Studio is unreachable.
+    """
+    base_url = os.getenv("LMSTUDIO_BASE_URL", "http://localhost:1234/v1")
+    timeout = int(os.getenv("LMSTUDIO_TIMEOUT", "90"))
+    merged = f"{system}\n\nUSER DATA:\n{prompt}"
+
+    payload = {
+        "messages": [{"role": "user", "content": merged}],
+        "temperature": 0.8,
+        "max_tokens": 2048,
+        # @note disable Qwen thinking-mode for speed
+        "extra_body": {"enable_thinking": False},
+    }
+
+    try:
+        resp = requests.post(
+            f"{base_url}/chat/completions",
+            json=payload,
+            timeout=timeout,
+        )
+        resp.raise_for_status()
+        text = resp.json()["choices"][0]["message"]["content"]
+        app_logger.info("[Oracle] LM Studio synthesis successful.")
+        return text
+    except requests.exceptions.ConnectionError:
+        app_logger.warning("[Oracle] LM Studio not reachable — falling back to OpenRouter.")
+        return None
+    except Exception as e:
+        app_logger.warning(f"[Oracle] LM Studio error: {e} — falling back to OpenRouter.")
+        return None
+
+
 def call_llm(prompt, system=SYSTEM_PROMPT):
     """
-    Calls the LLM via OpenRouter API.
+    Calls the LLM, trying LM Studio first then OpenRouter as fallback.
 
     Args:
         prompt: The user data prompt.
@@ -196,6 +234,12 @@ def call_llm(prompt, system=SYSTEM_PROMPT):
     Returns:
         LLM response text.
     """
+    # --- Priority 1: Local LM Studio ---
+    lms_result = _call_lmstudio(prompt, system)
+    if lms_result:
+        return lms_result
+
+    # --- Priority 2: OpenRouter (cloud fallback) ---
     api_key = os.getenv("OPENROUTER_API", "").strip()
     if not api_key:
         app_logger.error("Synthesis LLM call failed: OPENROUTER_API key missing.")
@@ -207,12 +251,11 @@ def call_llm(prompt, system=SYSTEM_PROMPT):
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://gridpunk-arcana.com", # Required by some models on OpenRouter
+        "HTTP-Referer": "https://gridpunk-arcana.com",
         "X-Title": "Gridpunk Arcana"
     }
     
-    # * NOTE: We use a retry loop across several free models for robustness.
-    # Some models 404 on 'system' roles or specific headers, so we keep it minimal.
+    # @note We use a retry loop across several free models for robustness.
     models = [
         "arcee-ai/trinity-large-preview:free",
         "nvidia/nemotron-3-nano-30b-a3b:free",

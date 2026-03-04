@@ -64,8 +64,7 @@ export const CardBack: React.FC<{ className?: string, deckId?: string, animated?
                     </div>
                 </div>
                 <div className="text-center space-y-2 relative z-10">
-                    <h3 className="text-[10px] font-mono font-bold tracking-[0.8em] uppercase text-white/20">GRIDPUNK</h3>
-                    <h3 className="text-[10px] font-mono font-bold tracking-[0.8em] uppercase text-white/20">ARCANA</h3>
+                    <h3 className="text-[14px] font-mono font-bold tracking-[1.2em] uppercase text-white/40">SIGAL</h3>
                 </div>
             </div>
         </div>
