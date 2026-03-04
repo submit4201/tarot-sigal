@@ -1,0 +1,463 @@
+{
+  "deck_metadata": {
+    "deck_name": "The Wonder Years",
+    "mood": "soft, nostalgic, and filled with the innocent magic of seeing the world through a child's eyes",
+    "theme_overarching": "the universe of childhood imagination where blanket forts become castles, backyards become kingdoms, and every stick is a sword waiting for adventure",
+    "details": "A tender deck exploring the landscape of childhood wonder—imaginary friends, secret hideouts, treasured collections, and the belief that magic is real because you haven't learned otherwise. Each card captures the pure creativity and emotional intensity of being small in a big world.",
+    "backofcard": "A child's crayon drawing of stars and moons on construction paper, finger-painted swirls in primary colors, the authentic art of early childhood",
+    "card_spec": {
+      "aspect_ratio": "2.75:4.75",
+      "border": "Hand-drawn crayon border with uneven lines and bright colors",
+      "style": "storybook illustration with watercolor softness and crayon texture, golden hour lighting, nostalgic warmth",
+      "technical_details": "3000x4200px, RGB with soft focus and warm tones, 300dpi, slight paper texture"
+    }
+  },
+  "suits": {
+    "dreams": {
+      "legacy_name": "Cups",
+      "element": "Water",
+      "visuals": "Soft watercolor wishes, bedtime story imagery, and glowing dreamscapes in gentle blues, lavenders, and rosy pinks. Emotions rendered as visible light and color. The feelings that seem so big when you're small, the wishes whispered to stars, the comfort of favorite blankets."
+    },
+    "adventures": {
+      "legacy_name": "Wands",
+      "element": "Fire",
+      "visuals": "Sticks transformed into swords, backyard expeditions, and brave explorations rendered in bright greens, sunny yellows, and adventure oranges. Every mundane space becomes extraordinary through imagination. The creative fire of play and pretend."
+    },
+    "treasures": {
+      "legacy_name": "Pentacles",
+      "element": "Earth",
+      "visuals": "Collected items of great importance—shiny rocks, pressed flowers, toy coins, and special finds kept in secret boxes. Rendered in warm golds, earthy browns, and the glimmer of things precious to small hands. Material magic and the value assigned by love."
+    },
+    "secrets": {
+      "legacy_name": "Swords",
+      "element": "Air",
+      "visuals": "Whispered knowledge, clever plans, hiding spots under stairs, and the sharp clarity of a child's observation. Rendered in clear silvers, sky blues, and the light filtering through secret places. The intelligence of the young and the words that matter."
+    }
+  },
+  "cards": {
+    "major": [
+      {
+        "id": "maj_00",
+        "name": "The Small One",
+        "legacy": "0",
+        "prompt": "A tiny child stands at the edge of their backyard, teddy bear in hand, looking out at the vast unexplored world beyond the fence. Everything is possible. Fear and excitement mix. The whole universe waits. Behind them, the safe house. Ahead, infinite adventure. Mood: innocent beginning, the moment before the first big adventure, trust in the unknown."
+      },
+      {
+        "id": "maj_01",
+        "name": "The Maker",
+        "legacy": "I",
+        "prompt": "A child sits surrounded by cardboard boxes, markers, and craft supplies, transforming ordinary things into magic. They wear a handmade crown and hold a crayon like a wand. Around them float the four suit symbols drawn in crayon. Pure creative power. Mood: childhood creativity, making magic from nothing, the power of imagination."
+      },
+      {
+        "id": "maj_02",
+        "name": "The Wise Elder",
+        "legacy": "II",
+        "prompt": "A beloved grandmother or caretaker sits in a cozy chair, a child nestled beside them, listening to stories. Books surround them. The room glows with the warmth of wisdom being passed down. Secrets of the world shared gently. Mood: gentle guidance, wisdom offered with love, the safety of being seen and known."
+      },
+      {
+        "id": "maj_03",
+        "name": "The Garden Mother",
+        "legacy": "III",
+        "prompt": "A nurturing figure sits in a blooming garden with a child, teaching them to plant seeds and watch things grow. Butterflies land on tiny outstretched hands. Everything here is safe, abundant, and growing. Unconditional love made visible. Mood: nurturing presence, growth and abundance, being cherished completely."
+      },
+      {
+        "id": "maj_04",
+        "name": "The Fort Builder",
+        "legacy": "IV",
+        "prompt": "A child has constructed an elaborate blanket fort with pillows and chairs, creating sturdy walls and rules for entry. Inside, everything has its place. Structure created from imagination. A kingdom with clear boundaries. Mood: creating order, building safe spaces, the architecture of play."
+      },
+      {
+        "id": "maj_05",
+        "name": "The Story Keeper",
+        "legacy": "V",
+        "prompt": "A librarian or teacher sits surrounded by children at story time, holding a large picture book. The illustrations seem to come alive. Words create worlds. Knowledge passed through narrative. The tradition of learning through wonder. Mood: learning through story, tradition honored, wisdom through imagination."
+      },
+      {
+        "id": "maj_06",
+        "name": "The Best Friends",
+        "legacy": "VI",
+        "prompt": "Two children share a secret handshake under a tree fort, pinkies linked in solemn promise. Best friends forever. The pure loyalty and love of childhood friendship. Matching friendship bracelets. Shared cookies. Mood: pure friendship, loyalty, the bond of chosen family, trust and connection."
+      },
+      {
+        "id": "maj_07",
+        "name": "The Wagon Ride",
+        "legacy": "VII",
+        "prompt": "A determined child pulls a wagon full of toys and supplies, heading somewhere important with single-minded focus. The wagon is their chariot. They know exactly where they're going. Steady progress toward an imagined destination. Mood: determination, forward movement, the willpower of a child on a mission."
+      },
+      {
+        "id": "maj_08",
+        "name": "The Animal Friend",
+        "legacy": "VIII",
+        "prompt": "A gentle child sits with a large dog or shy cat, slowly earning trust through patience and kindness. The animal leans in. Soft strength and the power of gentleness. Understanding without words. Mood: gentle strength, patience, the wisdom of kindness, befriending through love."
+      },
+      {
+        "id": "maj_09",
+        "name": "The Flashlight",
+        "legacy": "IX",
+        "prompt": "A child sits alone in a cozy reading nook with a flashlight and favorite book, lost in a world of their own making. Peaceful solitude. The joy of inner worlds. A battery-powered lantern lights their sanctuary. Mood: peaceful solitude, inner worlds, the gift of being alone with imagination."
+      },
+      {
+        "id": "maj_10",
+        "name": "The Merry-Go-Round",
+        "legacy": "X",
+        "prompt": "Children ride a playground merry-go-round, taking turns being on top and bottom as it spins. Everyone gets a turn at each position. The cycle is fun, not frightening. Laughter accompanies the turning. Mood: playful cycles, taking turns, the joy of circular motion, change as play."
+      },
+      {
+        "id": "maj_11",
+        "name": "The Fair Judge",
+        "legacy": "XI",
+        "prompt": "A child carefully divides cookies or toys to ensure everyone gets an equal share. They count seriously, making sure it's fair. Justice matters deeply. The scales must balance. No one left out. Mood: fairness matters, equal sharing, the serious work of making things right."
+      },
+      {
+        "id": "maj_12",
+        "name": "The Upside-Down",
+        "legacy": "XII",
+        "prompt": "A child hangs upside-down from monkey bars or a tree branch, seeing the world inverted. The sky becomes ground. Everything looks different and wonderful. Blood rushes to their head but they're smiling. Mood: new perspective, playful inversion, seeing differently, suspended wonder."
+      },
+      {
+        "id": "maj_13",
+        "name": "The Growing Up",
+        "legacy": "XIII",
+        "prompt": "A child stands measuring themselves against a wall marked with their growth. Old toys are being packed away. They're becoming someone new. Bittersweet transformation. The old self makes room for the new. Mood: natural transformation, bittersweet growth, necessary change, becoming."
+      },
+      {
+        "id": "maj_14",
+        "name": "The Mixing",
+        "legacy": "XIV",
+        "prompt": "A child carefully mixes paint colors or pours liquids between containers, discovering that combining things creates something new and beautiful. Perfect concentration. The alchemy of play. Science and magic unified. Mood: integration, discovering combination, patience in creation, mixing to find harmony."
+      },
+      {
+        "id": "maj_15",
+        "name": "The Monster Under the Bed",
+        "legacy": "XV",
+        "prompt": "A child's room at night with scary shadows cast by ordinary objects. Under the bed, imagined monsters lurk. Yet the light switch is visible, reachable. The fear is real but conquerable. The monsters are imagination too. Mood: childhood fears, shadows that seem real, the power to turn on the light."
+      },
+      {
+        "id": "maj_16",
+        "name": "The Storm",
+        "legacy": "XVI",
+        "prompt": "Thunder crashes and a carefully built tower of blocks comes tumbling down. A child's reaction—surprise, tears, then the realization they can build again. The storm passes. Rebuilding begins. Mood: sudden disruption, the crash of careful work, the resilience to start over."
+      },
+      {
+        "id": "maj_17",
+        "name": "The Wish Upon a Star",
+        "legacy": "XVII",
+        "prompt": "A child kneels at a window looking up at the first star of evening, hands clasped in wish. The star seems to wink back. Hope glows warm in small chest. Anything is possible when you wish hard enough. Mood: hope, wishing with whole heart, starlight promises, innocent faith."
+      },
+      {
+        "id": "maj_18",
+        "name": "The Night Light",
+        "legacy": "XVIII",
+        "prompt": "A child's room at night, illuminated by a small nightlight. Shadows create mysterious shapes. Dreams and fears mix. The imaginary friend sits at the foot of the bed, protecting. The space between sleep and waking. Mood: liminal space, gentle mystery, protected darkness, the veil between real and imagined."
+      },
+      {
+        "id": "maj_19",
+        "name": "The Birthday Morning",
+        "legacy": "XIX",
+        "prompt": "A child wakes on their birthday to sunshine streaming through windows, balloons floating, the promise of celebration. Pure joy and anticipation. Everything feels golden. Today is special. They are loved and celebrated. Mood: pure joy, celebration, being loved, the happiness of feeling special."
+      },
+      {
+        "id": "maj_20",
+        "name": "The First Day",
+        "legacy": "XX",
+        "prompt": "Children arrive for the first day of school, each one called by name and welcomed. New backpacks, new friends, new beginnings. The threshold of a new chapter. Transformation through joining something bigger. Mood: new beginning, being called forth, transformation, joining the community."
+      },
+      {
+        "id": "maj_21",
+        "name": "The Whole Playground",
+        "legacy": "XXI",
+        "prompt": "An aerial view of a playground where every child plays together—sandbox, swings, slide, monkey bars—all occupied joyfully. Every child included. The complete ecosystem of play. Past, present, future children all playing simultaneously. Perfect belonging. Mood: wholeness, complete community, universal play, belonging to everything."
+      }
+    ],
+    "minor": {
+      "dreams": [
+        {
+          "id": "dre_01",
+          "name": "Ace of Dreams",
+          "desc": "A child reaches for a glowing bubble floating before them, containing a beautiful wish or hope. The first dream of something wonderful. Pure longing and the beginning of desire."
+        },
+        {
+          "id": "dre_02",
+          "name": "Two of Dreams",
+          "desc": "Two children share a blanket tent, whispering secrets and dreams in the soft glow of a flashlight. Shared hopes and the comfort of understanding friendship."
+        },
+        {
+          "id": "dre_03",
+          "name": "Three of Dreams",
+          "desc": "Three children splash in a backyard pool, laughing with pure joy. Summer happiness and the celebration of simple pleasures. Emotional abundance."
+        },
+        {
+          "id": "dre_04",
+          "name": "Four of Dreams",
+          "desc": "A child sits contentedly in their favorite cozy spot with a stuffed animal, book, and blanket. Comfortable satisfaction and the peace of having enough."
+        },
+        {
+          "id": "dre_05",
+          "name": "Five of Dreams",
+          "desc": "A child cries over a broken toy or spilled milk while other toys remain intact. The devastation of disappointment at that age, but recovery is close."
+        },
+        {
+          "id": "dre_06",
+          "name": "Six of Dreams",
+          "desc": "An older sibling shares their favorite toy with a younger one, teaching them how to play. Generosity, nostalgia, and the sweetness of sharing what matters."
+        },
+        {
+          "id": "dre_07",
+          "name": "Seven of Dreams",
+          "desc": "A child stands before a toy store window displaying countless wonderful things, face pressed to glass. The overwhelming pleasure of infinite possibilities to wish for."
+        },
+        {
+          "id": "dre_08",
+          "name": "Eight of Dreams",
+          "desc": "A child walks away from their old toys toward a new interest visible on the horizon. Growing up means leaving some loves behind to find new ones."
+        },
+        {
+          "id": "dre_09",
+          "name": "Nine of Dreams",
+          "desc": "A child sits surrounded by all their favorite things—stuffed animals, snacks, books—completely satisfied and content. Wish fulfillment and deep happiness."
+        },
+        {
+          "id": "dre_10",
+          "name": "Ten of Dreams",
+          "desc": "A whole family gathers around a child's birthday cake, everyone smiling. Balloons float. Love is visible and abundant. Complete emotional fulfillment."
+        },
+        {
+          "id": "dre_11",
+          "name": "Page of Dreams",
+          "desc": "A small child offers a dandelion bouquet or crayon drawing with shy hope. The tender beginning of expressing feelings and sharing dreams."
+        },
+        {
+          "id": "dre_12",
+          "name": "Knight of Dreams",
+          "desc": "A child dressed as a prince or princess rides a stick horse on a quest to rescue someone or find something precious. Romantic idealism and emotional adventure."
+        },
+        {
+          "id": "dre_13",
+          "name": "Queen of Dreams",
+          "desc": "A loving caregiver reads bedtime stories, tucks blankets, kisses foreheads. Emotional wisdom expressed as nurturing care and creating safe spaces to feel."
+        },
+        {
+          "id": "dre_14",
+          "name": "King of Dreams",
+          "desc": "A father figure sits calmly holding a child who had a nightmare, providing comfort and reassurance. Emotional mastery as steady, calming presence."
+        }
+      ],
+      "adventures": [
+        {
+          "id": "adv_01",
+          "name": "Ace of Adventures",
+          "desc": "A child picks up a perfect stick, eyes lighting up with recognition—this is a sword, a wand, a magic staff. The beginning of imaginative transformation and brave play."
+        },
+        {
+          "id": "adv_02",
+          "name": "Two of Adventures",
+          "desc": "Two children plan an expedition together, drawing maps and dividing supplies. Partnership in imagination and collaborative adventuring."
+        },
+        {
+          "id": "adv_03",
+          "name": "Three of Adventures",
+          "desc": "Three children build a cardboard castle or spaceship together, each adding their creative vision. Teamwork in building imaginary worlds."
+        },
+        {
+          "id": "adv_04",
+          "name": "Four of Adventures",
+          "desc": "Four children rest in their completed blanket fort, snacks laid out, base camp established. The secure foundation for further adventures."
+        },
+        {
+          "id": "adv_05",
+          "name": "Five of Adventures",
+          "desc": "Five children playfully compete in a backyard race or game, each trying to win. Friendly rivalry and the energetic chaos of play-fighting."
+        },
+        {
+          "id": "adv_06",
+          "name": "Six of Adventures",
+          "desc": "A victorious child leads their friends in a parade around the yard after winning a game, stick sword held high. Recognition earned through brave play."
+        },
+        {
+          "id": "adv_07",
+          "name": "Seven of Adventures",
+          "desc": "A child stands atop a playground structure, defending their castle from pretend invaders below. Courage in imagination and standing one's ground."
+        },
+        {
+          "id": "adv_08",
+          "name": "Eight of Adventures",
+          "desc": "Eight paper airplanes fly through the air in rapid succession. Quick action, momentum, and the thrill of launching things into flight."
+        },
+        {
+          "id": "adv_09",
+          "name": "Nine of Adventures",
+          "desc": "A child stands ready with stick sword and cardboard shield, alert and prepared after many imaginary battles. Battle-tested and resilient."
+        },
+        {
+          "id": "adv_10",
+          "name": "Ten of Adventures",
+          "desc": "A child struggles under the weight of carrying too many sticks, toys, and equipment for their adventure. The burden of ambitious plans."
+        },
+        {
+          "id": "adv_11",
+          "name": "Page of Adventures",
+          "desc": "A small child picks up their first stick, eyes wide with possibility. The excitement of beginning adventurous play and imaginative exploration."
+        },
+        {
+          "id": "adv_12",
+          "name": "Knight of Adventures",
+          "desc": "A child runs full-speed through the backyard, cape flying behind them, on some urgent heroic mission. Fearless action and passionate play."
+        },
+        {
+          "id": "adv_13",
+          "name": "Queen of Adventures",
+          "desc": "A creative child leads others in elaborate pretend play, directing the story and inspiring others to imagine boldly. Creative leadership."
+        },
+        {
+          "id": "adv_14",
+          "name": "King of Adventures",
+          "desc": "An experienced older child has perfected their imaginative worlds, building elaborate systems of play. Mastery of creative transformation and leading epic adventures."
+        }
+      ],
+      "treasures": [
+        {
+          "id": "tre_01",
+          "name": "Ace of Treasures",
+          "desc": "A child discovers a shiny coin or special rock, eyes wide—this is treasure. The beginning of collecting and the joy of finding something precious."
+        },
+        {
+          "id": "tre_02",
+          "name": "Two of Treasures",
+          "desc": "Two children trade collected items—cards, rocks, stickers—each finding the exchange fair and exciting. The beginning of understanding value and exchange."
+        },
+        {
+          "id": "tre_03",
+          "name": "Three of Treasures",
+          "desc": "Three children sort their collections together—rocks, shells, buttons—admiring each other's finds. Shared appreciation and community of collectors."
+        },
+        {
+          "id": "tre_04",
+          "name": "Four of Treasures",
+          "desc": "A child carefully arranges their most precious items in a special box, everything in its place, protected and secure. Careful preservation of what matters."
+        },
+        {
+          "id": "tre_05",
+          "name": "Five of Treasures",
+          "desc": "A child's precious toy breaks or gets lost. The grief of material loss and scarcity at that age feels enormous. Disappointment and lack."
+        },
+        {
+          "id": "tre_06",
+          "name": "Six of Treasures",
+          "desc": "An older child gives their cherished toy to a younger one, passing down something precious. Generosity and fair sharing of material wealth."
+        },
+        {
+          "id": "tre_07",
+          "name": "Seven of Treasures",
+          "desc": "A child examines their collection, deciding which items to keep and which to trade. Evaluating what has value and making choices."
+        },
+        {
+          "id": "tre_08",
+          "name": "Eight of Treasures",
+          "desc": "A child works diligently on a craft project, carefully creating something beautiful with focus and patience. The work of making things with skill."
+        },
+        {
+          "id": "tre_09",
+          "name": "Nine of Treasures",
+          "desc": "A child sits contentedly in their room surrounded by all their favorite possessions, feeling secure and satisfied. Material contentment and self-sufficiency."
+        },
+        {
+          "id": "tre_10",
+          "name": "Ten of Treasures",
+          "desc": "A family heirloom toy or book is passed to a child, connecting them to generations. Legacy and inherited treasures that carry love forward."
+        },
+        {
+          "id": "tre_11",
+          "name": "Page of Treasures",
+          "desc": "A young child finds their first special thing—a pretty leaf or interesting rock—and holds it reverently. Beginning to recognize value."
+        },
+        {
+          "id": "tre_12",
+          "name": "Knight of Treasures",
+          "desc": "A child methodically searches for treasures in the yard or sandbox, dedicated and thorough. Steady commitment to finding and collecting."
+        },
+        {
+          "id": "tre_13",
+          "name": "Queen of Treasures",
+          "desc": "A nurturing figure helps a child appreciate their collection, teaching them to care for and honor what they treasure. Wisdom about value."
+        },
+        {
+          "id": "tre_14",
+          "name": "King of Treasures",
+          "desc": "A child has built an impressive collection through years of gathering, understanding both material and sentimental value. Mastery of preservation and appreciation."
+        }
+      ],
+      "secrets": [
+        {
+          "id": "sec_01",
+          "name": "Ace of Secrets",
+          "desc": "A child discovers a hidden door or new hiding spot, eyes wide with the thrill of finding something unknown. The first secret place, the beginning of private knowledge."
+        },
+        {
+          "id": "sec_02",
+          "name": "Two of Secrets",
+          "desc": "Two children whisper conspiratorially, sharing something meant only for each other. The sacred bond of shared secrets and chosen trust."
+        },
+        {
+          "id": "sec_03",
+          "name": "Three of Secrets",
+          "desc": "Three children huddle together, planning something clever. Quick thinking and collaborative problem-solving in whispered voices."
+        },
+        {
+          "id": "sec_04",
+          "name": "Four of Secrets",
+          "desc": "A child rests in their secret hideout under the stairs or in a closet fort, safe and hidden. The peace of having private space and protected thoughts."
+        },
+        {
+          "id": "sec_05",
+          "name": "Five of Secrets",
+          "desc": "Children argue over who told a secret or who's cheating at a game. The pain of broken trust and words that wound at that age."
+        },
+        {
+          "id": "sec_06",
+          "name": "Six of Secrets",
+          "desc": "A child moves to a new school or neighborhood, leaving old friends and secret places behind but heading toward new discoveries. Transition through communication."
+        },
+        {
+          "id": "sec_07",
+          "name": "Seven of Secrets",
+          "desc": "A clever child sneaks cookies or stays up past bedtime, using wit and strategy. The playful trickery and strategic thinking of childhood."
+        },
+        {
+          "id": "sec_08",
+          "name": "Eight of Secrets",
+          "desc": "A child passes notes rapidly in class or sends messages through a network of friends. Quick communication and coordinated information sharing."
+        },
+        {
+          "id": "sec_09",
+          "name": "Nine of Secrets",
+          "desc": "A child lies awake worrying about something said or done, replaying interactions in their mind. The anxiety of young overthinking."
+        },
+        {
+          "id": "sec_10",
+          "name": "Ten of Secrets",
+          "desc": "A child accidentally overhears adult conversations not meant for them, suddenly burdened with knowledge too heavy. The weight of knowing too much."
+        },
+        {
+          "id": "sec_11",
+          "name": "Page of Secrets",
+          "desc": "A young child learns to keep their first secret or discovers their first hiding place. The excitement of privacy and personal knowledge."
+        },
+        {
+          "id": "sec_12",
+          "name": "Knight of Secrets",
+          "desc": "A child boldly speaks an uncomfortable truth or asks a question adults avoid. The courage of direct honesty and sharp observation."
+        },
+        {
+          "id": "sec_13",
+          "name": "Queen of Secrets",
+          "desc": "A wise older child knows when to speak and when to stay quiet, understanding the power of words and timing. Discernment and thoughtful communication."
+        },
+        {
+          "id": "sec_14",
+          "name": "King of Secrets",
+          "desc": "A child has learned to observe carefully, think strategically, and communicate with precision. Mastery of words, timing, and understanding."
+        }
+      ]
+    }
+  }
+}

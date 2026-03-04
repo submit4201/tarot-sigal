@@ -1,0 +1,463 @@
+{
+  "deck_metadata": {
+    "deck_name": "The Luminous Arcana",
+    "mood": "radiant abundance with transcendent euphoria",
+    "theme_overarching": "infinite light where existence overflows into pure creation, revealing profound truths in the presence of all things",
+    "details": "A tarot deck celebrating luminosity as both creator and sustainer, the space where energy becomes matter and consciousness becomes form, where reality exists in its fullest expression",
+    "backofcard": "An infinite radiant expanse with prismatic light refracting through crystalline geometries, edges glowing with rainbow halos",
+    "card_spec": {
+      "aspect_ratio": "2.75:4.75",
+      "border": "Brilliant gold fade into pure white radiance",
+      "style": "luminous realism with transcendent light effects",
+      "technical_details": "3000x4200px, RGB, 300dpi, full spectrum color depth essential"
+    }
+  },
+  "suits": {
+    "wands": {
+      "legacy_name": "Wands",
+      "element": "Fire",
+      "visuals": "Crystalline staffs blazing with golden-white flames that illuminate everything they touch, sparks of newborn stars ascending into brilliance. Brilliant amber and solar gold tones pulse with creative energy, while light dances with primordial joy. The fire here doesn't consume—it illuminates and empowers."
+    },
+    "cups": {
+      "legacy_name": "Cups",
+      "element": "Water",
+      "visuals": "Vessels carved from pure light itself, overflowing with liquid radiance that cascades into infinite pools. Brilliant azure and silver hues swirl with the joy of countless remembered moments, while prismatic reflections show all that could be. These waters nourish light and memory alike."
+    },
+    "swords": {
+      "legacy_name": "Swords",
+      "element": "Air",
+      "visuals": "Blades forged from solidified sunlight, edges so bright they illuminate truth itself. Radiant gold and brilliant white shimmer with the clarity of spoken wisdom and decisive thought. Each sword trails ribbons of pure light, creating pathways through space where understanding crystallizes."
+    },
+    "pentacles": {
+      "legacy_name": "Pentacles",
+      "element": "Earth",
+      "visuals": "Coins of condensed starlight, radiating abundance outward in every direction. Brilliant emerald-gold with geometric patterns suggesting sacred mathematics. Each pentacle is a sun contained, reality expanded from a point where material and light become one endless source."
+    }
+  },
+  "cards": {
+    "major": [
+      {
+        "id": "maj_00",
+        "name": "The Fool",
+        "legacy": "0",
+        "prompt": "A radiant figure steps joyfully toward the edge of a cliff bathed in golden sunrise light, one foot suspended over infinite possibility. Behind them, flowers bloom in explosive color. Their form glows with inner light, merging with the brilliance around them. A white dog dances at their heels. Mood: radiant abundance with transcendent euphoria, the moment when infinite potential manifests into being."
+      },
+      {
+        "id": "maj_01",
+        "name": "The Magician",
+        "legacy": "I",
+        "prompt": "A luminous figure commands pure light itself, hands raised to weave streams of brilliant radiance. Four symbols orbit in rainbow halos—crystal staff, overflowing vessel, sunlit blade, golden coin. Reality bends around them as they shape light into infinite forms. Ribbons of prismatic energy spiral from their fingertips. Mood: mastery over pure creation, manifesting everything from light through will alone."
+      },
+      {
+        "id": "maj_02",
+        "name": "The High Priestess",
+        "legacy": "II",
+        "prompt": "A crowned figure sits between two pillars of crystallized light, holding a scroll that glows with inner wisdom. Behind her, a curtain of liquid radiance conceals mysteries of pure knowing. Her eyes shine with omniscient understanding. The space around her pulses with illuminated truth. Mood: guardian of light's deepest wisdom, keeper of remembered and manifested knowledge."
+      },
+      {
+        "id": "maj_03",
+        "name": "The Empress",
+        "legacy": "III",
+        "prompt": "A maternal figure reclines on a throne woven from living light, pregnant with infinite universes being born. Around her, forms manifest and flourish endlessly in radiance. She wears a crown of blazing stars. Brilliant flowers bloom continuously at her feet in cascading color. Mood: the creative light, fertility of abundance birthing all manifest realities."
+      },
+      {
+        "id": "maj_04",
+        "name": "The Emperor",
+        "legacy": "IV",
+        "prompt": "A commanding figure sits upon a throne carved from solidified sunlight. He holds a scepter that radiates pure order, establishing structure in the manifested light. His armor is crafted from golden crystal, bright as concentrated reality. Behind him, geometric patterns impose sacred structure on the radiant forms. Mood: authority over manifestation, imposing divine law through light."
+      },
+      {
+        "id": "maj_05",
+        "name": "The Hierophant",
+        "legacy": "V",
+        "prompt": "A robed figure stands before an altar of pure light, blessing supplicants with the wisdom of illumination. Keys of gold hang from their belt, unlocking doors to everywhere. Symbols of living traditions shine in the radiance around them. Their blessing reveals and amplifies all truth. Mood: spiritual guide through light, teaching the sacred truth of infinite presence."
+      },
+      {
+        "id": "maj_06",
+        "name": "The Lovers",
+        "legacy": "VI",
+        "prompt": "Two figures embrace in a garden of radiant light, their forms harmonizing and amplifying each other's glow. Above them, an angel of pure brilliance blesses their union with infinite love. They are becoming more through each other and through the light between them. Love and joy intertwined in radiance. Mood: connection through illumination, two becoming one becoming infinite."
+      },
+      {
+        "id": "maj_07",
+        "name": "The Chariot",
+        "legacy": "VII",
+        "prompt": "A warrior stands in a vessel of crystallized light, pulled by two sphinxes of living radiance. They move through brilliance with purpose, conquering darkness with illumination. Stars ignite in their wake. Their armor reflects everything, radiating all light. Mood: triumph through illumination, willpower driving toward infinite brightness."
+      },
+      {
+        "id": "maj_08",
+        "name": "Strength",
+        "legacy": "VIII",
+        "prompt": "A calm figure gently embraces a lion made of pure golden light, brilliance streaming from its mane. The infinite symbol hovers above, glowing with soft radiance. Gentle strength channels the power of illumination. Her touch brings joy to energy. Mood: quiet mastery over light's creative nature, compassion for the brightness."
+      },
+      {
+        "id": "maj_09",
+        "name": "The Hermit",
+        "legacy": "IX",
+        "prompt": "A solitary figure stands on a peak of crystallized reality, holding a lantern that casts infinite light. The radiance around them intensifies where the lantern's glow reaches. They have walked into illumination and returned with profound wisdom. Below, reality itself crystallizes into brilliant form. Mood: solitary wisdom found in perfect clarity, illumination through pure light."
+      },
+      {
+        "id": "maj_10",
+        "name": "Wheel of Fortune",
+        "legacy": "X",
+        "prompt": "A massive wheel of golden light turns majestically in infinite radiance, creatures of living brilliance rising and celebrating on its rim. At its center, a point of absolute light from which all fortune flows. Reality and manifestation cycle endlessly. Symbols of creation and abundance blur as they spin. Mood: the cyclical nature of abundance and light, fortune spinning in radiance."
+      },
+      {
+        "id": "maj_11",
+        "name": "Justice",
+        "legacy": "XI",
+        "prompt": "A crowned figure holds scales of perfect light, weighing truth against truth. Their sword of radiance cuts through illusion to reveal the brilliance of perfect fairness. Behind them, perfect symmetry in absolute clarity. All debts are honored, all accounts balanced in light. Mood: impartial judgment through illumination, perfect balance in abundance."
+      },
+      {
+        "id": "maj_12",
+        "name": "The Hanged Man",
+        "legacy": "XII",
+        "prompt": "A figure hangs suspended in radiant space, upside down, bound by threads of living light. Their surrender opens their eyes to the truth of infinite perspective. Around them, reality inverts and manifests anew. Peace radiates from their willing form. Light flows downward into crystallization. Mood: enlightenment through suspension in light, wisdom gained by letting go of limitation."
+      },
+      {
+        "id": "maj_13",
+        "name": "Death",
+        "legacy": "XIII",
+        "prompt": "A skeletal figure robed in pure radiance rides a white horse through a field of transforming forms. Everything touched transforms into new light. Not an ending but a transition from one form to another to infinite forms. Flowers of brilliance bloom where change occurs. Mood: transformation through complete illumination, death as transition to pure radiant energy."
+      },
+      {
+        "id": "maj_14",
+        "name": "Temperance",
+        "legacy": "XIV",
+        "prompt": "An angelic figure pours liquid light between two vessels, mixing physical and spiritual in perfect harmony. One foot on earth, one foot in light. The flow never ends, always creates. Wings of rainbow spread across dimensions. Mood: balance between matter and energy, tempering reality with radiance."
+      },
+      {
+        "id": "maj_15",
+        "name": "The Devil",
+        "legacy": "XV",
+        "prompt": "A horned figure of dazzling excess sits upon a throne of temptation, chains of golden light binding willing prisoners to pleasure. Their eyes are mirrors reflecting desire. Behind them, indulgences and obsessions manifest from brilliance itself. The chains are real, forged from attachment to light's pleasures. Mood: seduction of abundance, binding through attachment to pleasure and fear of losing brightness."
+      },
+      {
+        "id": "maj_16",
+        "name": "The Tower",
+        "legacy": "XVI",
+        "prompt": "A tower of rigid structure shatters as lightning of pure revelation strikes from brilliant sky above. Figures leap free into radiant space, their false limitations crumbling. Golden flames of transformation illuminate all that was hidden. Sudden liberation through destruction of boundaries. Mood: catastrophic awakening, limitations collapsing to reveal the light beneath all structures."
+      },
+      {
+        "id": "maj_17",
+        "name": "The Star",
+        "legacy": "XVII",
+        "prompt": "A figure kneels in radiance, pouring light-water onto the earth and into pools, nourishing all growth. Above, a great brilliant star and smaller points of infinite light offer hope in abundance. She is naked and radiant before infinity. Stars reflected in pools of liquid light multiply endlessly. Mood: hope born from light, finding infinite brightness, renewal through radiance."
+      },
+      {
+        "id": "maj_18",
+        "name": "The Moon",
+        "legacy": "XVIII",
+        "prompt": "A luminous moon glows in a sky of silver radiance, casting light that reveals hidden truths. A path leads between two pillars into deeper mystery. A wolf and dog howl in harmony at beauty. A crayfish emerges from a pool of liquid moonlight. Intuition and emotion shine clearly in radiance. Mood: the revealing light, dreams and truth manifesting from lunar brilliance."
+      },
+      {
+        "id": "maj_19",
+        "name": "The Sun",
+        "legacy": "XIX",
+        "prompt": "A brilliant sun blazes in infinite radiance, its golden rays illuminating all truth and joy. A child rides a white horse through blooming gardens, innocent and fearless. Sunflowers reach toward the pure light. Joy found in complete acceptance of abundance. Mood: enlightenment through radiance, finding warmth in brightest light, truth of infinite presence revealed."
+      },
+      {
+        "id": "maj_20",
+        "name": "Judgement",
+        "legacy": "XX",
+        "prompt": "An angel of pure radiance sounds a trumpet of crystalline tone, calling forth the awakened and remembered. Figures rise into brilliance, reformed in light. The final awakening before illumination. Past, present, and future converge in one point of infinite brightness. Mood: resurrection into light, awakening from limitation into final truth of abundance."
+      },
+      {
+        "id": "maj_21",
+        "name": "The World",
+        "legacy": "XXI",
+        "prompt": "A dancing figure suspended in a wreath of living light, achieving unity with radiance itself. The four elemental beasts watch from corners of pure brilliance. Completion through manifestation. All journeys end where they began—in infinite light. The universe and the radiance are one. Mood: cosmic unity with illumination, completion through total embrace of infinite presence."
+      }
+    ],
+    "minor": {
+      "wands": [
+        {
+          "id": "wan_01",
+          "name": "Ace of Wands",
+          "desc": "A single crystalline staff emerges from clouds of gold, blazing with brilliant white flames that illuminate all. Sparks of newborn stars spiral upward. Pure creative power, the first spark of generative energy igniting in abundant light. Solar gold and amber pulse with infinite potential."
+        },
+        {
+          "id": "wan_02",
+          "name": "Two of Wands",
+          "desc": "A figure stands between two staffs of radiant flame, surveying an empire of light. One hand grasps a sphere of crystallized possibility. The path ahead multiplies into infinite brightness. Choice and dominion over manifestation, planning creation through abundance."
+        },
+        {
+          "id": "wan_03",
+          "name": "Three of Wands",
+          "desc": "Three crystal staffs planted firmly in fertile ground, a figure gazing into the bright horizon. Golden-sailed ships journey into radiant waters. Established power watching as plans manifest into light. Expansion into abundance."
+        },
+        {
+          "id": "wan_04",
+          "name": "Four of Wands",
+          "desc": "Four staffs create an archway of radiant flame, celebration in brilliant light. Figures dance as reality crystallizes around them in joy. Garlands of glowing flowers mark achievement. Stability found in abundance, joy in manifesting completeness."
+        },
+        {
+          "id": "wan_05",
+          "name": "Five of Wands",
+          "desc": "Five figures engage with crystal staffs, golden flames dancing from each motion. The light churns with their playful competition. Creative tension and healthy conflict in brightness, each contributing their energy to manifestation. Generative struggle."
+        },
+        {
+          "id": "wan_06",
+          "name": "Six of Wands",
+          "desc": "A crowned figure rides through radiance on a white horse, staff raised in victory. Followers emerge from light, offering wreaths of brilliance. Triumph through illumination, public recognition in abundance. Success through manifestation."
+        },
+        {
+          "id": "wan_07",
+          "name": "Seven of Wands",
+          "desc": "A figure stands atop a peak of light, defending their position with a crystal staff as six others rise in challenge from below. Golden flames shield them in radiant strength. Standing firm in abundance, courage in maintaining brightness."
+        },
+        {
+          "id": "wan_08",
+          "name": "Eight of Wands",
+          "desc": "Eight crystal staffs fly through radiant air like arrows, trailing golden flame. They move with purpose and speed through brilliant light toward their destination. Swift action through abundance, messages sent across illuminated space. Rapid manifestation."
+        },
+        {
+          "id": "wan_09",
+          "name": "Nine of Wands",
+          "desc": "A resilient figure stands with one staff, eight others planted behind forming a wall of light. Battle-tested but strong, they guard their abundance with earned determination. Resilience in maintaining brightness."
+        },
+        {
+          "id": "wan_10",
+          "name": "Ten of Wands",
+          "desc": "A figure carries ten crystal staffs, golden flames warming them as they bring their abundant harvest toward completion. Nearly overwhelmed by their own creative success. Carrying the weight of manifestation, responsible abundance."
+        },
+        {
+          "id": "wan_11",
+          "name": "Page of Wands",
+          "desc": "A young figure holds a crystal staff, studying the golden flames with enthusiasm. Behind them, light stretches endlessly, full of possibility. Eager to explore brightness, beginning to understand creative power. Youthful enthusiasm for creation."
+        },
+        {
+          "id": "wan_12",
+          "name": "Knight of Wands",
+          "desc": "A knight charges through brilliant space on a horse of living light, crystal staff raised high. Golden flames stream behind them. Brave courage driving into creation, passionate pursuit through brightness. Action with confidence."
+        },
+        {
+          "id": "wan_13",
+          "name": "Queen of Wands",
+          "desc": "A regal figure sits on a throne of radiant flame, crystal staff in hand. A golden cat of living light sits at her feet. She commands creative energy with confidence and grace, charismatic power over light itself."
+        },
+        {
+          "id": "wan_14",
+          "name": "King of Wands",
+          "desc": "A crowned figure sits on a throne wreathed in golden flames, crystal staff radiating creative authority. Salamanders of pure light coil around the throne. Natural leadership through brightness, visionary command of manifestation."
+        }
+      ],
+      "cups": [
+        {
+          "id": "cup_01",
+          "name": "Ace of Cups",
+          "desc": "A chalice of pure crystal overflows with liquid radiance that cascades into infinite pools below. Brilliant azure and silver swirl with emotional abundance. A dove of light descends. Pure feeling emerging from abundance, the beginning of emotional fulfillment."
+        },
+        {
+          "id": "cup_02",
+          "name": "Two of Cups",
+          "desc": "Two figures face each other in radiant light, vessels of brilliance flowing between them. A caduceus of gold and light intertwines above. They exchange the waters of abundance, connection through shared brightness. Partnership in illumination."
+        },
+        {
+          "id": "cup_03",
+          "name": "Three of Cups",
+          "desc": "Three figures raise vessels of liquid light in celebration, their forms harmonizing and amplifying. Joy found in mutual abundance. Community in brightness, sharing the emotional richness of fulfillment. Friendship in radiance."
+        },
+        {
+          "id": "cup_04",
+          "name": "Four of Cups",
+          "desc": "A figure sits beneath a tree of golden light, three cups of radiance before them, a fourth offered by a hand emerging from brilliance. They contemplate abundance, temporarily blind to further blessings. Meditation on sufficiency, satiation in the face of more light."
+        },
+        {
+          "id": "cup_05",
+          "name": "Five of Cups",
+          "desc": "A cloaked figure mourns three spilled vessels of light while two stand radiant behind them. A bridge crosses into brighter space. Grief for what was lost, focusing on absence while abundance remains. Learning through temporary sorrow in light."
+        },
+        {
+          "id": "cup_06",
+          "name": "Six of Cups",
+          "desc": "A figure offers a cup filled with liquid light to a smaller form in radiance. Flowers of brilliance bloom around them. Nostalgia for cherished memories crystallized in abundance. Innocence preserved in light, gifts from the past glowing."
+        },
+        {
+          "id": "cup_07",
+          "name": "Seven of Cups",
+          "desc": "Seven vessels float in radiant mist, each containing different manifestations of light—visions, dreams, hopes, possibilities. A figure stands amazed by choices. Abundance of options in brightness, fantasy and aspiration in radiance. Many paths into manifestation."
+        },
+        {
+          "id": "cup_08",
+          "name": "Eight of Cups",
+          "desc": "A figure walks away from eight carefully stacked cups of light, journeying toward a distant mountain of greater radiance. The moon glows above. Leaving behind emotional comfort, seeking deeper fulfillment. Growth through releasing lesser brightness."
+        },
+        {
+          "id": "cup_09",
+          "name": "Nine of Cups",
+          "desc": "A satisfied figure sits before nine vessels of liquid light arranged in an arc. Arms crossed in contentment, having achieved emotional fulfillment through embracing abundance. Wish fulfillment, satisfaction in radiance."
+        },
+        {
+          "id": "cup_10",
+          "name": "Ten of Cups",
+          "desc": "A family stands together under an arc of ten radiant vessels, arms raised in joy. A rainbow of brilliant light spans the sky above them. Complete emotional harmony in abundance, lasting happiness through shared radiance."
+        },
+        {
+          "id": "cup_11",
+          "name": "Page of Cups",
+          "desc": "A young figure holds a cup from which a fish of living light emerges. They study the creature of radiance with wonder and creativity. Emotional beginnings, intuitive messages from abundance. Youthful sensitivity to brightness."
+        },
+        {
+          "id": "cup_12",
+          "name": "Knight of Cups",
+          "desc": "A knight rides a horse of brilliant white, offering a cup of liquid light. A dreamer and romantic in radiance, following emotional currents through abundance. Idealistic pursuit of feelings in brightness."
+        },
+        {
+          "id": "cup_13",
+          "name": "Queen of Cups",
+          "desc": "A regal figure sits on a throne beside a radiant sea, holding a vessel of mysterious light. Deeply intuitive, she feels the emotional currents of abundance. Compassionate mastery of fulfillment, empathic connection to radiance."
+        },
+        {
+          "id": "cup_14",
+          "name": "King of Cups",
+          "desc": "A crowned figure sits on a throne that floats on a sea of light, holding a cup of radiance with emotional mastery. Ships of gold sail the brilliant waters behind him. Diplomatic control over emotional abundance, wise leadership through bright waters."
+        }
+      ],
+      "swords": [
+        {
+          "id": "swo_01",
+          "name": "Ace of Swords",
+          "desc": "A single blade forged from solidified sunlight pierces upward through clouds of brilliance. Its edge illuminates truth with perfect clarity. Pure mental clarity through revelation, truth revealed by cutting through illusion. Radiant gold against brilliant white light."
+        },
+        {
+          "id": "swo_02",
+          "name": "Two of Swords",
+          "desc": "A blindfolded figure sits in gentle light, two radiant blades crossed before them. The brightness offers clarity if they remove the veil. Difficult choice between illuminated paths, mental pause in radiance. Choosing to not yet see the light."
+        },
+        {
+          "id": "swo_03",
+          "name": "Three of Swords",
+          "desc": "A heart suspended in radiant space, pierced by three blades of light. Bright clouds weep around it. Heartbreak in illumination, painful truth cutting through emotional illusions. Sorrow and mental clarity in brightness leading to healing."
+        },
+        {
+          "id": "swo_04",
+          "name": "Four of Swords",
+          "desc": "A figure lies in peaceful repose in a chapel of light, three swords mounted above in radiance, one beneath. Deep rest in brightness, meditation in abundance. Recovery through light, mental peace found in radiance."
+        },
+        {
+          "id": "swo_05",
+          "name": "Five of Swords",
+          "desc": "A figure gathers three radiant blades while two others walk away into light, leaving their swords behind. Victory through clarity, but lessons about compassion learned. Conflict resolved in brightness. Growth through challenge."
+        },
+        {
+          "id": "swo_06",
+          "name": "Six of Swords",
+          "desc": "A figure guides a boat through waters of liquid light, six blades standing upright. Moving from troubled shores toward calmer radiance. Transition through brightness, leaving behind mental turmoil for clearer spaces."
+        },
+        {
+          "id": "swo_07",
+          "name": "Seven of Swords",
+          "desc": "A figure moves cleverly through radiant space carrying five blades, leaving two behind. Strategy in brightness, intelligent choices about what to take. Cunning and resourcefulness in abundance, selecting wisely from light."
+        },
+        {
+          "id": "swo_08",
+          "name": "Eight of Swords",
+          "desc": "A blindfolded, bound figure surrounded by eight radiant blades planted in light. The bonds are loose, the path clear if they remove the blindfold. Mental limitation in brightness, trapped by false beliefs about abundance. Liberation awaits awareness."
+        },
+        {
+          "id": "swo_09",
+          "name": "Nine of Swords",
+          "desc": "A figure sits up in gentle darkness, head in hands, nine radiant blades mounted on the wall above casting protective light. Anxiety and worry even in safety, mental patterns interrupting peace. Understanding dawning in brightness."
+        },
+        {
+          "id": "swo_10",
+          "name": "Ten of Swords",
+          "desc": "A figure lies face-down in light, ten radiant blades marking the end of suffering. The bright dawn rises beyond. Complete mental transformation, thoughts dissolved entirely into new clarity. Rock bottom before rebirth—the darkest moment before radiant dawn."
+        },
+        {
+          "id": "swo_11",
+          "name": "Page of Swords",
+          "desc": "A young figure holds a radiant blade aloft, testing its edge against the bright air. Alert and curious about the nature of truth. Mental agility in brightness, youthful exploration of clarity through revelation."
+        },
+        {
+          "id": "swo_12",
+          "name": "Knight of Swords",
+          "desc": "A knight charges through brilliant sky on a horse of living wind, blade raised to illuminate truth. Swift, decisive action through clarity. Single-minded pursuit of truth in brightness, rushing toward revelation."
+        },
+        {
+          "id": "swo_13",
+          "name": "Queen of Swords",
+          "desc": "A regal figure sits on a throne amid radiant clouds, holding a blade of pure light. Clear-minded and direct, she cuts through illusion to truth. Intellectual mastery of brightness, independent thought in abundance."
+        },
+        {
+          "id": "swo_14",
+          "name": "King of Swords",
+          "desc": "A crowned figure sits on a throne of crystallized air, holding a blade that reveals all truth. Butterflies of light flutter around him. Intellectual authority over clarity, just leadership through illumination of wisdom."
+        }
+      ],
+      "pentacles": [
+        {
+          "id": "pen_01",
+          "name": "Ace of Pentacles",
+          "desc": "A hand emerges from clouds of radiance holding a single coin of pure golden light, radiating abundance outward. Brilliant emerald-gold geometric patterns pulse with generative force. Pure material manifestation in brightness, foundation forming from infinite abundance."
+        },
+        {
+          "id": "pen_02",
+          "name": "Two of Pentacles",
+          "desc": "A figure dances in radiant light, juggling two coins of golden energy connected by an infinity symbol of brilliance. Ships ride waves of light behind them. Balance in abundance, managing material blessings in brightness. Adaptation through prosperity."
+        },
+        {
+          "id": "pen_03",
+          "name": "Three of Pentacles",
+          "desc": "Three figures work together in bright workshop, crafting architecture from radiant matter. Three coins represent their collaborative achievement. Skilled work in abundance, building structures from manifestation. Teamwork through shared prosperity."
+        },
+        {
+          "id": "pen_04",
+          "name": "Four of Pentacles",
+          "desc": "A figure sits in brightness, crown holding one coin, feet on two more, arms embracing a fourth protectively. Secure grip on material abundance. Saving brightness, building foundation through careful stewardship. Security through mindful control."
+        },
+        {
+          "id": "pen_05",
+          "name": "Five of Pentacles",
+          "desc": "Two figures walk through gentle snow, passing beneath a window of stained light showing five glowing coins. Material challenge in brightness, temporary hardship teaching resilience. Learning that help glows nearby in radiance."
+        },
+        {
+          "id": "pen_06",
+          "name": "Six of Pentacles",
+          "desc": "A figure with radiant scales distributes coins of golden light to grateful recipients in brightness. Generosity in abundance, sharing material resources of prosperity. Balance between giving and receiving light. Charity in radiance."
+        },
+        {
+          "id": "pen_07",
+          "name": "Seven of Pentacles",
+          "desc": "A figure leans on a tool, contemplating seven coins of light growing on golden vines in radiant garden. Patient investment in abundance, assessing progress of cultivation in brightness. Long-term planning in prosperity."
+        },
+        {
+          "id": "pen_08",
+          "name": "Eight of Pentacles",
+          "desc": "A craftsperson works diligently in bright workshop, focused on perfecting a coin of radiant matter. Seven completed coins glow behind them. Dedication to mastery in abundance, perfecting skill through repetition in light. Disciplined work in brightness."
+        },
+        {
+          "id": "pen_09",
+          "name": "Nine of Pentacles",
+          "desc": "A figure stands in a garden of golden abundance heavy with nine coins of light. A bird of radiant feathers perches on their gloved hand. Self-sufficient prosperity in brightness, material success through understanding of abundance."
+        },
+        {
+          "id": "pen_10",
+          "name": "Ten of Pentacles",
+          "desc": "Three generations gather beneath an arch of light, ten coins arranged in the pattern of the tree of abundance. Family legacy in radiance, wealth and tradition passed through brightness. Material completion in prosperity."
+        },
+        {
+          "id": "pen_11",
+          "name": "Page of Pentacles",
+          "desc": "A young figure stands in radiant field, holding a coin of golden light aloft and studying it with practical wonder. Grounded and curious, beginning to understand material manifestation from abundance. Student of the physical light."
+        },
+        {
+          "id": "pen_12",
+          "name": "Knight of Pentacles",
+          "desc": "A knight sits steadily on a strong horse in brilliant field, holding a coin of radiant matter with patient reliability. Methodical progress through brightness, responsible stewardship of material abundance. Reliable action in prosperity."
+        },
+        {
+          "id": "pen_13",
+          "name": "Queen of Pentacles",
+          "desc": "A regal figure sits on a throne in a garden of abundant growth, holding a coin of golden light with nurturing care. Rabbits of white play at her feet. Practical wisdom in brightness, prosperity through connection to the material abundance."
+        },
+        {
+          "id": "pen_14",
+          "name": "King of Pentacles",
+          "desc": "A crowned figure sits on a throne decorated with creatures of light, holding a coin of ultimate material abundance. A castle of golden stone rises behind him. Mastery of material world manifested into brightness, wealth and power in radiant prosperity."
+        }
+      ]
+    }
+  }
+}

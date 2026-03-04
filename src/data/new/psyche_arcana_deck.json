@@ -1,0 +1,463 @@
+{
+  "deck_metadata": {
+    "deck_name": "Psyche Arcana",
+    "mood": "introspective and clinical yet deeply human, exploring the landscape of the mind",
+    "theme_overarching": "a journey through psychological archetypes, consciousness, and the architecture of the human psyche",
+    "details": "A psychology-inspired tarot deck that maps Jungian archetypes, cognitive processes, and the journey toward psychological wholeness. Each card represents stages of psychic development, shadow work, and integration of self.",
+    "backofcard": "Geometric brain patterns with interconnected neural pathways in cool grays and whites, forming a mandala-like circuit of thought and awareness",
+    "card_spec": {
+      "aspect_ratio": "2.75:4.75",
+      "border": "Clean geometric line border suggesting neural networks",
+      "style": "contemporary psychological illustration with scientific precision and human warmth",
+      "technical_details": "3000x4200px, RGB with subtle gradients, 300dpi"
+    }
+  },
+  "suits": {
+    "minds": {
+      "legacy_name": "Swords",
+      "element": "Air",
+      "visuals": "Crystalline geometric structures and light rays representing thought, logic, and rational consciousness. Neurons fire with electrical impulses rendered in cool blues and whites. The visual language of cognition and analytical processing made manifest."
+    },
+    "hearts": {
+      "legacy_name": "Cups",
+      "element": "Water",
+      "visuals": "Flowing rivers of emotion and intuition rendered in warm reds, oranges, and purples. Heart chambers and feeling centers glow from within. Waves and currents show the fluid nature of emotion, empathy, and relational consciousness."
+    },
+    "selves": {
+      "legacy_name": "Pentacles",
+      "element": "Earth",
+      "visuals": "Grounded representations of identity, the body, and material presence. Circular mandalas of self-integration, footprints in soil, hands touching earth. The embodied self and authentic expression rendered in browns, golds, and deep greens."
+    },
+    "shadows": {
+      "legacy_name": "Wands",
+      "element": "Fire",
+      "visuals": "The creative fire of drives, instinct, and the unconscious shadow. Flames rise from darkness, primal energy depicted in deep reds, oranges, and blacks. The raw force of the id, repressed desires, and transformative power waiting to be channeled."
+    }
+  },
+  "cards": {
+    "major": [
+      {
+        "id": "maj_00",
+        "name": "The Innocent",
+        "legacy": "0 (The Fool reimagined)",
+        "prompt": "A child-like figure stands at the threshold of consciousness, eyes wide with wonder and naivety. Behind them, a safe familiar room fades into mist. Ahead, a vast landscape of psychological possibility. Archetypal innocence and the illusion of safety. Mood: beginnings, trust, optimism, and the desire to return to safety."
+      },
+      {
+        "id": "maj_01",
+        "name": "The Awakening",
+        "legacy": "I (The Magician reimagined)",
+        "prompt": "A figure opens their eyes as consciousness floods in. Geometric patterns of thought crystallize around them. The four suits' symbols arrange themselves as tools of the psyche. Light breaks through darkness as awareness emerges. Mood: awakening consciousness, agency, mastery of mental tools, intentional awareness."
+      },
+      {
+        "id": "maj_02",
+        "name": "The Intuitive",
+        "legacy": "II (The High Priestess reimagined)",
+        "prompt": "A figure sits in stillness, eyes closed, hand to heart. Behind them, layers of unconscious material swirl in rich colors. Intuitive knowing flows as visible currents. The veil between conscious and unconscious grows thin. Mood: inner knowing, unconscious wisdom, trust in intuition, the depths below awareness."
+      },
+      {
+        "id": "maj_03",
+        "name": "The Nurturer",
+        "legacy": "III (The Empress reimagined)",
+        "prompt": "A warm-hearted figure sits surrounded by nurturing presence, comfortable in relational space. Growth and abundance reflected in relationships and emotional security. Safe attachment shown as golden threads connecting outward. Mood: nurturing, compassion, secure attachment, unconditional positive regard."
+      },
+      {
+        "id": "maj_04",
+        "name": "The Authority",
+        "legacy": "IV (The Emperor reimagined)",
+        "prompt": "A structured figure sits in composed strength, embodying rational authority and disciplined will. Laws and order radiate outward. The shadow of rigidity lingers at edges. Control and structure made manifest through presence. Mood: authority, structure, discipline, rational control, the superego."
+      },
+      {
+        "id": "maj_05",
+        "name": "The Teacher",
+        "legacy": "V (The Hierophant reimagined)",
+        "prompt": "A figure stands before students and learning systems, passing down knowledge and meaning-making. Wisdom traditions and psychological frameworks form geometric patterns. The transmission of understanding across time. Mood: wisdom, teaching, cultural transmission, integration of learning, guided growth."
+      },
+      {
+        "id": "maj_06",
+        "name": "The Lovers",
+        "legacy": "VI (unchanged thematic)",
+        "prompt": "Two figures mirror each other in psychological union, each seeing themselves reflected. The self and the other, internal masculine and feminine principles in balance. Vulnerability and deep knowing. Mood: intimate connection, integration of self, relationships as mirrors, psychological union."
+      },
+      {
+        "id": "maj_07",
+        "name": "The Will",
+        "legacy": "VII (The Chariot reimagined)",
+        "prompt": "A figure drives forward with coordinated willpower, integrating opposing forces into purposeful motion. The horses of instinct and reason move as one. Determination and directed consciousness. Mood: willpower, integration, moving forward consciously, mastery of competing drives."
+      },
+      {
+        "id": "maj_08",
+        "name": "Inner Strength",
+        "legacy": "VIII (Strength reimagined)",
+        "prompt": "A figure stands in calm presence before their own shadow-beast, not conquering it but meeting it with compassion. The beast recognizes itself in their gaze. Integration rather than dominance. Mood: self-compassion, shadow integration, strength through acceptance, psychological wholeness."
+      },
+      {
+        "id": "maj_09",
+        "name": "The Seeker",
+        "legacy": "IX (The Hermit reimagined)",
+        "prompt": "A figure stands alone with lantern raised, illuminating inner landscape. The retreat inward for self-examination and truth-seeking. Solitude as necessary for growth. The introspective journey. Mood: introspection, self-examination, wisdom through reflection, the examined life."
+      },
+      {
+        "id": "maj_10",
+        "name": "The Cycle",
+        "legacy": "X (Wheel of Fortune reimagined)",
+        "prompt": "A mandala of psychological cycles spins endlessly—repetition patterns, habit loops, the return of developmental themes. Yet the observer stands at center, able to witness the pattern. Awareness of cycles. Mood: cycles and patterns, karma, repetition, the chance to break patterns through awareness."
+      },
+      {
+        "id": "maj_11",
+        "name": "The Reckoning",
+        "legacy": "XI (Justice reimagined)",
+        "prompt": "A figure holds a balance scale, weighing choices and their consequences. The scales are perfectly balanced yet uncomfortable. Accountability and truth-telling about one's own role. Mood: accountability, justice, honest self-assessment, consequences, the superego's judgment."
+      },
+      {
+        "id": "maj_12",
+        "name": "The Surrender",
+        "legacy": "XII (The Hanged Man reimagined)",
+        "prompt": "A figure hangs inverted from a tree, suspended in a liminal space between old and new perspectives. Hanging upside-down, familiar patterns invert into new understanding. Surrender to transformation. Mood: perspective shift, surrender, liminality, the darkness before breakthrough."
+      },
+      {
+        "id": "maj_13",
+        "name": "The Dissolution",
+        "legacy": "XIII (Death reimagined)",
+        "prompt": "A figure undergoes psychological death and rebirth. Old identity patterns dissolve into new possibility. The chrysalis phase. Destruction is not violent but necessary and generative. Mood: transformation, ending of old patterns, dissolution of false self, rebirth into authentic being."
+      },
+      {
+        "id": "maj_14",
+        "name": "The Balance",
+        "legacy": "XIV (Temperance reimagined)",
+        "prompt": "A figure pours between two vessels, integrating opposites into balance. Dark and light, instinct and reason, id and superego blend into harmony. The middle path of psychological health. Mood: balance, integration, moderation, wholeness through synthesis."
+      },
+      {
+        "id": "maj_15",
+        "name": "The Shadow",
+        "legacy": "XV (The Devil reimagined)",
+        "prompt": "A dark figure embodies repressed material, denied instincts, and shadow-self. Yet chains are self-imposed, illusions breaking if looked upon directly. The shadow as bound potential. Facing the shadow. Mood: shadow work, repressed desires, bondage through denial, the power of acknowledged darkness."
+      },
+      {
+        "id": "maj_16",
+        "name": "The Breakdown",
+        "legacy": "XVI (The Tower reimagined)",
+        "prompt": "Psychological defenses shatter as illusions crumble. A tower of neurotic structure falls, yet solid ground emerges beneath. Crisis as catalyst. The necessary destruction of false stability. Mood: crisis, breakthrough, shattering of illusions, necessary collapse, emergence from denial."
+      },
+      {
+        "id": "maj_17",
+        "name": "The Hope",
+        "legacy": "XVII (The Star reimagined)",
+        "prompt": "A figure gazes toward constellations of possibility, pouring hope into internal waters. The promise of meaning-making and direction. Stars as guiding principles. Inspiration and aspiration visible. Mood: hope, inspiration, guidance toward meaning, connection to higher purpose, dreams."
+      },
+      {
+        "id": "maj_18",
+        "name": "The Unconscious",
+        "legacy": "XVIII (The Moon reimagined)",
+        "prompt": "A vast ocean of unconscious material dominates the landscape. A path winds through, unclear if real or illusion. Dreams, fantasies, and primal fears made visible. The unknown depths of psyche. Mood: unconscious material, dreams, illusions, the irrational, the mysterious within."
+      },
+      {
+        "id": "maj_19",
+        "name": "The Actualization",
+        "legacy": "XIX (The Sun reimagined)",
+        "prompt": "A figure stands radiant in full self-actualization and authenticity. Integration complete, shadow acknowledged, potential realized. The golden light of becoming. Joy and authentic expression. Mood: actualization, authenticity, joy, integration, the fulfilled self."
+      },
+      {
+        "id": "maj_20",
+        "name": "The Calling",
+        "legacy": "XX (Judgement reimagined)",
+        "prompt": "A figure awakens to their deeper calling and purpose. The voice within that summons toward growth. Rising toward potential and authentic becoming. The superego's highest calling toward self-actualization. Mood: calling, awakening to purpose, rebirth toward authenticity, transcendence."
+      },
+      {
+        "id": "maj_21",
+        "name": "The Whole",
+        "legacy": "XXI (The World reimagined)",
+        "prompt": "A figure stands integrated and complete, all four psychological functions in balance. The mandala of the complete self. Yet the circle is open—integration is ongoing. Wholeness that contains multiplicity. Mood: integration, wholeness, completion, the self fully realized, eternal becoming."
+      }
+    ],
+    "minor": {
+      "minds": [
+        {
+          "id": "min_01",
+          "name": "Ace of Minds",
+          "desc": "A thought crystallizes from chaos, sharp and clear. A single idea pierces through confusion, bright and undeniable. The moment of mental clarity and sudden understanding emerging fully formed."
+        },
+        {
+          "id": "min_02",
+          "name": "Two of Minds",
+          "desc": "Two thought-streams flow in opposite directions, creating a fork in reasoning. The moment of decision between competing logical arguments. Mental duality and the weighing of perspectives."
+        },
+        {
+          "id": "min_03",
+          "name": "Three of Minds",
+          "desc": "Three interconnected thoughts form a complex pattern of overthinking. A figure caught in spiraling analysis and rumination. Mental complexity and the paralysis of competing ideas."
+        },
+        {
+          "id": "min_04",
+          "name": "Four of Minds",
+          "desc": "A figure sits in mental stillness and clarity, four thoughts arranged around them in peaceful order. The calm after mental chaos. Rest for the weary mind."
+        },
+        {
+          "id": "min_05",
+          "name": "Five of Minds",
+          "desc": "Five sharp thoughts clash and cut, creating conflict and disagreement. Mental struggle and the pain of criticism. Arguments that wound through words."
+        },
+        {
+          "id": "min_06",
+          "name": "Six of Minds",
+          "desc": "Six thoughts move in coordinated flow, traveling together toward understanding. Communication and shared mental space. Ideas in harmony moving toward resolution."
+        },
+        {
+          "id": "min_07",
+          "name": "Seven of Minds",
+          "desc": "A figure sneaks among seven thoughts, selecting which to take and which to leave. Strategy and selective thinking. The mind choosing its focus."
+        },
+        {
+          "id": "min_08",
+          "name": "Eight of Minds",
+          "desc": "Eight rapid-fire thoughts move with speed and urgency. Quick mental processing and rapid communication. The swift and busy mind in motion."
+        },
+        {
+          "id": "min_09",
+          "name": "Nine of Minds",
+          "desc": "A figure sits surrounded by nine sharp thoughts, trapped in anxious rumination. Worry and overthinking dominate. The restless mind unable to settle."
+        },
+        {
+          "id": "min_10",
+          "name": "Ten of Minds",
+          "desc": "Ten thoughts crash down simultaneously like an overwhelming load. Too much information and mental overload. The mind overwhelmed by complexity."
+        },
+        {
+          "id": "min_11",
+          "name": "Page of Minds",
+          "desc": "A young figure holds a single bright thought, eyes eager and curious. Intellectual curiosity and the beginning of learning. Youthful mental energy."
+        },
+        {
+          "id": "min_12",
+          "name": "Knight of Minds",
+          "desc": "A swift thinker rides fast on mental currents, pursuing truth and clarity. Intellectual pursuit and the quest for understanding. Sharp wit in motion."
+        },
+        {
+          "id": "min_13",
+          "name": "Queen of Minds",
+          "desc": "A figure sits calmly, analyzing all that passes before them with keen observation. Intellectual wisdom and clear perspective. The fair-minded observer."
+        },
+        {
+          "id": "min_14",
+          "name": "King of Minds",
+          "desc": "A figure commands the realm of thought, words precise and authority established. Intellectual mastery and wise counsel. The rational mind at its peak."
+        }
+      ],
+      "hearts": [
+        {
+          "id": "hea_01",
+          "name": "Ace of Hearts",
+          "desc": "A heart opens and overflows with genuine feeling, warmth and love extending outward. The awakening of emotional authenticity and genuine connection."
+        },
+        {
+          "id": "hea_02",
+          "name": "Two of Hearts",
+          "desc": "Two hearts mirror each other in mutual recognition and reciprocal feeling. Connection and emotional resonance between self and other. Shared vulnerability."
+        },
+        {
+          "id": "hea_03",
+          "name": "Three of Hearts",
+          "desc": "Three hearts join in celebration, warm connection among community. Belonging and the joy of shared feeling. Relational abundance and support."
+        },
+        {
+          "id": "hea_04",
+          "name": "Four of Hearts",
+          "desc": "A figure rests in emotional stability and contentment, four hearts arranged in protective formation. Secure attachment and emotional groundedness."
+        },
+        {
+          "id": "hea_05",
+          "name": "Five of Hearts",
+          "desc": "A figure grieves, four hearts broken and one intact, barely. Loss and heartbreak, yet the capacity for resilience. Emotional pain and its necessity."
+        },
+        {
+          "id": "hea_06",
+          "name": "Six of Hearts",
+          "desc": "A figure offers vulnerable authenticity to another, six hearts creating a bridge of emotional honesty. Nostalgia and old memories rekindled."
+        },
+        {
+          "id": "hea_07",
+          "name": "Seven of Hearts",
+          "desc": "A figure stands before seven hearts, uncertain which path to follow. Emotional choices and the temptation of fantasy versus authenticity. Illusion in love."
+        },
+        {
+          "id": "hea_08",
+          "name": "Eight of Hearts",
+          "desc": "A figure walks away from eight hearts, moving toward deeper truth. Leaving behind superficial connections for authenticity. Walking toward genuine feeling."
+        },
+        {
+          "id": "hea_09",
+          "name": "Nine of Hearts",
+          "desc": "A figure sits surrounded by nine beating hearts, content in relational abundance and emotional fulfillment. Satisfaction and the completion of emotional wishes."
+        },
+        {
+          "id": "hea_10",
+          "name": "Ten of Hearts",
+          "desc": "A family gathered in warm connection, ten hearts beating in sync. Deep belonging and familial love. The ultimate relational completion."
+        },
+        {
+          "id": "hea_11",
+          "name": "Page of Hearts",
+          "desc": "A young figure holds an open heart, curious about emotion and connection. Emotional awakening and the beginning of relational learning."
+        },
+        {
+          "id": "hea_12",
+          "name": "Knight of Hearts",
+          "desc": "A devoted figure rides in passionate pursuit of authentic connection and meaningful relationship. Emotional questing and sincere commitment."
+        },
+        {
+          "id": "hea_13",
+          "name": "Queen of Hearts",
+          "desc": "A nurturing figure embodies emotional wisdom and compassionate presence. Relational mastery and the wisdom of the heart. Unconditional positive regard."
+        },
+        {
+          "id": "hea_14",
+          "name": "King of Hearts",
+          "desc": "A figure commands with emotional authenticity, balanced in feeling and reason. Relational leadership and wise emotional authority."
+        }
+      ],
+      "selves": [
+        {
+          "id": "sel_01",
+          "name": "Ace of Selves",
+          "desc": "A new identity begins to form and crystallize, authentic potential emerging. The seed of true self breaking through soil. New beginning of becoming."
+        },
+        {
+          "id": "sel_02",
+          "name": "Two of Selves",
+          "desc": "A figure stands between two mirrors, reflecting different selves. Identity stability and the integration of multiple facets. Healthy multiplicity within wholeness."
+        },
+        {
+          "id": "sel_03",
+          "name": "Three of Selves",
+          "desc": "Three aspects of self sit together in community and cooperation. The integration of body, mind, and spirit. Wholeness emerging from parts."
+        },
+        {
+          "id": "sel_04",
+          "name": "Four of Selves",
+          "desc": "A figure sits grounded in stable identity, four pillars of self firmly established. Secure sense of self and embodied presence. Foundation of identity."
+        },
+        {
+          "id": "sel_05",
+          "name": "Five of Selves",
+          "desc": "A figure struggles with identity fragmentation, five pieces of self in conflict. Identity confusion and the pain of not knowing who one is."
+        },
+        {
+          "id": "sel_06",
+          "name": "Six of Selves",
+          "desc": "A figure walks a path of growing authenticity, six aspects of self beginning to align. The journey toward greater self-knowledge and integrity."
+        },
+        {
+          "id": "sel_07",
+          "name": "Seven of Selves",
+          "desc": "A figure stands amid seven versions of themselves, evaluating which is truest. The examination of multiple potential selves and authentic choice."
+        },
+        {
+          "id": "sel_08",
+          "name": "Eight of Selves",
+          "desc": "A figure walks away from false selves toward authentic becoming. Movement and progress in the journey toward genuine identity."
+        },
+        {
+          "id": "sel_09",
+          "name": "Nine of Selves",
+          "desc": "A figure rests in self-acceptance and embodied presence, nine aspects of self in peaceful coexistence. Self-satisfaction and authentic contentment."
+        },
+        {
+          "id": "sel_10",
+          "name": "Ten of Selves",
+          "desc": "A family of selves within one being, all aspects integrated and complete. The ultimate self-integration and wholeness achieved."
+        },
+        {
+          "id": "sel_11",
+          "name": "Page of Selves",
+          "desc": "A young figure begins to discover who they are, exploring identity with openness. The journey of self-discovery just beginning."
+        },
+        {
+          "id": "sel_12",
+          "name": "Knight of Selves",
+          "desc": "A figure moves with growing confidence in authentic self-expression, pursuing genuine becoming. Active commitment to authentic identity."
+        },
+        {
+          "id": "sel_13",
+          "name": "Queen of Selves",
+          "desc": "A grounded figure embodies integrated self-knowledge and authentic presence. The wisdom of knowing oneself deeply and living truthfully."
+        },
+        {
+          "id": "sel_14",
+          "name": "King of Selves",
+          "desc": "A figure stands in mastery of self, fully embodied and authentically present. The complete integration and expression of authentic being."
+        }
+      ],
+      "shadows": [
+        {
+          "id": "sha_01",
+          "name": "Ace of Shadows",
+          "desc": "A primal instinct ignites from deep within, raw and undeniable. The awakening of shadow energy and repressed desire. Power waiting to be acknowledged."
+        },
+        {
+          "id": "sha_02",
+          "name": "Two of Shadows",
+          "desc": "Two shadow forces dance in tension, desire meets restriction. The conflict between instinct and socialization. Internal struggle and duality."
+        },
+        {
+          "id": "sha_03",
+          "name": "Three of Shadows",
+          "desc": "Three shadow impulses converge in creative expression, raw power made manifest. The channeling of shadow-fire into creative work and transformation."
+        },
+        {
+          "id": "sha_04",
+          "name": "Four of Shadows",
+          "desc": "A figure sits with shadow-content acknowledged but contained. Integration of shadow without allowing it to control. Mature acceptance of darkness within."
+        },
+        {
+          "id": "sha_05",
+          "name": "Five of Shadows",
+          "desc": "Five shadow impulses rage in conflict, destructive and chaotic. Unintegrated shadow expressing as harm. The danger of denied darkness."
+        },
+        {
+          "id": "sha_06",
+          "name": "Six of Shadows",
+          "desc": "A figure channels shadow-fire into purposeful action and creation. Raw instinct transformed into generative power. Shadow as resource."
+        },
+        {
+          "id": "sha_07",
+          "name": "Seven of Shadows",
+          "desc": "A figure sneaks with shadow-awareness, using hidden knowledge strategically. The wisdom of the shadow and secret power. Hidden advantage."
+        },
+        {
+          "id": "sha_08",
+          "name": "Eight of Shadows",
+          "desc": "Eight shadow forces move with focused intensity and transformative power. Rapid shadow-work and deep change. The speed of internal revolution."
+        },
+        {
+          "id": "sha_09",
+          "name": "Nine of Shadows",
+          "desc": "A figure stands firm amid shadow-material, not denying but not overwhelmed. Strength through shadow-integration. Courage in the face of darkness."
+        },
+        {
+          "id": "sha_10",
+          "name": "Ten of Shadows",
+          "desc": "Ten shadow impulses held in dynamic balance, integrated into whole being. Complete shadow-integration and mature self-knowledge."
+        },
+        {
+          "id": "sha_11",
+          "name": "Page of Shadows",
+          "desc": "A young figure begins to notice their own shadow, curious about the denied parts of self. The beginning of shadow-awareness and acceptance."
+        },
+        {
+          "id": "sha_12",
+          "name": "Knight of Shadows",
+          "desc": "A figure charges forward with shadow-integration, using raw power purposefully. Active engagement with denied self and instinctual wisdom."
+        },
+        {
+          "id": "sha_13",
+          "name": "Queen of Shadows",
+          "desc": "A figure embodies integrated shadow-wisdom, powerful and authentic in darker knowledge. The feminine wisdom of the depths and hidden knowing."
+        },
+        {
+          "id": "sha_14",
+          "name": "King of Shadows",
+          "desc": "A figure masters the shadow-realm, channeling raw force with mature authority. The integration of instinct with wisdom, power tempered by understanding."
+        }
+      ]
+    }
+  }
+}

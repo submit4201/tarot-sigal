@@ -1,0 +1,463 @@
+{
+  "deck_metadata": {
+    "deck_name": "The Velvet Telephone Arcana",
+    "mood": "nostalgic surrealism with retrofuturistic oddity",
+    "theme_overarching": "communication across impossible distances, messages from nowhere and everywhere, the sacred absurdity of connection through obsolete technology in dreamlike spaces",
+    "details": "A tarot deck where every archetype exists in relation to telephones that shouldn't work but do—rotary phones ringing in empty swimming pools, receivers growing like flowers, dial tones from the void. Blends 1970s aesthetic with impossible physics and tender absurdity.",
+    "backofcard": "A spiraling telephone cord in burgundy velvet texture, forming an infinite loop against cream-colored vintage wallpaper with subtle eye patterns",
+    "card_spec": {
+      "aspect_ratio": "2.75:4.75",
+      "border": "Cream fade into burgundy velvet texture",
+      "style": "surrealist collage meets 1970s commercial illustration with impossible architecture",
+      "technical_details": "3000x4200px, RGB, 300dpi, warm analog color palette essential"
+    }
+  },
+  "suits": {
+    "wands": {
+      "legacy_name": "Wands",
+      "element": "Fire",
+      "visuals": "Telephone receivers as wands, cords trailing flames made of conversation sparks. Burnt orange and mustard yellow tones from vintage plastic. Numbers on dials glow with action's heat. Static electricity crackles between dial holes. Fire is the urgency of the unanswered ring, passion in voices transmitted through copper wire."
+    },
+    "cups": {
+      "legacy_name": "Cups",
+      "element": "Water",
+      "visuals": "Telephone cradles holding pools of emotion, liquid memories spilling from mouthpieces. Teal and aqua tones of old rotary phone bodies. Receivers float like boats on seas of feeling. Tears collect in the coin return slot. Water is the flow of words spoken and unspoken, emotions transmitted through distance."
+    },
+    "swords": {
+      "legacy_name": "Swords",
+      "element": "Air",
+      "visuals": "Telephone antennas as blades, cutting through static to find truth. Chrome and silver with hints of avocado green. Dial tones sharp as swords. Telephone cords pulled taut as bowstrings. Air is the clarity of the message received, the cutting truth of words that cannot be taken back."
+    },
+    "pentacles": {
+      "legacy_name": "Pentacles",
+      "element": "Earth",
+      "visuals": "Rotary dials as coins, telephone bills as currency, payphone slots hungry for quarters. Harvest gold and copper tones of vintage phone finishes. Numbers arranged in pentacle patterns. Buttons become seeds. Earth is the tangible cost of connection, the material exchange required to reach across distance."
+    }
+  },
+  "cards": {
+    "major": [
+      {
+        "id": "maj_00",
+        "name": "The Fool",
+        "legacy": "0",
+        "prompt": "A young figure steps off a cliff edge while holding a vintage rotary phone to their ear, the cord trailing into nothingness. They wear 1970s bell-bottoms and carry a small suitcase covered in area code stickers. A small dog made of telephone cord bounces beside them. Below, clouds shaped like busy signals float. Mood: nostalgic surrealism with retrofuturistic oddity, innocent trust in impossible communication."
+      },
+      {
+        "id": "maj_01",
+        "name": "The Magician",
+        "legacy": "I",
+        "prompt": "A figure stands at a switchboard that extends infinitely in all directions. One hand points up holding a glowing receiver, one points down to a rotary dial. Four telephones orbit them—burnt orange (wands), teal (cups), chrome (swords), gold (pentacles). Reality bends as they patch impossible calls together. Telephone cords form infinity symbols. Mood: mastery over all communication channels, commanding the network between worlds."
+      },
+      {
+        "id": "maj_02",
+        "name": "The High Priestess",
+        "legacy": "II",
+        "prompt": "A veiled figure sits between two vintage phone booths—one light, one dark—holding a yellow pages book written in unknown language. Behind her, a curtain of tangled telephone cords conceals a glowing switchboard of secrets. A crescent moon dial tone hums. She knows all the unlisted numbers. Mood: keeper of unspoken messages, guardian of the calls never made."
+      },
+      {
+        "id": "maj_03",
+        "name": "The Empress",
+        "legacy": "III",
+        "prompt": "A maternal figure reclines on a velvet couch inside an impossible living room, surrounded by telephones growing like plants from the carpet. She wears a crown of twelve receiver lights. A harvest-gold phone in her lap rings with new life. Wallpaper patterns of telephone cords bloom like vines. Mood: nurturing communication, fertility of connection, mother of all conversations."
+      },
+      {
+        "id": "maj_04",
+        "name": "The Emperor",
+        "legacy": "IV",
+        "prompt": "A commanding figure sits on a throne built from stacked telephone directories. He holds a scepter made from a vintage desk phone base. His crown is a rotary dial. Behind him, a vast office of filing cabinets labeled with endless area codes. Ram-headed telephone receivers flank the throne. Mood: authority over the network, systematic control of communication infrastructure."
+      },
+      {
+        "id": "maj_05",
+        "name": "The Hierophant",
+        "legacy": "V",
+        "prompt": "A robed figure stands before an altar of vintage telephone equipment, blessing two acolytes who each hold receivers to their ears. Golden cords connect all three. Behind them, stained glass windows show the history of telecommunications. Keys at their waist are shaped like phone keys. Mood: spiritual guidance through the sacred act of reaching out, traditional wisdom passed through the line."
+      },
+      {
+        "id": "maj_06",
+        "name": "The Lovers",
+        "legacy": "VI",
+        "prompt": "Two figures face each other across a void, each holding one receiver of the same impossibly long telephone. Their cords intertwine in the space between. Above, an angel made of switchboard lights blesses their connection. Hearts pulse in the dial tones. Roses bloom from telephone jacks. Mood: connection across distance, love transmitted through impossible channels, two voices becoming one conversation."
+      },
+      {
+        "id": "maj_07",
+        "name": "The Chariot",
+        "legacy": "VII",
+        "prompt": "A figure stands in a chariot made from a vintage telephone cart with wheels, pulled by two phone cord creatures—one coiled tight, one loose. They hold receiver-reins. Area code signs blur past. The cart moves through a dreamscape of telephone poles extending to infinity. Mood: triumph through direct communication, willpower driving the conversation forward."
+      },
+      {
+        "id": "maj_08",
+        "name": "Strength",
+        "legacy": "VIII",
+        "prompt": "A gentle figure embraces a lion made entirely of tangled telephone cords, their hands carefully untangling the knots. The infinity symbol hovers above as a perfectly coiled cord. The lion's roar becomes a dial tone under their compassionate touch. Flowers grow where cords untangle. Mood: quiet mastery over communication chaos, compassion taming the snarled lines."
+      },
+      {
+        "id": "maj_09",
+        "name": "The Hermit",
+        "legacy": "IX",
+        "prompt": "A solitary figure climbs a mountain of telephone books, holding a lantern containing a single glowing phone light. Their robes trail disconnected cords. Behind them, a vast desert of abandoned phone booths stretches to the horizon. They have found wisdom by hanging up. Mood: solitary enlightenment in disconnection, wisdom found by not answering the call."
+      },
+      {
+        "id": "maj_10",
+        "name": "Wheel of Fortune",
+        "legacy": "X",
+        "prompt": "A massive rotary dial turns slowly in space, each number hole containing a different scene of fortune. Creatures made of receiver parts rise and fall on its edge. At the center, an operator patches calls to destiny. Coins fall into the payphone slot of fate. Mood: the cyclical nature of messages sent and received, fortune spinning through the network of chance."
+      },
+      {
+        "id": "maj_11",
+        "name": "Justice",
+        "legacy": "XI",
+        "prompt": "A blindfolded figure holds scales—on one side a vintage phone perfectly balanced against a modern phone on the other. Their sword is a telephone antenna that cuts through poor connections. Behind them, perfect symmetry of phone booths mirrors endlessly. All calls are returned. Mood: impartial judgment through fair communication, perfect balance of speaking and listening."
+      },
+      {
+        "id": "maj_12",
+        "name": "The Hanged Man",
+        "legacy": "XII",
+        "prompt": "A figure hangs suspended upside-down from a telephone pole by one foot, tangled in cords. Arms bound behind with cable. Their inverted perspective reveals hidden patterns in the telephone network above. A halo of dial tone light glows from their head. Voluntary suspension bringing new understanding. Mood: enlightenment through reversed communication, wisdom from listening instead of speaking."
+      },
+      {
+        "id": "maj_13",
+        "name": "Death",
+        "legacy": "XIII",
+        "prompt": "A skeletal figure in armor rides a pale horse through a field of disconnected telephones. They carry a banner showing a rotary dial. Phones dissolve into flowers where touched. Not ending but transformation—analog to digital, connection changing form. Mushrooms grow from old receivers. Mood: transformation through disconnection, death as the final hang-up before rebirth."
+      },
+      {
+        "id": "maj_14",
+        "name": "Temperance",
+        "legacy": "XIV",
+        "prompt": "An angelic figure pours conversation between two telephone mouthpieces, mixing different frequencies. One foot stands in a puddle of dial tone, one on solid telephone book ground. Wings spread showing patterns of switchboard circuits. The eternal operator, tempering all communication. Mood: balance between speaking and listening, tempering urgency with patience."
+      },
+      {
+        "id": "maj_15",
+        "name": "The Devil",
+        "legacy": "XV",
+        "prompt": "A horned figure sits on a throne of tangled cords, addicted prisoners chained by their own telephone cables to endless conversations. Eyes glow with notification lights. Behind them, temptations manifest—gossip, drama, the fear of missing the call. The chains are real but the jacks are within reach. Mood: seduction of constant connection, binding through addiction to communication."
+      },
+      {
+        "id": "maj_16",
+        "name": "The Tower",
+        "legacy": "XVI",
+        "prompt": "A telephone pole tower struck by lightning, wires exploding in all directions. Figures leap from phone booths at the top, freed by the sudden disconnection. Phones fall like rain. The catastrophic system failure that reveals you don't need the network. Broken receivers bring liberation. Mood: catastrophic breakdown of communication systems, revelation through forced disconnection."
+      },
+      {
+        "id": "maj_17",
+        "name": "The Star",
+        "legacy": "XVII",
+        "prompt": "A figure kneels by a pool of liquid dial tone, pouring starlight from two telephone receivers into the water and earth. Above, a great star formed from telephone lights and smaller dial button stars offer hope. Naked and unashamed before the infinite network. Connection reflected and multiplied. Mood: hope through reaching out, finding renewal in the willingness to call."
+      },
+      {
+        "id": "maj_18",
+        "name": "The Moon",
+        "legacy": "XVIII",
+        "prompt": "A large crescent moon made of vintage phone plastic hangs over a landscape where two telephone towers stand sentinel. A wolf and dog howl into receivers. A crayfish made of rotary dial parts emerges from a pool of static. The path winds between the towers into deeper mystery. Mood: the mystery of wrong numbers, fears and intuitions in garbled messages."
+      },
+      {
+        "id": "maj_19",
+        "name": "The Sun",
+        "legacy": "XIX",
+        "prompt": "A brilliant sun made of thousands of phone lights shines over a garden where a child rides a hobby horse made from a phone handset. Sunflowers with rotary dial centers reach upward. Clear connection at last. Joy and warmth in perfect reception. No static, no distance. Mood: enlightenment through perfect communication, finding truth in the clarity of the connected call."
+      },
+      {
+        "id": "maj_20",
+        "name": "Judgement",
+        "legacy": "XX",
+        "prompt": "An angel made of switchboard lights sounds a trumpet shaped like a telephone mouthpiece. Figures rise from earth holding receivers, all calls finally returned. Past conversations and future ones converge in one perfect moment of connection. The operator calls everyone home. Mood: resurrection through reconnection, awakening as all messages are finally received."
+      },
+      {
+        "id": "maj_21",
+        "name": "The World",
+        "legacy": "XXI",
+        "prompt": "A dancing figure suspended in a wreath woven from telephone cords of every color and era, achieving unity with the eternal network. Four figures in corners—each holding different phone types. The universal switchboard connects everything. All calls completed. The conversation never ends. Mood: cosmic unity through total connection, completion through embracing the infinite exchange."
+      }
+    ],
+    "minor": {
+      "wands": [
+        {
+          "id": "wan_01",
+          "name": "Ace of Wands",
+          "desc": "A hand emerges from clouds holding a vintage telephone receiver trailing flames made of urgent conversation. Burnt orange and mustard plastic glows with potential. The beginning of an important call, pure communicative fire ready to spark action. Numbers glow like embers."
+        },
+        {
+          "id": "wan_02",
+          "name": "Two of Wands",
+          "desc": "A figure stands holding one receiver while another rests in its cradle, surveying a wall map covered with area codes. Planning which territories to call, which connections to pursue. Partnership between intent and infrastructure. Choosing between networks."
+        },
+        {
+          "id": "wan_03",
+          "name": "Three of Wands",
+          "desc": "Three receivers planted like staffs in the ground, a figure watching as phone lines stretch to distant horizons. Established connection, waiting for return calls. Ships with telephone wire sails approach. Expansion through reaching out continues."
+        },
+        {
+          "id": "wan_04",
+          "name": "Four of Wands",
+          "desc": "Four receivers create an archway of tangled cords, celebration happening beneath as people dance with telephones. Wedding of perfect connection, joy in established communication. Garlands of coiled cables mark achievement. The party line in full swing."
+        },
+        {
+          "id": "wan_05",
+          "name": "Five of Wands",
+          "desc": "Five figures clash, each trying to speak into receivers simultaneously, cords tangling as they compete to be heard. Static crackles. Everyone talking, nobody listening. Healthy competition for attention on the line. Crossed wires and crossed purposes."
+        },
+        {
+          "id": "wan_06",
+          "name": "Six of Wands",
+          "desc": "A figure rides victoriously through a crowd, holding a receiver high like a trophy. Others reach up offering wreaths made of telephone wire. Public recognition for communication success. The popular caller who everyone wants to hear from. Victory in connection."
+        },
+        {
+          "id": "wan_07",
+          "name": "Seven of Wands",
+          "desc": "A figure stands atop a telephone booth, defending their position with one receiver against six others rising from below. Holding the line against incoming calls. Courage in maintaining boundaries. Standing firm despite constant ringing."
+        },
+        {
+          "id": "wan_08",
+          "name": "Eight of Wands",
+          "desc": "Eight receivers fly through air like arrows trailing fire-cord tails. Swift messages sent, rapid communication through the network. Calls connecting at speed of urgency. The rush of simultaneous conversations reaching their destinations."
+        },
+        {
+          "id": "wan_09",
+          "name": "Nine of Wands",
+          "desc": "A weary figure leans on one receiver, eight others planted behind forming a barrier of established connections. Scarred by past miscommunications but still standing. Resilience in maintaining the lines despite fatigue. One more call to make."
+        },
+        {
+          "id": "wan_10",
+          "name": "Ten of Wands",
+          "desc": "A figure struggles carrying ten receivers, cords wrapped around them like burden. Nearly crushed by responsibility of returning all calls. Overwhelmed by communication obligations. The weight of staying in constant contact with everyone."
+        },
+        {
+          "id": "wan_11",
+          "name": "Page of Wands",
+          "desc": "A young figure holds a receiver, listening with fascination to the dial tone's potential. Fresh and eager to make first important calls. Studying the mechanism of connection with curiosity. Messages from the future arriving through the handset."
+        },
+        {
+          "id": "wan_12",
+          "name": "Knight of Wands",
+          "desc": "A knight charges forward on a horse made of telephone cord, brandishing a receiver like a lance. Reckless in pursuit of immediate communication. Passionate calls made without thinking. Acting on impulse, dialing before planning."
+        },
+        {
+          "id": "wan_13",
+          "name": "Queen of Wands",
+          "desc": "A regal figure sits on a throne of vintage telephone equipment, receiver in hand radiating confident communication energy. A cat made of coiled cord sits at her feet. She commands through charismatic conversation, naturally magnetic on the line."
+        },
+        {
+          "id": "wan_14",
+          "name": "King of Wands",
+          "desc": "A crowned figure sits on a throne draped with telephone cords, holding a receiver with natural authority. Salamanders made of dial pad buttons coil around the throne. Visionary leader through inspired communication. Commands through passionate speech."
+        }
+      ],
+      "cups": [
+        {
+          "id": "cup_01",
+          "name": "Ace of Cups",
+          "desc": "A telephone cradle overflows with liquid emotion, turquoise and teal waves spilling from the mouthpiece. A dove made of white telephone cord descends. Pure emotional connection beginning, the first vulnerable conversation. Love transmitted through copper wire."
+        },
+        {
+          "id": "cup_02",
+          "name": "Two of Cups",
+          "desc": "Two figures face each other, telephone cords extending from their hearts to join at a caduceus of intertwined cable. They exchange receivers like vows. Partnership sealed through shared vulnerability in conversation. Emotional connection across the line."
+        },
+        {
+          "id": "cup_03",
+          "name": "Three of Cups",
+          "desc": "Three figures raise telephone receivers in celebration, cords intertwining above as they conference call in joy. Friendship through shared emotional communication. Community built through vulnerable conversations. The support network active and thriving."
+        },
+        {
+          "id": "cup_04",
+          "name": "Four of Cups",
+          "desc": "A figure sits beneath a telephone pole, arms crossed, three receivers lying ignored on the ground. A fourth is offered by a hand emerging from a cloud. Dissatisfaction despite available connection. Contemplating whether more calls will help. Emotional satiation or apathy."
+        },
+        {
+          "id": "cup_05",
+          "name": "Five of Cups",
+          "desc": "A cloaked figure mourns three spilled telephone cradles, emotional liquid seeping away. Two receivers stand upright behind them. A bridge of phone line crosses a river. Grief over conversations that ended badly, focusing on disconnection while connection remains available."
+        },
+        {
+          "id": "cup_06",
+          "name": "Six of Cups",
+          "desc": "An older figure offers a vintage rotary phone to a child, both surrounded by nostalgic 1970s wallpaper and furniture. Flowers grow from phone jacks. Nostalgia for easier communication, inheritance of emotional connection. Gifts from the past through remembered conversations."
+        },
+        {
+          "id": "cup_07",
+          "name": "Seven of Cups",
+          "desc": "Seven telephone receivers float in clouds, each showing different visions in their dial faces—love, fear, treasure, dragons. A figure stands bewildered by emotional choices. Illusion in potential conversations, fantasy about what might be said. Too many possible connections."
+        },
+        {
+          "id": "cup_08",
+          "name": "Eight of Cups",
+          "desc": "A figure walks away from eight carefully stacked telephone cradles, leaving behind familiar connections. A crescent moon made of phone plastic rises above. Abandoning comfortable but unfulfilling conversations. Seeking deeper emotional connection elsewhere despite the cost of leaving."
+        },
+        {
+          "id": "cup_09",
+          "name": "Nine of Cups",
+          "desc": "A satisfied figure sits before nine telephone cradles arranged in an arc, arms crossed in contentment. Emotional fulfillment achieved through meaningful connections made. Wishes granted through conversations finally had. The full heart after reaching out."
+        },
+        {
+          "id": "cup_10",
+          "name": "Ten of Cups",
+          "desc": "A family stands together under an arc of ten telephones, a rainbow of cords spanning the sky above. Complete emotional harmony through open communication. Lasting happiness in maintained connections. The family network functioning perfectly."
+        },
+        {
+          "id": "cup_11",
+          "name": "Page of Cups",
+          "desc": "A young figure holds a telephone receiver from which a small fish made of cord emerges. They study it with wonder. Emotional messages arriving, intuitive communication beginning. Youthful sensitivity to subtle signals on the line. Creative vulnerability opening."
+        },
+        {
+          "id": "cup_12",
+          "name": "Knight of Cups",
+          "desc": "A knight rides a horse made of flowing telephone cord, offering a receiver like a romantic gift. A dreamer following emotional impulses. Idealistic pursuit of perfect conversation. The passionate caller seeking true connection."
+        },
+        {
+          "id": "cup_13",
+          "name": "Queen of Cups",
+          "desc": "A regal figure sits on a throne beside a sea of liquid dial tone, holding a receiver with both hands. Deeply intuitive, she hears what isn't said. Compassionate mastery of emotional communication. Empathic listening through the line."
+        },
+        {
+          "id": "cup_14",
+          "name": "King of Cups",
+          "desc": "A crowned figure sits on a throne floating on telephone cord waves, holding a receiver with emotional mastery. Ships with cord sails voyage behind. Diplomatic control over deep conversations. Wise leadership through understanding emotional currents."
+        }
+      ],
+      "swords": [
+        {
+          "id": "swo_01",
+          "name": "Ace of Swords",
+          "desc": "A telephone antenna blade pierces upward through clouds of static, cutting through to perfect clarity. Chrome and silver shine with truth. Pure mental breakthrough in communication. The sharp clarity of finally understanding the message. Truth transmitted without distortion."
+        },
+        {
+          "id": "swo_02",
+          "name": "Two of Swords",
+          "desc": "A blindfolded figure sits holding two antenna blades crossed, telephone cords binding their arms. Refusing to hear the difficult message. Mental stalemate between two truths. The difficult choice of which conversation to have. Avoiding clarity."
+        },
+        {
+          "id": "swo_03",
+          "name": "Three of Swords",
+          "desc": "A heart made of telephone plastic pierced by three antenna blades. Static rain falls. The pain of words that cut, truth that wounds. Heartbreak delivered through the line. Messages that cannot be unheard. Necessary conversations that hurt."
+        },
+        {
+          "id": "swo_04",
+          "name": "Four of Swords",
+          "desc": "A figure lies in repose beneath telephone wires, three antenna blades mounted above, one beneath. Rest after difficult conversations. Meditation on messages received. Recovery through silence. Mental peace in not answering the phone."
+        },
+        {
+          "id": "swo_05",
+          "name": "Five of Swords",
+          "desc": "A figure gathers three antenna blades while two others walk away, leaving their receivers. Victory through cutting words but at cost of connection. Conflict where harsh truths were spoken. The hollow triumph of winning the argument but losing the relationship."
+        },
+        {
+          "id": "swo_06",
+          "name": "Six of Swords",
+          "desc": "A figure guides a boat made from a phone base across waters of static, six antenna blades standing upright. Moving toward clearer reception. Transition from confusing conversations toward understanding. Carrying difficult truths to calmer communication."
+        },
+        {
+          "id": "swo_07",
+          "name": "Seven of Swords",
+          "desc": "A figure sneaks away carrying five antenna blades, leaving two behind. Strategic retreat from toxic communication. Cunning in choosing which conversations to engage. The clever exit from entangling talks. Taking important truths while escaping the rest."
+        },
+        {
+          "id": "swo_08",
+          "name": "Eight of Swords",
+          "desc": "A blindfolded figure bound in telephone cords, surrounded by eight antenna blades. Trapped by fear of saying the wrong thing. Mental imprisonment from communication anxiety. Self-imposed limitation from past miscommunications. Freedom waits if they speak."
+        },
+        {
+          "id": "swo_09",
+          "name": "Nine of Swords",
+          "desc": "A figure sits up in bed, head in hands, nine antenna blades mounted on wall. Nightmares of conversations gone wrong, anxiety about calls not made. Mental anguish over words spoken or unspoken. Guilt about messages sent or never sent."
+        },
+        {
+          "id": "swo_10",
+          "name": "Ten of Swords",
+          "desc": "A figure lies with ten antenna blades in their back, receivers scattered around. Rock bottom of communication breakdown. Complete defeat through accumulated harsh words. But dawn rises—the worst conversation is over. Nowhere to go but up."
+        },
+        {
+          "id": "swo_11",
+          "name": "Page of Swords",
+          "desc": "A young figure holds an antenna blade aloft, studying its edge while a phone dangles from the other hand. Alert and curious about truth through communication. Beginning to learn the power of clear speech. Youthful directness on the line."
+        },
+        {
+          "id": "swo_12",
+          "name": "Knight of Swords",
+          "desc": "A knight charges forward on a horse of coiled chrome cable, antenna blade raised. Swift decisive communication without thinking. Single-minded pursuit of saying what needs said. Rushing toward difficult conversations. Blunt truth at speed."
+        },
+        {
+          "id": "swo_13",
+          "name": "Queen of Swords",
+          "desc": "A regal figure sits on a throne amid telephone wire clouds, holding an antenna blade. Clear-minded and direct, she says exactly what must be said. Intellectual mastery through honest communication. Independent thought spoken aloud."
+        },
+        {
+          "id": "swo_14",
+          "name": "King of Swords",
+          "desc": "A crowned figure sits on a throne holding an antenna blade that cuts through all dishonesty. Butterflies made of dial pads flutter around. Intellectual authority through clear communication. Just leadership through fair speech. Truth spoken from wisdom."
+        }
+      ],
+      "pentacles": [
+        {
+          "id": "pen_01",
+          "name": "Ace of Pentacles",
+          "desc": "A hand emerges from clouds holding a golden rotary dial like a coin. Pure material beginning through investment in connection. The foundation of communication infrastructure. The first quarter dropped into the payphone of opportunity. Tangible resource of accessibility."
+        },
+        {
+          "id": "pen_02",
+          "name": "Two of Pentacles",
+          "desc": "A figure dances juggling two rotary dials connected by infinity symbol cord. Ships ride waves of telephone bills behind. Balance in managing communication costs. Adaptation in handling multiple connection needs. The constant exchange of resource for access."
+        },
+        {
+          "id": "pen_03",
+          "name": "Three of Pentacles",
+          "desc": "Three figures work together installing telephone equipment in a building, three golden dials marking their achievement. Skilled work building communication infrastructure. Teamwork through collaborative connection. Building the network together."
+        },
+        {
+          "id": "pen_04",
+          "name": "Four of Pentacles",
+          "desc": "A figure sits clutching four rotary dials—crown on one, feet on two, arms around fourth. Hoarding access, controlling connections. Security through holding tight to communication resources. Fear of losing the ability to call. Possessive about the network."
+        },
+        {
+          "id": "pen_05",
+          "name": "Five of Pentacles",
+          "desc": "Two figures trudge through snow past a telephone booth lit from within, five golden dials glowing in the window. Material hardship, unable to afford the call. Loss of connection through poverty. Help visible but out of reach. The loneliness of disconnection."
+        },
+        {
+          "id": "pen_06",
+          "name": "Six of Pentacles",
+          "desc": "A figure with scales distributes calling cards and quarters to kneeling supplicants. Generosity with communication resources. Sharing access with those who cannot afford connection. Charity in helping others reach out. Balance in giving and receiving calls."
+        },
+        {
+          "id": "pen_07",
+          "name": "Seven of Pentacles",
+          "desc": "A figure leans on a shovel, contemplating seven rotary dials growing on vines like fruit. Patient investment in building networks. Assessing return on infrastructure built. The waiting for connections to mature. Long-term planning in communication."
+        },
+        {
+          "id": "pen_08",
+          "name": "Eight of Pentacles",
+          "desc": "A craftsperson works diligently, focused on assembling a rotary dial with precise care. Seven completed dials displayed behind. Dedication to mastering communication technology. Disciplined work building connection capability. Perfecting the craft of accessibility."
+        },
+        {
+          "id": "pen_09",
+          "name": "Nine of Pentacles",
+          "desc": "A figure stands in abundant garden of telephone equipment, nine golden dials placed throughout. A bird made of copper wire perches on gloved hand. Self-sufficient success in maintained connections. Material comfort through reliable communication access."
+        },
+        {
+          "id": "pen_10",
+          "name": "Ten of Pentacles",
+          "desc": "Three generations gather beneath an archway of telephone wires, ten rotary dials arranged in family tree pattern. Legacy of connection passed through generations. Wealth of communication infrastructure inherited. Material completion in total accessibility."
+        },
+        {
+          "id": "pen_11",
+          "name": "Page of Pentacles",
+          "desc": "A young figure stands studying a rotary dial held aloft with practical wonder. Grounded and curious, beginning to understand communication as infrastructure. Student learning the material cost of connection. First lessons in maintaining the network."
+        },
+        {
+          "id": "pen_12",
+          "name": "Knight of Pentacles",
+          "desc": "A knight sits steadily on a horse made of telephone cables, holding a rotary dial with patient reliability. Methodical progress in building connections. Responsible stewardship of communication resources. Steady reliable access maintained through discipline."
+        },
+        {
+          "id": "pen_13",
+          "name": "Queen of Pentacles",
+          "desc": "A regal figure sits on throne in room full of working telephones, holding a rotary dial with nurturing care. Practical wisdom in maintaining connections. Abundance through understanding communication's material needs. The nurturer of networks."
+        },
+        {
+          "id": "pen_14",
+          "name": "King of Pentacles",
+          "desc": "A crowned figure sits on throne decorated with telephone equipment from every era, holding a golden rotary dial representing communication empire. Mastery of material network. Wealth built through infrastructure. Power from controlling connection itself."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,463 @@
+{
+  "deck_metadata": {
+    "deck_name": "Hollow Moon Arcana",
+    "mood": "gothic witchcraft meets celestial mystery, dark yet luminous",
+    "theme_overarching": "ancient magic whispers through moonlit forests and forgotten rituals conducted under a hollow moon",
+    "details": "A gothic tarot deck blending witchcraft aesthetics with celestial symbolism. Each card features shadowy figures, moonlight, botanical elements, and arcane symbols rendered in a dark romantic style.",
+    "backofcard": "Crescent moon phases arranged in a circle with intertwining thorned vines and occult sigils in silver and deep purple on black background",
+    "card_spec": {
+      "aspect_ratio": "2.75:4.75",
+      "border": "Thin silver crescent moon border with thorned vine pattern",
+      "style": "dark romantic illustration with ink and luminous accents",
+      "technical_details": "3000x4200px, CMYK with metallic silver, 300dpi"
+    }
+  },
+  "suits": {
+    "roots": {
+      "legacy_name": "Pentacles",
+      "element": "Earth",
+      "visuals": "Gnarled roots and earth-bound crystals embedded in soil, glowing with bioluminescent fungi and dark soil wisdom. Tangled roots form protective sigils while crystals catch fragments of moonlight, grounding material magic in the earth's ancient memory."
+    },
+    "thorns": {
+      "legacy_name": "Swords",
+      "element": "Air",
+      "visuals": "Thorned stems and sharp verdant spikes piercing through mist, rendered in silvery-white with droplets of liquid starlight. The thorns form cutting geometric patterns against swirling fog, embodying clarity and the piercing nature of truth spoken in darkness."
+    },
+    "nightshade": {
+      "legacy_name": "Cups",
+      "element": "Water",
+      "visuals": "Obsidian chalices and dark flower calyxes overflowing with midnight-blue liquid and silver luminescence. Within each vessel swirl emotional currents and witches' brews, reflecting candlelight and moonbeams, containing the emotional and intuitive depths of the night."
+    },
+    "ember": {
+      "legacy_name": "Wands",
+      "element": "Fire",
+      "visuals": "Charred staves wrapped in glowing ivy and smoking herbs, smoldering with internal fire that glows deep orange and gold against the darkness. Embers spiral upward like fireflies, carrying creative force and the burning will of ancient witches."
+    }
+  },
+  "cards": {
+    "major": [
+      {
+        "id": "maj_00",
+        "name": "The Fool",
+        "legacy": "0",
+        "prompt": "A cloaked figure stands at the edge of a moonlit cliff, one foot dangling into void-black mist below. Behind them, a twisted forest glows with bioluminescent fungi; ahead, infinite darkness. A single silver raven follows. Mood: naive magic, dangerous innocence, cosmic curiosity in gothic shadow."
+      },
+      {
+        "id": "maj_01",
+        "name": "The Magician",
+        "legacy": "I",
+        "prompt": "A robed figure stands before an altar laden with candles and tarot cards, hands raised, commanding streams of silver energy and moonlight. Above, the four suit symbols orbit in glowing rotation. Ancient sigils float in the air. Mood: mastery of witchcraft, conscious will channeling lunar power."
+      },
+      {
+        "id": "maj_02",
+        "name": "The High Priestess",
+        "legacy": "II",
+        "prompt": "A veiled woman sits between twin pillars of bone and shadow, her third eye glowing silver. Behind her, a tapestry of stars and occult symbols. A crescent moon adorns her crown. The air shimmers with hidden knowledge. Mood: sacred mystery, intuitive wisdom, secrets guarded by moonlight."
+      },
+      {
+        "id": "maj_03",
+        "name": "The Empress",
+        "legacy": "III",
+        "prompt": "A crowned figure sits among thriving midnight gardens, nightshade blooms around them. Pomegranates glow with inner light. The full moon rises behind, illuminating their face. Creatures of the night gather respectfully. Mood: fertile darkness, nurturing shadow, abundance in the witches' garden."
+      },
+      {
+        "id": "maj_04",
+        "name": "The Emperor",
+        "legacy": "IV",
+        "prompt": "A stern crowned figure sits on a throne of stone and iron, wreathed in chains of silver that glow. Beneath them, the dark earth itself obeys. His eyes pierce like stars. Behind, mountains of obsidian. Mood: structured power, dark authority, dominion over forces below."
+      },
+      {
+        "id": "maj_05",
+        "name": "The Hierophant",
+        "legacy": "V",
+        "prompt": "A robed figure stands before an altar in a candlelit stone chapel, holding a staff of twisted wood. Ancient grimoire pages float around them. Occult symbols glow on walls. Shadows dance with spiritual intent. Mood: forbidden knowledge, traditional witchcraft, sacred ritual passed through generations."
+      },
+      {
+        "id": "maj_06",
+        "name": "The Lovers",
+        "legacy": "VI",
+        "prompt": "Two figures entwined under a hollow moon, surrounded by nightshade flowers and glowing moths. Silver threads connect their hearts. In the distance, a gothic mansion glows with candlelight. Mood: dark romance, passionate union, love sealed by witchcraft."
+      },
+      {
+        "id": "maj_07",
+        "name": "The Chariot",
+        "legacy": "VII",
+        "prompt": "A figure drives a chariot pulled by spectral black horses through a moonlit forest path. The chariot glows with runes and protective sigils. Speed and determination visible in the swirling mist. Mood: willful movement, magical momentum, dark determination."
+      },
+      {
+        "id": "maj_08",
+        "name": "Strength",
+        "legacy": "VIII",
+        "prompt": "A figure tames a shadow-beast with bare hands, not through force but gentle will. Silver threads of magic flow between them. The beast's eyes glow amber. Thorned vines frame the scene. Mood: inner power, mastery through compassion, taming the witch's familiar."
+      },
+      {
+        "id": "maj_09",
+        "name": "The Hermit",
+        "legacy": "IX",
+        "prompt": "A solitary hooded figure stands in a moonlit forest clearing, lantern casting silver light. Ancient trees surround them. Owls perch on branches. A single raven circles overhead. Starlight filters through canopy. Mood: solitude, introspection, wisdom earned in isolation and darkness."
+      },
+      {
+        "id": "maj_10",
+        "name": "Wheel of Fortune",
+        "legacy": "X",
+        "prompt": "A great wheel adorned with zodiac symbols and tarot arcana spins in the void. The moon phases mark each spoke. Figures cling to the wheel as it turns. Silver and gold light emanates from center. Mood: cosmic cycle, fate's turn, destiny bound to lunar rhythm."
+      },
+      {
+        "id": "maj_11",
+        "name": "Justice",
+        "legacy": "XI",
+        "prompt": "A crowned figure holds scales perfectly balanced, one side holding moonstone, the other shadow. A sword of light points upward. Ancient law inscriptions glow around them. Eyes cold and fair. Mood: ultimate balance, karmic reckoning, justice by moonlit law."
+      },
+      {
+        "id": "maj_12",
+        "name": "The Hanged One",
+        "legacy": "XII",
+        "prompt": "A figure hangs suspended upside-down from a thorned branch, surrounded by floating candles. A halo of silver light forms around their head. Below, a chasm of stars. Expression serene. Thorns bloom with flowers. Mood: surrender to cosmic truth, sacrificial wisdom, perspective shift."
+      },
+      {
+        "id": "maj_13",
+        "name": "Death",
+        "legacy": "XIII",
+        "prompt": "A skeletal robed figure rides a pale spectral horse through a gothic graveyard. Flowers bloom in its wake. A scythe of silver catches moonlight. In the distance, dawn breaks. Mood: transformation through ending, rebirth from shadow, necessary change."
+      },
+      {
+        "id": "maj_14",
+        "name": "Temperance",
+        "legacy": "XIV",
+        "prompt": "A winged figure pours liquid between two vessels, silver stream flowing between dark and light. The figure stands with one foot in earth, one in starlight. A crescent moon glows overhead. Elements merge harmoniously. Mood: balance of opposites, sacred equilibrium, transformation through blending."
+      },
+      {
+        "id": "maj_15",
+        "name": "The Devil",
+        "legacy": "XV",
+        "prompt": "A horned figure sits upon a throne of chains in a candlelit chamber. Shadow-creatures kneel in thrall. Yet a key glows on the floor—freedom available to those who claim it. Eyes burn red with intent. Mood: bondage and shadow self, acknowledged desire, power through acceptance."
+      },
+      {
+        "id": "maj_16",
+        "name": "The Tower",
+        "legacy": "XVI",
+        "prompt": "A tall obsidian tower stands silhouetted against a moonlit sky as lightning shatters it. Figures fall like shadows. Yet below, new ground forms. Stars break through clouds. Mood: sudden revelation, necessary collapse, breakthrough from illusion."
+      },
+      {
+        "id": "maj_17",
+        "name": "The Star",
+        "legacy": "XVII",
+        "prompt": "A naked figure kneels by a moonlit pool, pouring starlight and hope into dark waters below. Above, constellations form into protective symbols. A single star burns brightest. Aurora borealis shimmers. Mood: hope in darkness, guidance through night, celestial promise."
+      },
+      {
+        "id": "maj_18",
+        "name": "The Moon",
+        "legacy": "XVIII",
+        "prompt": "A massive hollow moon dominates the sky, its interior revealing endless void and secret chambers. Below, a cloaked figure walks a moonlit path between twin towers. A hound and wolf follow. Water reflects everything inverted. Mood: illusion and truth, subconscious realm, lunar magic."
+      },
+      {
+        "id": "maj_19",
+        "name": "The Sun",
+        "legacy": "XIX",
+        "prompt": "A child-like figure dances in golden sunlight that breaks through dark clouds, arms raised in joy. Sunflowers bloom in the shadow-garden. A golden horse stands nearby. Warmth radiates even as darkness recedes. Mood: enlightenment, breakthrough to light, victory and vitality."
+      },
+      {
+        "id": "maj_20",
+        "name": "Judgement",
+        "legacy": "XX",
+        "prompt": "An angelic figure with wings of starlight sounds a trumpet. Beneath, robed figures rise from graves, arms reaching upward. The entire scene glows silver and gold. Waves of transformation sweep across the landscape. Mood: spiritual awakening, rebirth, cosmic calling, final reckoning."
+      },
+      {
+        "id": "maj_21",
+        "name": "The World",
+        "legacy": "XXI",
+        "prompt": "A figure dances within a wreath of stars and thorns, suspended in infinite space. The world globe floats nearby, rotating through shadow and light. All four suit symbols form a mandala around them. Completion and beginning merge. Mood: cosmic wholeness, fulfillment, eternal cycle returns to beginning."
+      }
+    ],
+    "minor": {
+      "roots": [
+        {
+          "id": "roo_01",
+          "name": "Ace of Roots",
+          "desc": "A crystalline hand emerges from dark soil, clutching a glowing golden root that pulses with earth-energy. Bioluminescent fungi form a circle around it, casting green light. The root branches into a mandala pattern of abundance and grounding potential."
+        },
+        {
+          "id": "roo_02",
+          "name": "Two of Roots",
+          "desc": "Two intertwined roots form a balanced dance, each glowing with amber light. Between them, a coin of earth spins slowly. The soil around shimmers with dark promise. A sense of weighing options, earthen reciprocity."
+        },
+        {
+          "id": "roo_03",
+          "name": "Three of Roots",
+          "desc": "Three thick roots form a stable foundation while a cloaked figure tends a midnight garden. Nightshade plants glow softly. The soil is rich and dark. Harvest abundance visible in the surrounding flora."
+        },
+        {
+          "id": "roo_04",
+          "name": "Four of Roots",
+          "desc": "Four corners of a stone foundation glow with protective sigils. A figure stands guard, surrounded by rooted plants and crystalline minerals. Earthen security and stubborn stability dominate."
+        },
+        {
+          "id": "roo_05",
+          "name": "Five of Roots",
+          "desc": "Five gnarled roots writhe in conflict, tangled and twisted. A figure struggles to maintain balance amid fallen coins and scattered earth. Hardship and earthly struggle made visible in shadow and struggle."
+        },
+        {
+          "id": "roo_06",
+          "name": "Six of Roots",
+          "desc": "Six roots form a stable trade route with coins flowing between figures. The exchange is fair and balanced. Bioluminescent pathways guide the transaction. Fair trade and sharing of earthen wealth."
+        },
+        {
+          "id": "roo_07",
+          "name": "Seven of Roots",
+          "desc": "Seven coins hang from roots above like fruit. A figure considers which to harvest. The soil glows with potential beneath. Choices about growth and material increase, discernment in abundance."
+        },
+        {
+          "id": "roo_08",
+          "name": "Eight of Roots",
+          "desc": "Eight roots form intricate patterns as a figure works with skilled hands, tending the dark garden. Apprenticeship and mastery visible in meticulous care. The craft of earthen magic."
+        },
+        {
+          "id": "roo_09",
+          "name": "Nine of Roots",
+          "desc": "A figure sits surrounded by nine coins and abundant earthen wealth, protected by walls of roots. Harvest complete, resources secured. Yet an expression of guarded concern persists—fearing loss."
+        },
+        {
+          "id": "roo_10",
+          "name": "Ten of Roots",
+          "desc": "Ten coins form the foundation of a dark castle, passed through generations. Family roots run deep into the earth. Inheritance and legacy visible in stone and soil."
+        },
+        {
+          "id": "roo_11",
+          "name": "Page of Roots",
+          "desc": "A young figure in earthy robes holds a single glowing root, examining it with wonder. Possibilities for growth visible in their expression. Youthful curiosity about material and earthen matters."
+        },
+        {
+          "id": "roo_12",
+          "name": "Knight of Roots",
+          "desc": "A rider on a dark horse carries a staff of living wood, moving with purpose through the night forest. Grounded determination and earthen willpower in motion."
+        },
+        {
+          "id": "roo_13",
+          "name": "Queen of Roots",
+          "desc": "A crowned figure sits on a throne of woven roots, holding a coin of earth. Surrounded by thriving midnight gardens. Nurturing abundance and grounded wisdom embodied."
+        },
+        {
+          "id": "roo_14",
+          "name": "King of Roots",
+          "desc": "A bearded figure on a stone throne holds a staff of ancient root-wood. The earth itself obeys. Mastery of material wealth and earthen resources, grounded authority."
+        }
+      ],
+      "thorns": [
+        {
+          "id": "tho_01",
+          "name": "Ace of Thorns",
+          "desc": "A sword of pure silver rises from darkness, point piercing toward stars. Thorned vines wrap around the blade non-threateningly. Clarity and cutting truth emerge from shadow."
+        },
+        {
+          "id": "tho_02",
+          "name": "Two of Thorns",
+          "desc": "Two swords cross in a standoff, both glowing silver. A figure balances between them. Tension and choice visible in the geometry. Difficult decisions and conflict suspended."
+        },
+        {
+          "id": "tho_03",
+          "name": "Three of Thorns",
+          "desc": "Three swords pierce a heart wreathed in thorn vines. Rain and silver tears fall. Yet blooms begin to grow from the wounds. Heartbreak that leads to growth."
+        },
+        {
+          "id": "tho_04",
+          "name": "Four of Thorns",
+          "desc": "A figure lies in stillness surrounded by four swords arranged protectively. A moment of necessary rest after conflict. Mental peace found in acceptance."
+        },
+        {
+          "id": "tho_05",
+          "name": "Five of Thorns",
+          "desc": "Five swords clash in chaotic violence, each glowing with different intensity. Defeat and loss visible. Yet the clearing sky beyond suggests eventual resolution."
+        },
+        {
+          "id": "tho_06",
+          "name": "Six of Thorns",
+          "desc": "Six swords form a path through dark waters. A figure moves safely along this blade-path, guided by intention. Sorrow transforming into journey and movement."
+        },
+        {
+          "id": "tho_07",
+          "name": "Seven of Thorns",
+          "desc": "A cloaked figure sneaks past seven swords arranged as sentries. Stealth, trickery, and mental cunning visible. Strategy and evasion through wit."
+        },
+        {
+          "id": "tho_08",
+          "name": "Eight of Thorns",
+          "desc": "A figure is bound by eight swords arranged in a cage, yet they appear calm—the bonds are mental. The key to freedom lies in perception."
+        },
+        {
+          "id": "tho_09",
+          "name": "Nine of Thorns",
+          "desc": "A figure sits upright in darkness, surrounded by nine swords hanging overhead like a canopy of threat. Sleepless worry and mental anguish visible."
+        },
+        {
+          "id": "tho_10",
+          "name": "Ten of Thorns",
+          "desc": "Ten swords pierce downward through a prone figure, a moment of ultimate defeat. Yet the image is strangely peaceful—acceptance of ending. Completion through surrender."
+        },
+        {
+          "id": "tho_11",
+          "name": "Page of Thorns",
+          "desc": "A young figure holds a single silver sword, studying it intently. Curiosity about ideas and communication. Youthful mental energy and piercing observation."
+        },
+        {
+          "id": "tho_12",
+          "name": "Knight of Thorns",
+          "desc": "A mounted warrior rides swiftly through mist, sword raised, determined to cut through illusion. Swift action and direct confrontation with truth."
+        },
+        {
+          "id": "tho_13",
+          "name": "Queen of Thorns",
+          "desc": "A crowned figure sits on a throne of swords, holding a blade with authority. Sharp mind and clear judgment. Fair and articulate truth-telling."
+        },
+        {
+          "id": "tho_14",
+          "name": "King of Thorns",
+          "desc": "A bearded figure on a high throne holds a sword upright. Air currents swirl around him. Intellectual mastery, keen judgment, and commanding clarity."
+        }
+      ],
+      "nightshade": [
+        {
+          "id": "nig_01",
+          "name": "Ace of Nightshade",
+          "desc": "A chalice overflows with midnight-blue liquid and silver luminescence, offered by an unseen hand from shadow. Emotional beginning and intuitive offering emerge from darkness."
+        },
+        {
+          "id": "nig_02",
+          "name": "Two of Nightshade",
+          "desc": "Two figures raise chalices in a toast beneath the moon. The liquid within reflects their faces and unspoken feelings. Connection and emotional reciprocity."
+        },
+        {
+          "id": "nig_03",
+          "name": "Three of Nightshade",
+          "desc": "Three figures sit in celebration, chalices raised. Moonlight and candles illuminate joy and gathering. Celebration and emotional communion."
+        },
+        {
+          "id": "nig_04",
+          "name": "Four of Nightshade",
+          "desc": "A figure sits apart, ignoring three chalices offered. Satiation and apathy, or contemplation? Emotional withdrawal and introspection in shadow."
+        },
+        {
+          "id": "nig_05",
+          "name": "Five of Nightshade",
+          "desc": "A figure weeps as chalices spill and shatter on dark ground. Disappointment and grief visible. Yet the tears water black flowers blooming nearby."
+        },
+        {
+          "id": "nig_06",
+          "name": "Six of Nightshade",
+          "desc": "A robed figure offers a chalice to a child from the shadows. Memories and nostalgia flow. The past reaches toward the present in silver light."
+        },
+        {
+          "id": "nig_07",
+          "name": "Seven of Nightshade",
+          "desc": "Seven chalices appear suspended in darkness, each containing different visions. Illusion and temptation, or opportunity? Choices obscured by shadow and desire."
+        },
+        {
+          "id": "nig_08",
+          "name": "Eight of Nightshade",
+          "desc": "A cloaked figure walks away from eight chalices stacked before them. Leaving behind emotional attachment. Walking from illusion toward clarity."
+        },
+        {
+          "id": "nig_09",
+          "name": "Nine of Nightshade",
+          "desc": "A figure sits contentedly surrounded by nine chalices, holding one to their lips. Satisfaction and emotional fulfillment achieved."
+        },
+        {
+          "id": "nig_10",
+          "name": "Ten of Nightshade",
+          "desc": "A family gathered beneath a moonlit sky, ten chalices arranged in a circle. Emotional completeness and familial love, true connection."
+        },
+        {
+          "id": "nig_11",
+          "name": "Page of Nightshade",
+          "desc": "A young figure holds a chalice, peering into its mysterious depths. Emotional awakening and curiosity about feeling and intuition."
+        },
+        {
+          "id": "nig_12",
+          "name": "Knight of Nightshade",
+          "desc": "A mounted figure carries a chalice, riding swiftly through the night. Idealism and emotional quest, following intuitive calling."
+        },
+        {
+          "id": "nig_13",
+          "name": "Queen of Nightshade",
+          "desc": "A crowned figure sits holding a chalice, surrounded by the waters of emotion and intuition. Emotional wisdom and nurturing presence."
+        },
+        {
+          "id": "nig_14",
+          "name": "King of Nightshade",
+          "desc": "A bearded figure on a water-throne holds a chalice. Deep emotional wisdom and balanced feeling. Mastery of intuitive realm."
+        }
+      ],
+      "ember": [
+        {
+          "id": "emb_01",
+          "name": "Ace of Ember",
+          "desc": "A staff of living flame erupts from darkness, crackling with orange and gold fire. Creative potential ignites. Pure will and inspired action emerge."
+        },
+        {
+          "id": "emb_02",
+          "name": "Two of Ember",
+          "desc": "Two figures hold glowing staves, energy crackling between them in partnership. Balance of creative forces and collaborative will."
+        },
+        {
+          "id": "emb_03",
+          "name": "Three of Ember",
+          "desc": "Three robed figures raise their staves, flames intertwining. Cooperation and shared creative vision burning bright."
+        },
+        {
+          "id": "emb_04",
+          "name": "Four of Ember",
+          "desc": "Four figures sit in a circle of staves, fire creating a protective boundary. Stability and secure community bound by flame."
+        },
+        {
+          "id": "emb_05",
+          "name": "Five of Ember",
+          "desc": "Five staves clash in a duel of fire and wills. Conflict and competition visible in the sparking flames. Struggle for creative dominance."
+        },
+        {
+          "id": "emb_06",
+          "name": "Six of Ember",
+          "desc": "Six staves held aloft in triumphant procession, flames bright and spiraling upward. Victory and recognition earned through passionate effort."
+        },
+        {
+          "id": "emb_07",
+          "name": "Seven of Ember",
+          "desc": "A figure holds a staff defensively, six others advance with flames. Defending creative vision against opposition. Courage under pressure."
+        },
+        {
+          "id": "emb_08",
+          "name": "Eight of Ember",
+          "desc": "Eight staves fly swiftly through darkness like arrows of fire, trailing embers. Swift action and rapid movement, urgency and speed."
+        },
+        {
+          "id": "emb_09",
+          "name": "Nine of Ember",
+          "desc": "A figure stands firm, staff raised, surrounded by eight more in protective formation. Strength and resilience, defended passion."
+        },
+        {
+          "id": "emb_10",
+          "name": "Ten of Ember",
+          "desc": "Ten staves form a blazing bonfire, figures dancing in celebration. Community and shared fire, legacy of flame passed forward."
+        },
+        {
+          "id": "emb_11",
+          "name": "Page of Ember",
+          "desc": "A young figure holds a glowing staff, eyes bright with possibility. Passionate curiosity and youthful creative enthusiasm."
+        },
+        {
+          "id": "emb_12",
+          "name": "Knight of Ember",
+          "desc": "A mounted warrior carries a blazing staff, riding with fearless determination through the night. Passionate action and bold creative pursuit."
+        },
+        {
+          "id": "emb_13",
+          "name": "Queen of Ember",
+          "desc": "A crowned figure holds a staff of living flame, surrounded by creative fire. Passionate leadership and inspiring vision."
+        },
+        {
+          "id": "emb_14",
+          "name": "King of Ember",
+          "desc": "A bearded figure on a throne of flame holds a massive staff, commanding like a wizard. Mastery of passion and creative will."
+        }
+      ]
+    }
+  }
+}

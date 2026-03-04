@@ -1,0 +1,463 @@
+{
+  "deck_metadata": {
+    "deck_name": "The Void Arcana",
+    "mood": "primordial emptiness with cosmic horror undertones",
+    "theme_overarching": "the infinite abyss where existence dissolves into nothingness, revealing profound truths in the absence of all things",
+    "details": "A tarot deck exploring the concept of void as both destroyer and creator, the space between atoms and thoughts, where potential exists in purest form",
+    "backofcard": "An infinite black expanse with subtle fractal patterns that seem to shift and breathe, edges fading into deeper darkness",
+    "card_spec": {
+      "aspect_ratio": "2.75:4.75",
+      "border": "Barely visible deep purple fade into absolute black",
+      "style": "dark abstract surrealism with cosmic horror elements",
+      "technical_details": "3000x4200px, RGB, 300dpi, deep blacks essential"
+    }
+  },
+  "suits": {
+    "wands": {
+      "legacy_name": "Wands",
+      "element": "Fire",
+      "visuals": "Obsidian staffs wreathed in black flames that consume light itself, embers of dying stars drifting into the void. Deep crimson and charcoal tones pulse with entropic energy, while shadows writhe with primordial hunger. The fire here doesn't illuminate—it devours."
+    },
+    "cups": {
+      "legacy_name": "Cups",
+      "element": "Water",
+      "visuals": "Vessels carved from emptiness itself, containing liquid darkness that flows upward into nothingness. Deep indigo and obsidian hues swirl with the tears of forgotten universes, while spectral reflections show what never was. These waters drown light and memory alike."
+    },
+    "swords": {
+      "legacy_name": "Swords",
+      "element": "Air",
+      "visuals": "Blades forged from crystallized void, edges so sharp they cut through reality itself. Pale silver and deep charcoal shimmer with the whispers of unspoken thoughts and unmade decisions. Each sword trails wisps of dissolving matter, leaving rifts in space where nothing exists."
+    },
+    "pentacles": {
+      "legacy_name": "Pentacles",
+      "element": "Earth",
+      "visuals": "Coins of collapsed matter, dense beyond comprehension, pulling all substance toward their centers. Deep purple-black with geometric patterns that suggest impossible architectures. Each pentacle is a singularity contained, reality compressed to a point where material and void become one."
+    }
+  },
+  "cards": {
+    "major": [
+      {
+        "id": "maj_00",
+        "name": "The Fool",
+        "legacy": "0",
+        "prompt": "A silhouette stands at the edge of an infinite abyss, one foot hovering over absolute nothingness. Behind them, the last fragments of reality dissolve into darkness. Their form is barely defined, merging with the void around them. A faint shimmer suggests infinite potential in the emptiness. Mood: primordial emptiness with cosmic horror undertones, the moment before existence begins or after it ends."
+      },
+      {
+        "id": "maj_01",
+        "name": "The Magician",
+        "legacy": "I",
+        "prompt": "A figure commands the void itself, hands raised to manipulate streams of pure absence. Four symbols orbit in the darkness—obsidian staff, empty vessel, void blade, collapsed coin. Reality bends around them as they shape nothingness into form. Tendrils of un-light spiral from their fingertips. Mood: mastery over the primordial void, creating something from nothing through will alone."
+      },
+      {
+        "id": "maj_02",
+        "name": "The High Priestess",
+        "legacy": "II",
+        "prompt": "A veiled figure sits between two pillars of condensed darkness, holding a scroll of erasure. Behind her, a curtain of liquid void conceals mysteries beyond comprehension. Her eyes are empty sockets that see everything and nothing. The space around her pulses with unspoken secrets. Mood: guardian of void's deepest mysteries, keeper of forgotten and unmade knowledge."
+      },
+      {
+        "id": "maj_03",
+        "name": "The Empress",
+        "legacy": "III",
+        "prompt": "A maternal figure reclines on a throne of coalescing void, pregnant with universes yet unborn. Around her, shapes form and dissolve endlessly in the darkness. She wears a crown of extinguished stars. Black flowers with no petals bloom at her feet. Mood: the creative void, fertility of nothingness birthing all potential realities."
+      },
+      {
+        "id": "maj_04",
+        "name": "The Emperor",
+        "legacy": "IV",
+        "prompt": "A commanding figure sits upon a throne carved from the absence of space itself. He holds a scepter that ends in pure void, establishing order in the chaos of nothingness. His armor is crafted from compressed reality, black as collapsed matter. Behind him, geometric patterns impose structure on the formless dark. Mood: authority over the void, imposing law where none exists."
+      },
+      {
+        "id": "maj_05",
+        "name": "The Hierophant",
+        "legacy": "V",
+        "prompt": "A robed figure stands before an altar of dissolution, blessing supplicants with the wisdom of emptiness. Keys of void-metal hang from their belt, unlocking doors to nowhere. Symbols of forgotten religions float in the darkness around them. Their blessing erases as much as it reveals. Mood: spiritual guide through the void, teaching the sacred truth of nothingness."
+      },
+      {
+        "id": "maj_06",
+        "name": "The Lovers",
+        "legacy": "VI",
+        "prompt": "Two figures reach for each other across an expanse of pure void, their forms beginning to merge and dissolve. Above them, an angel of absence blesses their union with emptiness. They are becoming one with each other and with the nothing between them. Love and loss intertwined in darkness. Mood: connection through dissolution, two becoming one becoming none."
+      },
+      {
+        "id": "maj_07",
+        "name": "The Chariot",
+        "legacy": "VII",
+        "prompt": "A warrior stands in a vessel carved from solidified void, pulled by two sphinxes of living darkness. They move through the abyss with purpose, conquering emptiness itself. Stars collapse in their wake. Their armor reflects nothing, absorbing all light. Mood: triumph through the void, willpower driving through absolute nothingness."
+      },
+      {
+        "id": "maj_08",
+        "name": "Strength",
+        "legacy": "VIII",
+        "prompt": "A calm figure gently closes the jaws of a beast made of pure void energy, black flames dripping from its fangs. The infinite symbol hovers above, barely visible in the darkness. Gentle strength tames the hunger of nothingness. Her touch brings peace to entropy. Mood: quiet mastery over void's destructive nature, compassion for the darkness."
+      },
+      {
+        "id": "maj_09",
+        "name": "The Hermit",
+        "legacy": "IX",
+        "prompt": "A solitary figure stands on a peak of collapsed reality, holding a lantern that casts darkness instead of light. The void around them deepens where the lantern's shadow falls. They have walked into the abyss and returned with profound emptiness. Below, reality itself fades into nothingness. Mood: solitary wisdom found in absolute isolation, illumination through darkness."
+      },
+      {
+        "id": "maj_10",
+        "name": "Wheel of Fortune",
+        "legacy": "X",
+        "prompt": "A massive wheel of void-matter turns slowly in infinite space, creatures of living darkness rising and falling on its rim. At its center, a point of absolute nothingness around which fate revolves. Reality and unreality cycle endlessly. Symbols of creation and destruction blur as they spin. Mood: the cyclical nature of existence and void, fortune spinning in darkness."
+      },
+      {
+        "id": "maj_11",
+        "name": "Justice",
+        "legacy": "XI",
+        "prompt": "A blindfolded figure holds scales of perfect emptiness, weighing existence against non-existence. Their sword of void cuts through illusion to reveal the truth of nothingness. Behind them, perfect symmetry in absolute darkness. All debts are erased, all accounts balanced in the void. Mood: impartial judgment through erasure, perfect balance in nothingness."
+      },
+      {
+        "id": "maj_12",
+        "name": "The Hanged Man",
+        "legacy": "XII",
+        "prompt": "A figure hangs suspended in void-space, upside down, bound by threads of un-reality. Their sacrifice opens their eyes to the truth of emptiness. Around them, reality inverts and dissolves. Peace radiates from their surrendered form. Blood flows upward into nothingness. Mood: enlightenment through suspension in the void, wisdom gained by letting go of existence."
+      },
+      {
+        "id": "maj_13",
+        "name": "Death",
+        "legacy": "XIII",
+        "prompt": "A skeletal figure robed in pure absence rides a pale horse through a field of dissolving forms. Everything touched transforms into void. Not an ending but a transition from something to nothing to something else. Flowers of darkness bloom where life once was. Mood: transformation through complete dissolution, death as return to primordial emptiness."
+      },
+      {
+        "id": "maj_14",
+        "name": "Temperance",
+        "legacy": "XIV",
+        "prompt": "An angelic figure pours liquid void between two vessels, mixing existence and non-existence in perfect harmony. One foot in reality, one foot in the abyss. The flow never ends, never begins. Wings of shadow spread across dimensions. Mood: balance between being and unbeing, tempering reality with void."
+      },
+      {
+        "id": "maj_15",
+        "name": "The Devil",
+        "legacy": "XV",
+        "prompt": "A horned figure of condensed void sits upon a throne of temptation, chains of shadow binding willing prisoners. Their eyes are black holes consuming all hope. Behind them, pleasures and fears manifest from darkness itself. The chains are illusions, but the void is real. Mood: seduction of the abyss, binding through fear of emptiness and desire for oblivion."
+      },
+      {
+        "id": "maj_16",
+        "name": "The Tower",
+        "legacy": "XVI",
+        "prompt": "A tower of compressed reality shatters as void lightning strikes from absolute darkness above. Figures fall into the abyss, their false structures crumbling. Black flames of dissolution consume all that was built. Sudden revelation through destruction. Mood: catastrophic awakening, reality collapsing to reveal the void beneath all things."
+      },
+      {
+        "id": "maj_17",
+        "name": "The Star",
+        "legacy": "XVII",
+        "prompt": "A figure kneels in darkness, pouring void-water onto nothing, nourishing the absence. Above, a great dying star and smaller points of fading light offer hope in the darkness. She is naked and unafraid before emptiness. Stars reflected in pools of liquid shadow. Mood: hope born from void, finding light in deepest darkness, renewal through emptiness."
+      },
+      {
+        "id": "maj_18",
+        "name": "The Moon",
+        "legacy": "XVIII",
+        "prompt": "A pale moon dissolves in a sky of absolute black, casting shadows that are darker than the void itself. A path leads between two pillars into deeper darkness. A wolf and dog howl at nothing. A crayfish emerges from a pool of liquid void. Illusion and truth blur in darkness. Mood: the deceptive void, fears and dreams manifesting from primordial darkness."
+      },
+      {
+        "id": "maj_19",
+        "name": "The Sun",
+        "legacy": "XIX",
+        "prompt": "A black sun burns cold in the void, its dark rays illuminating nothing and everything. A child rides a pale horse through the abyss, innocent and fearless. Sunflowers of shadow reach toward the anti-light. Joy found in acceptance of emptiness. Mood: enlightenment through void, finding warmth in coldest darkness, truth of nothingness revealed."
+      },
+      {
+        "id": "maj_20",
+        "name": "Judgement",
+        "legacy": "XX",
+        "prompt": "An angel of absolute void sounds a horn of silence, calling forth the dissolved and forgotten. Figures rise from the abyss, reformed from nothingness. The final accounting before emptiness. Past, present, and future converge in one point of darkness. Mood: resurrection from void, awakening from the dream of existence into final truth."
+      },
+      {
+        "id": "maj_21",
+        "name": "The World",
+        "legacy": "XXI",
+        "prompt": "A dancing figure suspended in a wreath of void-matter, achieving unity with emptiness itself. The four elemental beasts watch from corners of absolute darkness. Completion through dissolution. All journeys end where they began—in nothing. The universe and the void are one. Mood: cosmic unity with the abyss, completion through total embrace of nothingness."
+      }
+    ],
+    "minor": {
+      "wands": [
+        {
+          "id": "wan_01",
+          "name": "Ace of Wands",
+          "desc": "A single obsidian staff emerges from the void, wreathed in black flames that devour light. Embers of dying stars spiral around it. Pure creative destruction, the first spark of entropic power igniting in primordial darkness. Deep crimson and charcoal pulse with potential."
+        },
+        {
+          "id": "wan_02",
+          "name": "Two of Wands",
+          "desc": "A figure stands between two staffs of void-flame, surveying an empire of darkness. One hand grasps a sphere of collapsed reality. The path ahead divides into nothingness. Choice and dominion over the abyss, planning conquest through emptiness."
+        },
+        {
+          "id": "wan_03",
+          "name": "Three of Wands",
+          "desc": "Three obsidian staffs planted firmly in dissolving ground, a figure gazing into the void beyond. Black-sailed ships journey into the abyss. Established power watching as plans manifest from darkness. Expansion into nothingness."
+        },
+        {
+          "id": "wan_04",
+          "name": "Four of Wands",
+          "desc": "Four staffs create an archway of void-flame, celebration in the darkness. Figures dance as reality dissolves around them. Garlands of shadow flowers mark achievement. Stability found in the abyss, joy in accepting emptiness."
+        },
+        {
+          "id": "wan_05",
+          "name": "Five of Wands",
+          "desc": "Five figures clash with obsidian staffs, black flames erupting from each strike. The void churns with their conflict. Chaos and competition in darkness, each fighting to impose their will on nothingness. Entropic struggle."
+        },
+        {
+          "id": "wan_06",
+          "name": "Six of Wands",
+          "desc": "A crowned figure rides through the void on a pale horse, staff raised in victory. Followers emerge from darkness, offering wreaths of shadow. Triumph over the abyss, public recognition in emptiness. Success through dissolution."
+        },
+        {
+          "id": "wan_07",
+          "name": "Seven of Wands",
+          "desc": "A figure stands atop a precipice of void, defending their position with an obsidian staff against six rising from below. Black flames shield them from the encroaching darkness. Standing firm against the consuming abyss, courage in the face of nothingness."
+        },
+        {
+          "id": "wan_08",
+          "name": "Eight of Wands",
+          "desc": "Eight obsidian staffs fly through the void like arrows, trailing black flame. They move with purpose and speed through absolute darkness toward an unseen target. Swift action through the abyss, messages sent across nothingness. Rapid transformation."
+        },
+        {
+          "id": "wan_09",
+          "name": "Nine of Wands",
+          "desc": "A wounded figure leans on one staff, eight others planted behind forming a barrier against the void. Scarred but unbroken, they guard against darkness with weary determination. Resilience in the face of endless emptiness."
+        },
+        {
+          "id": "wan_10",
+          "name": "Ten of Wands",
+          "desc": "A figure struggles under the weight of ten obsidian staffs, black flames burning them as they carry their burden through the void. Nearly consumed by their own entropic power. Oppressive responsibility, overwhelmed by darkness."
+        },
+        {
+          "id": "wan_11",
+          "name": "Page of Wands",
+          "desc": "A young figure holds an obsidian staff, studying the black flames with curiosity. Behind them, the void stretches endlessly, full of possibility. Eager to explore the darkness, beginning to understand entropic power. Youthful enthusiasm for destruction."
+        },
+        {
+          "id": "wan_12",
+          "name": "Knight of Wands",
+          "desc": "A knight charges through the void on a horse of living shadow, obsidian staff raised high. Black flames stream behind them. Reckless courage driving into the abyss, passionate pursuit through darkness. Action without hesitation."
+        },
+        {
+          "id": "wan_13",
+          "name": "Queen of Wands",
+          "desc": "A regal figure sits on a throne of void-flame, obsidian staff in hand. A black cat of living shadow sits at her feet. She commands entropy with confidence and grace, charismatic power over darkness itself."
+        },
+        {
+          "id": "wan_14",
+          "name": "King of Wands",
+          "desc": "A crowned figure sits on a throne wreathed in black flames, obsidian staff radiating entropic authority. Salamanders of void-matter coil around the throne. Natural leadership through darkness, visionary command of the abyss."
+        }
+      ],
+      "cups": [
+        {
+          "id": "cup_01",
+          "name": "Ace of Cups",
+          "desc": "A chalice carved from emptiness overflows with liquid darkness that flows upward into the void. Deep indigo and obsidian swirl with emotional potential. A dove of shadow descends. Pure feeling emerging from nothingness, the beginning of emotional dissolution."
+        },
+        {
+          "id": "cup_02",
+          "name": "Two of Cups",
+          "desc": "Two figures face each other across the void, vessels of darkness passing between them. A caduceus of shadow intertwines above. They exchange the waters of emptiness, connection through shared nothingness. Partnership in the abyss."
+        },
+        {
+          "id": "cup_03",
+          "name": "Three of Cups",
+          "desc": "Three figures raise vessels of liquid void in celebration, their forms beginning to merge. Joy found in mutual dissolution. Community in darkness, sharing the emotional depths of emptiness. Friendship in the abyss."
+        },
+        {
+          "id": "cup_04",
+          "name": "Four of Cups",
+          "desc": "A figure sits beneath a tree of shadow, three cups of void before them, a fourth offered by a hand emerging from darkness. They contemplate emptiness, dissatisfied with offerings. Meditation on nothingness, apathy in the face of the abyss."
+        },
+        {
+          "id": "cup_05",
+          "name": "Five of Cups",
+          "desc": "A cloaked figure mourns three spilled vessels of darkness while two stand upright behind them. A bridge crosses into deeper void. Grief for what dissolved into nothingness, focusing on loss while potential remains. Sorrow in emptiness."
+        },
+        {
+          "id": "cup_06",
+          "name": "Six of Cups",
+          "desc": "A figure offers a cup filled with void-water to a smaller form in darkness. Flowers of shadow bloom around them. Nostalgia for forgotten memories dissolved in the abyss. Innocence lost to nothingness, gifts from the past."
+        },
+        {
+          "id": "cup_07",
+          "name": "Seven of Cups",
+          "desc": "Seven vessels float in the void, each containing different manifestations of darkness—shadows, dreams, fears, desires. A figure stands bewildered by choices. Illusions in the abyss, fantasy and delusion in emptiness. Too many paths into nothingness."
+        },
+        {
+          "id": "cup_08",
+          "name": "Eight of Cups",
+          "desc": "A figure walks away from eight carefully stacked cups of void, journeying toward a distant darkness. The moon dissolves above. Leaving behind emotional attachments, seeking deeper emptiness. Abandonment in pursuit of greater nothingness."
+        },
+        {
+          "id": "cup_09",
+          "name": "Nine of Cups",
+          "desc": "A satisfied figure sits before nine vessels of liquid darkness arranged in an arc. Arms crossed in contentment, having achieved emotional fulfillment through embracing the void. Wish fulfillment, satisfaction in nothingness."
+        },
+        {
+          "id": "cup_10",
+          "name": "Ten of Cups",
+          "desc": "A family stands together under an arc of ten void-vessels, arms raised in joy. A rainbow of shadow spans the darkness above them. Complete emotional harmony in the abyss, lasting happiness through shared emptiness."
+        },
+        {
+          "id": "cup_11",
+          "name": "Page of Cups",
+          "desc": "A young figure holds a cup from which a fish of living shadow emerges. They study the creature of void with wonder and creativity. Emotional beginnings, intuitive messages from the abyss. Youthful sensitivity to darkness."
+        },
+        {
+          "id": "cup_12",
+          "name": "Knight of Cups",
+          "desc": "A knight rides a horse of shadow, offering a cup of liquid void. A dreamer and romantic in the darkness, following emotional currents through the abyss. Idealistic pursuit of feelings in nothingness."
+        },
+        {
+          "id": "cup_13",
+          "name": "Queen of Cups",
+          "desc": "A regal figure sits on a throne at the edge of a void-sea, holding a vessel of mysterious darkness. Deeply intuitive, she feels the emotional currents of the abyss. Compassionate mastery of emptiness, empathic connection to nothingness."
+        },
+        {
+          "id": "cup_14",
+          "name": "King of Cups",
+          "desc": "A crowned figure sits on a throne that floats on a sea of void, holding a cup of darkness with emotional mastery. Ships of shadow sail the abyss behind him. Diplomatic control over the emotional depths, wise leadership through dark waters."
+        }
+      ],
+      "swords": [
+        {
+          "id": "swo_01",
+          "name": "Ace of Swords",
+          "desc": "A single blade forged from crystallized void pierces upward through clouds of darkness. Its edge is so sharp it cuts through reality itself. Pure mental clarity through dissolution, truth revealed by cutting away all that exists. Pale silver against charcoal void."
+        },
+        {
+          "id": "swo_02",
+          "name": "Two of Swords",
+          "desc": "A blindfolded figure sits in darkness, two void-blades crossed before them. The abyss offers no guidance. Difficult choice between paths into nothingness, mental stalemate in the void. Refusing to see the darkness."
+        },
+        {
+          "id": "swo_03",
+          "name": "Three of Swords",
+          "desc": "A heart suspended in void-space, pierced by three crystalline blades. Dark clouds weep around it. Heartbreak in the abyss, painful truth cutting through emotional illusions. Sorrow and mental anguish in darkness."
+        },
+        {
+          "id": "swo_04",
+          "name": "Four of Swords",
+          "desc": "A figure lies in repose beneath void-space, three swords mounted above, one beneath. Deep rest in darkness, meditation in the abyss. Recovery through emptiness, mental peace found in nothingness."
+        },
+        {
+          "id": "swo_05",
+          "name": "Five of Swords",
+          "desc": "A figure gathers three void-blades while two others retreat into darkness, leaving their swords behind. Victory through dissolution, but at the cost of honor. Conflict and defeat in the abyss. Hollow triumph over nothingness."
+        },
+        {
+          "id": "swo_06",
+          "name": "Six of Swords",
+          "desc": "A figure guides a boat through waters of liquid void, six blades standing upright. Moving from troubled darkness toward calmer nothingness. Transition through the abyss, leaving behind mental turmoil for emptier spaces."
+        },
+        {
+          "id": "swo_07",
+          "name": "Seven of Swords",
+          "desc": "A figure sneaks away through the void carrying five blades, leaving two behind. Deception in darkness, strategic retreat into nothingness. Cunning and evasion in the abyss, taking what can be carried from emptiness."
+        },
+        {
+          "id": "swo_08",
+          "name": "Eight of Swords",
+          "desc": "A blindfolded, bound figure surrounded by eight void-blades planted in darkness. The bonds are illusions, the swords merely thoughts. Mental imprisonment in the abyss, trapped by fear of nothingness. Self-imposed limitations."
+        },
+        {
+          "id": "swo_09",
+          "name": "Nine of Swords",
+          "desc": "A figure sits up in darkness, head in hands, nine void-blades mounted on the wall above. Nightmares and anxiety in the abyss, mental anguish consuming from within. Fear and guilt in emptiness."
+        },
+        {
+          "id": "swo_10",
+          "name": "Ten of Swords",
+          "desc": "A figure lies face-down in darkness, ten void-blades piercing their back. The darkest hour before dissolution. Complete mental defeat, thoughts dissolved entirely into nothingness. Rock bottom in the abyss—nowhere left to fall."
+        },
+        {
+          "id": "swo_11",
+          "name": "Page of Swords",
+          "desc": "A young figure holds a void-blade aloft, testing its edge against the darkness. Alert and curious about the nature of nothingness. Mental agility in the abyss, youthful exploration of truth through dissolution."
+        },
+        {
+          "id": "swo_12",
+          "name": "Knight of Swords",
+          "desc": "A knight charges through the void on a horse of living shadow, blade raised to cut through reality itself. Swift, decisive action through darkness. Single-minded pursuit of truth in the abyss, rushing toward nothingness."
+        },
+        {
+          "id": "swo_13",
+          "name": "Queen of Swords",
+          "desc": "A regal figure sits on a throne amid void-winds, holding a blade of crystallized emptiness. Clear-minded and direct, she cuts through illusion to truth. Intellectual mastery of darkness, independent thought in the abyss."
+        },
+        {
+          "id": "swo_14",
+          "name": "King of Swords",
+          "desc": "A crowned figure sits on a throne of void-matter, holding a blade that cuts through all deception. Butterflies of shadow flutter around him. Intellectual authority over emptiness, just leadership through clarity of nothingness."
+        }
+      ],
+      "pentacles": [
+        {
+          "id": "pen_01",
+          "name": "Ace of Pentacles",
+          "desc": "A hand emerges from clouds of void holding a single coin of collapsed matter, dense beyond comprehension. Deep purple-black geometric patterns pulse with gravitational force. Pure material potential in darkness, foundation forming from nothingness."
+        },
+        {
+          "id": "pen_02",
+          "name": "Two of Pentacles",
+          "desc": "A figure dances in the void, juggling two coins of compressed reality connected by an infinity symbol of shadow. Ships ride waves of darkness behind them. Balance in the abyss, managing material concerns in emptiness. Adaptation to nothingness."
+        },
+        {
+          "id": "pen_03",
+          "name": "Three of Pentacles",
+          "desc": "Three figures work together in darkness, crafting architecture from void-matter. Three coins represent their collaborative achievement. Skilled work in the abyss, building structures from nothingness. Teamwork through shared emptiness."
+        },
+        {
+          "id": "pen_04",
+          "name": "Four of Pentacles",
+          "desc": "A figure sits in darkness, crown holding one coin, feet on two more, arms clutching a fourth. Possessive grip on material void. Hoarding emptiness, fear of losing what little substance remains. Control through scarcity in the abyss."
+        },
+        {
+          "id": "pen_05",
+          "name": "Five of Pentacles",
+          "desc": "Two figures struggle through void-snow, poor and wounded, passing beneath a window of stained darkness showing five coins. Material loss in the abyss, hardship and poverty in nothingness. Isolation in the cold void."
+        },
+        {
+          "id": "pen_06",
+          "name": "Six of Pentacles",
+          "desc": "A figure with scales distributes coins of void-matter to supplicants kneeling in darkness. Generosity in the abyss, sharing material resources of nothingness. Balance between giving and receiving emptiness. Charity in the void."
+        },
+        {
+          "id": "pen_07",
+          "name": "Seven of Pentacles",
+          "desc": "A figure leans on a tool, contemplating seven coins of void-matter growing on shadowy vines in darkness. Patient investment in the abyss, assessing progress of cultivation in nothingness. Long-term planning in emptiness."
+        },
+        {
+          "id": "pen_08",
+          "name": "Eight of Pentacles",
+          "desc": "A craftsperson works diligently in darkness, focused on carving a coin of void-matter. Seven completed coins hang behind them. Dedication to mastery in the abyss, perfecting skill through repetition in nothingness. Disciplined work in emptiness."
+        },
+        {
+          "id": "pen_09",
+          "name": "Nine of Pentacles",
+          "desc": "A figure stands in a garden of shadow-plants heavy with nine coins of compressed reality. A bird of void-matter perches on their gloved hand. Self-sufficient abundance in darkness, material success through understanding of nothingness."
+        },
+        {
+          "id": "pen_10",
+          "name": "Ten of Pentacles",
+          "desc": "Three generations gather beneath an arch of void, ten coins arranged in the pattern of the tree of darkness. Family legacy in the abyss, wealth and tradition passed through emptiness. Material completion in nothingness."
+        },
+        {
+          "id": "pen_11",
+          "name": "Page of Pentacles",
+          "desc": "A young figure stands in darkness, holding a coin of void-matter aloft and studying it intently. Grounded and practical, beginning to understand material manifestation from nothingness. Student of the physical abyss."
+        },
+        {
+          "id": "pen_12",
+          "name": "Knight of Pentacles",
+          "desc": "A knight sits motionless on a dark horse in the void, holding a coin of compressed reality with steady patience. Methodical progress through darkness, responsible stewardship of material nothingness. Reliable action in the abyss."
+        },
+        {
+          "id": "pen_13",
+          "name": "Queen of Pentacles",
+          "desc": "A regal figure sits on a throne in a garden of void-plants, holding a coin of compressed matter with nurturing care. Rabbits of shadow play at her feet. Practical wisdom in darkness, abundance through connection to the material abyss."
+        },
+        {
+          "id": "pen_14",
+          "name": "King of Pentacles",
+          "desc": "A crowned figure sits on a throne decorated with void-creatures, holding a coin of ultimate material density. A castle of darkness rises behind him. Mastery of material world dissolved into nothingness, wealth and power in the abyss."
+        }
+      ]
+    }
+  }
+}

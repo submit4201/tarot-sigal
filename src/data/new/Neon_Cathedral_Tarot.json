@@ -1,0 +1,242 @@
+{
+    "deck_metadata": {
+        "deck_name": "Neon Cathedral Tarot",
+        "mood": "Cybernetic, reverent, electric.",
+        "details": "Holographic saints, fractured glass, chrome filigree, sacred circuitry.",
+        "backofcard": "A luminous circuit-rose window radiating fractal light from a central all-seeing eye.",
+        "card_spec": {
+            "aspect_ratio": "Vertical 2:3",
+            "border": "ornate chrome cathedral arch.",
+            "style": "Baroque cyberpunk iconography, hyper-detailed metallic textures, sacred holography.",
+            "technical_details": "8k UHD, ray-traced reflections, volumetric neon fog, f/1.4, cinematic high contrast."
+        },
+        "theme_overarching": "Technology inheriting the sacred archetypes of humanity."
+    },
+    "suits": {
+        "sparks": {
+            "legacy_name": "Wands",
+            "element": "Fire",
+            "visuals": "Arcing plasma coils, neon conduits, ignition sigils."
+        },
+        "circuits": {
+            "legacy_name": "Cups",
+            "element": "Water",
+            "visuals": "Liquid holograms, data-stream chalices, glowing reservoirs."
+        },
+        "shards": {
+            "legacy_name": "Swords",
+            "element": "Air",
+            "visuals": "Laser edges, fractured glass, kinetic glyphs."
+        },
+        "vaults": {
+            "legacy_name": "Pentacles",
+            "element": "Earth",
+            "visuals": "Quantum cores, chrome vault doors, embedded sigil-coins."
+        }
+    },
+    "cards": {
+        "major": [
+            {
+                "id": "maj_00",
+                "name": "The Initiate",
+                "legacy": "The Fool",
+                "prompt": "A luminous android steps toward the edge of a floating megacity platform, holding a flickering lantern of unstable code. A small glitching drone trails behind, projecting shifting emojis of warning and wonder."
+            },
+            {
+                "id": "maj_01",
+                "name": "The Architect",
+                "legacy": "The Magician",
+                "prompt": "A robed techno-saint stands before a floating altar displaying four holographic emblems — plasma coil, liquid data chalice, laser shard, quantum vault core — manipulating them with precise gestures of radiant light."
+            },
+            {
+                "id": "maj_02",
+                "name": "The Oracle Engine",
+                "legacy": "The High Priestess",
+                "prompt": "A serene AI core housed within a cathedral server chamber glows softly between two monolithic data pillars marked 0 and 1. Fiber-optic veils cascade like sacred silk."
+            },
+            {
+                "id": "maj_03",
+                "name": "The Motherboard",
+                "legacy": "The Empress",
+                "prompt": "An immense divine feminine figure composed of layered circuit boards reclines across a glowing city-grid landscape. Streams of neon code flow from her palms, nourishing skyscrapers like seedlings."
+            },
+            {
+                "id": "maj_04",
+                "name": "The Sovereign Core",
+                "legacy": "The Emperor",
+                "prompt": "A towering armored figure of black chrome sits upon a throne of server racks, crowned with rotating halo-rings of satellite dishes. Red status lights glow like disciplined constellations."
+            },
+            {
+                "id": "maj_05",
+                "name": "The High Protocol",
+                "legacy": "The Hierophant",
+                "prompt": "A robed cyber-cleric stands beneath a neon rose window, transmitting sacred encryption glyphs to kneeling disciples through beams of refracted laser light."
+            },
+            {
+                "id": "maj_06",
+                "name": "The Linked Souls",
+                "legacy": "The Lovers",
+                "prompt": "Two translucent figures of pure light reach toward each other across a suspended data-bridge. A massive holographic heart pulses above as firewalls flicker behind one and open-source streams flow behind the other."
+            },
+            {
+                "id": "maj_07",
+                "name": "The Pulse Drive",
+                "legacy": "The Chariot",
+                "prompt": "A warrior pilots a hovering plasma vehicle drawn by twin energy constructs — one white-hot, one ultraviolet — racing through a canyon of skyscrapers beneath storming neon clouds."
+            },
+            {
+                "id": "maj_08",
+                "name": "The Calibrator",
+                "legacy": "Strength",
+                "prompt": "A calm engineer places a gentle hand on the glowing muzzle of a massive mech-beast, stabilizing its overheating reactor with a soft cascade of cooling light."
+            },
+            {
+                "id": "maj_09",
+                "name": "The Signal Keeper",
+                "legacy": "The Hermit",
+                "prompt": "A solitary hooded figure stands atop a ruined satellite tower, holding a lantern emitting a narrow beam of clean signal into the static-filled sky."
+            },
+            {
+                "id": "maj_10",
+                "name": "The Quantum Loop",
+                "legacy": "Wheel of Fortune",
+                "prompt": "A massive rotating torus of code fragments spins in zero gravity, inscribed with evolving algorithmic glyphs. Four digital avatars observe from the corners of the void."
+            },
+            {
+                "id": "maj_11",
+                "name": "The Balanced Code",
+                "legacy": "Justice",
+                "prompt": "A blindfolded android holds a laser blade in one hand and a perfectly balanced scale of luminous data blocks in the other, suspended above a glowing courtroom grid."
+            },
+            {
+                "id": "maj_12",
+                "name": "The Suspended Upload",
+                "legacy": "The Hanged Man",
+                "prompt": "A figure hangs upside-down in a vertical data-stream, limbs relaxed as glowing packets flow around them, a halo of buffering light circling their head."
+            },
+            {
+                "id": "maj_13",
+                "name": "The System Reset",
+                "legacy": "Death",
+                "prompt": "A skeletal chrome horse strides through a collapsing server chamber as old code disintegrates into pixel dust and new luminous architecture rises behind."
+            },
+            {
+                "id": "maj_14",
+                "name": "The Harmonizer",
+                "legacy": "Temperance",
+                "prompt": "An androgynous techno-angel pours streams of liquid light between two levitating prisms, blending cold blue and warm amber into a balanced spectrum."
+            },
+            {
+                "id": "maj_15",
+                "name": "The Black Firewall",
+                "legacy": "The Devil",
+                "prompt": "A massive shadowed AI construct looms behind chained users illuminated by addictive screens, tendrils of dark code binding their wrists in glowing loops."
+            },
+            {
+                "id": "maj_16",
+                "name": "The Data Collapse",
+                "legacy": "The Tower",
+                "prompt": "A colossal glass skyscraper shatters under a bolt of white-hot solar flare energy, shards of holographic advertisements raining down into the streets below."
+            },
+            {
+                "id": "maj_17",
+                "name": "The Nova Signal",
+                "legacy": "The Star",
+                "prompt": "A radiant figure kneels beside a reflective chrome pool, releasing streams of soft starlight code into both water and earth beneath a massive eight-pointed holographic star."
+            },
+            {
+                "id": "maj_18",
+                "name": "The Phantom Broadcast",
+                "legacy": "The Moon",
+                "prompt": "A pale glitching moon projection flickers between two crumbling broadcast towers. A stray cyber-wolf howls as a stray maintenance drone skitters from a puddle of oil."
+            },
+            {
+                "id": "maj_19",
+                "name": "The Solar Grid",
+                "legacy": "The Sun",
+                "prompt": "A laughing augmented child rides a sleek hover-stag beneath a blazing arc-reactor sun, solar panels forming a radiant city garden wall behind."
+            },
+            {
+                "id": "maj_20",
+                "name": "The Great Sync",
+                "legacy": "Judgement",
+                "prompt": "A massive cathedral speaker array emits a wave of harmonic resonance as citizens rise from pods, awakening into a luminous shared consciousness."
+            },
+            {
+                "id": "maj_21",
+                "name": "The Infinite Network",
+                "legacy": "The World",
+                "prompt": "A radiant figure composed of interlocking holographic continents floats within a ring of orbiting satellites, the four elemental digital avatars anchoring the corners of space."
+            }
+        ],
+        
+       
+
+        "minor": {
+            "sparks": [
+                { "id": "spa_01", "name": "Ace of Sparks", "desc": "A radiant plasma coil ignites in a mechanical hand emerging from neon cloud, lightning arcing outward like a divine blessing." },
+                { "id": "spa_02", "name": "Two of Sparks", "desc": "A figure stands on a balcony overlooking a glowing megacity, holding a live plasma rod while another hums beside them in a containment ring." },
+                { "id": "spa_03", "name": "Three of Sparks", "desc": "Engineers collaborate around a suspended reactor core, three ignition rods locked into a triangular framework." },
+                { "id": "spa_04", "name": "Four of Sparks", "desc": "Four plasma conduits form a stable energy gate as celebrants gather beneath holographic banners." },
+                { "id": "spa_05", "name": "Five of Sparks", "desc": "Five apprentices duel with crackling neon batons, sparks scattering across cathedral glass." },
+                { "id": "spa_06", "name": "Six of Sparks", "desc": "A victorious pilot rides a hovering engine-beast, plasma banner raised high as drones project praise." },
+                { "id": "spa_07", "name": "Seven of Sparks", "desc": "A lone defender holds a charged conduit against six rising arcs of unstable energy." },
+                { "id": "spa_08", "name": "Eight of Sparks", "desc": "Eight blazing conduits streak through the skyline like electric comets." },
+                { "id": "spa_09", "name": "Nine of Sparks", "desc": "A battle-worn technician braces behind a barrier of humming ignition rods." },
+                { "id": "spa_10", "name": "Ten of Sparks", "desc": "A strained worker carries ten unstable plasma rods, their combined glow nearly overwhelming." },
+                { "id": "spa_11", "name": "Page of Sparks", "desc": "A curious apprentice studies a flickering ignition sigil hovering above their palm." },
+                { "id": "spa_12", "name": "Knight of Sparks", "desc": "A daring rider charges forward on a plasma-cycle, conduit lance blazing." },
+                { "id": "spa_13", "name": "Queen of Sparks", "desc": "A radiant leader sits upon a throne of reactor cores, plasma scepter steady and controlled." },
+                { "id": "spa_14", "name": "King of Sparks", "desc": "A commanding figure stands within a cathedral reactor chamber, master of controlled ignition." }
+            ],
+            "circuits": [
+                { "id": "cir_01", "name": "Ace of Circuits", "desc": "A luminous chalice of liquid data overflows from a chrome hand, holographic waves cascading downward." },
+                { "id": "cir_02", "name": "Two of Circuits", "desc": "Two figures exchange glowing data-chalices beneath a hovering infinity sigil." },
+                { "id": "cir_03", "name": "Three of Circuits", "desc": "Three digital avatars toast with radiant vessels as neon confetti rains." },
+                { "id": "cir_04", "name": "Four of Circuits", "desc": "A contemplative figure ignores a fourth holographic chalice offered from a projection beam." },
+                { "id": "cir_05", "name": "Five of Circuits", "desc": "Three overturned vessels leak flickering code while two glow softly behind." },
+                { "id": "cir_06", "name": "Six of Circuits", "desc": "An elder transfers a glowing data-vessel to a young initiate in a quiet courtyard." },
+                { "id": "cir_07", "name": "Seven of Circuits", "desc": "Seven hovering chalices display different projected illusions of power and temptation." },
+                { "id": "cir_08", "name": "Eight of Circuits", "desc": "A traveler walks away from stacked data-vessels toward a distant glowing skyline." },
+                { "id": "cir_09", "name": "Nine of Circuits", "desc": "A satisfied figure sits before nine shimmering chalices arranged like trophies." },
+                { "id": "cir_10", "name": "Ten of Circuits", "desc": "A family of light-beings stands beneath a rainbow arc of ten luminous vessels." },
+                { "id": "cir_11", "name": "Page of Circuits", "desc": "A young coder gazes into a chalice projecting a living holographic fish." },
+                { "id": "cir_12", "name": "Knight of Circuits", "desc": "A calm emissary rides a sleek hover-mount, chalice held steady before them." },
+                { "id": "cir_13", "name": "Queen of Circuits", "desc": "A serene figure of glass and chrome contemplates a radiant vessel in silent reflection." },
+                { "id": "cir_14", "name": "King of Circuits", "desc": "A composed sovereign stands on a floating platform surrounded by calm holographic tides." }
+            ],
+            "shards": [
+                { "id": "sha_01", "name": "Ace of Shards", "desc": "A laser blade pierces storm clouds of static, crowned with radiant clarity." },
+                { "id": "sha_02", "name": "Two of Shards", "desc": "A blindfolded figure balances two glowing energy blades against a silent skyline." },
+                { "id": "sha_03", "name": "Three of Shards", "desc": "Three laser shards pierce a translucent heart-shaped hologram." },
+                { "id": "sha_04", "name": "Four of Shards", "desc": "A resting warrior lies beneath suspended blades in a quiet chrome sanctuary." },
+                { "id": "sha_05", "name": "Five of Shards", "desc": "A smug victor gathers fallen laser blades while rivals retreat." },
+                { "id": "sha_06", "name": "Six of Shards", "desc": "A transport craft carries passengers across a dim data-river lined with glowing blades." },
+                { "id": "sha_07", "name": "Seven of Shards", "desc": "A stealthy figure escapes with stolen laser shards under flickering lights." },
+                { "id": "sha_08", "name": "Eight of Shards", "desc": "A bound figure stands within a ring of planted energy blades, escape possible but unseen." },
+                { "id": "sha_09", "name": "Nine of Shards", "desc": "A sleepless figure sits as nine holographic blades hover behind like intrusive thoughts." },
+                { "id": "sha_10", "name": "Ten of Shards", "desc": "A fallen figure lies beneath ten embedded laser blades as dawn light breaks." },
+                { "id": "sha_11", "name": "Page of Shards", "desc": "A vigilant youth studies the edge of a crackling energy blade." },
+                { "id": "sha_12", "name": "Knight of Shards", "desc": "An armored rider charges forward with a blazing laser lance." },
+                { "id": "sha_13", "name": "Queen of Shards", "desc": "A poised strategist raises a crystalline blade beneath storm-lit glass." },
+                { "id": "sha_14", "name": "King of Shards", "desc": "A commanding figure holds a massive laser greatsword amid controlled chaos." }
+            ],
+            "vaults": [
+                { "id": "vau_01", "name": "Ace of Vaults", "desc": "A chrome hand presents a glowing quantum core before an open vault gate." },
+                { "id": "vau_02", "name": "Two of Vaults", "desc": "A juggler balances two quantum cores linked by an infinity filament." },
+                { "id": "vau_03", "name": "Three of Vaults", "desc": "Architects collaborate around a structure embedded with three glowing sigil-coins." },
+                { "id": "vau_04", "name": "Four of Vaults", "desc": "A guarded figure clutches a core tightly while standing atop secured vault doors." },
+                { "id": "vau_05", "name": "Five of Vaults", "desc": "Two struggling figures pass a radiant cathedral vault whose light they cannot access." },
+                { "id": "vau_06", "name": "Six of Vaults", "desc": "A benefactor distributes quantum cores using a balanced chrome scale." },
+                { "id": "vau_07", "name": "Seven of Vaults", "desc": "A patient engineer observes seven embedded cores slowly charging." },
+                { "id": "vau_08", "name": "Eight of Vaults", "desc": "An artisan refines a row of quantum cores at a glowing workbench." },
+                { "id": "vau_09", "name": "Nine of Vaults", "desc": "A self-sufficient figure stands in a vault garden of humming cores." },
+                { "id": "vau_10", "name": "Ten of Vaults", "desc": "A lineage of citizens gathers beneath an arch embedded with ten glowing sigil-coins." },
+                { "id": "vau_11", "name": "Page of Vaults", "desc": "A studious initiate examines a quantum core with intense focus." },
+                { "id": "vau_12", "name": "Knight of Vaults", "desc": "A steady guardian rides forward holding a stabilized core like a sacred relic." },
+                { "id": "vau_13", "name": "Queen of Vaults", "desc": "A nurturing sovereign sits among flourishing energy gardens, core resting gently in her lap." },
+                { "id": "vau_14", "name": "King of Vaults", "desc": "A grounded ruler sits upon a throne of vault doors, scepter tipped with a radiant core." }
+            ]
+        }
+    }
+}

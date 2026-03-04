@@ -1,0 +1,463 @@
+{
+  "deck_metadata": {
+    "deck_name": "The Blood Arcana",
+    "mood": "visceral intimacy with primal intensity",
+    "theme_overarching": "the vital essence that flows through all living things, connecting birth and death, sacrifice and sustenance, revealing truth in the currency of life itself",
+    "details": "A tarot deck exploring blood as both literal and metaphorical—the bonds of family, the price of power, the flow of passion, and the sacred exchange between self and other. Visuals carry oddball symbolism (haloed vials, floating anatomical diagrams, bloodline constellations) presented with a surreal-but-grounded feel so imagery stays clear and readable.",
+    "backofcard": "Intricate vein patterns in deep crimson and burgundy branching across a parchment background, resembling both anatomical charts and ancient bloodline trees",
+    "card_spec": {
+      "aspect_ratio": "2.75:4.75",
+      "border": "Deep burgundy fading to rust-red edges",
+      "style": "Renaissance anatomical illustration meets ritualistic symbolism with surreal-but-grounded oddities",
+      "technical_details": "3000x4200px, RGB, 300dpi, rich crimson color depth essential"
+    }
+  },
+  "suits": {
+    "wands": {
+      "legacy_name": "Wands",
+      "element": "Fire",
+      "visuals": "Staffs carved from bone marrow, still pulsing with the heat of life, crowned with hearts that beat with passionate fire. Deep scarlet and ruby red tones flow with arterial intensity, while heat radiates from the vital core. Subtle oddities appear—tiny glass ampoules orbit the flame and a single ember forms a bloodline constellation. This fire is the warmth of blood, the passion that drives living action."
+    },
+    "cups": {
+      "legacy_name": "Cups",
+      "element": "Water",
+      "visuals": "Chalices of bone or heart chambers holding blood that moves like water, crimson waves reflecting emotional depths. Rich burgundy and rose wine hues swirl with the plasma of feeling and connection. A small floating mirror reflects a heartbeat that isn't shown, and a single feather drifts upward through the liquid. These vessels hold the liquid bonds of love, loss, and life shared between souls."
+    },
+    "swords": {
+      "legacy_name": "Swords",
+      "element": "Air",
+      "visuals": "Blades that have tasted blood and learned truth from it, edges stained with rust-red proof of battles fought. Steel gray mixed with dried crimson, each sword carrying memories of cuts made and wounds received. A thin ribbon of breath wraps the hilt and a small compass points toward a scar. These weapons cut deep enough to draw truth from the vein."
+    },
+    "pentacles": {
+      "legacy_name": "Pentacles",
+      "element": "Earth",
+      "visuals": "Coins marked with blood prints and sealed with vital offerings, surfaces textured with the price paid. Deep oxblood and iron-rich earth tones, each pentacle representing life's energy made tangible. A tiny sprout grows from a coin's edge and a haloed seal hovers above like a wax stamp in midair. These coins are minted from sacrifice, investment of the self's most precious resource."
+    }
+  },
+  "cards": {
+    "major": [
+      {
+        "id": "maj_00",
+        "name": "The Fool",
+        "legacy": "0",
+        "prompt": "A youthful figure steps forward with fresh-cut palm dripping blood as an offering to the unknown path ahead. A white dog with red-stained muzzle accompanies them. Behind, a rose garden bleeds petals. Their heart visible through translucent chest, beating with naive courage. Mood: visceral intimacy with primal intensity, the first bloodletting of experience, innocence meeting the cost of living."
+      },
+      {
+        "id": "maj_01",
+        "name": "The Magician",
+        "legacy": "I",
+        "prompt": "A figure stands before an altar, one hand raised pointing to heaven showing stigmata, one pointing to earth drawing blood magic. Four symbols drip with vitality—bone staff, heart chalice, bloodied blade, coin sealed in red. Veins glow beneath skin as life force is channeled and transformed through will. Mood: mastery over life's vital essence, commanding the flow of blood and power through sacred sacrifice."
+      },
+      {
+        "id": "maj_02",
+        "name": "The High Priestess",
+        "legacy": "II",
+        "prompt": "A veiled figure sits between two pillars carved with genealogy, holding a scroll written in blood ink. Behind her, a curtain embroidered with circulatory systems conceals ancestral mysteries. Her moon crown drips with menstrual symbolism. She guards the bloodlines and blood mysteries. Mood: keeper of lineage and life secrets, guardian of the sacred feminine blood cycles."
+      },
+      {
+        "id": "maj_03",
+        "name": "The Empress",
+        "legacy": "III",
+        "prompt": "A pregnant figure reclines among pomegranates split to reveal seed-filled chambers like ventricles. Her crown has twelve stars, her robe flows with embroidered veins. One hand rests on her belly where blood nourishes new life. Rivers of milk and blood flow from her in creative abundance. Mood: the mother's blood sacrifice, creating life through the sharing of vital essence, fertility through flow."
+      },
+      {
+        "id": "maj_04",
+        "name": "The Emperor",
+        "legacy": "IV",
+        "prompt": "A commanding figure sits on a throne carved from battle-stained stone, scepter topped with a clenched fist showing blood oath. His armor bears the patina of old bloodstains. Ram skulls flank his throne, horns stained with ritual marks. He rules through bloodright and the sacrifices made for order. Mood: patriarchal authority sealed in blood, power inherited and defended through vital cost."
+      },
+      {
+        "id": "maj_05",
+        "name": "The Hierophant",
+        "legacy": "V",
+        "prompt": "A robed figure performs sacred ritual, offering communion cup filled with symbolic blood. Keys at their waist are stained with rust. Two acolytes kneel receiving blessing marked on foreheads with crimson oil. Behind, stained glass windows show saints' martyrdom. Mood: spiritual guide through sacrifice, teaching that all faith is sealed in blood, the sacred made visceral."
+      },
+      {
+        "id": "maj_06",
+        "name": "The Lovers",
+        "legacy": "VI",
+        "prompt": "Two figures face each other, palms cut and pressed together in blood oath. Their hearts visible and beating in synchronization. An angel above holds a bowl catching their mingled blood. Veins from each intertwine toward the other. Roses bloom where blood drops hit earth. Mood: connection through shared life essence, love sealed in blood covenant, two becoming one through vital exchange."
+      },
+      {
+        "id": "maj_07",
+        "name": "The Chariot",
+        "legacy": "VII",
+        "prompt": "A warrior rides a chariot pulled by two creatures—one pale, one flushed—representing anemic control and rushing passion. Their armor shows fresh blood drops from wounds driving them forward. The chariot wheels leave trails of red. Victory through blood spilled and adrenaline surging. Mood: triumph through vital sacrifice, willpower fueled by the blood's fire, conquest at the price of wounds."
+      },
+      {
+        "id": "maj_08",
+        "name": "Strength",
+        "legacy": "VIII",
+        "prompt": "A gentle figure embraces a lion, both showing their hearts beating through translucent flesh. The infinity symbol above pulses like a heartbeat monitor. Her hands calm the lion's bloodlust with compassionate touch. No violence needed, only understanding of shared vital force. Mood: quiet mastery over primal blood instinct, compassion stronger than the urge to wound, taming through love not fear."
+      },
+      {
+        "id": "maj_09",
+        "name": "The Hermit",
+        "legacy": "IX",
+        "prompt": "A solitary figure climbs a mountain peak, lantern containing a heart that still beats and glows. Their robes trail blood drops marking the path of solitary sacrifice. Behind them, a trail of life given to reach enlightenment. They have paid the price of isolation in vital currency. Mood: solitary wisdom earned through bloodletting, illumination through understanding the cost of knowledge."
+      },
+      {
+        "id": "maj_10",
+        "name": "Wheel of Fortune",
+        "legacy": "X",
+        "prompt": "A great wheel turns, its rim marked with blood types, showing the cycle of life and death. Creatures rise and fall on it—some bleeding, some healing, some being born. At the center, a heart pumps fate through the system. All things flow in cycles of vitality and loss. Mood: the cyclical nature of life force, fortune measured in blood given and received, the spinning of birth and death."
+      },
+      {
+        "id": "maj_11",
+        "name": "Justice",
+        "legacy": "XI",
+        "prompt": "A blindfolded figure holds scales—on one side a heart still beating, on the other a sword stained with evidence. Their blade of truth has drawn blood in service of fairness. Behind them, perfect balance between mercy and consequence. All debts paid in vital coin. Mood: impartial judgment through blood debt and blood price, perfect balance of life given for life taken."
+      },
+      {
+        "id": "maj_12",
+        "name": "The Hanged Man",
+        "legacy": "XII",
+        "prompt": "A figure hangs suspended by one foot, arms bound behind. Blood rushes to their head bringing visions. Their inverted position causes enlightenment through the reversal of flow. A halo glows from pooled blood bringing consciousness. Voluntary sacrifice opening eyes to truth. Mood: enlightenment through suspension and sacrifice, wisdom gained by giving blood for perspective, martyrdom chosen willingly."
+      },
+      {
+        "id": "maj_13",
+        "name": "Death",
+        "legacy": "XIII",
+        "prompt": "A skeletal figure in armor rides a pale horse through a field where roses grow from spilled blood. A banner shows the mystical rose of immortality. Bodies fall and flowers rise. Not ending but transformation—blood returns to earth to nourish new life. The great recycling of vital essence. Mood: transformation through the spilling of life force, death as return of blood to the source, the sacred exchange continues."
+      },
+      {
+        "id": "maj_14",
+        "name": "Temperance",
+        "legacy": "XIV",
+        "prompt": "An angelic figure pours blood between two vessels, mixing arterial and venous, balancing oxygen and carbon dioxide. One foot in water one on land, wings spread showing vein patterns. The eternal transfusion, the perfect balance of life's chemistry. Mood: balance through proper flow of vitality, tempering passion with peace, mixing the hot and cool blood to perfect life."
+      },
+      {
+        "id": "maj_15",
+        "name": "The Devil",
+        "legacy": "XV",
+        "prompt": "A horned figure sits on a throne of flesh, chains made of veins binding willing prisoners. Their eyes glow with bloodlust and addiction. Behind them, temptations manifest—violence, passion, consumption. The chains are real, woven from dependency on blood rush and adrenaline. Mood: seduction of bloodlust, binding through addiction to intensity, pleasure and pain found in vital excess."
+      },
+      {
+        "id": "maj_16",
+        "name": "The Tower",
+        "legacy": "XVI",
+        "prompt": "A tower of bone and stone struck by lightning, blood vessels rupturing as the structure falls. Figures leap from windows, bloodied but freed from false security. The sudden hemorrhage of truth, the catastrophic breaking that releases pressure. Wounds that had to open. Mood: catastrophic rupture of built structures, revelation through blood spilled suddenly, liberation through breaking and bleeding."
+      },
+      {
+        "id": "maj_17",
+        "name": "The Star",
+        "legacy": "XVII",
+        "prompt": "A figure kneels by water, pouring blood from vessels into earth and stream, nourishing both. Above, stars shine with the light of distant ancestors' eyes. She is naked and unashamed, offering her essence freely. Hope found in the willingness to bleed for growth. Mood: hope born from sacrifice, finding renewal through the gift of vitality, healing through generous bloodletting."
+      },
+      {
+        "id": "maj_18",
+        "name": "The Moon",
+        "legacy": "XVIII",
+        "prompt": "A blood-red moon rises over a landscape where a wolf and dog howl at mysteries. A crayfish emerges from crimson pools. The path winds between two towers dripping with rust. Illusion and instinct blur in the lunar cycle that governs blood and tide. Mood: the blood moon's pull on instinct, fears and truths rising from the vein, the cycle that governs vital rhythms."
+      },
+      {
+        "id": "maj_19",
+        "name": "The Sun",
+        "legacy": "XIX",
+        "prompt": "A radiant sun shines on a child riding a white horse, both glowing with healthy blood flow. Roses bloom behind them in the warmth that stirs circulation. Joy and vitality in perfect health, life's blood flowing freely without blockage. Innocence before the first wound. Mood: enlightenment through perfect vital health, finding truth in the warmth of life flowing freely, joy of circulation unimpeded."
+      },
+      {
+        "id": "maj_20",
+        "name": "Judgement",
+        "legacy": "XX",
+        "prompt": "An angel sounds a trumpet as figures rise from earth, blood returning to their bodies, wounds healing. The dead resurrect as blood flows back into their veins. Past and present merge as all bloodlines converge. Final accounting of blood debts given and owed. Mood: resurrection through return of vital essence, awakening as life force is restored, judgment of how blood was spent in life."
+      },
+      {
+        "id": "maj_21",
+        "name": "The World",
+        "legacy": "XXI",
+        "prompt": "A dancing figure suspended in a wreath of living veins, achieving unity with the circulation of all existence. The four elemental beasts watch from corners, each showing their beating hearts. Completion through understanding the one blood that flows through all. The universal vein connects everything. Mood: cosmic unity through shared vital essence, completion through recognizing all blood as one flow, the eternal circulation of life."
+      }
+    ],
+    "minor": {
+      "wands": [
+        {
+          "id": "wan_01",
+          "name": "Ace of Wands",
+          "desc": "A single bone staff crowned with a beating heart emerges from clouds, sprouting fresh blood vessels. Pure passionate power, the first pulse of vital creative energy. Deep scarlet and ruby red radiate with arterial heat. The initiating heartbeat of action and desire."
+        },
+        {
+          "id": "wan_02",
+          "name": "Two of Wands",
+          "desc": "A figure stands holding one bone staff while another is planted, palm cut and bleeding onto a map showing territories of conquest. Surveying domains won through blood price. Partnership between personal vitality and worldly power, planning expansion through sacrifice."
+        },
+        {
+          "id": "wan_03",
+          "name": "Three of Wands",
+          "desc": "Three bone staffs planted firmly, a figure with bandaged hands watching ships sail with red sails toward horizon. Established power earned through bloodshed, watching investments of vitality manifest. Expansion through wounds willingly taken."
+        },
+        {
+          "id": "wan_04",
+          "name": "Four of Wands",
+          "desc": "Four bone staffs create an archway decorated with garlands of roses and veins. Celebration of bloodline union, marriage or alliance sealed. Joy found in family bonds, stability through shared vital heritage. The hearth fire warms shared blood."
+        },
+        {
+          "id": "wan_05",
+          "name": "Five of Wands",
+          "desc": "Five figures clash with bone staffs, each bleeding from minor cuts as they compete. Adrenaline surges through veins as blood heats with contest. Healthy conflict that stirs circulation, competition that enlivens. The good fight that makes hearts pound."
+        },
+        {
+          "id": "wan_06",
+          "name": "Six of Wands",
+          "desc": "A crowned figure rides victoriously, bone staff raised, wearing garland of crimson roses. Followers press forward offering bloody palms in salute. Triumph earned through sacrifice recognized publicly. Success that cost vital currency celebrated."
+        },
+        {
+          "id": "wan_07",
+          "name": "Seven of Wands",
+          "desc": "A bloodied figure stands atop a hill, defending position with one bone staff against six attackers below. Wounded but determined, they hold ground paid for with their own blood. Courage in defending what was earned through vital sacrifice."
+        },
+        {
+          "id": "wan_08",
+          "name": "Eight of Wands",
+          "desc": "Eight bone staffs fly through air like arrows, each trailing drops of blood. Swift action propelled by vital urgency. Messages sent that carry the sender's essence. The rush of blood and adrenaline driving rapid movement toward goal."
+        },
+        {
+          "id": "wan_09",
+          "name": "Nine of Wands",
+          "desc": "A scarred warrior leans on one bone staff, eight others planted behind as barrier. Bandaged and weary from defending territory paid for in blood. Resilience through surviving wounds, standing guard despite the cost to personal vitality."
+        },
+        {
+          "id": "wan_10",
+          "name": "Ten of Wands",
+          "desc": "A figure struggles carrying ten bone staffs, body bent and bleeding from the burden. Drained almost to anemia by responsibility's weight. Oppressed by duties that demand constant vital sacrifice. The exhaustion of giving too much blood to the cause."
+        },
+        {
+          "id": "wan_11",
+          "name": "Page of Wands",
+          "desc": "A young figure holds a bone staff crowned with a small beating heart, studying it with fascination. Fresh bandages on their palms from first blood offerings. Eager to learn the cost and power of vital sacrifice. Youthful passion just beginning to understand blood's price."
+        },
+        {
+          "id": "wan_12",
+          "name": "Knight of Wands",
+          "desc": "A knight charges forward on a blood-red horse, bone staff raised, fresh wounds visible but ignored in the rush. Reckless courage fueled by adrenaline and hot blood. Passionate pursuit without counting the vital cost. Action over caution."
+        },
+        {
+          "id": "wan_13",
+          "name": "Queen of Wands",
+          "desc": "A regal figure sits on a throne decorated with lions and hearts, bone staff in hand. Her vital energy radiates confidence. A red cat sits at her feet. She commands through passionate presence, her life force magnetic and strong. Charismatic blood-warmth."
+        },
+        {
+          "id": "wan_14",
+          "name": "King of Wands",
+          "desc": "A crowned figure sits on throne draped with lion pelts, bone staff radiating authority. Salamanders symbolizing vital heat coil at his feet. Natural leadership through strength of life force, visionary power fueled by passionate blood. Command through vital presence."
+        }
+      ],
+      "cups": [
+        {
+          "id": "cup_01",
+          "name": "Ace of Cups",
+          "desc": "A chalice fashioned from a heart chamber overflows with blood that transforms into roses as it pours forth. Pure emotional beginning, the first flow of love and connection. Burgundy and rose wine hues swirl with possibility. The opening of the heart to give and receive."
+        },
+        {
+          "id": "cup_02",
+          "name": "Two of Cups",
+          "desc": "Two figures face each other, each holding a heart-chalice, blood vessels extending from the cups to intertwine between them. A caduceus of veins spirals above. Partnership sealed through vital exchange, love that flows between. Emotional bond made visceral through shared life force."
+        },
+        {
+          "id": "cup_03",
+          "name": "Three of Cups",
+          "desc": "Three figures raise heart-chalices in celebration, blood-wine sloshing as they toast. Their joy connects them through shared emotional vitality. Friendship celebrated through flowing cups, community through shared feelings that run as deep as blood ties."
+        },
+        {
+          "id": "cup_04",
+          "name": "Four of Cups",
+          "desc": "A figure sits beneath a tree, arms crossed, three heart-chalices before them untouched. A fourth is offered by a hand reaching from clouds dripping blood. Dissatisfaction despite emotional offerings, contemplating whether to bleed more for connection. Satiation or apathy."
+        },
+        {
+          "id": "cup_05",
+          "name": "Five of Cups",
+          "desc": "A cloaked figure mourns three spilled heart-chalices, blood seeping into earth, while two stand upright behind. A bridge crosses a blood-red river. Grief for emotional losses, focusing on love that bled out while connection still remains. Learning through heartbreak's hemorrhage."
+        },
+        {
+          "id": "cup_06",
+          "name": "Six of Cups",
+          "desc": "An elder figure offers a heart-chalice filled with blood-memory to a child. Roses bloom around them in ancestral garden. Nostalgia for bloodline and childhood, inheritance of emotional legacy. Gifts from the past carrying vital essence of family."
+        },
+        {
+          "id": "cup_07",
+          "name": "Seven of Cups",
+          "desc": "Seven heart-chalices float in clouds, each containing different visions formed from blood—love, fear, desire, fantasy. A figure stands bewildered by emotional choices. Illusion in matters of the heart, too many paths of passion to choose between."
+        },
+        {
+          "id": "cup_08",
+          "name": "Eight of Cups",
+          "desc": "A figure walks away from eight carefully stacked heart-chalices, leaving behind blood offerings given to relationships. The moon rises blood-red above. Abandonment of emotional investments, seeking deeper connection even at cost of what was already given. Moving on from sunk costs."
+        },
+        {
+          "id": "cup_09",
+          "name": "Nine of Cups",
+          "desc": "A satisfied figure sits before nine heart-chalices arranged in arc, arms crossed over their own full heart. Emotional fulfillment achieved, wishes granted. Contentment in love received and given, the heart full to capacity with vital emotional connection."
+        },
+        {
+          "id": "cup_10",
+          "name": "Ten of Cups",
+          "desc": "A family stands together under an arc of ten heart-chalices, blood-rainbow spanning the sky above. Complete emotional harmony through bloodline and chosen family. Lasting happiness through shared vital bonds. The full heart's completion in love."
+        },
+        {
+          "id": "cup_11",
+          "name": "Page of Cups",
+          "desc": "A young figure holds a heart-chalice from which a small fish swims in blood-wine. They study the creature with wonder. Emotional beginnings, intuitive messages from the heart. Youthful sensitivity opening to feelings that run deep as blood."
+        },
+        {
+          "id": "cup_12",
+          "name": "Knight of Cups",
+          "desc": "A knight rides a pale horse, offering a heart-chalice overflowing with blood-wine. A romantic dreamer following the heart's flow. Idealistic pursuit of love and connection, offering their vital emotional essence freely. The passionate lover."
+        },
+        {
+          "id": "cup_13",
+          "name": "Queen of Cups",
+          "desc": "A regal figure sits on throne by a sea of blood-red wine, holding a heart-chalice with both hands. Deeply intuitive, she feels all emotional currents. Compassionate mastery of feeling, empathic connection that shares vital essence. The nurturing heart."
+        },
+        {
+          "id": "cup_14",
+          "name": "King of Cups",
+          "desc": "A crowned figure sits on throne floating on wine-dark sea, holding a heart-chalice with emotional mastery. Ships with red sails voyage behind. Diplomatic control over deep feelings, wise leadership through understanding the blood's emotional tides. The mature heart."
+        }
+      ],
+      "swords": [
+        {
+          "id": "swo_01",
+          "name": "Ace of Swords",
+          "desc": "A single sword pierces upward through clouds, its blade freshly bloodied from cutting through illusion. Truth revealed through the wound that must be made. Pure mental clarity through the cut that draws honesty from the vein. Steel gray and rust-red truth."
+        },
+        {
+          "id": "swo_02",
+          "name": "Two of Swords",
+          "desc": "A blindfolded figure sits holding two bloodied swords crossed before their heart. Refusing to see the choice that must draw blood. Mental stalemate where either decision will wound. The difficult choice between two cuts that must be made."
+        },
+        {
+          "id": "swo_03",
+          "name": "Three of Swords",
+          "desc": "A heart pierced by three swords, blood running down the blades as rain falls. The pain of truth cutting into emotion, necessary wounds that bring clarity. Heartbreak as the price of honesty. Sorrow from cuts that had to be made."
+        },
+        {
+          "id": "swo_04",
+          "name": "Four of Swords",
+          "desc": "A figure lies in repose with three swords mounted above, one beneath, bandages covering recent wounds. Rest after battle, meditation on scars earned. Recovery through stillness after blood was spilled. Mental peace found in healing time."
+        },
+        {
+          "id": "swo_05",
+          "name": "Five of Swords",
+          "desc": "A figure gathers three bloodied swords while two others retreat nursing wounds, leaving their weapons. Victory through cutting but at cost of honor. Conflict where all bled and none won cleanly. The hollow triumph of wounding others."
+        },
+        {
+          "id": "swo_06",
+          "name": "Six of Swords",
+          "desc": "A figure guides a boat through blood-red waters, six swords standing upright bearing witness to past wounds. Moving away from battleground toward calmer shores. Transition after conflict, carrying scars but leaving the field where blood was spilled."
+        },
+        {
+          "id": "swo_07",
+          "name": "Seven of Swords",
+          "desc": "A figure sneaks away carrying five bloodied swords, leaving two behind. Strategic retreat with weapons that have seen use. Cunning in choosing which battles to carry forward, which wounds to own. The clever escape carrying vital knowledge."
+        },
+        {
+          "id": "swo_08",
+          "name": "Eight of Swords",
+          "desc": "A blindfolded bound figure surrounded by eight swords, some rust-stained. The bonds are loose but fear keeps them still. Mental imprisonment by fear of cuts already received. Self-imposed limitation from wounds that taught caution. Freedom waits if they move."
+        },
+        {
+          "id": "swo_09",
+          "name": "Nine of Swords",
+          "desc": "A figure sits up in darkness, head in hands, nine swords mounted on wall representing wounds carried in memory. Nightmares of old cuts reopened in dreams. Anxiety from blood spilled in the past. Mental anguish from scars that won't fade."
+        },
+        {
+          "id": "swo_10",
+          "name": "Ten of Swords",
+          "desc": "A figure lies face-down with ten swords in their back, blood pooling beneath them. Rock bottom, complete defeat through accumulated wounds. But dawn rises beyond—the worst bleeding is over. Nowhere left to fall, only recovery ahead."
+        },
+        {
+          "id": "swo_11",
+          "name": "Page of Swords",
+          "desc": "A young figure holds a sword aloft testing its edge, a small cut on their thumb showing first blood. Alert and curious about truth's cost. Beginning to learn that clarity requires cuts. Youthful eagerness to draw truth even at price."
+        },
+        {
+          "id": "swo_12",
+          "name": "Knight of Swords",
+          "desc": "A knight charges forward on a gray horse, sword raised and bloodied from swift decisive cuts. Single-minded pursuit of truth regardless of wounds given or received. Rushing toward clarity even if it means bleeding for it. Swift action through necessary violence."
+        },
+        {
+          "id": "swo_13",
+          "name": "Queen of Swords",
+          "desc": "A regal figure sits on throne amid cold clouds, holding a sword that has drawn blood in service of truth. Clear-minded and direct, she makes cuts that must be made. Intellectual mastery through acceptance of truth's price. Independent thought earned through wounds."
+        },
+        {
+          "id": "swo_14",
+          "name": "King of Swords",
+          "desc": "A crowned figure sits on throne holding a sword stained from judicial use. Butterflies flutter around him bearing bloodstains. Intellectual authority through fair application of cuts that bring justice. Leadership through understanding when blood must be drawn for truth."
+        }
+      ],
+      "pentacles": [
+        {
+          "id": "pen_01",
+          "name": "Ace of Pentacles",
+          "desc": "A hand emerges from clouds holding a single coin sealed with a blood thumbprint. Pure material beginning bought with vital offering. Deep oxblood and earth tones mark the foundation built through sacrifice. The first investment of life's energy into manifest form."
+        },
+        {
+          "id": "pen_02",
+          "name": "Two of Pentacles",
+          "desc": "A figure dances juggling two blood-sealed coins connected by infinity symbol. Ships ride blood-red waves behind. Balance in managing resources earned through vital cost. Adaptation in handling investments that required sacrifice. The constant exchange of life force."
+        },
+        {
+          "id": "pen_03",
+          "name": "Three of Pentacles",
+          "desc": "Three figures work together in workshop, creating architecture with hands bloodied from effort. Three blood-sealed coins mark their collaborative achievement. Skilled work earned through vital expenditure, building through sweat and sacrifice. Teamwork through shared cost."
+        },
+        {
+          "id": "pen_04",
+          "name": "Four of Pentacles",
+          "desc": "A figure sits clutching four blood-sealed coins—crown on one, feet on two, arms around fourth. Possessive grip on resources earned through sacrifice. Hoarding what cost vital energy to obtain. Security through holding tight to investments of self."
+        },
+        {
+          "id": "pen_05",
+          "name": "Five of Pentacles",
+          "desc": "Two figures trudge through snow, poor and wounded, passing beneath stained glass window showing five blood-sealed coins. Material hardship after sacrifice that didn't pay off. Loss despite vital energy given. The poverty that comes from blood spent unwisely."
+        },
+        {
+          "id": "pen_06",
+          "name": "Six of Pentacles",
+          "desc": "A figure with scales distributes blood-sealed coins to kneeling supplicants. Generosity with resources that cost vital energy to earn. Sharing wealth bought with sacrifice, understanding that circulation keeps life flowing. Charity from those who know the price."
+        },
+        {
+          "id": "pen_07",
+          "name": "Seven of Pentacles",
+          "desc": "A figure leans on shovel, contemplating seven blood-sealed coins growing on vines, hands blistered from labor. Patient investment of vital energy into long-term growth. Assessing return on sacrifice made. The waiting after blood, sweat and tears."
+        },
+        {
+          "id": "pen_08",
+          "name": "Eight of Pentacles",
+          "desc": "A craftsperson works diligently, hands scarred and bleeding from repetition, focused on perfecting a blood-sealed coin. Seven completed coins displayed behind. Dedication to mastery through vital sacrifice repeated endlessly. Disciplined work that costs continuous energy."
+        },
+        {
+          "id": "pen_09",
+          "name": "Nine of Pentacles",
+          "desc": "A figure stands in abundant garden heavy with nine blood-sealed coins. A falcon perched on gloved hand. Self-sufficient success earned through vital discipline. Material abundance through understanding sacrifice's value. The wealth from blood wisely invested."
+        },
+        {
+          "id": "pen_10",
+          "name": "Ten of Pentacles",
+          "desc": "Three generations gather beneath family arch, ten blood-sealed coins arranged in ancestral tree pattern. Legacy built through bloodline sacrifice and effort. Wealth and tradition passed through vital inheritance. Material completion through family's accumulated offerings."
+        },
+        {
+          "id": "pen_11",
+          "name": "Page of Pentacles",
+          "desc": "A young figure stands studying a blood-sealed coin held aloft, fresh cuts on hands from first labor. Grounded and practical, beginning to understand material world's vital cost. Student learning that all wealth requires sacrifice of energy."
+        },
+        {
+          "id": "pen_12",
+          "name": "Knight of Pentacles",
+          "desc": "A knight sits steadily on dark horse, holding a blood-sealed coin with scarred but patient hands. Methodical progress through consistent vital investment. Responsible stewardship of resources earned through reliable sacrifice. Steady action that costs but pays."
+        },
+        {
+          "id": "pen_13",
+          "name": "Queen of Pentacles",
+          "desc": "A regal figure sits on throne in abundant garden, holding blood-sealed coin with nurturing care. Her prosperity came through vital wisdom. Practical mastery through understanding that growth requires sacrifice. The nurturer who knows the cost of abundance."
+        },
+        {
+          "id": "pen_14",
+          "name": "King of Pentacles",
+          "desc": "A crowned figure sits on throne decorated with bulls and grapes, holding blood-sealed coin representing empire built through vital investment. Mastery of material world through understanding sacrifice's mathematics. Wealth and power earned through disciplined spending of life force."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,463 @@
+{
+  "deck_metadata": {
+    "deck_name": "The Flash Ink Arcana",
+    "mood": "bold traditional americana with nautical grit",
+    "theme_overarching": "the sailor's journey tattooed into skin and soul, where every symbol carries the weight of the sea, love, loss, and the marks we bear as proof of who we've been",
+    "details": "A tarot deck rendered as classic tattoo flash art—bold black outlines, limited color palette (red, blue, yellow, green), traditional sailor motifs transformed into archetypal wisdom. Each card looks like it could be pulled from a 1940s tattoo parlor wall.",
+    "backofcard": "A sheet of vintage tattoo flash paper with nautical rope border, filled with small traditional designs—anchors, swallows, stars, roses—in classic red and black",
+    "card_spec": {
+      "aspect_ratio": "2.75:4.75",
+      "border": "Bold black line with nautical rope pattern corners",
+      "style": "Traditional American tattoo flash art, bold outlines, limited color palette",
+      "technical_details": "3000x4200px, RGB, 300dpi, high contrast essential, bold black lines"
+    }
+  },
+  "suits": {
+    "wands": {
+      "legacy_name": "Wands",
+      "element": "Fire",
+      "visuals": "Flaming torches, lit matches, burning ships, and phoenix feathers rendered in bold black outlines. Red and orange flames with yellow highlights. Traditional tattoo shading with strong black fills. Fire represents the sailor's passion, the torch carried across dark seas, the burning need to keep moving."
+    },
+    "cups": {
+      "legacy_name": "Cups",
+      "element": "Water",
+      "visuals": "Sacred hearts dripping tears, chalices overflowing, bottles with messages, and mermaids holding shells. Deep blues and teals for water, red for hearts. Classic tattoo waves in bold curves. Water represents emotional depths, rum shared between shipmates, love left in every port."
+    },
+    "swords": {
+      "legacy_name": "Swords",
+      "element": "Air",
+      "visuals": "Daggers through hearts, naval cutlasses, swallows in flight, and banners with text. Steel gray blades, red blood drops, yellow ribbon banners. Sharp traditional tattoo line work. Air represents decisions made at sea, words that cut, oaths sworn on steel."
+    },
+    "pentacles": {
+      "legacy_name": "Pentacles",
+      "element": "Earth",
+      "visuals": "Anchors, nautical stars, ship wheels, coins with compass roses. Gold and yellow for coins, blue for nautical stars, black for anchors. Solid traditional tattoo fills. Earth represents stability sought, wages earned, ports called home, the weight that keeps you grounded."
+    }
+  },
+  "cards": {
+    "major": [
+      {
+        "id": "maj_00",
+        "name": "The Fool",
+        "legacy": "0",
+        "prompt": "A young sailor steps off a dock edge toward an open sea, duffle bag over shoulder with small dog tattoo coming to life beside him. Behind, a rising sun in classic rays. Bold black outline, primary colors. Banner below reads 'BORN TO WANDER'. Traditional tattoo flash style with thick lines and simple shading. Mood: bold traditional americana with nautical grit, the first voyage begins."
+      },
+      {
+        "id": "maj_01",
+        "name": "The Magician",
+        "legacy": "I",
+        "prompt": "A tattooed sailor stands at a workbench, one hand pointing up showing nautical star on palm, one pointing down. Four tools before him: torch, chalice, dagger, anchor. Ribbon banner overhead reads 'AS ABOVE SO BELOW'. Bold traditional tattoo style with strong black outlines. Red, blue, yellow palette. Mood: mastery of the sailor's arts, command over all elements of the journey."
+      },
+      {
+        "id": "maj_02",
+        "name": "The High Priestess",
+        "legacy": "II",
+        "prompt": "A pin-up style woman sits between two anchors (marked B and J), holding a scroll with nautical charts. Behind her, a curtain of waves. Crescent moon above. Traditional tattoo beauty with roses in hair. Bold lines, classic red lips, blue waves. Banner reads 'KEEPER OF SECRETS'. Mood: guardian of hidden knowledge, mysteries of the deep."
+      },
+      {
+        "id": "maj_03",
+        "name": "The Empress",
+        "legacy": "III",
+        "prompt": "A maternal pin-up figure reclines among blooming roses and wheat, crown of twelve stars above. A heart with 'MOTHER' banner at her chest. Abundant traditional tattoo flora surrounds her. Bold outlines, red roses, green leaves, yellow wheat. Venus symbol prominent. Mood: the nurturing force, fertility, mother waiting at home port."
+      },
+      {
+        "id": "maj_04",
+        "name": "The Emperor",
+        "legacy": "IV",
+        "prompt": "A stern ship captain sits on throne made of ship wheels and anchors, holding a scepter topped with anchor. Ram skull tattoos flank the throne. Banner reads 'AUTHORITY'. Bold traditional tattoo style, military precision. Red, blue, gold colors. Strong angular composition. Mood: command of the vessel, order imposed on chaos of the sea."
+      },
+      {
+        "id": "maj_05",
+        "name": "The Hierophant",
+        "legacy": "V",
+        "prompt": "An old sailor with long beard holds up two keys crossed, blessing two young sailors who kneel before him. Behind, a traditional ship's wheel with cross. Banner reads 'OLD SALT WISDOM'. Classic tattoo elder figure, bold lines. Naval traditions passed down. Mood: teaching the old ways, initiation into seafaring brotherhood."
+      },
+      {
+        "id": "maj_06",
+        "name": "The Lovers",
+        "legacy": "VI",
+        "prompt": "A sailor and pin-up girl face each other, hands clasped with matching anchor tattoos. Above, an eagle with spread wings. Hearts connect between them on chains. Banner reads 'TRUE LOVE'. Bold traditional tattoo romance style. Red hearts, blue uniforms, classic composition. Roses bloom at their feet. Mood: love tested by distance, devotion across the seas."
+      },
+      {
+        "id": "maj_07",
+        "name": "The Chariot",
+        "legacy": "VII",
+        "prompt": "A sailor stands at the helm between two ship figureheads—one light, one dark—pulling his vessel forward. Ship cuts through bold traditional waves. Banner reads 'FULL STEAM AHEAD'. Strong angular composition, red and blue contrast. Naval victory imagery. Mood: triumph through will, driving forward despite opposing currents."
+      },
+      {
+        "id": "maj_08",
+        "name": "Strength",
+        "legacy": "VIII",
+        "prompt": "A pin-up woman gently holds the jaws of a traditional tattoo tiger, infinity symbol as a rope above. Roses surround them. Banner reads 'GENTLE POWER'. Bold lines, classic tattoo animal style. Red roses, yellow tiger, calm composition. She wears a lei of flowers. Mood: taming wild nature through compassion, strength without brutality."
+      },
+      {
+        "id": "maj_09",
+        "name": "The Hermit",
+        "legacy": "IX",
+        "prompt": "An old sailor climbs a lighthouse stairway, holding a lantern that shines with nautical star light. His coat covered in traditional tattoos of past voyages. Banner reads 'LONE WATCH'. Bold traditional style, emphasis on the light. Simple color palette, strong shadows. Mood: solitary wisdom, the lighthouse keeper, guidance from isolation."
+      },
+      {
+        "id": "maj_10",
+        "name": "Wheel of Fortune",
+        "legacy": "X",
+        "prompt": "A great ship's wheel turns in the center, traditional tattoo creatures on each spoke—eagle rising, shark descending, sailor climbing, mermaid swimming. Central anchor holds it all. Banner reads 'FATE TURNS'. Bold circular composition, traditional tattoo symbolism. Red, blue, yellow quarters. Mood: fortune's turning tide, cycles of luck at sea."
+      },
+      {
+        "id": "maj_11",
+        "name": "Justice",
+        "legacy": "XI",
+        "prompt": "A blindfolded pin-up holds scales balanced with anchor on one side, heart on the other. Sword of naval cutlass style behind her. Banner reads 'FAIR WINDS'. Traditional tattoo lady justice, bold symmetrical composition. Red and blue balance. Strong black outlines. Mood: judgment in maritime law, balance between duty and heart."
+      },
+      {
+        "id": "maj_12",
+        "name": "The Hanged Man",
+        "legacy": "XII",
+        "prompt": "A sailor hangs upside-down from ship's rigging by one foot, arms bound with rope. Halo of nautical star above head. Expression peaceful, traditional tattoo style. Banner reads 'SACRIFICE'. Bold composition, rope details prominent. Simple colors emphasizing the inversion. Mood: willing sacrifice, perspective gained through surrender to the ship's needs."
+      },
+      {
+        "id": "maj_13",
+        "name": "Death",
+        "legacy": "XIII",
+        "prompt": "A skeleton in naval uniform rides a pale horse through waves, banner showing skull and crossbones. Ship sinks behind as new sunrise emerges ahead. Traditional tattoo death imagery. Banner reads 'CHANGE COURSE'. Bold black skeleton, white horse, red sunrise. Mood: transformation through the sailor's death and rebirth in each port."
+      },
+      {
+        "id": "maj_14",
+        "name": "Temperance",
+        "legacy": "XIV",
+        "prompt": "An angel in sailor garb pours liquid between two bottles labeled RUM and WATER, wings spread showing traditional feather style. One foot on dock, one in water. Banner reads 'BALANCE'. Traditional tattoo angel, bold wings, simple composition. Blue water, amber liquid. Mood: tempering the sailor's excess, mixing the bitter and sweet."
+      },
+      {
+        "id": "maj_15",
+        "name": "The Devil",
+        "legacy": "XV",
+        "prompt": "A devil figure with anchor horns sits on rum barrels, two sailors chained but loosely by their own anchor tattoos. Behind, temptations of every port. Banner reads 'BOUND BY CHOICE'. Traditional tattoo devil imagery, red skin, bold chains. Dark humor in the composition. Mood: seduction of port vices, chains of addiction to the sailor's life."
+      },
+      {
+        "id": "maj_16",
+        "name": "The Tower",
+        "legacy": "XVI",
+        "prompt": "A lighthouse struck by lightning bolt, bricks exploding outward, two figures falling into waves below. Lightning in traditional tattoo zig-zag style. Banner reads 'SHIPWRECK'. Bold dramatic composition, red lightning, black tower, blue waves. Strong angular destruction. Mood: catastrophic storm, sudden destruction of false security."
+      },
+      {
+        "id": "maj_17",
+        "name": "The Star",
+        "legacy": "XVII",
+        "prompt": "A nude pin-up woman kneels at shore, pouring water from two bottles into sea and sand. Above, one large nautical star and seven smaller ones. Swallows fly around her. Banner reads 'HOPE FLOATS'. Traditional tattoo star style, bold simple shading. Blue water, yellow stars. Mood: hope after the storm, guidance by the stars, renewal at peaceful shore."
+      },
+      {
+        "id": "maj_18",
+        "name": "The Moon",
+        "legacy": "XVIII",
+        "prompt": "A crescent moon face in traditional style looks down on a path between two lighthouses. A wolf and dog howl, a crab emerges from water. Banner reads 'STRANGE TIDES'. Traditional tattoo moon with face, bold waves. Mystery in simple lines. Blue and yellow palette. Mood: navigating by moonlight, instinct and illusion on night watch."
+      },
+      {
+        "id": "maj_19",
+        "name": "The Sun",
+        "legacy": "XIX",
+        "prompt": "A bright sun with traditional rays shines on a child riding a white horse on the beach. Sunflowers with nautical stars in centers. Banner reads 'CLEAR SKIES'. Bold traditional sun face, simple joyful composition. Yellow sun, red flowers, white horse. Pure classic tattoo style. Mood: perfect weather, joy of safe harbor, innocence preserved."
+      },
+      {
+        "id": "maj_20",
+        "name": "Judgement",
+        "legacy": "XX",
+        "prompt": "An angel blows a trumpet above rising waters where sailors emerge from sunken ships, returning to life. Traditional tattoo resurrection scene. Banner reads 'ALL HANDS ON DECK'. Bold angel wings, multiple figures rising. Red trumpet, blue water. Strong upward composition. Mood: the final muster, all souls called home, judgment by the sea."
+      },
+      {
+        "id": "maj_21",
+        "name": "The World",
+        "legacy": "XXI",
+        "prompt": "A dancing pin-up woman in center of a wreath made of rope and nautical symbols, holding flags. Four corners show traditional eagle, anchor, dagger, and heart. Banner reads 'VOYAGE COMPLETE'. Bold circular composition, traditional tattoo completion. Full color, balanced design. Mood: the world circumnavigated, the full back piece finished, journey complete."
+      }
+    ],
+    "minor": {
+      "wands": [
+        {
+          "id": "wan_01",
+          "name": "Ace of Wands",
+          "desc": "A hand emerging from traditional clouds grips a flaming torch. Bold black outline, red and orange flames with yellow highlights. Banner reads 'IGNITE'. Pure beginning of passionate action, the first flame lit aboard ship. Traditional tattoo fire, strong simple composition."
+        },
+        {
+          "id": "wan_02",
+          "name": "Two of Wands",
+          "desc": "A sailor stands between two lit torches, one hand on a globe marked with nautical routes. Banner reads 'CHART THE COURSE'. Planning which seas to sail. Traditional composition, red flames, blue ocean on globe. Bold black outlines."
+        },
+        {
+          "id": "wan_03",
+          "name": "Three of Wands",
+          "desc": "Three torches planted on a cliff, a sailor watching three ships with full sails approaching the horizon. Banner reads 'SHIPS INCOMING'. Bold traditional waves, red flags on ships. Established plans manifesting. Classic tattoo perspective."
+        },
+        {
+          "id": "wan_04",
+          "name": "Four of Wands",
+          "desc": "Four torches create an archway, sailors celebrating with raised rum bottles beneath. Port celebration, traditional tattoo party scene. Banner reads 'SAFE HARBOR'. Red and blue bunting, yellow torch flames. Joy in arrival."
+        },
+        {
+          "id": "wan_05",
+          "name": "Five of Wands",
+          "desc": "Five sailors clash with flaming torches, traditional tattoo brawl style. Banner reads 'BAR FIGHT'. Dynamic crossed torches, red flames, muscled sailors. Chaotic but playful composition. Competition in port."
+        },
+        {
+          "id": "wan_06",
+          "name": "Six of Wands",
+          "desc": "A victorious sailor rides through port on shoulders of crew, holding high a torch wreathed with laurels. Banner reads 'HERO'S WELCOME'. Traditional tattoo triumph, red and yellow victory. Bold upward composition."
+        },
+        {
+          "id": "wan_07",
+          "name": "Seven of Wands",
+          "desc": "A sailor stands atop a ship's deck, defending with one torch against six others rising from below. Banner reads 'HOLD THE LINE'. Bold defensive stance, multiple torch flames. Traditional courage imagery."
+        },
+        {
+          "id": "wan_08",
+          "name": "Eight of Wands",
+          "desc": "Eight flaming torches fly like arrows across open sea toward distant shore. Banner reads 'FULL SAIL'. Swift action, traditional speed lines. Red flames trailing across blue. Bold diagonal composition."
+        },
+        {
+          "id": "wan_09",
+          "name": "Nine of Wands",
+          "desc": "A bandaged sailor leans on one torch, eight others planted behind forming a barrier. Banner reads 'BATTLE WORN'. Traditional tattoo resilience, red bandages, determined expression. Standing guard despite wounds."
+        },
+        {
+          "id": "wan_10",
+          "name": "Ten of Wands",
+          "desc": "A sailor struggles carrying ten torches, bent under their weight. Banner reads 'HEAVY LOAD'. Bold burdensome composition, multiple flames, strained figure. Traditional tattoo showing hardship."
+        },
+        {
+          "id": "wan_11",
+          "name": "Page of Wands",
+          "desc": "A young sailor holds a torch, studying the flame with curious expression. Small swallow tattoo on arm. Banner reads 'FIRST WATCH'. Eager youth, traditional tattoo style. Simple bold colors."
+        },
+        {
+          "id": "wan_12",
+          "name": "Knight of Wands",
+          "desc": "A sailor charges forward on a horse made of flame and waves, torch raised high. Banner reads 'RUSH AHEAD'. Bold dynamic action, red and orange motion. Traditional tattoo energy."
+        },
+        {
+          "id": "wan_13",
+          "name": "Queen of Wands",
+          "desc": "A pin-up woman sits on throne of torches, holding one flame confidently. Black cat with red collar at her feet. Banner reads 'FIRECRACKER'. Bold traditional beauty, red and yellow palette."
+        },
+        {
+          "id": "wan_14",
+          "name": "King of Wands",
+          "desc": "A bearded captain sits on throne wreathed in flames, torch scepter in hand. Salamander tattoos on throne. Banner reads 'CAPTAIN'S COMMAND'. Traditional tattoo authority, bold red and gold."
+        }
+      ],
+      "cups": [
+        {
+          "id": "cup_01",
+          "name": "Ace of Cups",
+          "desc": "A hand emerging from traditional clouds holds a chalice overflowing with water and red hearts. A dove in classic tattoo style descends. Banner reads 'TRUE HEART'. Beginning of love, emotional voyage starts. Bold red and blue."
+        },
+        {
+          "id": "cup_02",
+          "name": "Two of Cups",
+          "desc": "A sailor and pin-up toast chalices, their heart tattoos connecting via banner reading 'FOREVER'. Caduceus of entwined anchors above. Traditional tattoo romance, bold red hearts, blue cups."
+        },
+        {
+          "id": "cup_03",
+          "name": "Three of Cups",
+          "desc": "Three pin-ups raise chalices in celebration, dancing in traditional tattoo style. Banner reads 'SISTERS'. Friendship and joy, red dresses, blue cups. Bold celebratory composition."
+        },
+        {
+          "id": "cup_04",
+          "name": "Four of Cups",
+          "desc": "A sailor sits cross-armed beneath palm tree, three chalices before him, fourth offered from a cloud hand. Banner reads 'NOT ENOUGH'. Dissatisfaction in traditional tattoo style. Contemplative pose."
+        },
+        {
+          "id": "cup_05",
+          "name": "Five of Cups",
+          "desc": "A cloaked figure mourns three spilled chalices while two stand behind. A bridge of rope crosses water to distant shore. Banner reads 'LOST AT SEA'. Traditional grief, bold simple composition."
+        },
+        {
+          "id": "cup_06",
+          "name": "Six of Cups",
+          "desc": "An older sailor gives a chalice to a young sailor, surrounded by traditional roses. Home port memories. Banner reads 'OLD TIMES'. Nostalgia in bold lines, red roses, generational connection."
+        },
+        {
+          "id": "cup_07",
+          "name": "Seven of Cups",
+          "desc": "Seven chalices float in clouds, each containing different traditional tattoo visions—heart, dagger, ship, mermaid, treasure, skull, crown. Banner reads 'SAILOR'S DREAMS'. Illusion and choice, bold imagery."
+        },
+        {
+          "id": "cup_08",
+          "name": "Eight of Cups",
+          "desc": "A sailor walks away from eight stacked chalices, heading toward mountain with moon above. Banner reads 'SHIP OUT'. Leaving behind, seeking more. Traditional tattoo journey, bold composition."
+        },
+        {
+          "id": "cup_09",
+          "name": "Nine of Cups",
+          "desc": "A satisfied sailor sits before nine chalices arranged in arc, arms crossed with smile. Banner reads 'WISH GRANTED'. Traditional tattoo contentment, multiple cups, bold satisfaction."
+        },
+        {
+          "id": "cup_10",
+          "name": "Ten of Cups",
+          "desc": "A sailor family under rainbow of traditional tattoo rays, ten chalices forming arc above. Home at last. Banner reads 'FAMILY PORT'. Complete joy, bold rainbow, red hearts."
+        },
+        {
+          "id": "cup_11",
+          "name": "Page of Cups",
+          "desc": "A young sailor holds chalice from which a traditional tattoo fish emerges. Curious expression. Banner reads 'FIRST LOVE'. Emotional messages arriving, simple bold style, blue and red."
+        },
+        {
+          "id": "cup_12",
+          "name": "Knight of Cups",
+          "desc": "A sailor rides a horse made of waves, offering a chalice forward. Banner reads 'ROMANTIC VOYAGE'. Traditional tattoo idealism, bold movement, blue waves, red heart on chest."
+        },
+        {
+          "id": "cup_13",
+          "name": "Queen of Cups",
+          "desc": "A pin-up sits on throne beside traditional tattoo waves, holding chalice with mermaid design. Intuitive and emotional. Banner reads 'DEEP WATERS'. Bold beauty, blue and red."
+        },
+        {
+          "id": "cup_14",
+          "name": "King of Cups",
+          "desc": "A captain sits on throne floating on traditional waves, chalice in hand showing emotional control. Ships sail behind. Banner reads 'STEADY CAPTAIN'. Wise leadership, bold composition."
+        }
+      ],
+      "swords": [
+        {
+          "id": "swo_01",
+          "name": "Ace of Swords",
+          "desc": "A hand emerging from clouds grips a naval cutlass piercing through a crown. Banner reads 'CUT THROUGH'. Truth revealed, bold blade, traditional tattoo clarity. Steel gray and red drops."
+        },
+        {
+          "id": "swo_02",
+          "name": "Two of Swords",
+          "desc": "A blindfolded pin-up holds two crossed cutlasses before her. Crescent moon above. Banner reads 'HARD CHOICE'. Difficult decision, traditional balanced composition. Gray steel, simple colors."
+        },
+        {
+          "id": "swo_03",
+          "name": "Three of Swords",
+          "desc": "A traditional tattoo heart pierced by three daggers, blood drops falling. Storm clouds behind. Banner reads 'HEARTBREAK'. Pain of truth, bold simple composition, red and steel gray."
+        },
+        {
+          "id": "swo_04",
+          "name": "Four of Swords",
+          "desc": "A sailor rests in hammock, three cutlasses mounted on wall above, one beneath. Banner reads 'STAND DOWN'. Rest and recovery, traditional peaceful composition, simple colors."
+        },
+        {
+          "id": "swo_05",
+          "name": "Five of Swords",
+          "desc": "A sailor gathers three cutlasses while two walk away defeated. Banner reads 'HOLLOW WIN'. Victory without honor, traditional conflict scene, gray and red."
+        },
+        {
+          "id": "swo_06",
+          "name": "Six of Swords",
+          "desc": "A sailor guides a rowboat with six cutlasses standing upright, moving toward calmer waters. Banner reads 'SAIL AWAY'. Transition, traditional boat and water, bold waves."
+        },
+        {
+          "id": "swo_07",
+          "name": "Seven of Swords",
+          "desc": "A sailor sneaks away carrying five cutlasses, leaving two behind. Banner reads 'TAKE WHAT YOU CAN'. Strategic retreat, traditional tattoo cunning, dynamic composition."
+        },
+        {
+          "id": "swo_08",
+          "name": "Eight of Swords",
+          "desc": "A blindfolded woman bound with rope, surrounded by eight cutlasses planted in ground. Banner reads 'TRAPPED'. Self-imposed limitation, traditional bondage imagery, bold composition."
+        },
+        {
+          "id": "swo_09",
+          "name": "Nine of Swords",
+          "desc": "A figure sits up in bed, head in hands, nine cutlasses mounted on wall. Banner reads 'NIGHT TERRORS'. Anxiety and worry, traditional nightmare scene, dark shading."
+        },
+        {
+          "id": "swo_10",
+          "name": "Ten of Swords",
+          "desc": "A figure lies with ten daggers in back, dawn rising beyond. Banner reads 'ROCK BOTTOM'. Complete defeat, traditional tattoo finality, but hope in sunrise. Red and black."
+        },
+        {
+          "id": "swo_11",
+          "name": "Page of Swords",
+          "desc": "A young sailor holds cutlass aloft, alert and curious. Swallow tattoo visible. Banner reads 'SHARP MIND'. Mental agility, traditional tattoo youth, bold stance."
+        },
+        {
+          "id": "swo_12",
+          "name": "Knight of Swords",
+          "desc": "A sailor charges on horseback, cutlass raised high. Bold motion lines. Banner reads 'CHARGE'. Swift action, traditional tattoo energy, gray and red."
+        },
+        {
+          "id": "swo_13",
+          "name": "Queen of Swords",
+          "desc": "A pin-up sits on throne in clouds, holding cutlass upright. Butterflies around her. Banner reads 'SPEAK TRUE'. Clear-minded, traditional tattoo strength, bold composition."
+        },
+        {
+          "id": "swo_14",
+          "name": "King of Swords",
+          "desc": "A stern captain sits on throne holding cutlass of justice. Butterflies with skull markings flutter. Banner reads 'FAIR JUDGMENT'. Authority and truth, traditional bold style."
+        }
+      ],
+      "pentacles": [
+        {
+          "id": "pen_01",
+          "name": "Ace of Pentacles",
+          "desc": "A hand emerging from clouds holds a golden coin with nautical star design. Banner reads 'SOLID GOLD'. Material beginning, first wages earned. Bold traditional coin, yellow and gold."
+        },
+        {
+          "id": "pen_02",
+          "name": "Two of Pentacles",
+          "desc": "A sailor juggles two coins connected by infinity rope while ships ride waves behind. Banner reads 'BALANCE PAY'. Managing resources, traditional dynamic pose, gold and blue."
+        },
+        {
+          "id": "pen_03",
+          "name": "Three of Pentacles",
+          "desc": "Three sailors work together building a ship, three coins marking their collaboration. Banner reads 'CREW WORK'. Skilled teamwork, traditional labor scene, gold coins prominent."
+        },
+        {
+          "id": "pen_04",
+          "name": "Four of Pentacles",
+          "desc": "A sailor clutches four coins—crown on one, feet on two, arms around fourth. Banner reads 'HOLD FAST'. Security through possession, traditional tattoo grip, gold emphasis."
+        },
+        {
+          "id": "pen_05",
+          "name": "Five of Pentacles",
+          "desc": "Two sailors trudge through snow past a lit tavern window showing five coins inside. Banner reads 'BROKE'. Hardship despite visible help, traditional poverty scene, muted colors."
+        },
+        {
+          "id": "pen_06",
+          "name": "Six of Pentacles",
+          "desc": "A wealthy sailor with scales gives coins to kneeling shipmates. Banner reads 'SHARE THE HAUL'. Generosity, traditional charity scene, gold coins exchanged, balanced composition."
+        },
+        {
+          "id": "pen_07",
+          "name": "Seven of Pentacles",
+          "desc": "A sailor leans on shovel, contemplating seven coins growing on vine. Banner reads 'PATIENCE PAYS'. Investment and waiting, traditional garden scene, gold fruit."
+        },
+        {
+          "id": "pen_08",
+          "name": "Eight of Pentacles",
+          "desc": "A sailor works at bench engraving coins with nautical stars, seven completed above. Banner reads 'MASTER CRAFT'. Dedication to skill, traditional work scene, gold and tools."
+        },
+        {
+          "id": "pen_09",
+          "name": "Nine of Pentacles",
+          "desc": "A pin-up stands in abundant garden with nine coins, traditional tattoo bird on her gloved hand. Banner reads 'SELF MADE'. Independence and success, bold garden, gold coins."
+        },
+        {
+          "id": "pen_10",
+          "name": "Ten of Pentacles",
+          "desc": "Three generations of sailors under archway with ten coins arranged in traditional pattern. Banner reads 'FAMILY FORTUNE'. Legacy and inheritance, bold multi-figure composition, gold coins."
+        },
+        {
+          "id": "pen_11",
+          "name": "Page of Pentacles",
+          "desc": "A young sailor studies a coin with nautical star, notebook in other hand. Banner reads 'LEARN THE ROPES'. Practical beginning, traditional tattoo student, gold coin prominent."
+        },
+        {
+          "id": "pen_12",
+          "name": "Knight of Pentacles",
+          "desc": "A sailor sits steady on horse, holding coin carefully. Banner reads 'SLOW & STEADY'. Methodical progress, traditional reliable figure, gold coin and patient pose."
+        },
+        {
+          "id": "pen_13",
+          "name": "Queen of Pentacles",
+          "desc": "A pin-up sits on throne in garden with coin, traditional rabbits at her feet. Banner reads 'ABUNDANCE'. Nurturing prosperity, bold garden scene, gold and green."
+        },
+        {
+          "id": "pen_14",
+          "name": "King of Pentacles",
+          "desc": "A captain sits on throne with ships and treasure, holding large coin with anchor. Banner reads 'RICH CAPTAIN'. Mastery of material world, traditional wealth imagery, gold and authority."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,463 @@
+{
+  "deck_metadata": {
+    "deck_name": "The Wonder Circus",
+    "mood": "whimsical, joyful, and delightfully magical—where every moment sparkles with possibility",
+    "theme_overarching": "a carnival of everyday magic, celebrating wonder, play, connection, and the extraordinary hidden within the ordinary",
+    "details": "A jubilant tarot deck that reimagines life as a magical circus where everyone has a role to play. Each card bursts with color, celebration, and the infectious joy of performance, community, and childlike wonder. This deck reminds us that magic is real when we choose to see it.",
+    "backofcard": "A circus tent rendered in rainbow stripes with golden stars cascading across deep twilight blue, confetti frozen mid-sparkle",
+    "card_spec": {
+      "aspect_ratio": "2.75:4.75",
+      "border": "Ornate vintage circus poster border with flourishes and ribbons",
+      "style": "vibrant vintage circus poster art meets contemporary whimsy, saturated colors, theatrical lighting",
+      "technical_details": "3000x4200px, RGB with emphasis on jewel tones and metallics, 300dpi"
+    }
+  },
+  "suits": {
+    "ribbons": {
+      "legacy_name": "Wands",
+      "element": "Fire",
+      "visuals": "Flowing silk ribbons in brilliant reds, oranges, and golds that dance and swirl through air. Acrobatic performers spin these ribbons in joyful arcs. The ribbons represent creative flow, passionate expression, and the art of movement. Energy made visible as celebration."
+    },
+    "stars": {
+      "legacy_name": "Swords",
+      "element": "Air",
+      "visuals": "Shimmering stars and spotlight beams cutting through theatrical darkness in silver, white, and electric blue. Each star represents a brilliant idea, a moment of clarity, or the sharp focus of performance. The intellectual sparkle and precision of timing."
+    },
+    "cups": {
+      "legacy_name": "Cups",
+      "element": "Water",
+      "visuals": "Overflowing chalices of sparkling beverages, champagne bubbles, and shared toasts in rose gold, purple, and iridescent pink. Each cup contains celebration, connection, and emotional abundance. The vessels of joy and communal celebration."
+    },
+    "tickets": {
+      "legacy_name": "Pentacles",
+      "element": "Earth",
+      "visuals": "Golden admission tickets, precious coins, and glittering prizes rendered in warm golds, bronzes, and rich carnival colors. Each ticket represents an opportunity, a reward, or access to wonder. Material abundance as invitation to experience."
+    }
+  },
+  "cards": {
+    "major": [
+      {
+        "id": "maj_00",
+        "name": "The Dreamer",
+        "legacy": "0",
+        "prompt": "A young person stands at the entrance of a magnificent circus tent, eyes wide with wonder, one foot stepping through the velvet curtain. Behind them, ordinary streets; ahead, impossible colors and floating lights. A small dog jumps with excitement. Mood: innocent wonder, the beginning of adventure, stepping into magic."
+      },
+      {
+        "id": "maj_01",
+        "name": "The Ringmaster",
+        "legacy": "I",
+        "prompt": "A charismatic figure in a glittering coat stands center stage, top hat tipped, commanding three rings of performance simultaneously. Around them float the four suit symbols. Spotlights converge. They gesture grandly, bringing dreams into reality. Mood: confident creation, mastery of manifestation, commanding attention and possibility."
+      },
+      {
+        "id": "maj_02",
+        "name": "The Fortune Teller",
+        "legacy": "II",
+        "prompt": "A mysterious figure sits in a velvet-draped booth, crystal ball glowing with visions. Cards, stars, and hidden knowledge surround them. They know secrets but share them wisely. A crescent moon shines through silk curtains. Mood: intuitive wisdom, mystery, access to hidden knowledge, gentle guidance."
+      },
+      {
+        "id": "maj_03",
+        "name": "The Empress of Delights",
+        "legacy": "III",
+        "prompt": "A radiant figure reclines on a plush throne of cushions and flowers, surrounded by overflowing baskets of fruit and treats. They feed doves and offer abundance freely. A crown of blooming flowers adorns their head. Everything grows lush around them. Mood: abundant generosity, nurturing joy, creation and celebration."
+      },
+      {
+        "id": "maj_04",
+        "name": "The Architect of Wonder",
+        "legacy": "IV",
+        "prompt": "A dignified figure oversees the construction of impossible structures—tent poles that defy physics, stages that float. They hold blueprints of dreams made real. Everything is precisely placed yet whimsical. Mood: structured magic, making dreams real through planning, grounded vision."
+      },
+      {
+        "id": "maj_05",
+        "name": "The Storyteller",
+        "legacy": "V",
+        "prompt": "An elder performer sits surrounded by eager listeners, sharing tales of legendary acts and ancient magic. Their words create visible images in the air. Generations gather around. Stories flow like living things. Mood: wisdom through story, tradition honored joyfully, teaching through wonder."
+      },
+      {
+        "id": "maj_06",
+        "name": "The Partner Act",
+        "legacy": "VI",
+        "prompt": "Two acrobats perform a perfect duet high above, each trusting the other completely. Their hands meet mid-flight. Below, an audience gasps in awe. Ribbons connect them like threads of light. Mood: partnership, trust, collaboration, the beauty of connection."
+      },
+      {
+        "id": "maj_07",
+        "name": "The Grand Parade",
+        "legacy": "VII",
+        "prompt": "A magnificent parade wagon rolls forward pulled by painted horses, confetti raining down. A performer stands proud, waving to cheering crowds. Banners fly, music plays, momentum builds. The whole circus moves as one. Mood: triumphant progress, momentum, joyful determination, moving forward together."
+      },
+      {
+        "id": "maj_08",
+        "name": "The Lion Friend",
+        "legacy": "VIII",
+        "prompt": "A gentle trainer sits with a magnificent lion, crown to crown, neither dominating the other. They share understanding and respect. Strength meets strength with love. Flowers bloom where they sit together. Mood: gentle strength, respect for power, befriending what seems fierce."
+      },
+      {
+        "id": "maj_09",
+        "name": "The Light Keeper",
+        "legacy": "IX",
+        "prompt": "A solitary figure tends the circus lanterns after everyone sleeps, moving through quiet tents with a glowing staff. In stillness, they prepare tomorrow's magic. Stars above mirror lights below. Mood: peaceful solitude, tending the sacred, preparation in silence."
+      },
+      {
+        "id": "maj_10",
+        "name": "The Spinning Wheel",
+        "legacy": "X",
+        "prompt": "A great fortune wheel spins with spectacular lights and colors, each section showing a different act or wonder. Performers ride it up and down with grace, accepting each turn. The wheel is decorated with stars and seasons. Mood: joyful cycles, graceful change, the dance of fortune."
+      },
+      {
+        "id": "maj_11",
+        "name": "The Fair Judge",
+        "legacy": "XI",
+        "prompt": "A balanced figure in elegant attire stands between two performers, giving each their due recognition. They hold scales that measure not just skill but heart. Every performer gets their moment to shine. Mood: fairness, recognition, balanced appreciation, everyone gets their spotlight."
+      },
+      {
+        "id": "maj_12",
+        "name": "The Aerial Artist",
+        "legacy": "XII",
+        "prompt": "An acrobat hangs serenely upside-down from silk ribbons, seeing the world from a new perspective. Below, the circus looks magical and strange. They smile, comfortable in this unusual view. Mood: peaceful perspective shift, surrendering to new views, graceful suspension."
+      },
+      {
+        "id": "maj_13",
+        "name": "The Transformation",
+        "legacy": "XIII",
+        "prompt": "A magician's box opens and a performer emerges completely transformed—butterfly wings where arms were, costume entirely new. The old costume falls like shed skin, beautiful as it goes. Behind, dawn breaks. Mood: joyful transformation, beautiful change, becoming something new and wonderful."
+      },
+      {
+        "id": "maj_14",
+        "name": "The Blender of Arts",
+        "legacy": "XIV",
+        "prompt": "A versatile performer juggles elements from different acts—fire, water, ribbons, stars—creating something entirely new. They move with perfect balance, combining opposites into harmony. Music and acrobatics merge. Mood: integration, harmony, blending different gifts, creating beauty from combination."
+      },
+      {
+        "id": "maj_15",
+        "name": "The Temptation Tent",
+        "legacy": "XV",
+        "prompt": "A glamorous tent overflows with treats, luxuries, and indulgences. A figure sits surrounded by too much of everything, yet the tent flaps are open—they can leave whenever they choose. The abundance is enjoyable but not imprisoning. Mood: indulgence with awareness, enjoying excess, freedom to choose moderation."
+      },
+      {
+        "id": "maj_16",
+        "name": "The Grand Finale",
+        "legacy": "XVI",
+        "prompt": "Fireworks explode in brilliant cascades as the circus reaches its spectacular climax. Performers launch into the air with joy. The audience erupts in amazement. Everything builds to this moment of glorious release. Mood: spectacular breakthrough, explosive joy, the thrilling climax, transformation through spectacular release."
+      },
+      {
+        "id": "maj_17",
+        "name": "The Star Performer",
+        "legacy": "XVII",
+        "prompt": "A radiant performer stands in the spotlight, pouring their gift freely to an adoring audience. Above, actual stars descend to crown them. They glow with pure joy and purpose. Everyone feels inspired. Mood: inspiration, hope, sharing gifts freely, shining bright, being seen in full beauty."
+      },
+      {
+        "id": "maj_18",
+        "name": "The Midnight Show",
+        "legacy": "XVIII",
+        "prompt": "Under a full moon, a secret performance happens for creatures of the night. The circus transforms into something dreamlike and mysterious yet still joyful. Illusions become real. Everything shimmers between dream and waking. Mood: mystery and magic, liminal wonder, dreams made real, gentle mystery."
+      },
+      {
+        "id": "maj_19",
+        "name": "The Spotlight",
+        "legacy": "XIX",
+        "prompt": "A performer stands in brilliant golden spotlight, arms raised in pure joy. The entire circus celebrates around them. Children laugh, music swells. Every shadow dances with light. This is the moment of pure happiness and recognition. Mood: pure joy, celebration, basking in light and love, success and happiness."
+      },
+      {
+        "id": "maj_20",
+        "name": "The Curtain Call",
+        "legacy": "XX",
+        "prompt": "All performers return to the stage for bows, called back by thunderous applause. Each one rises and is recognized. New performers join the troupe. The circus family grows. Everyone is welcomed and celebrated. Mood: recognition, rebirth, joining the troupe, being called to purpose."
+      },
+      {
+        "id": "maj_21",
+        "name": "The Eternal Circus",
+        "legacy": "XXI",
+        "prompt": "The entire circus exists as one magnificent mandala—all acts, all performers, all audience members dancing together in perfect harmony. The tent contains infinite space. Past, present, and future perform simultaneously. Everything is celebration. Mood: wholeness, eternal joy, community, the perfect performance that never ends."
+      }
+    ],
+    "minor": {
+      "ribbons": [
+        {
+          "id": "rib_01",
+          "name": "Ace of Ribbons",
+          "desc": "A single brilliant ribbon unfurls from the heavens, glowing with creative fire. It spirals with infinite possibility, waiting to be danced with. The beginning of inspired movement and joyful expression."
+        },
+        {
+          "id": "rib_02",
+          "name": "Two of Ribbons",
+          "desc": "Two performers spin ribbons that intertwine in harmonious patterns. Their energies complement and amplify each other. Collaborative creativity and shared passion in motion."
+        },
+        {
+          "id": "rib_03",
+          "name": "Three of Ribbons",
+          "desc": "Three acrobats launch ribbons high, creating a canopy of celebration overhead. Community creativity and shared vision manifesting in beauty. The joy of collective expression."
+        },
+        {
+          "id": "rib_04",
+          "name": "Four of Ribbons",
+          "desc": "Four ribbons form a stable structure, like maypole dancers creating sacred geometry. Rest within celebration. A moment of peaceful joy and secure community."
+        },
+        {
+          "id": "rib_05",
+          "name": "Five of Ribbons",
+          "desc": "Five performers playfully compete with ribbons, each trying to outshine the others. Friendly rivalry and energetic challenge. The thrill of playful competition."
+        },
+        {
+          "id": "rib_06",
+          "name": "Six of Ribbons",
+          "desc": "Six performers parade through streets with ribbons flying, celebrating victory and success. The crowd cheers. Recognition earned and joyfully received."
+        },
+        {
+          "id": "rib_07",
+          "name": "Seven of Ribbons",
+          "desc": "A performer stands atop a platform, defending their ribbon routine while six others challenge from below. Joyful courage and standing proud in one's creative expression."
+        },
+        {
+          "id": "rib_08",
+          "name": "Eight of Ribbons",
+          "desc": "Eight ribbons fly through the air in synchronized perfection, each one moving with precise timing. Swift coordinated action and beautiful momentum in community."
+        },
+        {
+          "id": "rib_09",
+          "name": "Nine of Ribbons",
+          "desc": "A veteran performer stands surrounded by nine ribbons earned through years of practice. Pride and readiness. The wisdom of experience and the energy to keep going."
+        },
+        {
+          "id": "rib_10",
+          "name": "Ten of Ribbons",
+          "desc": "A whole troupe carries ten massive ribbons together, creating a spectacle too big for one person. Community effort in grand celebration. Shared creative burden becoming shared joy."
+        },
+        {
+          "id": "rib_11",
+          "name": "Page of Ribbons",
+          "desc": "A young performer holds their first ribbon, eyes bright with excitement and nervous energy. The beginning of creative journey. Eager potential ready to unfold."
+        },
+        {
+          "id": "rib_12",
+          "name": "Knight of Ribbons",
+          "desc": "A dynamic performer leaps through the air with ribbons trailing like wings, fearless and passionate. Bold creative action and adventurous expression."
+        },
+        {
+          "id": "rib_13",
+          "name": "Queen of Ribbons",
+          "desc": "A graceful figure performs with ribbons as natural extensions of their body, movement and art unified. Mastery expressed with warmth and generosity."
+        },
+        {
+          "id": "rib_14",
+          "name": "King of Ribbons",
+          "desc": "A master performer commands ribbons with authority and vision, creating spectacles that inspire others. Leadership through creative excellence and joyful presence."
+        }
+      ],
+      "stars": [
+        {
+          "id": "sta_01",
+          "name": "Ace of Stars",
+          "desc": "A single brilliant star bursts into existence above the circus, illuminating a new idea with crystal clarity. The moment of inspiration and clear vision arriving."
+        },
+        {
+          "id": "sta_02",
+          "name": "Two of Stars",
+          "desc": "Two spotlights create a perfect duet, illuminating performers in balanced harmony. Clarity through collaboration. Ideas that complement and strengthen each other."
+        },
+        {
+          "id": "sta_03",
+          "name": "Three of Stars",
+          "desc": "Three stars form a constellation of shared understanding. Quick communication between troupe members through glances and signals. The clarity of group mind."
+        },
+        {
+          "id": "sta_04",
+          "name": "Four of Stars",
+          "desc": "Four stars mark the corners of the stage, creating a space of clarity and rest. The peaceful pause between acts. Mental stillness and refreshment."
+        },
+        {
+          "id": "sta_05",
+          "name": "Five of Stars",
+          "desc": "Five performers debate the best way to execute a new trick, each advocating different approaches. Friendly disagreement and the lively exchange of ideas."
+        },
+        {
+          "id": "sta_06",
+          "name": "Six of Stars",
+          "desc": "Six performers travel together to a new venue, stars lighting their path forward. Moving toward new opportunities with clarity and optimism."
+        },
+        {
+          "id": "sta_07",
+          "name": "Seven of Stars",
+          "desc": "A clever performer uses mirrors and lights to create seven illusory stars. Strategy, wit, and the playful use of cleverness to create wonder."
+        },
+        {
+          "id": "sta_08",
+          "name": "Eight of Stars",
+          "desc": "Eight spotlight beams cut through darkness in rapid succession, moving faster and faster. Quick thinking and rapid communication. The exciting speed of coordinated timing."
+        },
+        {
+          "id": "sta_09",
+          "name": "Nine of Stars",
+          "desc": "A performer practices late into the night beneath nine bright stars, preparing diligently. Dedicated focus and the clarity that comes from commitment."
+        },
+        {
+          "id": "sta_10",
+          "name": "Ten of Stars",
+          "desc": "Ten brilliant stars converge in the final spectacular illusion. The climactic moment when all elements align in dazzling clarity. Overwhelming brilliance and complete revelation."
+        },
+        {
+          "id": "sta_11",
+          "name": "Page of Stars",
+          "desc": "A young stagehand discovers the secrets of lighting and special effects, eyes bright with understanding. The excitement of learning and new knowledge."
+        },
+        {
+          "id": "sta_12",
+          "name": "Knight of Stars",
+          "desc": "A performer chases a brilliant idea across the stage with speed and determination. The pursuit of clarity and truth with enthusiasm."
+        },
+        {
+          "id": "sta_13",
+          "name": "Queen of Stars",
+          "desc": "A perceptive figure sees clearly through all illusions, yet appreciates the art of them. Wisdom, clear sight, and the grace to honor both truth and performance."
+        },
+        {
+          "id": "sta_14",
+          "name": "King of Stars",
+          "desc": "The master illusionist commands light and perception with authority and precision. Strategic brilliance and the wisdom of knowing exactly when to reveal or conceal."
+        }
+      ],
+      "cups": [
+        {
+          "id": "cup_01",
+          "name": "Ace of Cups",
+          "desc": "A golden chalice overflows with sparkling celebration, offered freely to all. The beginning of joy, connection, and emotional abundance. Love pouring out generously."
+        },
+        {
+          "id": "cup_02",
+          "name": "Two of Cups",
+          "desc": "Two performers raise their cups in joyful toast, eyes meeting with mutual delight. Connection, friendship, and the happiness of being truly seen by another."
+        },
+        {
+          "id": "cup_03",
+          "name": "Three of Cups",
+          "desc": "Three friends clink glasses in celebration, surrounded by music and laughter. The joy of friendship, community celebration, and shared happiness."
+        },
+        {
+          "id": "cup_04",
+          "name": "Four of Cups",
+          "desc": "A content performer rests with refreshment, surrounded by satisfied abundance. The peaceful enjoyment of what is, appreciation for the moment."
+        },
+        {
+          "id": "cup_05",
+          "name": "Five of Cups",
+          "desc": "Three cups topple during a juggling act, but two remain standing. A moment of disappointment acknowledged, then the show goes on with grace and humor."
+        },
+        {
+          "id": "cup_06",
+          "name": "Six of Cups",
+          "desc": "Veteran performers share treats with new members, welcoming them to the troupe. Generosity, mentorship, and the sweetness of belonging."
+        },
+        {
+          "id": "cup_07",
+          "name": "Seven of Cups",
+          "desc": "A dreamer sits surrounded by seven beautiful chalices, each offering a different delight. The pleasant overwhelm of abundance and choice, all options appealing."
+        },
+        {
+          "id": "cup_08",
+          "name": "Eight of Cups",
+          "desc": "A performer leaves behind eight cups to seek an even greater show over the horizon. The brave choice to pursue deeper joy and meaning."
+        },
+        {
+          "id": "cup_09",
+          "name": "Nine of Cups",
+          "desc": "A satisfied performer sits surrounded by nine cups of celebration, wish fulfilled and joy complete. Deep contentment and emotional satisfaction."
+        },
+        {
+          "id": "cup_10",
+          "name": "Ten of Cups",
+          "desc": "The entire circus family gathers under rainbow lights, all cups raised in unified joy. Complete happiness, belonging, and the blessing of true community."
+        },
+        {
+          "id": "cup_11",
+          "name": "Page of Cups",
+          "desc": "A young performer offers a cup with shy delight, offering friendship and wonder. The sweet beginning of emotional connection and creative dreams."
+        },
+        {
+          "id": "cup_12",
+          "name": "Knight of Cups",
+          "desc": "A romantic figure rides forth bearing a cup of celebration, seeking someone to share it with. The quest for connection, beauty, and emotional adventure."
+        },
+        {
+          "id": "cup_13",
+          "name": "Queen of Cups",
+          "desc": "A nurturing figure pours endless refreshment for performers and audience alike. Emotional wisdom, compassion, and the gift of making others feel cherished."
+        },
+        {
+          "id": "cup_14",
+          "name": "King of Cups",
+          "desc": "A generous leader ensures every member of the troupe is celebrated and cared for. Emotional mastery expressed through creating joy for others."
+        }
+      ],
+      "tickets": [
+        {
+          "id": "tic_01",
+          "name": "Ace of Tickets",
+          "desc": "A single golden ticket glows with promise—admission to something wonderful. New opportunities, invitations to wonder, and the beginning of material abundance."
+        },
+        {
+          "id": "tic_02",
+          "name": "Two of Tickets",
+          "desc": "Two performers juggle golden coins in perfect rhythm, balancing multiple opportunities with grace. The dance of managing resources joyfully."
+        },
+        {
+          "id": "tic_03",
+          "name": "Three of Tickets",
+          "desc": "Three artisans collaborate on creating beautiful props and costumes. Skilled work, craftsmanship, and the joy of creating material beauty together."
+        },
+        {
+          "id": "tic_04",
+          "name": "Four of Tickets",
+          "desc": "Four golden tickets are carefully saved and treasured. Security, stability, and the peace of having resources protected and appreciated."
+        },
+        {
+          "id": "tic_05",
+          "name": "Five of Tickets",
+          "desc": "Tickets scatter in the wind while performers chase them playfully. A moment of scarcity handled with humor and resourcefulness."
+        },
+        {
+          "id": "tic_06",
+          "name": "Six of Tickets",
+          "desc": "The generous ticket-keeper shares free passes with those who can't afford them. Fair exchange, generosity, and ensuring everyone gets access to wonder."
+        },
+        {
+          "id": "tic_07",
+          "name": "Seven of Tickets",
+          "desc": "A performer reviews seven offers from different circuses, considering which opportunities to pursue. Choices about where to invest energy and grow."
+        },
+        {
+          "id": "tic_08",
+          "name": "Eight of Tickets",
+          "desc": "An apprentice practices their craft diligently, earning eight tickets through dedicated skill-building. The joy of mastery through persistent effort."
+        },
+        {
+          "id": "tic_09",
+          "name": "Nine of Tickets",
+          "desc": "A successful performer rests in their comfortable wagon, surrounded by rewards earned. Self-sufficiency, satisfaction, and enjoying well-earned comfort."
+        },
+        {
+          "id": "tic_10",
+          "name": "Ten of Tickets",
+          "desc": "An entire circus family prospers together, wealth shared across generations. Legacy, inheritance, and the security of community abundance."
+        },
+        {
+          "id": "tic_11",
+          "name": "Page of Tickets",
+          "desc": "A young vendor offers the first ticket of the day with pride and excitement. The beginning of learning practical skills and earning through honest work."
+        },
+        {
+          "id": "tic_12",
+          "name": "Knight of Tickets",
+          "desc": "A dedicated performer travels to promote the circus, steadily building reputation and success. Reliable effort and commitment to practical goals."
+        },
+        {
+          "id": "tic_13",
+          "name": "Queen of Tickets",
+          "desc": "The circus manager ensures everyone is paid fairly and all resources are abundant. Practical wisdom, generosity, and creating material security for all."
+        },
+        {
+          "id": "tic_14",
+          "name": "King of Tickets",
+          "desc": "The circus owner has built an empire of wonder that provides for hundreds. Mastery of practical magic—making dreams financially sustainable."
+        }
+      ]
+    }
+  }
+}

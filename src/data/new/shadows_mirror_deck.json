@@ -1,0 +1,463 @@
+{
+  "deck_metadata": {
+    "deck_name": "The Shadow's Mirror",
+    "mood": "raw, confrontational yet compassionate—the unflinching gaze into what we hide",
+    "theme_overarching": "a journey through shadow work, facing the repressed self, integrating darkness, and emerging whole through radical self-acceptance",
+    "details": "A psychological shadow work deck exploring Jungian shadow integration, inner child healing, and the courage to face what we've denied. Each card confronts a different aspect of the hidden self—wounds, triggers, masks, and mirrors—offering both challenge and compassion on the path to wholeness.",
+    "backofcard": "A fractured mirror reflecting partial faces that merge into wholeness, rendered in deep blacks, silvers, and hints of gold breaking through cracks",
+    "card_spec": {
+      "aspect_ratio": "2.75:4.75",
+      "border": "Cracked mirror frame with light bleeding through the fractures",
+      "style": "raw psychological realism with surreal elements, high contrast chiaroscuro",
+      "technical_details": "3000x4200px, RGB with emphasis on shadows and highlights, 300dpi"
+    }
+  },
+  "suits": {
+    "mirrors": {
+      "legacy_name": "Swords",
+      "element": "Air",
+      "visuals": "Fractured mirrors and reflective surfaces showing uncomfortable truths. Each mirror reveals what the observer doesn't want to see—projections, judgments, denied aspects. Rendered in cold silver, harsh whites, and revealing light that cuts through illusion."
+    },
+    "wounds": {
+      "legacy_name": "Cups",
+      "element": "Water",
+      "visuals": "Tender places of vulnerability and healing rendered as glowing cracks where light breaks through. Where pain lives it transforms into luminescence. Deep golds, soft blues, and the silver-purple of transformation. The places we protect because they taught us what matters."
+    },
+    "masks": {
+      "legacy_name": "Pentacles",
+      "element": "Earth",
+      "visuals": "Protective personas and constructed identities—beautiful masks hiding true faces. Armor, facades, and the roles we perform. Crafted in polished surfaces, false gold, and constructed beauty. The material defenses we build to survive."
+    },
+    "triggers": {
+      "legacy_name": "Wands",
+      "element": "Fire",
+      "visuals": "Explosive reactions, rage, and primal responses erupting like wildfire. The raw energy of unprocessed trauma activating. Rendered in violent oranges, blood reds, and the white-hot intensity of triggered nervous systems. The fire that consumes before it transforms."
+    }
+  },
+  "cards": {
+    "major": [
+      {
+        "id": "maj_00",
+        "name": "The Innocent",
+        "legacy": "0",
+        "prompt": "A child stands at the edge of a dark forest, unaware of the shadow-self lurking behind them. The child's face glows with naive light while their shadow stretches impossibly long and dark behind. The moment before awareness, the state before the fall. Mood: innocence before integration, the unaware self, potential for shadow work."
+      },
+      {
+        "id": "maj_01",
+        "name": "The Witness",
+        "legacy": "I",
+        "prompt": "A figure stands before a table covered in psychological tools—journals, mirrors, candles for inner work. They hold up a lantern that illuminates both light and shadow equally. The conscious choice to look within. The beginning of shadow work. Mood: conscious awareness, choosing to see, active witnessing."
+      },
+      {
+        "id": "maj_02",
+        "name": "The Gatekeeper",
+        "legacy": "II",
+        "prompt": "A figure sits between two pillars marked 'Light' and 'Shadow,' holding space for both without judgment. Behind them, a veil parts to reveal the unconscious realm. The guardian of the threshold who knows all secrets. Mood: neutral observation, access to hidden material, sacred guard of the depths."
+      },
+      {
+        "id": "maj_03",
+        "name": "The Nurturer",
+        "legacy": "III",
+        "prompt": "A figure cradles their wounded inner child with fierce tenderness. Around them, a garden grows from composted pain—beauty from suffering. The archetypal mother who loves even the darkest parts. Mood: self-compassion, reparenting, unconditional acceptance of all parts."
+      },
+      {
+        "id": "maj_04",
+        "name": "The Protector",
+        "legacy": "IV",
+        "prompt": "A heavily armored figure sits rigid on a throne built from defensive mechanisms. The armor is so thick they can barely move. Protection that has become prison. The defensive structures that once saved us now confine. Mood: defensive rigidity, protection as limitation, the superego's fortress."
+      },
+      {
+        "id": "maj_05",
+        "name": "The Shame Keeper",
+        "legacy": "V",
+        "prompt": "A robed authority figure points accusingly, surrounded by internalized messages of unworthiness. Religious and familial teachings weigh heavy like chains. The voice of shame made manifest. Yet beneath, a small light suggests these teachings can be questioned. Mood: internalized shame, inherited wounds, the voice of unworthiness."
+      },
+      {
+        "id": "maj_06",
+        "name": "The Mirror Dance",
+        "legacy": "VI",
+        "prompt": "Two figures face each other, each seeing their shadow projected onto the other. What they hate in the other is what they've denied in themselves. The painful beauty of projection revealed. Mood: projection, mirroring, seeing yourself in others, relationship as shadow work."
+      },
+      {
+        "id": "maj_07",
+        "name": "The Reckoning",
+        "legacy": "VII",
+        "prompt": "A figure drives forward with fierce determination, pulling a chariot driven by two shadow-beasts—one rage, one fear—now harnessed. Shadow energy directed toward purpose. The moment of taking control through integration. Mood: harnessing shadow power, directed rage, integrated force."
+      },
+      {
+        "id": "maj_08",
+        "name": "The Embrace",
+        "legacy": "VIII",
+        "prompt": "A figure holds their shadow-self in a tender embrace, neither destroying nor denying it. The shadow-beast leans into the touch, finally acknowledged. Strength through acceptance rather than suppression. Mood: radical acceptance, befriending the shadow, strength through integration."
+      },
+      {
+        "id": "maj_09",
+        "name": "The Descent",
+        "legacy": "IX",
+        "prompt": "A solitary figure walks down stairs into darkness, lantern in hand, deliberately choosing to explore the depths. The voluntary journey into one's own underworld. Solo shadow work begins. Mood: deliberate descent, solitary exploration, the courage to go down alone."
+      },
+      {
+        "id": "maj_10",
+        "name": "The Cycle",
+        "legacy": "X",
+        "prompt": "A wheel spins showing generational trauma patterns—child becomes parent becomes child again. The same wounds cycling through lineages. Yet at the center, a figure recognizes the pattern and chooses to break it. Mood: repetition patterns, inherited trauma, the choice to break cycles."
+      },
+      {
+        "id": "maj_11",
+        "name": "The Accountability",
+        "legacy": "XI",
+        "prompt": "A figure holds scales, weighing their own actions and impacts honestly. Not self-blame but clear-eyed responsibility. One scale holds harm done, the other holds capacity for repair. Mood: honest self-assessment, taking responsibility, accountability without shame."
+      },
+      {
+        "id": "maj_12",
+        "name": "The Surrender",
+        "legacy": "XII",
+        "prompt": "A figure hangs suspended in the void between old identity and new becoming. Ego death and the painful release of false self. Hanging in the uncertainty, unable to go back, not yet transformed. Mood: ego death, identity dissolution, the pain of letting go, liminal suspension."
+      },
+      {
+        "id": "maj_13",
+        "name": "The Shedding",
+        "legacy": "XIII",
+        "prompt": "A figure sheds their false skin like a snake, revealing raw new flesh beneath. Old identity falls away like a funeral shroud. Death of the constructed self. The necessary dying that precedes rebirth. Mood: ego death, shedding false self, the death of who you thought you were."
+      },
+      {
+        "id": "maj_14",
+        "name": "The Alchemy",
+        "legacy": "XIV",
+        "prompt": "A figure pours darkness into light and light into darkness, creating something new from the integration. Shadow and ego combine into wholeness. The alchemical work of transformation visible as literal mixing. Mood: integration, transmutation, creating gold from lead, wholeness from parts."
+      },
+      {
+        "id": "maj_15",
+        "name": "The Shadow",
+        "legacy": "XV",
+        "prompt": "A massive shadow-figure dominates the frame, revealing all that's been repressed—rage, desire, shame, power. Smaller figures kneel before it, bound by chains they could remove. The shadow is terrifying yet the chains are unlocked. Mood: confronting the shadow directly, facing what's been denied, recognizing self-imposed bondage."
+      },
+      {
+        "id": "maj_16",
+        "name": "The Breakdown",
+        "legacy": "XVI",
+        "prompt": "Psychological defenses shatter like a tower struck by lightning. Everything carefully constructed crumbles. A figure falls through the ruins of their false self, terrified yet strangely relieved. The necessary collapse. Mood: ego collapse, defense breakdown, the shattering that precedes rebuilding."
+      },
+      {
+        "id": "maj_17",
+        "name": "The Healing",
+        "legacy": "XVII",
+        "prompt": "A figure bathes in healing water beneath stars, wounds finally allowed to breathe. Scars remain but no longer control. The quiet peace after the storm of shadow work. Hope emerging from darkness. Mood: healing, hope, tending wounds with compassion, recovery."
+      },
+      {
+        "id": "maj_18",
+        "name": "The Depths",
+        "legacy": "XVIII",
+        "prompt": "A vast unconscious ocean stretches endlessly, filled with shadowy forms and repressed material. A figure walks along the shore, aware that much remains unknown. The moon illuminates only fragments. The mystery that remains even after work. Mood: the unconscious, ongoing mystery, accepting what remains hidden, the depth that never ends."
+      },
+      {
+        "id": "maj_19",
+        "name": "The Emergence",
+        "legacy": "XIX",
+        "prompt": "A figure stands in brilliant light, arms raised, shadow visibly integrated behind them—not gone but acknowledged. Both light and dark present, neither denied. The joy of authenticity after integration. Mood: authentic self, integrated wholeness, joy after shadow work, embodied truth."
+      },
+      {
+        "id": "maj_20",
+        "name": "The Rebirth",
+        "legacy": "XX",
+        "prompt": "A figure rises from the grave of their old self, reborn with shadow integrated. All the parts—wounded child, protective parent, shadow, ego—rise together as one. The resurrection of the whole self. Mood: rebirth, rising renewed, integration complete, awakening to wholeness."
+      },
+      {
+        "id": "maj_21",
+        "name": "The Whole Self",
+        "legacy": "XXI",
+        "prompt": "A figure dances within a mandala of integrated parts—light, shadow, wounds, masks—all present, all accepted. The four suits surround them in balance. Completion not as perfection but as radical acceptance of all that is. Mood: wholeness, integration, dancing with all parts, the ongoing work of being human."
+      }
+    ],
+    "minor": {
+      "mirrors": [
+        {
+          "id": "mir_01",
+          "name": "Ace of Mirrors",
+          "desc": "A single perfect mirror reflects an uncomfortable truth—the first glimpse of projection or denied aspect. The sharp clarity of seeing what you've avoided. The beginning of honest self-reflection."
+        },
+        {
+          "id": "mir_02",
+          "name": "Two of Mirrors",
+          "desc": "Two mirrors face each other, creating infinite reflections. The paralysis of overthinking and self-analysis. Mental loops and the confusion of too much self-examination."
+        },
+        {
+          "id": "mir_03",
+          "name": "Three of Mirrors",
+          "desc": "Three mirrors reflect harsh judgments spoken by inner critics. The voice of shame multiplied. Negative self-talk made visible and overwhelming."
+        },
+        {
+          "id": "mir_04",
+          "name": "Four of Mirrors",
+          "desc": "Four mirrors arranged protectively show only acceptable reflections. The relief of selective awareness and controlled self-image. Rest from harsh truth."
+        },
+        {
+          "id": "mir_05",
+          "name": "Five of Mirrors",
+          "desc": "Five shattered mirrors show fragments of self in conflict. The pain of seeing multiple truths that contradict. Internal criticism and self-attack visible."
+        },
+        {
+          "id": "mir_06",
+          "name": "Six of Mirrors",
+          "desc": "Six mirrors reflect past selves with compassion rather than judgment. Looking back with understanding. The gift of seeing your journey clearly."
+        },
+        {
+          "id": "mir_07",
+          "name": "Seven of Mirrors",
+          "desc": "Seven mirrors show different possible selves and identities. Which reflection is true? The confusion of multiple presentations and personas."
+        },
+        {
+          "id": "mir_08",
+          "name": "Eight of Mirrors",
+          "desc": "Eight mirrors surround and trap, showing only flaws and failures. The prison of negative self-perception and rumination. Stuck in self-criticism."
+        },
+        {
+          "id": "mir_09",
+          "name": "Nine of Mirrors",
+          "desc": "Nine mirrors show worst fears and anxious thoughts. Sleepless worry and catastrophic thinking made visible. The torture of the anxious mind."
+        },
+        {
+          "id": "mir_10",
+          "name": "Ten of Mirrors",
+          "desc": "Ten mirrors crash down simultaneously, overwhelming with truth. Complete shattering of illusions. The moment when denial becomes impossible."
+        },
+        {
+          "id": "mir_11",
+          "name": "Page of Mirrors",
+          "desc": "A young figure holds a small mirror, beginning to look at themselves honestly. Curiosity about self-reflection and early shadow awareness."
+        },
+        {
+          "id": "mir_12",
+          "name": "Knight of Mirrors",
+          "desc": "A figure charges forward carrying a mirror like a shield, aggressively confronting projections. The warrior of truth-seeking and brutal honesty."
+        },
+        {
+          "id": "mir_13",
+          "name": "Queen of Mirrors",
+          "desc": "A figure holds a mirror with wisdom and compassion, reflecting truth with kindness. Honest observation tempered by love."
+        },
+        {
+          "id": "mir_14",
+          "name": "King of Mirrors",
+          "desc": "A figure commands clarity and truth, wielding mirrors that show reality without distortion. Mastery of honest self-perception and clear seeing."
+        }
+      ],
+      "wounds": [
+        {
+          "id": "wou_01",
+          "name": "Ace of Wounds",
+          "desc": "A tender place becomes visible, glowing with acknowledging light. The first moment of naming pain that's been silent. Soft light surrounds the vulnerable place, making it safe to feel."
+        },
+        {
+          "id": "wou_02",
+          "name": "Two of Wounds",
+          "desc": "Two figures sit across from each other, each with a glowing place of tenderness visible. They see each other's pain and nod in recognition. Connection through shared vulnerability."
+        },
+        {
+          "id": "wou_03",
+          "name": "Three of Wounds",
+          "desc": "Three people sit together, each with a luminous tender place visible. They hold hands around the circle, light transferring between them. Community in healing and witnessed compassion."
+        },
+        {
+          "id": "wou_04",
+          "name": "Four of Wounds",
+          "desc": "Four glowing places of tenderness are surrounded by protective light and soft pillows. In stillness and safety, they glow gently. Rest in the work of healing."
+        },
+        {
+          "id": "wou_05",
+          "name": "Five of Wounds",
+          "desc": "Five glowing tender places overwhelm the figure's awareness at once. Too much, too bright, too much to feel. Yet the light is gentle, not harsh. Overwhelm and the courage to face multiple griefs."
+        },
+        {
+          "id": "wou_06",
+          "name": "Six of Wounds",
+          "desc": "Six places where light has transformed through pain now glow as scars of wisdom. A gentle hand touches each one. Past hurts acknowledged and transformed into strength."
+        },
+        {
+          "id": "wou_07",
+          "name": "Seven of Wounds",
+          "desc": "Seven glowing places of tenderness appear on a figure's spirit. Which to tend first? Which matter most? The paralysis of choosing where to focus healing energy."
+        },
+        {
+          "id": "wou_08",
+          "name": "Eight of Wounds",
+          "desc": "A figure walks forward while glowing places of tenderness remain behind, not yet addressed. Running from rather than toward healing. The attempt to outpace pain."
+        },
+        {
+          "id": "wou_09",
+          "name": "Nine of Wounds",
+          "desc": "Nine glowing places glow softly in the darkness, each one present and felt. A figure sits with them, awake to the accumulated weight. Bearing grief with consciousness."
+        },
+        {
+          "id": "wou_10",
+          "name": "Ten of Wounds",
+          "desc": "Ten glowing threads of inherited tenderness connect through generations. A figure holds the weight of ancestral healing and transformation. Generational pain made visible as lineage."
+        },
+        {
+          "id": "wou_11",
+          "name": "Page of Wounds",
+          "desc": "A young figure discovers a glowing place of tenderness they never noticed before. Recognition dawning. The beginning of awareness and early healing work."
+        },
+        {
+          "id": "wou_12",
+          "name": "Knight of Wounds",
+          "desc": "A figure rides forward with their glowing tender places visible to all, unashamed. The courage to be seen in vulnerability. Bold authenticity."
+        },
+        {
+          "id": "wou_13",
+          "name": "Queen of Wounds",
+          "desc": "A figure sits in deep compassion, tending to tender places—their own and others'—with patient care and gentle light. The wisdom of healing through unconditional love."
+        },
+        {
+          "id": "wou_14",
+          "name": "King of Wounds",
+          "desc": "A figure stands with old scars visible as silver light, places of pain transformed into radiant strength. The mastery of turning pain into wisdom and embodied power."
+        }
+      ],
+      "masks": [
+        {
+          "id": "mas_01",
+          "name": "Ace of Masks",
+          "desc": "A single beautiful mask is held up, the first protective persona crafted. The beginning of learning to hide and perform. Defense born from necessity."
+        },
+        {
+          "id": "mas_02",
+          "name": "Two of Masks",
+          "desc": "Two masks exchange—the performance of relationship, each hiding from the other. The exhaustion and safety of mutual pretense."
+        },
+        {
+          "id": "mas_03",
+          "name": "Three of Masks",
+          "desc": "Three figures wear matching masks in social performance. The relief of collective pretense and belonging through conformity."
+        },
+        {
+          "id": "mas_04",
+          "name": "Four of Masks",
+          "desc": "Four masks arranged in a stable structure of identity. The false self that feels so solid and real. Defended stability."
+        },
+        {
+          "id": "mas_05",
+          "name": "Five of Masks",
+          "desc": "Five masks crack and shatter, identities breaking down. The crisis when personas fail to protect. Identity confusion and loss."
+        },
+        {
+          "id": "mas_06",
+          "name": "Six of Masks",
+          "desc": "Six masks from childhood are remembered with tenderness. The personas we needed to survive, honored rather than shamed. Compassion for past protection."
+        },
+        {
+          "id": "mas_07",
+          "name": "Seven of Masks",
+          "desc": "Seven masks surround a figure, each offering a different identity. The temptation to keep performing. Choosing which self to present."
+        },
+        {
+          "id": "mas_08",
+          "name": "Eight of Masks",
+          "desc": "Eight masks are removed one by one, walking away from false identities toward authenticity. The journey from performance to presence."
+        },
+        {
+          "id": "mas_09",
+          "name": "Nine of Masks",
+          "desc": "Nine masks hang on a wall like trophies—all the selves once worn. Satisfaction in knowing you could perform, and relief in not having to."
+        },
+        {
+          "id": "mas_10",
+          "name": "Ten of Masks",
+          "desc": "Ten masks passed down through family lines, inherited roles and expectations. Generational personas and the pressure to perform prescribed identities."
+        },
+        {
+          "id": "mas_11",
+          "name": "Page of Masks",
+          "desc": "A young figure tries on their first mask, learning to hide and perform. The innocent beginning of self-protection through persona."
+        },
+        {
+          "id": "mas_12",
+          "name": "Knight of Masks",
+          "desc": "A figure rides forward wearing an impressive mask of confidence, performing competence. The armor of false certainty and performative strength."
+        },
+        {
+          "id": "mas_13",
+          "name": "Queen of Masks",
+          "desc": "A figure wears masks skillfully when needed, but knows which is real beneath. The wisdom of choosing when to protect and when to reveal."
+        },
+        {
+          "id": "mas_14",
+          "name": "King of Masks",
+          "desc": "A figure sits unmasked despite having mastered all personas. The power of choosing authenticity after learning performance. True authority through vulnerability."
+        }
+      ],
+      "triggers": [
+        {
+          "id": "tri_01",
+          "name": "Ace of Triggers",
+          "desc": "A spark ignites into sudden rage, the first activation of unprocessed trauma. The explosive moment when past wounds erupt into present reaction."
+        },
+        {
+          "id": "tri_02",
+          "name": "Two of Triggers",
+          "desc": "Two triggers clash in conflict, reactive responses colliding. The fight between triggered people, neither seeing the present reality."
+        },
+        {
+          "id": "tri_03",
+          "name": "Three of Triggers",
+          "desc": "Three reactive patterns feed each other in escalating intensity. The chaos of multiple activations creating firestorm conflict."
+        },
+        {
+          "id": "tri_04",
+          "name": "Four of Triggers",
+          "desc": "Four triggers contained and managed, reactive patterns recognized before explosion. The hard-won ability to pause before reacting."
+        },
+        {
+          "id": "tri_05",
+          "name": "Five of Triggers",
+          "desc": "Five triggers fire simultaneously, overwhelming the nervous system. The violence of multiple activations and complete dysregulation. Reaction without awareness."
+        },
+        {
+          "id": "tri_06",
+          "name": "Six of Triggers",
+          "desc": "Six triggers are recognized and processed, energy channeled toward healing rather than harm. The transformation of reaction into response."
+        },
+        {
+          "id": "tri_07",
+          "name": "Seven of Triggers",
+          "desc": "Seven triggers lie in wait like landmines, uncertain which will explode. The anxiety of knowing you're reactive but not knowing when or how."
+        },
+        {
+          "id": "tri_08",
+          "name": "Eight of Triggers",
+          "desc": "Eight triggers fire in rapid succession, reactions happening faster than awareness. The speed of trauma response overwhelming conscious choice."
+        },
+        {
+          "id": "tri_09",
+          "name": "Nine of Triggers",
+          "desc": "Nine triggers defended against with exhausting vigilance. The warrior stance of constant readiness. Hypervigilance and defensive protection."
+        },
+        {
+          "id": "tri_10",
+          "name": "Ten of Triggers",
+          "desc": "Ten generations of survival responses encoded in body and nervous system. Inherited trauma patterns activating. The weight of ancestral activation."
+        },
+        {
+          "id": "tri_11",
+          "name": "Page of Triggers",
+          "desc": "A young figure experiences their first triggering, learning that past pain resurfaces. The beginning of recognizing activation patterns."
+        },
+        {
+          "id": "tri_12",
+          "name": "Knight of Triggers",
+          "desc": "A figure charges with reactive rage, unable to distinguish past from present. The explosion of unprocessed trauma in violent action."
+        },
+        {
+          "id": "tri_13",
+          "name": "Queen of Triggers",
+          "desc": "A figure sits with activation, feeling the fire without acting on it. The wisdom of experiencing trigger without becoming it."
+        },
+        {
+          "id": "tri_14",
+          "name": "King of Triggers",
+          "desc": "A figure transforms trigger-fire into transformative power, using activation as information rather than letting it control. Mastery of reactive energy."
+        }
+      ]
+    }
+  }
+}

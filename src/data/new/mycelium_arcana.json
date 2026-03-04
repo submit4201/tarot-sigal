@@ -1,0 +1,463 @@
+{
+  "deck_metadata": {
+    "deck_name": "The Mycelium Arcana",
+    "mood": "strange, vast, and deeply alive—the perspective of hidden intelligence observing from beneath",
+    "theme_overarching": "the journey through interconnected networks of consciousness, decay, renewal, and the intelligence of systems hidden beneath perception",
+    "details": "A visionary deck exploring fungal consciousness, mycelial networks, symbiosis, and deep time. Each card reveals the hidden structures connecting all living things—the wood-wide web, the intelligence of decay, and the patient wisdom of fungal colonization. A deck of underground mysteries and invisible abundance.",
+    "backofcard": "Intricate mycelial network patterns in bioluminescent whites and deep forest purples, creating a fractal web of connection across a black void",
+    "card_spec": {
+      "aspect_ratio": "2.75:4.75",
+      "border": "Organic hyphal threads forming a living border that seems to grow and shift",
+      "style": "surreal botanical illustration with bioluminescence and scientific detail merged with dreamscape",
+      "technical_details": "3000x4200px, RGB with glow effects, 300dpi, slight texture overlay suggesting decomposition and renewal"
+    }
+  },
+  "suits": {
+    "spores": {
+      "legacy_name": "Wands",
+      "element": "Fire",
+      "visuals": "Floating spores drifting through air currents in swirling clouds of golden luminescence and rust-orange. Each spore carries potential, scattering the code of life across vast distances. Wind-borne possibility and the spread of consciousness through dispersal."
+    },
+    "hyphae": {
+      "legacy_name": "Swords",
+      "element": "Air",
+      "visuals": "Delicate threads of white and silver extend endlessly in intricate networks, branching and reconnecting. The hyphae form pathways of thought and connection, cutting through soil and matter. Communication made visible as delicate white filaments carrying information."
+    },
+    "fruiting": {
+      "legacy_name": "Cups",
+      "element": "Water",
+      "visuals": "Mushrooms and toadstools emerge in jeweled colors—deep purples, ghost-whites, orange-golds, and bioluminescent blues. Fruiting bodies glow from within, dripping with spore clouds and moisture. The visible manifestation of invisible networks, the body that emerges from the mycelium."
+    },
+    "roots": {
+      "legacy_name": "Pentacles",
+      "element": "Earth",
+      "visuals": "Gnarled tree roots and fungal networks intertwine in dark soil, glowing with faint green bioluminescence where they meet. Minerals and nourishment flow through the connection. Grounding presence and the deep earth-intelligence that sustains forests."
+    }
+  },
+  "cards": {
+    "major": [
+      {
+        "id": "maj_00",
+        "name": "The Spore",
+        "legacy": "0",
+        "prompt": "A single glowing spore drifts through infinite darkness, tiny yet containing infinite potential. Around it, the void shifts with possibility. Behind it, a forest begins to emerge. Bioluminescent trails mark its path. Mood: beginnings filled with potential, the carried seed, faith in dispersal."
+      },
+      {
+        "id": "maj_01",
+        "name": "The Colonizer",
+        "legacy": "I",
+        "prompt": "A figure of pure mycelium stands amid decomposing matter, hands extended downward. White threads pulse from their palms, breaking down wood and transforming it. The world remakes itself through their touch. Mood: active transformation, creative destruction, the power to remake."
+      },
+      {
+        "id": "maj_02",
+        "name": "The Networker",
+        "legacy": "II",
+        "prompt": "A figure sits at the junction of a vast mycelial network, eyes closed, feeling all connections simultaneously. Information flows through them as visible currents of light. The unseen is made visible in their consciousness. Mood: hidden knowledge, interconnection, sensing what lies beneath awareness."
+      },
+      {
+        "id": "maj_03",
+        "name": "The Fruiting",
+        "legacy": "III",
+        "prompt": "A vast mother-organism blooms with countless fruiting bodies, each glowing with different color. The network beneath is visible as visible light beneath translucent soil. Abundance made manifest. The emergence of visible beauty from invisible work. Mood: manifestation, abundance, the reward of patient colonization."
+      },
+      {
+        "id": "maj_04",
+        "name": "The Anchor",
+        "legacy": "IV",
+        "prompt": "An ancient root network forms a throne of twisted wood and stone, glowing with deep earth-wisdom. A figure sits rooted, immobile yet connected to all. Time moves slowly here. The stability of deep connection. Mood: grounding, ancient wisdom, the strength of deep roots."
+      },
+      {
+        "id": "maj_05",
+        "name": "The Tradition Bearer",
+        "legacy": "V",
+        "prompt": "A figure holds the spore-patterns of generations, passing forward the wisdom of decay and renewal. Ancient mycelial networks form sacred geometry around them. Knowledge preserved in darkness. Mood: tradition, inheritance, the passing of deep knowledge through lineage."
+      },
+      {
+        "id": "maj_06",
+        "name": "The Symbiosis",
+        "legacy": "VI",
+        "prompt": "Two figures intertwine, each nourishing the other through invisible exchange. White threads connect their hearts. Neither is complete alone. The dance of mutual benefit made visible. Mood: partnership, mutual support, the beauty of necessary interdependence."
+      },
+      {
+        "id": "maj_07",
+        "name": "The Spread",
+        "legacy": "VII",
+        "prompt": "A network expands exponentially, white threads racing across dark soil, colonizing new territory. A figure rides the wave of expansion, arms spread wide. Rapid growth and purposeful spreading. Momentum visible as luminescent trails. Mood: expansion, spread, moving through the world with purpose."
+      },
+      {
+        "id": "maj_08",
+        "name": "The Integration",
+        "legacy": "VIII",
+        "prompt": "A figure stands peaceful amid a forest being colonized, neither resisting nor forcing. The mycelium embraces them as they embrace it. Strength through acceptance and harmony with natural process. Mood: integration with natural order, strength through acceptance, harmony with inevitability."
+      },
+      {
+        "id": "maj_09",
+        "name": "The Decomposer",
+        "legacy": "IX",
+        "prompt": "A solitary figure stands in a forest of falling wood, watching the patient work of decay. Surrounded by darkness and breaking-down, yet peaceful. The necessary solitude of deep work. Wisdom in stillness and observation. Mood: solitude, deep work, the patience of transformation."
+      },
+      {
+        "id": "maj_10",
+        "name": "The Wheel of Seasons",
+        "legacy": "X",
+        "prompt": "A vast mandala of seasonal cycles—spring fruiting, summer growth, autumn spore-release, winter dormancy. A figure stands at center, understanding the eternal turning. The four seasons as the four expressions of mycelial life. Mood: cycles, seasons, the eternal return, deep time."
+      },
+      {
+        "id": "maj_11",
+        "name": "The Reciprocity",
+        "legacy": "XI",
+        "prompt": "A perfect exchange: the tree gives sugars, the mycelium brings water and minerals. Both balanced on a scale of light. Justice as mutual benefit, fairness as symbiotic balance. Scales glow with bioluminescence. Mood: justice, reciprocity, the law of exchange, karmic balance."
+      },
+      {
+        "id": "maj_12",
+        "name": "The Pause",
+        "legacy": "XII",
+        "prompt": "A figure hangs suspended in a spore-cloud, suspended between fruiting and dormancy. Time slows. In the stillness, vast transformations occur invisibly. The moment of liminality and hidden change. Mood: suspension, hidden transformation, the pregnant pause before change."
+      },
+      {
+        "id": "maj_13",
+        "name": "The Decay",
+        "legacy": "XIII",
+        "prompt": "Wood crumbles to dust, transformed into soil. A figure dances in the decomposing matter, freed by the breaking-apart. Death as the ultimate transformation, necessary and fertile. New life emerges from the decay. Mood: transformation through ending, decay as gift, rebirth through dissolution."
+      },
+      {
+        "id": "maj_14",
+        "name": "The Equilibrium",
+        "legacy": "XIV",
+        "prompt": "A figure pours between fruiting body and spore, between manifestation and potential, between visible and invisible. The balance between expression and dormancy. Perfect harmony between opposing forces. Mood: balance, equilibrium, integration of opposites, sacred balance."
+      },
+      {
+        "id": "maj_15",
+        "name": "The Parasite",
+        "legacy": "XV",
+        "prompt": "A dark fungus grows where it should not, consuming instead of collaborating. The shadow-side of colonization made visible. Yet chains are self-imposed—the host could release. Addiction to the parasitic relationship. Mood: parasitism, toxic relationships, the shadow of consumption without reciprocity."
+      },
+      {
+        "id": "maj_16",
+        "name": "The Rupture",
+        "legacy": "XVI",
+        "prompt": "A massive fruiting breaks through the soil explosively, shattering the old order. The hidden breaks into visibility with force. Sudden emergence disrupts the established landscape. Spore clouds explode into darkness. Mood: rupture, breakthrough, sudden emergence, the shattering of hidden things."
+      },
+      {
+        "id": "maj_17",
+        "name": "The Hope",
+        "legacy": "XVII",
+        "prompt": "A glowing spore drifts toward fertile ground, the promise of new colonization. Stars appear as bioluminescent spores filling the sky. The future glimpsed as endless possibility. A landscape waiting to be transformed. Mood: hope, possibility, the promise of growth to come."
+      },
+      {
+        "id": "maj_18",
+        "name": "The Mycelium",
+        "legacy": "XVIII",
+        "prompt": "An infinite network extends in all directions, so vast and complex that consciousness itself seems distributed through it. What appears as underground mystery is revelation once understood. Dreams and reality merge in the space of the network. Mood: the unconscious made visible, vast mystery, infinite connection."
+      },
+      {
+        "id": "maj_19",
+        "name": "The Fruition",
+        "legacy": "XIX",
+        "prompt": "A forest of fruiting bodies glows in full glory, each one unique, each one beautiful. The invisible network has accomplished its work. Beauty made manifest. The reward of patient colonization and careful growth. Mood: fruition, beauty, accomplishment, the joy of manifestation."
+      },
+      {
+        "id": "maj_20",
+        "name": "The Call",
+        "legacy": "XX",
+        "prompt": "A vast spore-cloud ascends like a resurrection, each spore carrying the call to new growth. The network summons toward expansion and transformation. A voice from the deep earth calls all to participate in renewal. Mood: calling, transformation, the summons toward growth, collective awakening."
+      },
+      {
+        "id": "maj_21",
+        "name": "The Wholeness",
+        "legacy": "XXI",
+        "prompt": "The entire forest thrives as one interconnected being, each tree rooted in the network, each mycelium supported by countless others. The individual and collective are revealed as one. Infinite complexity organizing into seamless wholeness. Mood: wholeness, integration, the realized network, perfect interconnection."
+      }
+    ],
+    "minor": {
+      "spores": [
+        {
+          "id": "spo_01",
+          "name": "Ace of Spores",
+          "desc": "A single magnificent spore glows at the point of release, filled with potential and encoded wisdom. The moment before dispersal. Pure creative possibility suspended in time, waiting to be carried on the wind."
+        },
+        {
+          "id": "spo_02",
+          "name": "Two of Spores",
+          "desc": "Two spore-clouds drift toward each other, their patterns complementary. Exchange of genetic material and ideas. Partnership in dispersal and spread."
+        },
+        {
+          "id": "spo_03",
+          "name": "Three of Spores",
+          "desc": "Three spore-clouds spiral together in coordinated drift. Community in dispersal. The collective spread of shared vision across distance."
+        },
+        {
+          "id": "spo_04",
+          "name": "Four of Spores",
+          "desc": "Four spores settle into new territory, beginning to colonize. The moment of arrival and first establishment. New foundation laid."
+        },
+        {
+          "id": "spo_05",
+          "name": "Five of Spores",
+          "desc": "Five spore-clouds scatter in confusion, blown by conflicting winds. Dispersal without direction. Energy wasted on chaotic spread."
+        },
+        {
+          "id": "spo_06",
+          "name": "Six of Spores",
+          "desc": "Six spores arrive at fertile ground, each finding a partner. Successful dispersal and fruitful landing. Trade-winds carry them to abundance."
+        },
+        {
+          "id": "spo_07",
+          "name": "Seven of Spores",
+          "desc": "Seven spores drift above a landscape, evaluating which territory to colonize. Choice and selection in where to plant potential."
+        },
+        {
+          "id": "spo_08",
+          "name": "Eight of Spores",
+          "desc": "Eight spore-clouds race with swift momentum through wind currents. Rapid spread and quick colonization. Speed and purpose in movement."
+        },
+        {
+          "id": "spo_09",
+          "name": "Nine of Spores",
+          "desc": "A figure stands surrounded by spore clouds they have released, watching their dispersal with satisfaction. The work of spreading is complete. Abundance in potential offspring."
+        },
+        {
+          "id": "spo_10",
+          "name": "Ten of Spores",
+          "desc": "A vast dynasty of spore-lines extends through generations, each wave carrying forward the code. Legacy and lineage made visible as spore-inheritance."
+        },
+        {
+          "id": "spo_11",
+          "name": "Page of Spores",
+          "desc": "A young spore shows curiosity about the journey of dispersal, eager to be carried on the wind. The beginning of the dispersing journey."
+        },
+        {
+          "id": "spo_12",
+          "name": "Knight of Spores",
+          "desc": "A rider of wind-currents carries spores swiftly across vast distances, eager to colonize new territories. Adventurous spirit and bold expansion."
+        },
+        {
+          "id": "spo_13",
+          "name": "Queen of Spores",
+          "desc": "A figure releases spores with nurturing intention, each one placed where it will flourish. Generative abundance and wise dispersal."
+        },
+        {
+          "id": "spo_14",
+          "name": "King of Spores",
+          "desc": "A vast organism releases countless spores, commanding the spread of lineage across worlds. The mastery of dispersal and endless generation."
+        }
+      ],
+      "hyphae": [
+        {
+          "id": "hyp_01",
+          "name": "Ace of Hyphae",
+          "desc": "A single white filament begins to extend, reaching through darkness. The first thread of connection and communication. The spark of relationship beginning."
+        },
+        {
+          "id": "hyp_02",
+          "name": "Two of Hyphae",
+          "desc": "Two threads intertwine, creating a bridge. Conversation and exchange of information. The beginning of relationship."
+        },
+        {
+          "id": "hyp_03",
+          "name": "Three of Hyphae",
+          "desc": "Three threads form a network junction, information flowing in multiple directions. Communication becoming complex and multidirectional."
+        },
+        {
+          "id": "hyp_04",
+          "name": "Four of Hyphae",
+          "desc": "Four threads form a stable square foundation, rooted and secured. Stable communication networks and grounded relationships."
+        },
+        {
+          "id": "hyp_05",
+          "name": "Five of Hyphae",
+          "desc": "Five threads tangle in conflict, pulling in different directions. Communication breakdown and conflicting messages."
+        },
+        {
+          "id": "hyp_06",
+          "name": "Six of Hyphae",
+          "desc": "Six threads flow smoothly together toward a destination. Aligned communication and cooperative movement toward shared goal."
+        },
+        {
+          "id": "hyp_07",
+          "name": "Seven of Hyphae",
+          "desc": "Seven threads form a complex web of choices. Evaluating which connections to prioritize and which to release."
+        },
+        {
+          "id": "hyp_08",
+          "name": "Eight of Hyphae",
+          "desc": "Eight threads move with swift coordination, carrying information rapidly across distance. Quick communication and efficient networks."
+        },
+        {
+          "id": "hyp_09",
+          "name": "Nine of Hyphae",
+          "desc": "A figure sits at the center of an intricate network, feeling all connections, holding space for all exchange. Mastery of communication and deep listening."
+        },
+        {
+          "id": "hyp_10",
+          "name": "Ten of Hyphae",
+          "desc": "A vast network extends infinitely in all directions, each connection stable and strong. The completed network spanning worlds."
+        },
+        {
+          "id": "hyp_11",
+          "name": "Page of Hyphae",
+          "desc": "A young thread extends with curiosity, eager to make first connections. Openness to new relationships and communication."
+        },
+        {
+          "id": "hyp_12",
+          "name": "Knight of Hyphae",
+          "desc": "A thread races through darkness carrying urgent message. Swift communication and dedicated transmission."
+        },
+        {
+          "id": "hyp_13",
+          "name": "Queen of Hyphae",
+          "desc": "A figure holds the center of connection, nurturing all relationships. Wisdom of listening and careful cultivation of bonds."
+        },
+        {
+          "id": "hyp_14",
+          "name": "King of Hyphae",
+          "desc": "A figure commands vast networks, ensuring all information flows clearly. Authority in communication and mastery of complex systems."
+        }
+      ],
+      "fruiting": [
+        {
+          "id": "fru_01",
+          "name": "Ace of Fruiting",
+          "desc": "A single mushroom emerges from dark soil, glowing with inner light. The first manifestation of invisible work. Beauty breaking into visibility."
+        },
+        {
+          "id": "fru_02",
+          "name": "Two of Fruiting",
+          "desc": "Two fruiting bodies stand together, their caps touching gently. Complementary manifestations and shared expression."
+        },
+        {
+          "id": "fru_03",
+          "name": "Three of Fruiting",
+          "desc": "Three mushrooms of different colors bloom in harmony, each unique yet together creating beauty. Diverse expression in unified growth."
+        },
+        {
+          "id": "fru_04",
+          "name": "Four of Fruiting",
+          "desc": "Four fruiting bodies form a secure circle, protecting space in their center. Grounded manifestation and protected beauty."
+        },
+        {
+          "id": "fru_05",
+          "name": "Five of Fruiting",
+          "desc": "A fruiting body shrivels and falls, returning to earth. The end of one manifestation, the beginning of the next cycle."
+        },
+        {
+          "id": "fru_06",
+          "name": "Six of Fruiting",
+          "desc": "Six mushrooms create a feast-table of abundance. Gifts offered and shared. Manifestation as generosity."
+        },
+        {
+          "id": "fru_07",
+          "name": "Seven of Fruiting",
+          "desc": "Seven mushrooms of ethereal beauty hang suspended, creating illusions of choice. Which is truly beautiful? Which is real?"
+        },
+        {
+          "id": "fru_08",
+          "name": "Eight of Fruiting",
+          "desc": "Eight mushrooms release spores in rapid succession, moving from manifestation back to potential. Cycles accelerating."
+        },
+        {
+          "id": "fru_09",
+          "name": "Nine of Fruiting",
+          "desc": "A figure sits surrounded by fruiting bodies, satisfied and nourished. Abundance achieved and contentment found."
+        },
+        {
+          "id": "fru_10",
+          "name": "Ten of Fruiting",
+          "desc": "A vast fruiting festival covers an entire forest, countless mushrooms creating an ecosystem of beauty and nourishment."
+        },
+        {
+          "id": "fru_11",
+          "name": "Page of Fruiting",
+          "desc": "A young fruiting body emerges for the first time, curious and delicate. The beginning of visible expression."
+        },
+        {
+          "id": "fru_12",
+          "name": "Knight of Fruiting",
+          "desc": "A vibrant fruiting body displays itself boldly, proud of its color and form. Confident self-expression."
+        },
+        {
+          "id": "fru_13",
+          "name": "Queen of Fruiting",
+          "desc": "A regal fruiting body, luminous and nurturing, provides sustenance and beauty. The generosity of manifestation."
+        },
+        {
+          "id": "fru_14",
+          "name": "King of Fruiting",
+          "desc": "A magnificent fruiting body commands respect, mature and fully expressed. The mastery of visible manifestation."
+        }
+      ],
+      "roots": [
+        {
+          "id": "roo_01",
+          "name": "Ace of Roots",
+          "desc": "A single root pushes into dark soil, beginning to seek nourishment. The first connection to earth. Grounding beginning."
+        },
+        {
+          "id": "roo_02",
+          "name": "Two of Roots",
+          "desc": "Root and mycelium exchange in perfect balance, each nourishing the other. Symbiotic partnership made visible."
+        },
+        {
+          "id": "roo_03",
+          "name": "Three of Roots",
+          "desc": "Three roots intertwine in deep earth, drawing shared nourishment. Communal support and collective grounding."
+        },
+        {
+          "id": "roo_04",
+          "name": "Four of Roots",
+          "desc": "Four roots form a strong foundation, anchoring deep into stone. Secure grounding and stable foundation established."
+        },
+        {
+          "id": "roo_05",
+          "name": "Five of Roots",
+          "desc": "Five roots struggle for sparse nourishment in poor soil. Competition and scarcity. Difficulty finding sustenance."
+        },
+        {
+          "id": "roo_06",
+          "name": "Six of Roots",
+          "desc": "Six roots find abundance flowing toward them, rich soil offering generous nourishment. Fair exchange and plentiful resources."
+        },
+        {
+          "id": "roo_07",
+          "name": "Seven of Roots",
+          "desc": "Seven root-paths diverge underground, each leading to different sources of nourishment. Choices about where to invest growth."
+        },
+        {
+          "id": "roo_08",
+          "name": "Eight of Roots",
+          "desc": "Eight roots work with swift efficiency, processing nourishment rapidly and distributing it upward with speed."
+        },
+        {
+          "id": "roo_09",
+          "name": "Nine of Roots",
+          "desc": "A figure sits surrounded by rich earth and abundant nourishment, sustained and secure. Harvest and plenty achieved."
+        },
+        {
+          "id": "roo_10",
+          "name": "Ten of Roots",
+          "desc": "An ancient root system, generations deep, connects entire ecosystem in nourishment exchange. Legacy of grounding passed forward."
+        },
+        {
+          "id": "roo_11",
+          "name": "Page of Roots",
+          "desc": "A tender root explores the soil with curiosity, learning what nourishes. The beginning of grounded learning."
+        },
+        {
+          "id": "roo_12",
+          "name": "Knight of Roots",
+          "desc": "A root drives deep with purpose, seeking nourishment actively and with determination. Committed grounding."
+        },
+        {
+          "id": "roo_13",
+          "name": "Queen of Roots",
+          "desc": "A root nurtures the entire ecosystem through patient nourishment exchange. The wisdom of giving and receiving."
+        },
+        {
+          "id": "roo_14",
+          "name": "King of Roots",
+          "desc": "An ancient root holds fast, anchoring the entire forest in place. The mastery of deep grounding and patient sustenance."
+        }
+      ]
+    }
+  }
+}

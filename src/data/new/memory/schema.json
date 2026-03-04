@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Schema",
+  "type": "object",
+  "required": ["deck_metadata", "suits", "cards"],
+  "properties": {
+    "deck_metadata": {
+      "type": "object",
+      "required": ["deck_name", "mood", "theme_overarching"],
+      "properties": {
+        "deck_name": { "type": "string" },
+        "mood": { "type": "string" },
+        "details": { "type": "string" },
+        "backofcard": { "type": "string" },
+        "card_spec": {
+          "type": "object",
+          "properties": {
+            "aspect_ratio": { "type": "string" },
+            "border": { "type": "string" },
+            "style": { "type": "string" },
+            "technical_details": { "type": "string" }
+          }
+        },
+        "theme_overarching": { "type": "string" }
+      }
+    },
+    "suits": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z]+$": {
+          "type": "object",
+          "required": ["legacy_name", "element", "visuals"],
+          "properties": {
+            "legacy_name": { "type": "string" },
+            "element": { "type": "string" },
+            "visuals": { "type": "string" }
+          }
+        }
+      }
+    },
+    "cards": {
+      "type": "object",
+      "required": ["major", "minor"],
+      "properties": {
+        "major": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name", "legacy", "prompt"],
+            "properties": {
+              "id": { "type": "string", "pattern": "^maj_\\d{2}$" },
+              "name": { "type": "string" },
+              "legacy": { "type": "string" },
+              "prompt": { "type": "string" }
+            }
+          }
+        },
+        "minor": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-z]+$": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["id", "name", "desc"],
+                "properties": {
+                  "id": { "type": "string", "pattern": "^[a-z]{3}_\\d{2}$" },
+                  "name": { "type": "string" },
+                  "desc": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

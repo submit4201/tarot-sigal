@@ -1,0 +1,463 @@
+{
+    "deck_metadata": {
+        "deck_name": "Eternal Grove Tarot",
+        "mood": "Ancient, haunting, and resilient.",
+        "details": "Floating spores, glowing nectar veins, moss-covered stone.",
+        "backofcard": "A swirling vortex of bioluminescent spores with a faint outline of a tree in the center.",
+        "card_spec": {
+            "aspect_ratio": "Vertical 2:3",
+            "border": "living vine border.",
+            "style": "Surrealist dark botanical art, hyper-vivid bioluminescence, sharp linework.",
+            "technical_details": "8k UHD, volumetric lighting, f/1.8, cinematic color grading."
+        },
+        "theme_overarching": "Nature reclaiming the archetypes of the old world.",
+        "suits": {
+            "sunlight": {
+                "legacy_name": "Wands",
+                "element": "Fire",
+                "visuals": "Solar flares through canopy, golden sap."
+            },
+            "vessels": {
+                "legacy_name": "Cups",
+                "element": "Water",
+                "visuals": "Stone basins, glowing lilies, liquid starlight."
+            },
+            "briars": {
+                "legacy_name": "Swords",
+                "element": "Air",
+                "visuals": "Obsidian thorns, silver mist, jagged vines."
+            },
+            "roots": {
+                "legacy_name": "Pentacles",
+                "element": "Earth",
+                "visuals": "Ancient oak roots, buried bronze gears."
+            }
+        }
+    },
+    "cards": {
+        "major": [
+            {
+                "id": "maj_00",
+                "name": "The Sprout",
+                "legacy": "The Fool",
+                "prompt": "A luminous seedling with tiny legs teeters at the edge of a vast overgrown chasm, trailed by a spectral fox made of fireflies. Wind-scattered spores swirl in bioluminescent eddies around its path."
+            },
+            {
+                "id": "maj_01",
+                "name": "The Ancient Oak",
+                "legacy": "The Magician",
+                "prompt": "A colossal sentient oak tree with a single glowing eye in its trunk, its four primary roots each channeling a different element — fire-sap, liquid starlight, silver mist, and bronze ore — into a central ritual circle of mushrooms."
+            },
+            {
+                "id": "maj_02",
+                "name": "The Moon Blossom",
+                "legacy": "The High Priestess",
+                "prompt": "A veiled figure woven entirely from moonlit petals sits between two petrified pillars overgrown with phosphorescent lichen, holding a scroll of living bark inscribed with glowing runes. A crescent moon crowns her head."
+            },
+            {
+                "id": "maj_03",
+                "name": "The Great Mother",
+                "legacy": "The Empress",
+                "prompt": "An immense earth-goddess figure reclines across a fertile valley, her body merging seamlessly with rolling hills of wildflowers. Streams of golden nectar flow from her outstretched hands, nourishing a sprawling field of luminous grain."
+            },
+            {
+                "id": "maj_04",
+                "name": "The Stone King",
+                "legacy": "The Emperor",
+                "prompt": "A massive figure carved from ancient granite sits upon a throne of petrified wood, crowned with antlers of fossilized coral. Glowing moss traces the stern lines of his face. Four ram skulls ornament the armrests."
+            },
+            {
+                "id": "maj_05",
+                "name": "The Elder Moss",
+                "legacy": "The Hierophant",
+                "prompt": "A towering figure draped in cascading moss robes stands between two living stone pillars in a cathedral of ancient trees. Two kneeling saplings bow before him as he raises a staff topped with a triple-canopy of bioluminescent fungi."
+            },
+            {
+                "id": "maj_06",
+                "name": "The Entwined Vines",
+                "legacy": "The Lovers",
+                "prompt": "Two humanoid figures made of intertwining ivy and wisteria face each other beneath a radiant angel-shaped orchid. Behind one stands a tree of glowing fruit, behind the other a tree of obsidian thorns with a serpentine vine coiled around it."
+            },
+            {
+                "id": "maj_07",
+                "name": "The Wild Stampede",
+                "legacy": "The Chariot",
+                "prompt": "A warrior clad in bark armor rides a chariot of woven roots, drawn by two massive stags — one of pure white birch, one of dark ebony — charging through a forest of towering ferns. A canopy of stars blazes overhead."
+            },
+            {
+                "id": "maj_08",
+                "name": "The Thornbearer",
+                "legacy": "Strength",
+                "prompt": "A serene figure crowned with a glowing infinity-loop of vines gently closes the jaws of a massive lion made of tangled briars and roses. A chain of luminous flowers connects them, symbolizing gentle dominion over wild nature."
+            },
+            {
+                "id": "maj_09",
+                "name": "The Lantern Fungus",
+                "legacy": "The Hermit",
+                "prompt": "A solitary cloaked figure of ancient bark stands atop a wind-swept ridge, holding aloft a giant bioluminescent mushroom that casts an ethereal blue-green glow across a misty, desolate landscape of fallen monoliths."
+            },
+            {
+                "id": "maj_10",
+                "name": "The Eternal Ring",
+                "legacy": "Wheel of Fortune",
+                "prompt": "A massive wheel formed from a coiled serpent-vine, embedded with glowing seasonal symbols — spring blossoms, summer suns, autumn leaves, winter frost. Four spirit-creatures (hawk, serpent, stag, bear) guard its corners, suspended in a cosmic canopy of stars."
+            },
+            {
+                "id": "maj_11",
+                "name": "The Verdant Scales",
+                "legacy": "Justice",
+                "prompt": "A blindfolded dryad figure sits between two pillars of petrified wood, holding a sword of crystallized sap in one hand and a pair of scales woven from living vines in the other, perfectly balanced with a glowing seed on each side."
+            },
+            {
+                "id": "maj_12",
+                "name": "The Suspended Chrysalis",
+                "legacy": "The Hanged Man",
+                "prompt": "A serene humanoid figure hangs upside-down from a living tau-cross tree, one leg crossed behind the other, wrapped in a translucent cocoon of silk and spider-web that glows with inner light. A halo of spores surrounds the peaceful face."
+            },
+            {
+                "id": "maj_13",
+                "name": "The Great Composter",
+                "legacy": "Death",
+                "prompt": "A massive, skeletal stag decomposing into a vibrant bed of exotic mushrooms and neon flowers, symbolizing rebirth."
+            },
+            {
+                "id": "maj_14",
+                "name": "The Still Pool",
+                "legacy": "Temperance",
+                "prompt": "A winged figure of woven reeds stands with one foot on moss-covered stone and one in a glassy pool, pouring liquid starlight between two hollow gourds. A path of stepping stones leads to a distant peak crowned by a faint aurora."
+            },
+            {
+                "id": "maj_15",
+                "name": "The Parasite",
+                "legacy": "The Devil",
+                "prompt": "A horned figure made of twisting parasitic vines perches atop an altar of corrupted wood, holding an inverted torch of sickly green flame. Two smaller figures are chained to its base by creeping tendrils, their expressions a mix of despair and dark fascination."
+            },
+            {
+                "id": "maj_16",
+                "name": "The Fallen Canopy",
+                "legacy": "The Tower",
+                "prompt": "A colossal ancient tree, struck by a bolt of violet lightning, splits and falls. Figures tumble from its crown as burning leaves and shattered branches cascade downward. The roots tear free from crumbling earth, revealing a hidden cavern of glowing crystal beneath."
+            },
+            {
+                "id": "maj_17",
+                "name": "The Night Bloom",
+                "legacy": "The Star",
+                "prompt": "A luminous naked figure kneels by a dark pool beneath an immense eight-pointed star-flower, pouring streams of liquid light from two seed pods — one into the water, one onto the fertile earth. Seven smaller star-blossoms glow in the sky above."
+            },
+            {
+                "id": "maj_18",
+                "name": "The Pale Spore",
+                "legacy": "The Moon",
+                "prompt": "A massive ghostly moon-cap mushroom rises between two dark towers of petrified wood. A narrow path of stepping stones leads from a dark pool, where a spectral crayfish emerges, past a howling wolf of shadow and a baying hound of pale light."
+            },
+            {
+                "id": "maj_19",
+                "name": "The Radiant Canopy",
+                "legacy": "The Sun",
+                "prompt": "A joyful child made of woven sunflowers rides a brilliant white stag beneath a blazing canopy of golden leaves that form a radiant sun. Towering sunflowers line a garden wall as motes of pollen drift like golden snow."
+            },
+            {
+                "id": "maj_20",
+                "name": "The Great Awakening",
+                "legacy": "Judgement",
+                "prompt": "An enormous trumpet-shaped flower blooms in the sky, releasing a cascade of glowing pollen. Below, humanoid figures of root and bark rise from the earth, arms outstretched in wonder, shedding their cocoons of soil and stone."
+            },
+            {
+                "id": "maj_21",
+                "name": "The Infinite Grove",
+                "legacy": "The World",
+                "prompt": "A dancing figure of intertwined seasons — one arm spring-blossomed, one autumn-leafed, one leg winter-frosted, one summer-bloomed — floats within a massive wreath of living vines. The four elemental spirit-creatures occupy the corners of the cosmos."
+            }
+        ],
+        "minor": {
+            "sunlight": [
+                {
+                    "id": "sun_01",
+                    "name": "Ace of Sunlight",
+                    "desc": "A radiant hand of living wood emerges from a golden cloud, gripping a single blazing branch that drips molten sap like liquid fire. New leaves unfurl from its tip."
+                },
+                {
+                    "id": "sun_02",
+                    "name": "Two of Sunlight",
+                    "desc": "A figure stands atop a moss-covered parapet overlooking a vast canopy ocean, holding a glowing globe of amber resin in one hand and a sunlit branch in the other. A second branch is fixed in a ring beside them."
+                },
+                {
+                    "id": "sun_03",
+                    "name": "Three of Sunlight",
+                    "desc": "A cloaked figure of bark stands at a cliff edge, gazing at luminous ships made of giant leaves sailing across a sea of golden mist. Three blazing branches are planted firmly in the ground behind them."
+                },
+                {
+                    "id": "sun_04",
+                    "name": "Four of Sunlight",
+                    "desc": "Four great sunlit branches form a canopy gate adorned with garlands of phosphorescent flowers. Two joyful dryad figures celebrate beneath while a bridge of roots leads to an ancient tree-hall in the background."
+                },
+                {
+                    "id": "sun_05",
+                    "name": "Five of Sunlight",
+                    "desc": "Five young saplings brandish blazing branches in a playful melee amidst a clearing of giant ferns, their movements casting dappled patterns of fire and shadow across the forest floor."
+                },
+                {
+                    "id": "sun_06",
+                    "name": "Six of Sunlight",
+                    "desc": "A laureled figure rides a stag through a cheering grove of sentient trees, holding a sunlit branch crowned with a wreath of golden leaves. Smaller figures walk alongside bearing their own branches."
+                },
+                {
+                    "id": "sun_07",
+                    "name": "Seven of Sunlight",
+                    "desc": "A lone defender stands on a rocky outcrop of a giant root, brandishing a blazing branch against six more rising from the tangled undergrowth below, sparks cascading from each clash."
+                },
+                {
+                    "id": "sun_08",
+                    "name": "Eight of Sunlight",
+                    "desc": "Eight blazing branches streak through an open sky above a rolling canopy like comets of golden fire, their trails leaving lines of sprouting seedlings in the air behind them."
+                },
+                {
+                    "id": "sun_09",
+                    "name": "Nine of Sunlight",
+                    "desc": "A battered but resolute figure of scarred bark leans on a sunlit branch, an expectant gaze fixed on the horizon. Behind them, eight more branches form a defensive palisade of living flame."
+                },
+                {
+                    "id": "sun_10",
+                    "name": "Ten of Sunlight",
+                    "desc": "A weary figure struggles under the weight of ten blazing branches bundled on their back, trudging toward a distant tree-settlement, the golden light both a burden and a beacon."
+                },
+                {
+                    "id": "sun_11",
+                    "name": "Page of Sunlight",
+                    "desc": "A young figure of fresh green wood stands in a sunlit clearing, holding a single blazing branch aloft with both hands, gazing at its flame with curiosity and wonder. Messages of pollen swirl around them."
+                },
+                {
+                    "id": "sun_12",
+                    "name": "Knight of Sunlight",
+                    "desc": "An armored figure of golden heartwood rides a leaping fire-maned stag at full gallop through a blazing forest, a sunlit branch held forward like a lance, trailing sparks and embers."
+                },
+                {
+                    "id": "sun_13",
+                    "name": "Queen of Sunlight",
+                    "desc": "A regal figure of rich amber wood sits upon a throne of living sunflowers, a blazing branch in one hand and a black cat of shadow at her feet. Her crown is a ring of perpetual golden flame."
+                },
+                {
+                    "id": "sun_14",
+                    "name": "King of Sunlight",
+                    "desc": "A commanding figure of ancient, fire-scarred wood sits upon a throne adorned with salamander carvings, crowned with a cap of solar flares beneath an antler crown, holding a flourishing sunlit branch."
+                }
+            ],
+            "vessels": [
+                {
+                    "id": "ves_01",
+                    "name": "Ace of Vessels",
+                    "desc": "A hand of carved moonstone emerges from a luminous cloud, offering a stone chalice overflowing with liquid starlight. A spectral dove descends, carrying a glowing lily pad on its beak. Four streams pour from the cup into a dark pool below."
+                },
+                {
+                    "id": "ves_02",
+                    "name": "Two of Vessels",
+                    "desc": "Two figures of willow and reed face each other across a stepping-stone stream, each offering a vessel of glowing water. Above them, a winged caduceus of intertwined vines rises, topped with a lion's head of living moss."
+                },
+                {
+                    "id": "ves_03",
+                    "name": "Three of Vessels",
+                    "desc": "Three dryad maidens dance in a moonlit garden clearing, raising their vessels of luminous dew high in a joyous toast. Garlands of night-blooming flowers connect them."
+                },
+                {
+                    "id": "ves_04",
+                    "name": "Four of Vessels",
+                    "desc": "A sullen figure of gnarled wood sits beneath an ancient tree, arms crossed, staring at three vessels of still water set on the moss before them. A spectral hand offers a fourth vessel from a hollow in the tree, unnoticed."
+                },
+                {
+                    "id": "ves_05",
+                    "name": "Five of Vessels",
+                    "desc": "A cloaked figure of dark bark stands before three toppled vessels, their luminous contents spilling into the earth. Two upright vessels glow softly behind, unnoticed. A bridge of petrified wood leads to a distant sanctuary."
+                },
+                {
+                    "id": "ves_06",
+                    "name": "Six of Vessels",
+                    "desc": "In an old overgrown garden, a tall sapling offers a vessel brimming with glowing nectar to a small seedling. Six vessels filled with luminous flowers surround them, evoking memories of an ancient, nurturing past."
+                },
+                {
+                    "id": "ves_07",
+                    "name": "Seven of Vessels",
+                    "desc": "Seven vessels float in a shimmering mist before a silhouetted figure, each containing a different phantasmal vision — a jeweled serpent, a veiled face, a tower of light, a wreathed skull, a dragon of leaves, a crown of thorns, and a radiant seed."
+                },
+                {
+                    "id": "ves_08",
+                    "name": "Eight of Vessels",
+                    "desc": "A lone figure walks away from eight neatly stacked vessels under a crescent moon, ascending a rocky path deeper into a dark, misty forest. The vessels' glow fades behind them as new, unknown light beckons ahead."
+                },
+                {
+                    "id": "ves_09",
+                    "name": "Nine of Vessels",
+                    "desc": "A content figure of polished driftwood sits before an arched shelf of living coral displaying nine luminous vessels, arms folded in satisfaction. The vessels shimmer with every color of bioluminescence."
+                },
+                {
+                    "id": "ves_10",
+                    "name": "Ten of Vessels",
+                    "desc": "A family of tree-spirits — two parents and dancing children — gaze upward at a rainbow arc of ten radiant vessels glowing in the sky above their cozy tree-hollow home. The scene radiates warmth and completeness."
+                },
+                {
+                    "id": "ves_11",
+                    "name": "Page of Vessels",
+                    "desc": "A youthful figure of pale birch gazes in wonder at a small luminous fish leaping from a stone vessel held in their hands, surrounded by the gentle glow of water lilies on a tranquil pond."
+                },
+                {
+                    "id": "ves_12",
+                    "name": "Knight of Vessels",
+                    "desc": "A graceful rider of silvered wood rides a calm white stag across a glassy river, holding a single glowing vessel aloft. Winged helmet of unfurling fern fronds adorns their head, reflecting in the still water."
+                },
+                {
+                    "id": "ves_13",
+                    "name": "Queen of Vessels",
+                    "desc": "A luminous figure of living coral and sea-glass sits upon a throne at the water's edge, gazing into an ornate vessel of liquid starlight. Crabs and starfish of gemstone cluster at her feet; her crown is a cascade of frozen water."
+                },
+                {
+                    "id": "ves_14",
+                    "name": "King of Vessels",
+                    "desc": "A powerful figure of dark driftwood sits upon a throne set upon the surface of a calm sea, holding a great vessel in one hand and a scepter of narwhal tusk in the other. A ship of leaves sails behind, and a dolphin of light leaps beside."
+                }
+            ],
+            "briars": [
+                {
+                    "id": "bri_01",
+                    "name": "Ace of Briars",
+                    "desc": "A hand of polished obsidian emerges from a stormy cloud, gripping a single sword of crystallized thorn, its point piercing a crown of silver mist. Wind-torn leaves swirl around the blade."
+                },
+                {
+                    "id": "bri_02",
+                    "name": "Two of Briars",
+                    "desc": "A blindfolded figure of smooth grey bark balances two briar-swords upon their shoulders, seated before a still, moonlit sea. The swords cross behind their head in precarious equilibrium."
+                },
+                {
+                    "id": "bri_03",
+                    "name": "Three of Briars",
+                    "desc": "Three obsidian briars pierce through a floating, translucent seed pod amidst a storm of silver leaves."
+                },
+                {
+                    "id": "bri_04",
+                    "name": "Four of Briars",
+                    "desc": "A figure of petrified wood lies in repose upon a stone slab in a silent cathedral of towering trees, three briar-swords mounted on the trunk above and one resting alongside the body. Stained-glass light filters through the canopy."
+                },
+                {
+                    "id": "bri_05",
+                    "name": "Five of Briars",
+                    "desc": "A sneering figure of twisted vine gathers three fallen briar-swords from the ground while two defeated figures retreat into the mist, their own swords abandoned. Storm clouds churn overhead."
+                },
+                {
+                    "id": "bri_06",
+                    "name": "Six of Briars",
+                    "desc": "A ferryman of woven rushes poles a boat of giant lily pads across a calm, dark river. A cloaked passenger and a small child huddle among six upright briar-swords planted in the vessel's bed of moss."
+                },
+                {
+                    "id": "bri_07",
+                    "name": "Seven of Briars",
+                    "desc": "A sly figure of shadow-bark creeps away from a camp of sleeping thorn-guardians, carrying five briar-swords awkwardly. Two remain planted in the ground behind, gleaming with accusatory light."
+                },
+                {
+                    "id": "bri_08",
+                    "name": "Eight of Briars",
+                    "desc": "A bound and blindfolded figure stands trapped in a circle of eight briar-swords plunged into marshy ground. The bindings are loose tendrils — escapable, if only the figure could see. A faint path glows beyond the ring."
+                },
+                {
+                    "id": "bri_09",
+                    "name": "Nine of Briars",
+                    "desc": "A figure sits upright on a bed of moss in the dark, head in hands, as nine briar-swords hover horizontally on the wall behind like a rack of terrible memories. A single tear of amber resin falls."
+                },
+                {
+                    "id": "bri_10",
+                    "name": "Ten of Briars",
+                    "desc": "A fallen figure of splintered wood lies face-down on a barren ridge, pierced by ten briar-swords. A faint dawn of pink and gold light breaks on the distant horizon beyond the desolation."
+                },
+                {
+                    "id": "bri_11",
+                    "name": "Page of Briars",
+                    "desc": "A lithe young figure of pale thorn-wood strides across a windswept ridge, holding a briar-sword aloft with both hands. Ragged clouds race past as they scan the horizon with sharp, watchful eyes."
+                },
+                {
+                    "id": "bri_12",
+                    "name": "Knight of Briars",
+                    "desc": "An armored figure of dark ironwood charges on a skeletal stag at full gallop through a storm of silver leaves, briar-sword extended. The wind itself seems to part before the blade's obsidian edge."
+                },
+                {
+                    "id": "bri_13",
+                    "name": "Queen of Briars",
+                    "desc": "A stern, regal figure of pale ash-wood sits upon a high throne of thorns, one hand raising a briar-sword skyward, the other extended in a gesture of command. A single carved butterfly adorns her crown. Storm clouds gather behind."
+                },
+                {
+                    "id": "bri_14",
+                    "name": "King of Briars",
+                    "desc": "A powerful figure of dark, battle-scarred oak sits on a throne backed by howling wind, holding a great briar-sword of judgement. Two crescent moons are carved into the throne's back. His gaze is piercing and absolute."
+                }
+            ],
+            "roots": [
+                {
+                    "id": "roo_01",
+                    "name": "Ace of Roots",
+                    "desc": "A massive hand of living earth rises from a cloud of rich soil, offering a single glowing pentacle-seed etched with the five-pointed star of the elements. Below, a lush garden gate of stone arches opens onto a blooming path."
+                },
+                {
+                    "id": "roo_02",
+                    "name": "Two of Roots",
+                    "desc": "A juggling figure of flexible willow dances on a shoreline, balancing two glowing pentacle-seeds connected by an infinity loop of vine. Ships of bark ride the waves behind, and the figure's expression is one of playful tension."
+                },
+                {
+                    "id": "roo_03",
+                    "name": "Three of Roots",
+                    "desc": "A master sculptor of stone and root works within a cathedral of ancient trees, chiseling a pillar adorned with three glowing pentacle-seeds. Two cloaked figures consult a blueprint of bark behind the artisan."
+                },
+                {
+                    "id": "roo_04",
+                    "name": "Four of Roots",
+                    "desc": "A crowned figure of dense ironwood sits upon a stone block in a barren clearing, clutching a glowing pentacle-seed to their chest, one balanced on their crown, and two beneath their feet. Their grip is tight and possessive."
+                },
+                {
+                    "id": "roo_05",
+                    "name": "Five of Roots",
+                    "desc": "Two ragged figures of bare, frost-bitten wood trudge through a snowstorm past a warmly glowing window of a great tree-hall. Five pentacle-seeds are embedded in the stained-glass canopy above, their light unseen by the suffering pair."
+                },
+                {
+                    "id": "roo_06",
+                    "name": "Six of Roots",
+                    "desc": "A generous merchant-figure of polished mahogany weighs glowing pentacle-seeds on a scale of balanced vines, distributing them to grateful seedlings gathered at their feet. Six seeds glow in gentle equilibrium."
+                },
+                {
+                    "id": "roo_07",
+                    "name": "Seven of Roots",
+                    "desc": "A patient farmer-figure of weathered oak leans on a spade, contemplating seven luminous pentacle-seeds growing slowly on a heavy vine. The expression is one of quiet evaluation — harvest or wait?"
+                },
+                {
+                    "id": "roo_08",
+                    "name": "Eight of Roots",
+                    "desc": "A focused artisan of living stone sits at a workbench, carefully carving intricate patterns into a row of eight glowing pentacle-seeds. Each one is more refined than the last, a testament to diligent craft."
+                },
+                {
+                    "id": "roo_09",
+                    "name": "Nine of Roots",
+                    "desc": "A solitary, elegant figure of rich redwood stands in a lush vineyard of glowing pentacle-vines, a falcon of crystal perched upon one wrist. Nine radiant pentacle-seeds hang heavy on the vines around them. Abundance and self-sufficiency."
+                },
+                {
+                    "id": "roo_10",
+                    "name": "Ten of Roots",
+                    "desc": "A multi-generational family of tree-spirits gathers beneath a grand archway into their ancestral tree-home. Ten glowing pentacle-seeds are embedded in the arch above. An elder sits with hounds of moss, a child reaches for a falling leaf."
+                },
+                {
+                    "id": "roo_11",
+                    "name": "Page of Roots",
+                    "desc": "A studious young figure of smooth birch stands in a flowering meadow, holding a single glowing pentacle-seed aloft in both hands, gazing at it with intense scholarly focus. The world around them is rich but unnoticed."
+                },
+                {
+                    "id": "roo_12",
+                    "name": "Knight of Roots",
+                    "desc": "A patient, heavily-built figure of dark oak rides a slow, powerful draft-stag through a freshly plowed field, displaying a single glowing pentacle-seed. The knight's gaze is steady and forward, embodying endurance and reliability."
+                },
+                {
+                    "id": "roo_13",
+                    "name": "Queen of Roots",
+                    "desc": "A nurturing figure of rich, dark earth sits on a throne overgrown with roses and fruit-bearing vines, cradling a glowing pentacle-seed in her lap. A rabbit of living moss rests at her feet. The garden around her is the most abundant in the grove."
+                },
+                {
+                    "id": "roo_14",
+                    "name": "King of Roots",
+                    "desc": "A stout, powerful figure of ancient petrified wood sits on a throne carved with bull's heads, draped in robes of fruiting vines. He holds a glowing pentacle-seed scepter, and his crown is a ring of buried bronze gears unearthed by patient roots."
+                }
+            ]
+        }
+    }
+}
