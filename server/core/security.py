@@ -5,10 +5,16 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load environment variables from a path resolved relative to this file
+# Load environment variables. Try .env.local first, then fallback to .env in root.
+# BASE_DIR is 'server/', ROOT_DIR is the project root.
 BASE_DIR = Path(__file__).resolve().parent.parent
-env_path = BASE_DIR / ".env.local"
-load_dotenv(dotenv_path=env_path)
+ROOT_DIR = BASE_DIR.parent
+
+for env_file in [".env.local", ".env"]:
+    env_path = ROOT_DIR / env_file
+    if env_path.exists():
+        load_dotenv(dotenv_path=env_path)
+        break
 
 # Security configuration
 SECRET_KEY = os.getenv("JWT_SECRET_KEY")
