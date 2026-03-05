@@ -440,3 +440,59 @@ export const getVenusHarmony = (
 
     return Math.min(100, Math.max(0, Math.round(score)));
 };
+
+// ---------------------------------------------------------------------------
+// Lunar Phase & Velocity
+// ---------------------------------------------------------------------------
+
+/**
+ * Known New Moon reference: January 6, 2000 18:14 UTC.
+ * Used as epoch for synodic cycle calculations.
+ */
+const NEW_MOON_EPOCH = Date.UTC(2000, 0, 6, 18, 14, 0);
+
+/** Synodic month — mean time between successive new moons (days). */
+const SYNODIC_PERIOD = 29.53059;
+
+/**
+ * Returns the current phase angle in the lunar synodic cycle (0–360°).
+ *   0° = New Moon, 90° = First Quarter, 180° = Full Moon, 270° = Last Quarter
+ *
+ * @param date - Target date/time
+ * @returns Phase angle in degrees (0-360)
+ */
+export const getLunarPhaseAngle = (date: Date): number => {
+    const daysSinceEpoch = (date.getTime() - NEW_MOON_EPOCH) / 86_400_000;
+    const cyclePosition = ((daysSinceEpoch % SYNODIC_PERIOD) + SYNODIC_PERIOD) % SYNODIC_PERIOD;
+    return (cyclePosition / SYNODIC_PERIOD) * 360;
+};
+
+/**
+ * Moon phase intensity (0–100).
+ * Follows a cosine curve: New Moon = 0, Full Moon = 100.
+ * This gives Drive its slow ~30-day wave.
+ *
+ * @param date - Target date/time
+ * @returns Intensity score 0-100
+ */
+export const getMoonPhaseIntensity = (date: Date): number => {
+    const phaseAngle = getLunarPhaseAngle(date);
+    const radians = (phaseAngle * Math.PI) / 180;
+    // (1 - cos(θ)) / 2 → 0 at new moon, 1 at full moon
+    return Math.round(((1 - Math.cos(radians)) / 2) * 100);
+};
+
+/**
+ * Lunar velocity modifier (-1 to +1).
+ * Peaks at quarter moons (±90° and ±270°), zero at new/full moon.
+ * Uses sin(2θ) to create two peaks per cycle — adds mid-cycle spikes
+ * that break the monotony of hourly planetary positions.
+ *
+ * @param date - Target date/time
+ * @returns Velocity modifier in range [-1, 1]
+ */
+export const getLunarVelocity = (date: Date): number => {
+    const phaseAngle = getLunarPhaseAngle(date);
+    const radians = (phaseAngle * Math.PI) / 180;
+    return Math.sin(2 * radians);
+};

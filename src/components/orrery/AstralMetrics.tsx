@@ -1,18 +1,18 @@
 import React, { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/AppContext';
 import { calculateDailyNumber, calculateMonthlyNumber, calculateYearlyNumber } from '../../services/tarotService';
 import { generateCosmicBlueprint } from '../../services/cosmicService';
-import { DnaIcon, LockIcon, SparklesIcon, CompassIcon, ActivityIcon } from '../icons';
+import { DnaIcon, SparklesIcon, ActivityIcon } from '../icons';
 import CosmicBlueprintDisplay from '../CosmicBlueprintDisplay';
 import { usePredictiveEngine } from '../../hooks/usePredictiveEngine';
 import {
     MomentumGauge,
-    PredictiveSparklines,
     TimelineScrubber,
-    AstralBubInsight,
 } from '../predictive';
+import PredictiveSparklines from '../predictive/PredictiveSparklines';
+import AstralBubInsight from '../predictive/AstralBubInsight';
+import BentoMetricsGrid from '../predictive/BentoMetricsGrid';
 import type { SparklinePoint } from '../../types/predictive';
 
 /**
@@ -32,7 +32,6 @@ import type { SparklinePoint } from '../../types/predictive';
  */
 const AstralMetrics: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const { activeProfile, isPremium } = useApp();
-    const navigate = useNavigate();
     const today = new Date();
     const todayStr = today.toISOString().split('T')[0];
 
@@ -160,68 +159,22 @@ const AstralMetrics: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                             />
                         </div>
 
-                        {/* AI Bub Insight (appears on hover) */}
-                        <AstralBubInsight activePoint={hoveredPoint} />
+                        {/* AI Bub Insight (appears on hover + auto-spawned Bubs) */}
+                        <AstralBubInsight
+                            activePoint={hoveredPoint}
+                            activeInsights={engine.activeInsights}
+                        />
 
-                        {/* Optimization Windows */}
-                        {engine.optimizationWindows.length > 0 && (
-                            <div className="glass-panel p-6 rounded-[2rem] border-white/5 bg-black/30">
-                                <h3 className="text-[10px] font-mono text-teal-400 uppercase tracking-widest font-bold mb-4 flex items-center gap-2">
-                                    <CompassIcon className="w-3 h-3" /> Optimization_Windows
-                                </h3>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    {engine.optimizationWindows.slice(0, 6).map((win, i) => {
-                                        const colors: Record<string, string> = {
-                                            power: 'border-red-500/30 text-red-400',
-                                            flow: 'border-blue-500/30 text-blue-400',
-                                            harmony: 'border-green-500/30 text-green-400',
-                                            rest: 'border-gray-500/30 text-gray-400',
-                                        };
-                                        const cls = colors[win.type] || colors.rest;
-                                        return (
-                                            <motion.div
-                                                key={`${win.channel}-${i}`}
-                                                initial={{ opacity: 0, y: 8 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ delay: i * 0.05 }}
-                                                className={`p-3 rounded-xl border bg-white/[0.02] ${cls.split(' ')[0]}`}
-                                            >
-                                                <div className="flex items-center justify-between mb-1">
-                                                    <span className={`text-[10px] font-mono uppercase tracking-wider ${cls.split(' ')[1]}`}>
-                                                        {win.type}
-                                                    </span>
-                                                    <span className="text-[10px] font-mono text-gray-500">
-                                                        {win.startHour > 0 ? '+' : ''}{win.startHour}h → {win.endHour > 0 ? '+' : ''}{win.endHour}h
-                                                    </span>
-                                                </div>
-                                                <p className="text-xs text-gray-400">{win.insight}</p>
-                                            </motion.div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Classic Numerology Row */}
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            {[
-                                { label: 'Universal_Year', num: yearlyNumber, color: 'text-amber-400' },
-                                { label: 'Current_Month', num: monthlyNumber, color: 'text-teal-400' },
-                                { label: "Today's_Frequency", num: dailyNumber, color: 'text-fuchsia-400' },
-                            ].map(({ label, num, color }) => (
-                                <div key={label} className="glass-panel p-5 rounded-[2rem] border-white/5 hover:bg-white/5 transition-all group text-center">
-                                    <h3 className={`text-[9px] font-mono ${color} uppercase tracking-widest mb-2 font-bold`}>
-                                        {label}
-                                    </h3>
-                                    <div className={`text-3xl font-bold text-white font-mono mb-1 group-hover:${color} transition-colors`}>
-                                        {num.number}
-                                    </div>
-                                    <div className="text-[10px] text-white/40 font-sans uppercase tracking-widest">
-                                        {num.theme}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                        {/* Bento Grid Layout (Optimization + Numerology + Decryption) */}
+                        <BentoMetricsGrid
+                            isPremium={isPremium}
+                            optimizationWindows={engine.optimizationWindows}
+                            yearlyNumber={yearlyNumber}
+                            monthlyNumber={monthlyNumber}
+                            dailyNumber={dailyNumber}
+                            personalDay={engine.personalDay}
+                            lifePath={cosmicBlueprint.lifePath}
+                        />
                     </motion.div>
 
                     {/* Right Column: Core Blueprint + Premium Content */}
@@ -274,44 +227,6 @@ const AstralMetrics: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                                 </div>
                             </div>
                         )}
-
-                        {/* Premium Deep Dive (gated) */}
-                        <div className="glass-panel p-8 rounded-[2rem] border-white/5 bg-white/[0.02] relative group overflow-hidden">
-                            {!isPremium && (
-                                <div className="absolute inset-0 bg-black/80 backdrop-blur-md z-10 flex flex-col items-center justify-center p-8 text-center border border-amber-500/20 shadow-[0_0_50px_rgba(234,179,8,0.1)_inset]">
-                                    <LockIcon className="w-8 h-8 text-amber-400/50 mb-4 animate-pulse" />
-                                    <h4 className="text-lg font-bold text-amber-100 mb-2 font-mono tracking-widest uppercase">Matrix Decryption Locked</h4>
-                                    <p className="text-xs text-amber-500/50 max-w-xs mb-6 font-sans uppercase tracking-widest leading-relaxed">
-                                        Upgrade to Seeker or Oracle tier for deep numerical synthesis.
-                                    </p>
-                                    <button
-                                        onClick={() => navigate('/pricing')}
-                                        className="px-6 py-2 bg-amber-500/10 border border-amber-500/30 text-amber-400 rounded-full hover:bg-amber-500/20 transition-all font-mono text-[10px] uppercase tracking-widest"
-                                    >
-                                        Establish_Uplink
-                                    </button>
-                                </div>
-                            )}
-                            <h3 className="text-[10px] font-mono text-white/30 uppercase tracking-[0.4em] mb-6 font-bold">Matrix_Decryption_Data</h3>
-                            <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-white/50 leading-relaxed font-sans ${!isPremium ? 'opacity-20 blur-sm pointer-events-none' : ''}`}>
-                                <div>
-                                    <strong className="text-white/80 block mb-2 font-mono uppercase tracking-widest text-[10px]">Life Path Number</strong>
-                                    Your core purpose and primary trajectory. Life Path {cosmicBlueprint.lifePath.number} channels {cosmicBlueprint.lifePath.theme.toLowerCase()}.
-                                </div>
-                                <div>
-                                    <strong className="text-white/80 block mb-2 font-mono uppercase tracking-widest text-[10px]">Universal Year</strong>
-                                    The global frequency field. Year {yearlyNumber.number} emphasizes {yearlyNumber.theme.toLowerCase()}.
-                                </div>
-                                <div>
-                                    <strong className="text-white/80 block mb-2 font-mono uppercase tracking-widest text-[10px]">Daily Vibration</strong>
-                                    Today's micro-energy ({dailyNumber.number}) aligns with {dailyNumber.theme.toLowerCase()} for precision action.
-                                </div>
-                                <div>
-                                    <strong className="text-white/80 block mb-2 font-mono uppercase tracking-widest text-[10px]">Personal Day</strong>
-                                    Your personal cycle today is {engine.personalDay.number} — {engine.personalDay.theme.toLowerCase()}.
-                                </div>
-                            </div>
-                        </div>
                     </motion.div>
                 </div>
             </div>

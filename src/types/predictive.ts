@@ -87,6 +87,10 @@ export interface SparklinePoint {
     personalHourNum: number;
     /** True if this hour qualifies as an optimization window */
     isActionWindow: boolean;
+    /** True if this hour is a local peak in any channel */
+    isPeak?: boolean;
+    /** True if this hour is a local valley in any channel */
+    isValley?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -140,6 +144,8 @@ export interface PredictiveEngineState {
     scrubOffset: number;
     /** Whether the engine has finished initial computation */
     isReady: boolean;
+    /** List of auto-spawned insights (Bubs) currently visible */
+    activeInsights: AstralInsight[];
 }
 
 // ---------------------------------------------------------------------------

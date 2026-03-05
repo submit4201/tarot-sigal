@@ -26,14 +26,17 @@ import {
     getMercuryFlow,
     getVenusHarmony,
     getTransitSnapshot,
+    getMoonPhaseIntensity,
+    getLunarVelocity,
 } from '../services/transitService';
 import type {
-    PredictiveEngineState,
-    ChannelMetrics,
     SparklinePoint,
     OptimizationWindow,
+    ChannelMetrics,
+    PredictiveEngineState,
+    AstralInsight,
     TransitAspect,
-    WindowType,
+    WindowType
 } from '../types/predictive';
 
 // ---------------------------------------------------------------------------
@@ -55,6 +58,31 @@ const WEIGHTS = {
 const ACTION_MODE_MARS_THRESHOLD = 80;
 const ACTION_MODE_PERSONAL_DAYS = [1, 8];
 const OPTIMIZATION_THRESHOLD = 70;
+
+const HOUR_WEIGHT_MAP: Record<number, number> = {
+    1: 25, 8: 25,     // Action/Power
+    3: 15, 5: 15, 9: 15, // Creative/Change/Completion
+    11: 30, 22: 30, 33: 30, // Master numbers
+    4: 5, 6: 5, 7: 5, // Stability/Nurturing/Introspection
+    2: -10, // Cooperation/Rest
+};
+
+const DAY_WEIGHT_MAP: Record<number, number> = {
+    1: 20, 8: 20,
+    3: 10, 5: 10, 9: 10,
+    11: 25, 22: 25, 33: 25,
+    4: 5, 6: 5, 7: 5,
+    2: -5,
+};
+
+const CHANNEL_COLORS = {
+    drive: '#ef4444',
+    flow: '#3b82f6',
+    harmony: '#22c55e',
+    frequency: '#a855f7',
+};
+
+const clamp = (val: number, min: number, max: number) => Math.min(max, Math.max(min, val));
 
 /**
  * Hour labels for sparkline axis.
@@ -117,10 +145,10 @@ const extractAscendantLong = (profile: any): number => {
 
 /** Channel display names and colors */
 const CHANNEL_META: Record<keyof ChannelMetrics, { label: string; color: string }> = {
-    drive: { label: 'Drive', color: '#ef4444' },
-    flow: { label: 'Flow', color: '#3b82f6' },
-    harmony: { label: 'Harmony', color: '#22c55e' },
-    frequency: { label: 'Frequency', color: '#a855f7' },
+    drive: { label: 'Drive', color: CHANNEL_COLORS.drive },
+    flow: { label: 'Flow', color: CHANNEL_COLORS.flow },
+    harmony: { label: 'Harmony', color: CHANNEL_COLORS.harmony },
+    frequency: { label: 'Frequency', color: CHANNEL_COLORS.frequency },
 };
 
 /**
@@ -135,25 +163,25 @@ const generateInsight = (channels: ChannelMetrics, personalHour: number): string
 
     if (intensity > 85) {
         return `Peak ${label} energy — exceptional window for ${dominant === 'drive' ? 'bold action and decisive moves' :
-                dominant === 'flow' ? 'complex communication and learning' :
-                    dominant === 'harmony' ? 'creative expression and social connection' :
-                        'spiritual alignment and manifestation'
+            dominant === 'flow' ? 'complex communication and learning' :
+                dominant === 'harmony' ? 'creative expression and social connection' :
+                    'spiritual alignment and manifestation'
             }.`;
     }
 
     if (intensity > 65) {
         return `Strong ${label} current active. Hour ${personalHour} amplifies ${dominant === 'drive' ? 'physical initiative' :
-                dominant === 'flow' ? 'mental clarity' :
-                    dominant === 'harmony' ? 'aesthetic sensitivity' :
-                        'inner vibration'
+            dominant === 'flow' ? 'mental clarity' :
+                dominant === 'harmony' ? 'aesthetic sensitivity' :
+                    'inner vibration'
             }.`;
     }
 
     if (intensity < 30) {
         return `Low ${label} period — ideal for rest, reflection, and ${dominant === 'drive' ? 'strategic planning over action' :
-                dominant === 'flow' ? 'intuitive processing over analysis' :
-                    dominant === 'harmony' ? 'solo creative work' :
-                        'grounding and stillness'
+            dominant === 'flow' ? 'intuitive processing over analysis' :
+                dominant === 'harmony' ? 'solo creative work' :
+                    'grounding and stillness'
             }.`;
     }
 
@@ -238,10 +266,11 @@ const detectOptimizationWindows = (
 export const usePredictiveEngine = (): PredictiveEngineState & {
     setScrubOffset: (offset: number) => void;
 } => {
-    const { userProfile } = useApp();
+    const { activeProfile: userProfile } = useApp();
 
     // Scrub offset state: 0 = now, negative = past, positive = future
     const [scrubOffset, setScrubOffset] = useState(0);
+    const [activeInsights, setActiveInsights] = useState<AstralInsight[]>([]);
     const [tick, setTick] = useState(0); // Forces recalc on interval
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -275,9 +304,36 @@ export const usePredictiveEngine = (): PredictiveEngineState & {
      */
     const computeChannelsAtHour = useCallback(
         (date: Date): ChannelMetrics => {
-            const drive = getMarsIntensity(date, ascendantLong, natalPlacements);
-            const flow = getMercuryFlow(date, ascendantLong, natalPlacements);
-            const harmony = getVenusHarmony(date, ascendantLong, natalPlacements);
+            // --- Base planetary scores (slow-moving) ---
+            const rawDrive = getMarsIntensity(date, ascendantLong, natalPlacements);
+            const rawFlow = getMercuryFlow(date, ascendantLong, natalPlacements);
+            const rawHarmony = getVenusHarmony(date, ascendantLong, natalPlacements);
+
+            // --- Fast oscillators ---
+            const moonIntensity = getMoonPhaseIntensity(date);
+            const lunarVelocity = getLunarVelocity(date);
+            const phNum = calculatePersonalHourNumber(birthDate, date, date.getHours());
+            const pdNum = calculatePersonalDayNumber(birthDate, date);
+            const hourBoost = HOUR_WEIGHT_MAP[phNum] ?? 0;
+            const dayBoost = DAY_WEIGHT_MAP[pdNum] ?? 0;
+
+            // --- Channel blending ---
+            // Drive: Mars base + Moon Phase weight + lunar velocity spikes
+            const drive = Math.round(
+                clamp(rawDrive * 0.55 + moonIntensity * 0.30 + lunarVelocity * 15, 0, 100)
+            );
+
+            // Flow: Mercury base + Personal Day Number weight + hourly numerology
+            const flow = Math.round(
+                clamp(rawFlow * 0.50 + dayBoost + hourBoost + pdNum * 2, 0, 100)
+            );
+
+            // Harmony: Venus base + inverse lunar velocity (calm at quarter moons)
+            const harmony = Math.round(
+                clamp(rawHarmony * 0.55 + (1 - Math.abs(lunarVelocity)) * 25 + hourBoost * 0.5, 0, 100)
+            );
+
+            // Frequency: pure numerology vibration
             const frequency = calculateNumerologyFrequency(birthDate, date, date.getHours());
 
             return { drive, flow, harmony, frequency };
@@ -361,13 +417,58 @@ export const usePredictiveEngine = (): PredictiveEngineState & {
             });
         }
 
+        // ---- Finalized Data with Peak/Valley Detection ----
+        const finalizedData = sparklineData.map((p, i) => {
+            const prev = sparklineData[i - 1];
+            const next = sparklineData[i + 1];
+            if (!prev || !next) return p;
+
+            const chNames: (keyof ChannelMetrics)[] = ['drive', 'flow', 'harmony', 'frequency'];
+            let isPeak = false;
+            let isValley = false;
+
+            chNames.forEach(ch => {
+                if (p[ch] > prev[ch] && p[ch] > next[ch] && p[ch] > 65) isPeak = true;
+                if (p[ch] < prev[ch] && p[ch] < next[ch] && p[ch] < 35) isValley = true;
+            });
+
+            return { ...p, isPeak, isValley };
+        });
+
         // ---- Optimization Windows ----
-        const optimizationWindows = detectOptimizationWindows(sparklineData);
+        const optimizationWindows = detectOptimizationWindows(finalizedData);
+
+        // ---- Auto-spawn Bub Trigger (at hour 0) ----
+        const currentRefPoint = finalizedData.find(d => d.hour === 0);
+        if (currentRefPoint && (currentRefPoint.isPeak || currentRefPoint.isValley)) {
+            const dominantChannel = (['drive', 'flow', 'harmony', 'frequency'] as const)
+                .reduce((a, b) => currentRefPoint[a] > currentRefPoint[b] ? a : b);
+
+            const newInsight: AstralInsight = {
+                hour: 0,
+                channel: dominantChannel,
+                summary: getInsightForPoint(currentRefPoint),
+                color: (CHANNEL_COLORS as any)[dominantChannel] || '#a855f7'
+            };
+
+            // Non-blocking state update
+            setTimeout(() => {
+                setActiveInsights(prev => {
+                    if (prev.some(ins => ins.hour === 0)) return prev;
+                    return [...prev, newInsight];
+                });
+
+                // Auto-dismiss after 8s
+                setTimeout(() => {
+                    setActiveInsights(prev => prev.filter(ins => ins !== newInsight));
+                }, 8000);
+            }, 0);
+        }
 
         return {
             syncScore,
             channels,
-            sparklineData,
+            sparklineData: finalizedData,
             optimizationWindows,
             isActionMode,
             personalDay,
@@ -379,8 +480,9 @@ export const usePredictiveEngine = (): PredictiveEngineState & {
             transitAspects,
             scrubOffset,
             isReady: true,
+            activeInsights,
         };
-    }, [tick, scrubOffset, birthDate, ascendantLong, natalPlacements, computeChannelsAtHour]);
+    }, [tick, scrubOffset, birthDate, ascendantLong, natalPlacements, computeChannelsAtHour, activeInsights]);
 
     return {
         ...engineState,
