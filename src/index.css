@@ -278,3 +278,39 @@ body::after {
 .animate-glitch {
   animation: glitch 0.3s infinite linear alternate-reverse;
 }
+
+/* ---- Spatial Tarot: Synergy Glow System ---- */
+
+@keyframes synergy-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px var(--synergy-color, #6E7BFF));
+    border-color: var(--synergy-color, #6E7BFF);
+  }
+  50% {
+    filter: drop-shadow(0 0 18px var(--synergy-color, #6E7BFF))
+            drop-shadow(0 0 36px color-mix(in srgb, var(--synergy-color, #6E7BFF) 40%, transparent));
+    border-color: color-mix(in srgb, var(--synergy-color, #6E7BFF) 80%, white);
+  }
+}
+
+.synergy-card {
+  animation: synergy-pulse 2s ease-in-out infinite;
+  color: var(--synergy-color, #6E7BFF);
+}
+
+/* ---- Spatial Tarot: Hotspot Path-Draw Reveal ---- */
+
+@keyframes hotspot-trace {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.hotspot-path-reveal {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: hotspot-trace 1.2s ease-out forwards;
+}

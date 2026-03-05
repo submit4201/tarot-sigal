@@ -4,11 +4,21 @@ from dotenv import load_dotenv
 # Automatically load environment variables from the parent directory
 # We check both .env.local and .env
 ROOT_DIR = os.path.dirname(os.path.dirname(__file__))
+found_env = False
 for env_file in [".env.local", ".env"]:
     dotenv_path = os.path.join(ROOT_DIR, env_file)
     if os.path.exists(dotenv_path):
         load_dotenv(dotenv_path, override=True)
+        print(f"INFO: Loaded environment from {dotenv_path}")
+        found_env = True
         break
+
+if not found_env:
+    print(f"WARNING: No .env or .env.local found in {ROOT_DIR}. Relying on system environment variables.")
+
+# Check for critical keys early
+if not os.getenv("JWT_SECRET_KEY"):
+    print("CRITICAL: JWT_SECRET_KEY is missing from environment.")
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware

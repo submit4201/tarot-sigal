@@ -10,8 +10,10 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = BASE_DIR.parent
 
+searched_paths = []
 for env_file in [".env.local", ".env"]:
     env_path = ROOT_DIR / env_file
+    searched_paths.append(str(env_path))
     if env_path.exists():
         load_dotenv(dotenv_path=env_path)
         break
@@ -19,9 +21,17 @@ for env_file in [".env.local", ".env"]:
 # Security configuration
 SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 if not SECRET_KEY:
-    # In development, you might want to load from .env.local, but for production,
-    # this MUST be provided by the environment.
-    raise RuntimeError("JWT_SECRET_KEY environment variable is not set")
+    # Diagnostic info for the error message
+    cwd = os.getcwd()
+    env_keys = list(os.environ.keys())
+    error_msg = (
+        f"JWT_SECRET_KEY environment variable is not set.\n"
+        f"  - Current Working Directory: {cwd}\n"
+        f"  - Searched .env paths: {searched_paths}\n"
+        f"  - Environment keys visible: {env_keys[:10]}... (total {len(env_keys)})\n"
+        f"  - TIP: If on Heroku/Cloud, set JWT_SECRET_KEY in your dashboard."
+    )
+    raise RuntimeError(error_msg)
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7 # 7 days for convenience
 

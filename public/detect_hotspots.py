@@ -814,24 +814,31 @@ def process_card(deck_name: str, card_name: str, *,
         except (json.JSONDecodeError, KeyError):
             pass  # Re-process broken manifests
 
+    # 0. Get actual image dimensions
+    img_temp = cv2.imread(image_path)
+    if img_temp is None:
+        return f"[SKIP] {deck_name}/{card_name}: could not read image"
+    img_h, img_w = img_temp.shape[:2]
+    del img_temp # Free memory
+
     # 1. Detect contours with OpenCV
-    logger.info(f"🔍 Detecting zones in {deck_name}/{card_name} ...")
+    logger.info(f"🔍 Detecting zones in {deck_name}/{card_name} ({img_w}x{img_h}) ...")
     zones = detect_contours(image_path)
 
     if not zones:
-        # Fallback: create a single whole-card zone
+        # Fallback: create a single whole-card zone using actual dimensions
         logger.warning(f"  → No zones detected, using full-card fallback")
         zones = [{
-            "bbox": (int(CARD_W * 0.025), int(CARD_H * 0.015),
-                     int(CARD_W * 0.95), int(CARD_H * 0.97)),
+            "bbox": (int(img_w * 0.025), int(img_h * 0.015),
+                     int(img_w * 0.95), int(img_h * 0.97)),
             "contour": np.array([
-                [[int(CARD_W * 0.025), int(CARD_H * 0.015)]],
-                [[int(CARD_W * 0.975), int(CARD_H * 0.015)]],
-                [[int(CARD_W * 0.975), int(CARD_H * 0.985)]],
-                [[int(CARD_W * 0.025), int(CARD_H * 0.985)]],
+                [[int(img_w * 0.025), int(img_h * 0.015)]],
+                [[int(img_w * 0.975), int(img_h * 0.015)]],
+                [[int(img_w * 0.975), int(img_h * 0.985)]],
+                [[int(img_w * 0.025), int(img_h * 0.985)]],
             ]),
-            "area": CARD_W * CARD_H * 0.93,
-            "center": (CARD_W // 2, CARD_H // 2),
+            "area": img_w * img_h * 0.93,
+            "center": (img_w // 2, img_h // 2),
         }]
 
     # 2. VLM Labeling (optional)
@@ -851,7 +858,7 @@ def process_card(deck_name: str, card_name: str, *,
 
     # 4. Generate and save SVGs (transparent + colored overlay)
     svg_transparent, svg_colored = generate_overlay_svgs(
-        card_name, zones, CARD_W, CARD_H
+        card_name, zones, img_w, img_h
     )
     os.makedirs(os.path.dirname(svg_path), exist_ok=True)
 
@@ -863,10 +870,10 @@ def process_card(deck_name: str, card_name: str, *,
     colored_svg_path = svg_path.replace(".svg", "_colored.svg")
     with open(colored_svg_path, "w", encoding="utf-8") as f:
         f.write(svg_colored)
-    logger.info(f"  🎨 SVGs saved: {Path(svg_path).name} + {Path(colored_svg_path).name}")
+    logger.info(f"  🎨 SVGs saved: {Path(svg_path).name} ({img_w}x{img_h})")
 
     # 5. Generate and save manifest JSON
-    manifest = generate_manifest(card_name, zones, CARD_W, CARD_H)
+    manifest = generate_manifest(card_name, zones, img_w, img_h)
     os.makedirs(os.path.dirname(manifest_path), exist_ok=True)
     with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, indent=2)
