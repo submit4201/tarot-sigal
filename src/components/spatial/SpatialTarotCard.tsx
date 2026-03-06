@@ -53,6 +53,13 @@ interface SpatialTarotCardProps {
     showOverlays?: boolean;
     /** Extra className for the outer container */
     className?: string;
+    /** Callback when drag gesture starts */
+    onDragStart?: (cardId: string) => void;
+    /** Callback when drag gesture is active */
+    onDrag?: (cardId: string, position: { x: number; y: number }) => void;
+    /** Callback when drag gesture ends */
+    onDragEnd?: (cardId: string, position: { x: number; y: number }) => void;
+    audioIntensity?: number;
 }
 
 /* ------------------------------------------------------------------ */
@@ -65,6 +72,10 @@ export const SpatialTarotCard: React.FC<SpatialTarotCardProps> = ({
     onHotspotHover,
     showOverlays = true,
     className = '',
+    onDragStart,
+    onDrag,
+    onDragEnd,
+    audioIntensity,
 }) => {
     const { getCardImagePath, getDeckBackPath, activeDeckId } = useApp();
 
@@ -88,9 +99,12 @@ export const SpatialTarotCard: React.FC<SpatialTarotCardProps> = ({
     const containerRef = useRef<HTMLDivElement>(null);
 
     const bind = useDrag(
-        ({ offset: [ox, oy], memo }) => {
+        ({ first, last, offset: [ox, oy], memo }) => {
+            if (first && onDragStart) onDragStart(card.id);
             x.set(ox);
             y.set(oy);
+            if (onDrag) onDrag(card.id, { x: ox, y: oy });
+            if (last && onDragEnd) onDragEnd(card.id, { x: ox, y: oy });
             return memo;
         },
         {
@@ -225,6 +239,9 @@ export const SpatialTarotCard: React.FC<SpatialTarotCardProps> = ({
                             style={{
                                 backfaceVisibility: 'hidden',
                                 transform: 'rotateY(180deg)',
+                                boxShadow: audioIntensity && audioIntensity > 0
+                                    ? `0 0 ${10 + audioIntensity * 30}px ${elementColor}88`
+                                    : undefined,
                                 ...synergyStyle,
                             }}
                         >
@@ -265,9 +282,9 @@ export const SpatialTarotCard: React.FC<SpatialTarotCardProps> = ({
                                             d={hs.contour}
                                             fill="transparent"
                                             stroke={glowColorMap[hs.glow_type] || elementColor}
-                                            strokeWidth={1.5}
+                                            strokeWidth={1.5 + (audioIntensity || 0) * 2}
                                             strokeDasharray="6 4"
-                                            opacity={activeHotspot?.id === hs.id ? 1 : 0.45}
+                                            opacity={activeHotspot?.id === hs.id ? 1 : 0.45 + (audioIntensity || 0) * 0.4}
                                             filter={
                                                 activeHotspot?.id === hs.id
                                                     ? `url(#hs-glow-${card.id})`
@@ -319,6 +336,8 @@ export const SpatialTarotCard: React.FC<SpatialTarotCardProps> = ({
                                 hotspot={activeHotspot}
                                 position={hotspotPos}
                                 elementColor={elementColor}
+                                cardId={card.id}
+                                cardName={tarotCard.name}
                             />
                         )}
                     </AnimatePresence>

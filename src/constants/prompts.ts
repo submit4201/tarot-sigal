@@ -16,10 +16,17 @@
 // ---------------------------------------------------------------------------
 // TIER VOICE INSTRUCTIONS (injected into prompts)
 // ---------------------------------------------------------------------------
+const FREE_VOICE = `
+Tier: FREE — Keep responses concise and grounded. 2-3 sentences per field max.
+Avoid dense esoteric jargon. Be direct, warm, and practical. this is the 1st tier of 3, leave 
+room for upgrade. make it sound like a tarot reading but not too deep. so we can upsell 
+the user to the next tier. be a bit more mystical and less practical. `;
 
 const SEEKER_VOICE = `
 Tier: SEEKER — Keep responses concise and grounded. 2-3 sentences per field max.
-Avoid dense esoteric jargon. Be direct, warm, and practical.`;
+Avoid dense esoteric jargon. Be direct, warm, and practical. this is the 2nd tier of 3, leave 
+room for upgrade. make it sound like a tarot reading but not too deep. so we can upsell 
+the user to the next tier. be a bit more mystical and less practical. `;
 
 const ORACLE_VOICE = `
 Tier: ORACLE — You are the Rebel Oracle. You have earned the right to have opinions.
@@ -31,27 +38,62 @@ Tier: ORACLE — You are the Rebel Oracle. You have earned the right to have opi
 - Use Cyber-Shamanic terminology: resonance, frequency, archetype, void, spectral alignment.
 - Esoteric depth is required: astrology, kabbalah, alchemy, numerology cross-references.`;
 
-type PromptTier = 'seeker' | 'initiate' | 'oracle';
+type PromptTier = 'free' | 'seeker' | 'oracle';
 
 function getTierVoice(tier: PromptTier): string {
   if (tier === 'oracle') return ORACLE_VOICE;
   if (tier === 'seeker') return SEEKER_VOICE;
-  return ''; // initiate: no override, default prompt tone applies
+  return FREE_VOICE;
 }
 
+type context = {
+    lastTarotReading: {
+      spread: string,
+      cards: string[],
+      interpretations: string[],// what the user said about the cards
+      },
+    lastDailyTarotDraw:{
+      date: string,
+      cardName: string,
+      cardPolarity: string,
+      interpretation: string,
+    },
+    astrologyInfo: {
+      sign: string,
+      currentPlanetinfluences: string[], // what planet is interacting with the user's sign and how
+      houses: string[], // what houses are the user's sign in and what does it mean
+      aspects: string[], // what aspects are the user's sign in and what does it mean
+      currentMoon: string, // what phase is the moon in and what does it mean
+      lastHoroscope: string, // what was the last horoscope
+    },
+    NumerologyInfo: {
+      lifePath: string,
+      currentDayNumber: string,
+      currentMonthNumber: string,
+      currentYearNumber: string,
+      currentPersonalYearNumber: string,
+      currentDayHourlyNumbers: string[], // what hour is it and what does it mean
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+    }
+}
 // ---------------------------------------------------------------------------
 // DAILY INSIGHT PROMPT
 // ---------------------------------------------------------------------------
 
 export const DAILY_INSIGHT_PROMPT = (
   sign: string,
+  cardName: string,
+  cardPolarity: string,
   context: string,
   cosmicInfo: string,
-  tier: PromptTier = 'seeker'
+  tier: PromptTier = 'free'
 ) => `
 Generate a high-frequency, mystical-cyberpunk daily diagnostic for ${sign}.
-Tarot Signal: {cardName} ({polarity}).
+Tarot Signal: ${cardName} (${cardPolarity}).
 Life Path Frequency: ${cosmicInfo}.
+today's date is ${new Date().toISOString()}. numerology of the day is ${new Date().getDate() + new Date().getMonth() + new Date().getFullYear()}.
+moon phase is ${new Date().getMonth() + 1}. 
+
 ${context}
 
 ${getTierVoice(tier)}

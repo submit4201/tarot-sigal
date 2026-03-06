@@ -307,12 +307,18 @@ const IdentityCore: React.FC = () => {
                     {/* Experience & Progression */}
                     <section className="glass-panel p-8 rounded-[2rem] border-purple-500/20 bg-purple-900/[0.03] shadow-2xl relative overflow-hidden">
                         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
-                        <div className="flex items-center justify-between mb-6">
-                            <div className="flex items-center gap-3">
-                                <div className="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></div>
-                                <span className="text-[9px] font-mono text-purple-400 uppercase tracking-[0.4em] font-bold">Neural_Rank</span>
+                        <div className="flex items-center justify-between mb-8 border-b border-white/5 pb-6">
+                            <div className="flex flex-col gap-1">
+                                <span className="text-[9px] font-mono text-purple-400 uppercase tracking-[0.4em] font-bold">Stardust_Reserve</span>
+                                <div className="flex items-center gap-2">
+                                    <SparklesIcon className="w-4 h-4 text-pink-400 animate-pulse" />
+                                    <span className="text-2xl font-bold text-white font-mono">{displayProfile.stardust || 0}</span>
+                                </div>
                             </div>
-                            <div className="font-mono text-3xl font-bold text-white tracking-tighter">NODE_{displayProfile.level}</div>
+                            <div className="text-right">
+                                <span className="text-[9px] font-mono text-purple-400 uppercase tracking-[0.4em] font-bold block mb-1">Neural_Rank</span>
+                                <div className="font-mono text-3xl font-bold text-white tracking-tighter">NODE_{displayProfile.level}</div>
+                            </div>
                         </div>
 
                         <div className="mb-6 relative">

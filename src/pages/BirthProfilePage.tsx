@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect, useMemo } from 'react';
 import { GlassPanel } from '../components/ui/GlassPanel';
 import { CyberButton } from '../components/ui/CyberButton';
 import { CyberInput } from '../components/ui/CyberInput';
@@ -11,6 +11,8 @@ import InteractiveNatalChart from '../components/profile/InteractiveNatalChart';
 import StoryModeOverlay from '../components/profile/StoryModeOverlay';
 import { BirthProfileData, BirthProfileTeaser } from '../types';
 import { birthProfile as birthProfileService } from '../services/apiService';
+import { generateCosmicBlueprint } from '../services/cosmicService';
+import CosmicBlueprintDisplay from '../components/profile/CosmicBlueprintDisplay';
 import {
     InfoIcon,
     SparklesIcon,
@@ -259,6 +261,12 @@ const BirthProfilePage: React.FC = () => {
     const hdData = pData?.humanDesign;
     const progData = pData?.progressedMoon;
 
+    // Core Signature — numerological blueprint derived from user's active profile
+    const cosmicBlueprint = useMemo(
+        () => activeProfile ? generateCosmicBlueprint(activeProfile) : null,
+        [activeProfile]
+    );
+
 
 
     return (
@@ -399,6 +407,18 @@ const BirthProfilePage: React.FC = () => {
                     profileData={pData}
                 />
             </div>
+
+            {/* Core Signature — Numerological Blueprint */}
+            {cosmicBlueprint && astroData && (
+                <div className="max-w-5xl mx-auto w-full">
+                    <CosmicBlueprintDisplay
+                        blueprint={cosmicBlueprint}
+                        sunSign={astroData.sun?.sign || 'Unknown'}
+                        moonSign={astroData.moon?.sign || 'Unknown'}
+                        synthesis={`Your ${astroData.sun?.sign || ''} Sun illuminates the path while your ${astroData.moon?.sign || ''} Moon reveals the hidden currents beneath. Life Path ${cosmicBlueprint.lifePath.number} channels through this duality.`}
+                    />
+                </div>
+            )}
 
             {isTeaser && (
                 <div className="max-w-2xl mx-auto">

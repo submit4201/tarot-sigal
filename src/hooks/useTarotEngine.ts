@@ -178,7 +178,10 @@ export function useTarotEngine(deckId?: string): TarotEngineState {
     const effectiveDeckId = deckId || activeDeckId;
     const deckDef = decks.find(d => d.id === effectiveDeckId) || decks[0];
 
-    const [cards, setCards] = useState<SpatialCard[]>([]);
+    // The stack of cards remaining in the deck fan
+    const [deckStack, setDeckStack] = useState<SpatialCard[]>([]);
+    // The cards that have been placed into the spread
+    const [spreadCards, setSpreadCards] = useState<SpatialCard[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [activeSpread, setActiveSpread] = useState<SpatialSpreadType>('3-card');
 
@@ -238,9 +241,9 @@ export function useTarotEngine(deckId?: string): TarotEngineState {
         [astral]
     );
 
-    /* ---- Draw cards ---- */
+    /* ---- Shuffle & Initialize Deck Stack ---- */
     const draw = useCallback(
-        async (count: number = 3) => {
+        async () => {
             setIsLoading(true);
 
             try {
@@ -252,42 +255,110 @@ export function useTarotEngine(deckId?: string): TarotEngineState {
                 // Warm up RNG
                 for (let i = 0; i < 5; i++) rng.nextFloat();
 
-                // Shuffle and pick
+                // Shuffle the entire pool
                 const shuffled = [...pool].sort(() => rng.nextFloat() - 0.5);
-                const selected = shuffled.slice(0, Math.min(count, shuffled.length));
 
-                const layout = SPREAD_LAYOUTS[activeSpread] || SPREAD_LAYOUTS['3-card'];
+                // Build spatial cards for the stack. We'll do manifest lookups lazily
+                // when cards are drawn, but for now just assign positions in a fan.
+                const stackCards: SpatialCard[] = shuffled.map((card, i) => {
+                    const rot = (rng.nextFloat() - 0.5) * 10;
+                    return {
+                        card,
+                        manifest: null, // load when flipped
+                        isFlipped: false,
+                        isReversed: false,
+                        isSynergistic: false,
+                        // Fan them out slightly
+                        position: { x: i * 0.5, y: -i * 0.5, z: i },
+                        rotation: rot,
+                    };
+                });
 
-                // Build spatial cards with manifest lookups in parallel
-                const spatialCards: SpatialCard[] = await Promise.all(
-                    selected.map(async (card, i) => {
-                        const pos = layout[i % layout.length];
-                        const isReversed = rng.nextFloat() < 0.3;
-                        const manifest = await fetchManifest(card.id, deckDef.path);
-
-                        return {
-                            card,
-                            manifest,
-                            isFlipped: false,
-                            isReversed,
-                            isSynergistic: checkSynergy(card),
-                            position: { x: pos.x, y: pos.y, z: pos.z },
-                            rotation: pos.rot,
-                        };
-                    })
-                );
-
-                setCards(spatialCards);
+                setDeckStack(stackCards);
+                setSpreadCards([]); // Clear the spread
             } finally {
                 setIsLoading(false);
             }
         },
-        [effectiveDeckId, deckDef, activeSpread, checkSynergy]
+        [effectiveDeckId, deckDef]
     );
+
+    /* ---- Move from Deck to Spread ---- */
+    const moveToSpread = useCallback(async (cardId: string, targetIndex: number) => {
+        setDeckStack(prev => {
+            const cardInStack = prev.find(c => c.card.id === cardId);
+            if (!cardInStack) return prev;
+
+            // Remove from stack
+            const newStack = prev.filter(c => c.card.id !== cardId);
+            return newStack;
+        });
+
+        // We need the card object
+        let theCard: SpatialCard | undefined;
+        setDeckStack(prev => {
+            theCard = prev.find(c => c.card.id === cardId);
+            return prev;
+        });
+
+        if (!theCard) return;
+
+        // Ensure we have manifest
+        let manifest = theCard.manifest;
+        if (!manifest) {
+            manifest = await fetchManifest(theCard.card.id, deckDef.path);
+        }
+
+        const layout = SPREAD_LAYOUTS[activeSpread] || SPREAD_LAYOUTS['3-card'];
+        const pos = layout[targetIndex % layout.length];
+
+        setSpreadCards(prev => {
+            // Check if there's already a card at this index
+            // If so, we might want to swap it back, but for simplicity let's just replace it
+            // or maybe avoid dropping. Let's assume the UI handles preventing drops on full zones.
+
+            const newSpatialCard: SpatialCard = {
+                ...theCard!,
+                manifest,
+                position: { x: pos.x, y: pos.y, z: pos.z },
+                rotation: pos.rot,
+                isSynergistic: checkSynergy(theCard!.card),
+                // Don't auto-flip, let the user trigger it or UI handles it
+            };
+
+            const existingIndex = prev.findIndex(c => c.card.id === newSpatialCard.card.id);
+            if (existingIndex !== -1) {
+                // Return to deck? For now just return
+                return prev;
+            }
+
+            return [...prev, newSpatialCard];
+        });
+    }, [activeSpread, checkSynergy, deckDef.path]);
+
+    /* ---- Return from Spread to Deck ---- */
+    const returnToDeck = useCallback((cardId: string) => {
+        setSpreadCards(prev => {
+            const card = prev.find(c => c.card.id === cardId);
+            if (!card) return prev;
+
+            setDeckStack(stack => {
+                // Put it back at the top of the stack
+                return [...stack, {
+                    ...card,
+                    isFlipped: false,
+                    position: { x: stack.length * 0.5, y: -stack.length * 0.5, z: stack.length },
+                    rotation: 0
+                }];
+            });
+
+            return prev.filter(c => c.card.id !== cardId);
+        });
+    }, []);
 
     /* ---- Flip a card ---- */
     const flipCard = useCallback((cardId: string) => {
-        setCards(prev =>
+        setSpreadCards(prev =>
             prev.map(c =>
                 c.card.id === cardId ? { ...c, isFlipped: !c.isFlipped } : c
             )
@@ -297,9 +368,11 @@ export function useTarotEngine(deckId?: string): TarotEngineState {
     /* ---- Change spread type ---- */
     const setSpread = useCallback((type: SpatialSpreadType) => {
         setActiveSpread(type);
-        // Reposition existing cards to match the new layout
-        setCards(prev => {
+        // Reposition existing spread cards to match the new layout
+        setSpreadCards(prev => {
             const layout = SPREAD_LAYOUTS[type] || SPREAD_LAYOUTS['3-card'];
+            // If they change to a smaller spread, excess cards should probably go back to the deck...
+            // For now, we'll just map them to the new layout indices.
             return prev.map((c, i) => {
                 const pos = layout[i % layout.length];
                 return { ...c, position: { x: pos.x, y: pos.y, z: pos.z }, rotation: pos.rot };
@@ -309,11 +382,13 @@ export function useTarotEngine(deckId?: string): TarotEngineState {
 
     /* ---- Reset table ---- */
     const reset = useCallback(() => {
-        setCards([]);
+        setDeckStack([]);
+        setSpreadCards([]);
     }, []);
 
     return {
-        cards,
+        deckStack,
+        spreadCards,
         isLoading,
         activeSpread,
         astral,
@@ -321,5 +396,7 @@ export function useTarotEngine(deckId?: string): TarotEngineState {
         flipCard,
         setSpread,
         reset,
+        moveToSpread,
+        returnToDeck,
     };
 }

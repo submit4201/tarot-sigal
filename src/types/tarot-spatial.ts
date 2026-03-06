@@ -80,12 +80,15 @@ export type SpatialSpreadType = 'single' | '3-card' | 'celtic-cross' | 'cybernet
 
 /** Return type of the useTarotEngine hook */
 export interface TarotEngineState {
-    cards: SpatialCard[];
+    deckStack: SpatialCard[];
+    spreadCards: SpatialCard[];
     isLoading: boolean;
     activeSpread: SpatialSpreadType;
     astral: AstralSnapshot;
-    draw: (count?: number) => Promise<void>;
+    draw: () => Promise<void>;
     flipCard: (cardId: string) => void;
     setSpread: (type: SpatialSpreadType) => void;
     reset: () => void;
+    moveToSpread: (cardId: string, targetIndex: number) => Promise<void>;
+    returnToDeck: (cardId: string) => void;
 }

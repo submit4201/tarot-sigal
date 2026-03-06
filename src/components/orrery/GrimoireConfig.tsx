@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { useConfig } from '../../context/ConfigContext';
-import { LockIcon, UserIcon, ShieldIcon, SparklesIcon, SlidersIcon, ActivityIcon } from '../icons';
+import { LockIcon, UserIcon, ShieldIcon, SparklesIcon, SlidersIcon, ActivityIcon, LayersIcon } from '../icons';
+
 import { motion, AnimatePresence } from 'framer-motion';
 
 import IdentityCore from '../grimoire/IdentityCore';
 
-type ConfigTab = 'identity' | 'world' | 'technical';
+type ConfigTab = 'identity' | 'arsenal' | 'world' | 'technical';
+
+import ArsenalCore from '../grimoire/ArsenalCore';
+
 
 const GrimoireConfig: React.FC<{ onClose: () => void; initialTab?: ConfigTab }> = ({ onClose, initialTab = 'identity' }) => {
-    const { activeProfile, isPremium, setPage } = useApp();
+    const { isPremium, setPage } = useApp();
     const { config, updateWorldConfig, updateTechnicalConfig } = useConfig();
     const [activeTab, setActiveTab] = useState<ConfigTab>(initialTab);
 
@@ -42,6 +46,12 @@ const GrimoireConfig: React.FC<{ onClose: () => void; initialTab?: ConfigTab }> 
                             className={`p-4 rounded-xl flex items-center gap-3 font-mono text-xs uppercase tracking-widest transition-all ${activeTab === 'identity' ? 'bg-pink-500/20 border-pink-500/50 text-pink-300 border shadow-[0_0_15px_rgba(236,72,153,0.2)]' : 'bg-white/5 border-transparent text-white/50 hover:bg-white/10 border hover:text-white/80'}`}
                         >
                             <UserIcon className="w-4 h-4" /> Identity Matrix
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('arsenal')}
+                            className={`p-4 rounded-xl flex items-center gap-3 font-mono text-xs uppercase tracking-widest transition-all ${activeTab === 'arsenal' ? 'bg-pink-500/20 border-pink-500/50 text-pink-300 border shadow-[0_0_15px_rgba(236,72,153,0.2)]' : 'bg-white/5 border-transparent text-white/50 hover:bg-white/10 border hover:text-white/80'}`}
+                        >
+                            <LayersIcon className="w-4 h-4" /> Arsenal Hub
                         </button>
                         <button
                             onClick={() => setActiveTab('world')}
@@ -90,6 +100,7 @@ const GrimoireConfig: React.FC<{ onClose: () => void; initialTab?: ConfigTab }> 
                                 transition={{ duration: 0.2 }}
                             >
                                 {activeTab === 'identity' && <IdentityCore />}
+                                {activeTab === 'arsenal' && <ArsenalCore />}
 
                                 {activeTab === 'world' && (
                                     <div className="space-y-8 max-w-2xl">

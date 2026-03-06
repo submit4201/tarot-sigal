@@ -9,9 +9,15 @@
  *       `base_insight` verbatim.
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import type { ManifestHotspot } from '../../types/tarot-spatial';
+import { generateContentWithRetry } from '../../services/geminiService';
+import { useApp } from '../../context/AppContext';
+import { generateCosmicBlueprint } from '../../services/cosmicService';
+
+// Simple in-memory cache for the session to prevent spamming the LLM on hover
+const AIBubCache = new Map<string, string>();
 
 /* ------------------------------------------------------------------ */
 /*  Props                                                              */
@@ -24,6 +30,10 @@ interface AIBubProps {
     position: { x: number; y: number };
     /** Primary color derived from the card's element */
     elementColor: string;
+    /** Card ID for caching */
+    cardId: string;
+    /** Card name for prompt context */
+    cardName?: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -40,7 +50,70 @@ const bubVariants = {
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
-export const AIBub: React.FC<AIBubProps> = ({ hotspot, position, elementColor }) => {
+export const AIBub: React.FC<AIBubProps> = ({ hotspot, position, elementColor, cardId, cardName }) => {
+    const { activeProfile, isPremium } = useApp();
+    const [insight, setInsight] = useState<string>(hotspot.base_insight || '');
+    const [isGenerating, setIsGenerating] = useState(false);
+
+    useEffect(() => {
+        // Reset state when hotspot changes before generation completes
+        setInsight(hotspot.base_insight || '');
+        setIsGenerating(false);
+
+        const cacheKey = `${cardId}-${hotspot.id}`;
+        if (AIBubCache.has(cacheKey)) {
+            setInsight(AIBubCache.get(cacheKey)!);
+            return;
+        }
+
+        if (!isPremium) {
+            return; // Free users only get base insight
+        }
+
+        let isMounted = true;
+
+        const fetchInsight = async () => {
+            setIsGenerating(true);
+            try {
+                const cosmic = activeProfile ? generateCosmicBlueprint(activeProfile) : null;
+                const lifePathInfo = cosmic ? `Life Path ${cosmic.lifePath.number} (${cosmic.lifePath.theme})` : 'Unknown';
+
+                const prompt = `You are a cryptic cyberpunk tarot oracle.
+Card: ${cardName || cardId}
+Visual Element: ${hotspot.label}
+Base Meaning: ${hotspot.base_insight}
+User Life Path: ${lifePathInfo}
+
+Generate a single 1-2 sentence real-time "snackable" insight connecting this visual element to the user's energy. Keep it punchy, mysterious, and cyberpunk-mystic. No intros, just the insight.`;
+
+                const res = await generateContentWithRetry({
+                    contents: prompt,
+                    usePuter: true,
+                    model: 'puter-chat'
+                });
+
+                if (res.text && isMounted) {
+                    const cleanText = res.text.replace(/^["']|["']$/g, '').trim();
+                    setInsight(cleanText);
+                    AIBubCache.set(cacheKey, cleanText);
+                }
+            } catch (err) {
+                console.warn('[AIBub] Failed to generate insight', err);
+            } finally {
+                if (isMounted) setIsGenerating(false);
+            }
+        };
+
+        // Debounce slightly to prevent API spam on quick swipes
+        const timer = setTimeout(() => {
+            fetchInsight();
+        }, 300);
+
+        return () => {
+            isMounted = false;
+            clearTimeout(timer);
+        };
+    }, [cardId, hotspot, isPremium, cardName, activeProfile]);
     return (
         <motion.div
             className="absolute z-[100] pointer-events-none"
@@ -81,8 +154,8 @@ export const AIBub: React.FC<AIBubProps> = ({ hotspot, position, elementColor })
                 </div>
 
                 {/* Insight text */}
-                <p className="text-xs text-white/70 leading-relaxed font-light">
-                    {hotspot.base_insight}
+                <p className={`text-xs text-white/70 leading-relaxed font-light transition-opacity duration-300 ${isGenerating ? 'opacity-50 animate-pulse' : 'opacity-100'}`}>
+                    {insight}
                 </p>
 
                 {/* Glow type indicator */}

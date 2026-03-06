@@ -3,8 +3,7 @@ import { motion } from 'framer-motion';
 import { useApp } from '../../context/AppContext';
 import { calculateDailyNumber, calculateMonthlyNumber, calculateYearlyNumber } from '../../services/tarotService';
 import { generateCosmicBlueprint } from '../../services/cosmicService';
-import { DnaIcon, SparklesIcon, ActivityIcon } from '../icons';
-import CosmicBlueprintDisplay from '../CosmicBlueprintDisplay';
+import { SparklesIcon, ActivityIcon } from '../icons';
 import { usePredictiveEngine } from '../../hooks/usePredictiveEngine';
 import {
     MomentumGauge,
@@ -39,6 +38,7 @@ const AstralMetrics: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     const dailyNumber = useMemo(() => calculateDailyNumber(today), [todayStr]);
     const monthlyNumber = useMemo(() => calculateMonthlyNumber(today), [todayStr]);
     const yearlyNumber = useMemo(() => calculateYearlyNumber(today), [todayStr]);
+
     const cosmicBlueprint = useMemo(
         () => activeProfile ? generateCosmicBlueprint(activeProfile) : null,
         [activeProfile]
@@ -184,16 +184,6 @@ const AstralMetrics: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                         transition={{ duration: 0.8, delay: 0.3 }}
                         className="lg:col-span-5 flex flex-col gap-8"
                     >
-                        {/* Core Signature Blueprint */}
-                        <div className="glass-panel p-8 rounded-[2rem] border-amber-500/20 bg-black/40 relative overflow-hidden backdrop-blur-xl group hover:border-amber-500/40 transition-colors">
-                            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                                <DnaIcon className="w-32 h-32 text-amber-500" />
-                            </div>
-                            <h3 className="text-[10px] font-mono text-amber-400 uppercase tracking-[0.4em] mb-8 font-bold flex items-center gap-3">
-                                <SparklesIcon className="w-4 h-4" /> Core_Signature
-                            </h3>
-                            <CosmicBlueprintDisplay blueprint={cosmicBlueprint} />
-                        </div>
 
                         {/* Transit Aspects */}
                         {engine.transitAspects.length > 0 && (
