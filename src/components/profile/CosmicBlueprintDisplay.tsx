@@ -1,7 +1,7 @@
 import React from 'react';
 import { SparklesIcon, ShieldIcon, ActivityIcon, TerminalIcon } from 'lucide-react';
 import { CosmicBlueprint } from '../../types';
-import GlassPanel from '../ui/GlassPanel';
+import { GlassPanel } from '../ui/GlassPanel';
 
 interface CosmicBlueprintDisplayProps {
     blueprint: CosmicBlueprint;
